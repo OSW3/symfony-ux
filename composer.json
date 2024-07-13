@@ -1,0 +1,26 @@
+{
+    "name": "osw3/symfony-ux",
+    "description": "UI and UX Components for Twig and Symfony",
+    "homepage": "https://osw3.net",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "authors": [
+		{
+			"name": "Project Contributors",
+			"homepage": "https://github.com/osw3/symfony-ux/graphs/contributors"
+		}
+    ],
+    "autoload": {
+        "psr-4": {
+            "OSW3\\UX\\": "src/"
+        }
+    },
+    "require": {
+        "symfony/twig-bundle": "6.4.*",
+        "symfony/options-resolver": "6.4.*",
+        "symfony/ux-twig-component": "^2.18",
+        "symfony/webpack-encore-bundle": "^2.1"
+    }
+}
