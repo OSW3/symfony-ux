@@ -54,7 +54,7 @@ class UXExtension extends Extension implements PrependExtensionInterface
         // --
 
         $twigConfig = [];
-        $twigConfig['paths'][Path::join(__DIR__, "/../../", "templates")] = "Ux";
+        $twigConfig['paths'][Path::join(__DIR__, "/../../", "templates")] = "UxComponents";
 
         $container->prependExtensionConfig('twig', $twigConfig);
     }
