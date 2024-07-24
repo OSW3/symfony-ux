@@ -5,7 +5,7 @@ use OSW3\UX\Utils\ConfigurationYaml;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class UxBundle extends Bundle
+class UXBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {
