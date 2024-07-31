@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@Ux/copyright/base.twig')]
+#[AsTwigComponent(template: '@UxComponents/copyright/base.twig')]
 final class Copyright 
 {
     use ComponentTrait;
