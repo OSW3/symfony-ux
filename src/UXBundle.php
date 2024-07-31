@@ -13,7 +13,7 @@ class UXBundle extends Bundle
     {
         $projectDir = $container->getParameter('kernel.project_dir');
 
-        
+
         // Update dependency config
         // -- 
 
@@ -30,7 +30,7 @@ class UXBundle extends Bundle
 
             if (!isset( $twig_component_ArrayContent['twig_component']['defaults'][$newClassPath] ))
             {
-                file_put_contents($twig_component_Filepath, Yaml::dump(array_merge_recursive($twig_component_ArrayContent, ['twig_component' => ['defaults' => [$newClassPath => "@Ux/"]]]), 4));
+                file_put_contents($twig_component_Filepath, Yaml::dump(array_merge_recursive($twig_component_ArrayContent, ['twig_component' => ['defaults' => [$newClassPath => "@UxComponents/"]]]), 4));
             }
         }
 
