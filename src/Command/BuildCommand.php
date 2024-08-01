@@ -44,6 +44,10 @@ class BuildCommand extends Command
 
             switch ($name)
             {
+                case 'default_theme':
+                    $sassVariables[] = "\$theme-default: {$value};";
+                break;
+
                 case 'grid_divisions':
                 default: 
                     $sassVariables[] = "\${$property}: {$value};";

@@ -14,8 +14,13 @@ return static function($definition)
         ->arrayNode('layout')->addDefaultsIfNotSet()->children()
 
             ->integerNode('grid_divisions')
-                ->info("Specifies the name of the company")
+                ->info("Specifies the number of division of the grid system")
                 ->defaultValue(12)
+            ->end()
+
+            ->scalarNode('default_theme')
+                ->info("Specifies the name of the default theme")
+                ->defaultValue('light')
             ->end()
 
         ->end()->end()

@@ -4,6 +4,9 @@
 // *
 // ************************************************************************** //
 
+@use 'sass:meta';
+@use './generated';
+
 
 /// Themes
 /// =============================================
@@ -11,7 +14,8 @@
 
 /// Default Theme Key
 /// -------------------------
-$theme-default: 'light' !default;
+// $theme-default: 'light' !default;
+$theme-default: if(meta.global-variable-exists('theme-default', $module: generated), generated.$theme-default, 'light') !default;
 
 
 /// Themes collection
