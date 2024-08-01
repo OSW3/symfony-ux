@@ -87,11 +87,11 @@ final class Copyright
         $current = date("Y");
 
         $copyright = "";
-        $copyright.= $this->symbol;
+        $copyright.= "{$this->symbol} ";
 
         if ($this->since < $current)
         {
-            $copyright.= " {$this->since}";
+            $copyright.= "{$this->since}";
             $copyright.= "{$this->datesSeparator}";
         }
 
