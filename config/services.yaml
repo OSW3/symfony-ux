@@ -8,3 +8,6 @@ services:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
+
+    # OSW3\UX\Command\BuildCommand:
+    #     tags: ['console.command']

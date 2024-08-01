@@ -23,7 +23,7 @@ final class Copyright
     
     const NAME = "copyright";
 
-    private array $params;
+    private array $options;
 
     #[ExposeInTemplate(name: 'symbol', getter: 'doNotExpose')]
     public string $symbol;
@@ -47,7 +47,8 @@ final class Copyright
         #[Autowire(service: 'service_container')] private ContainerInterface $container,
     )
     {
-        $this->params = $container->getParameter(Configuration::NAME);
+        $params = $container->getParameter(Configuration::NAME);
+        $this->options = $params['component'][static::NAME];
     }
 
     #[PreMount]
@@ -63,19 +64,19 @@ final class Copyright
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('symbol', $this->params[static::NAME]['symbol']);
+        $resolver->setDefault('symbol', $this->options['symbol']);
         $resolver->setAllowedTypes('symbol', ['string']);
 
-        $resolver->setDefault('datesSeparator', $this->params[static::NAME]['dates_separator']);
+        $resolver->setDefault('datesSeparator', $this->options['dates_separator']);
         $resolver->setAllowedTypes('datesSeparator', ['string']);
 
-        $resolver->setDefault('separator', $this->params[static::NAME]['separator']);
+        $resolver->setDefault('separator', $this->options['separator']);
         $resolver->setAllowedTypes('separator', ['string']);
 
-        $resolver->setDefault('company', $this->params[static::NAME]['company']);
+        $resolver->setDefault('company', $this->options['company']);
         $resolver->setAllowedTypes('company', ['null', 'string']);
 
-        $resolver->setDefault('since', $this->params[static::NAME]['since']);
+        $resolver->setDefault('since', $this->options['since']);
         $resolver->setAllowedTypes('since', ['string','integer']);
 
         return $resolver->resolve($data) + $data;

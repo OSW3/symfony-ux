@@ -1,0 +1,20 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Grid (variables definitions)
+// *
+// *    - Defaults grid divisions
+// *
+// ************************************************************************** //
+
+@use 'sass:meta';
+@use './generated';
+
+/// Defaults grid divisions
+/// =============================================
+
+/// Default grid divisions
+/// -------------------------
+/// 
+// $grid-divisions: 12 !default;
+$grid-divisions: if(meta.global-variable-exists('grid-divisions', $module: generated), generated.$grid-divisions, 12) !default;
+

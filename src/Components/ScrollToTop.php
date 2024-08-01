@@ -23,7 +23,7 @@ final class ScrollToTop
     
     const NAME = "scroll_to_top";
 
-    private array $params;
+    private array $options;
 
     #[ExposeInTemplate(name: 'title', getter: 'fetchTitle')]
     public string $title;
@@ -41,7 +41,8 @@ final class ScrollToTop
         #[Autowire(service: 'service_container')] private ContainerInterface $container,
     )
     {
-        $this->params = $container->getParameter(Configuration::NAME);
+        $params = $container->getParameter(Configuration::NAME);
+        $this->options = $params['component'][static::NAME];
     }
 
     #[PreMount]
@@ -57,16 +58,16 @@ final class ScrollToTop
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('title', $this->params[static::NAME]['title']);
+        $resolver->setDefault('title', $this->options['title']);
         $resolver->setAllowedTypes('title', ['string']);
 
-        $resolver->setDefault('symbol', $this->params[static::NAME]['symbol']);
+        $resolver->setDefault('symbol', $this->options['symbol']);
         $resolver->setAllowedTypes('symbol', ['string']);
 
-        $resolver->setDefault('topAt', $this->params[static::NAME]['top_at']);
+        $resolver->setDefault('topAt', $this->options['top_at']);
         $resolver->setAllowedTypes('topAt', ['numeric']);
 
-        $resolver->setDefault('toggleAt', $this->params[static::NAME]['toggle_at']);
+        $resolver->setDefault('toggleAt', $this->options['toggle_at']);
         $resolver->setAllowedTypes('toggleAt', ['numeric']);
 
         return $resolver->resolve($data) + $data;
