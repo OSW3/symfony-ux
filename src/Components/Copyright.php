@@ -1,117 +1,55 @@
 <?php 
 namespace OSW3\UX\Components;
 
-use OSW3\UX\Enum\ComponentTrait;
-use OSW3\UX\Service\AttributeClassService;
-use OSW3\UX\Service\AttributeDataService;
+use OSW3\UX\Trait\AttributeIdTrait;
+use OSW3\UX\Trait\DoNotExposeTrait;
+use OSW3\UX\Trait\AttributeClassTrait;
+use OSW3\UX\Trait\AttributeDatasetTrait;
+use OSW3\UX\DependencyInjection\Configuration;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 #[AsTwigComponent(template: '@UxComponents/copyright/base.twig')]
-final class Copyright 
+final class Copyright
 {
-    use ComponentTrait;
-
-    /**
-     * Component name
-     * 
-     * @var string
-     */
+    use DoNotExposeTrait;
+    use AttributeIdTrait;
+    use AttributeClassTrait;
+    use AttributeDatasetTrait;
+    
     const NAME = "copyright";
 
-//     /**
-//      * The ID
-//      * --
-//      * @example <twig:Copyright id="my-custom-id" />
-//      * @isExposed true
-//      * @isRequired false
-//      * @default null
-//      * @var string
-//      */
-//     #[ExposeInTemplate(name: 'id')]
-//     public string $id;
+    private array $params;
 
-//     /**
-//      * The custom class
-//      * --
-//      * @example <twig:Copyright class="my-custom-class" />
-//      * @isExposed true
-//      * @isRequired false
-//      * @default null
-//      * @var string
-//      */
-//     #[ExposeInTemplate(name: 'class', getter: 'fetchClass')]
-//     public string $class;
+    #[ExposeInTemplate(name: 'symbol', getter: 'doNotExpose')]
+    public string $symbol;
     
-//     /**
-//      * Dataset Attributes
-//      * --
-//      * @example <twig:Copyright :dataset="{property: 'value'}" />
-//      * @isExposed true
-//      * @isRequired false
-//      * @default null
-//      * @var array
-//      */
-//     #[ExposeInTemplate(name: 'dataset', getter: 'fetchDataset')]
-//     public array $dataset;
+    #[ExposeInTemplate(name: 'dates_separator', getter: 'doNotExpose')]
+    public string $datesSeparator;
     
-//     /**
-//      * Copyright Symbol
-//      * --
-//      * @example <twig:Copyright symbol="&copy;" />
-//      * @isExposed false
-//      * @isRequired false
-//      * @default "&copy;"
-//      * @var string
-//      */
-//     #[ExposeInTemplate(name: 'symbol', getter: 'doNotExpose')]
-//     public string $symbol;
+    #[ExposeInTemplate(name: 'separator', getter: 'doNotExpose')]
+    public string $separator;
     
-//     /**
-//      * Dates separator
-//      * --
-//      * @example <twig:Copyright separator="-" />
-//      * @isExposed false
-//      * @isRequired false
-//      * @default "-"
-//      * @var string
-//      */
-//     #[ExposeInTemplate(name: 'separator', getter: 'doNotExpose')]
-//     public string $separator;
+    #[ExposeInTemplate(name: 'since', getter: 'doNotExpose')]
+    public string|int $since;
     
-//     /**
-//      * Copyright Year since
-//      * --
-//      * @example <twig:Copyright since="2009" />
-//      * @isExposed false
-//      * @isRequired false
-//      * @default "&copy;"
-//      * @var string
-//      */
-//     #[ExposeInTemplate(name: 'since', getter: 'doNotExpose')]
-//     public string|int $since;
-    
-//     /**
-//      * Company Name
-//      * --
-//      * @example <twig:Copyright company="My Company" />
-//      * @isExposed false
-//      * @isRequired false
-//      * @default ""
-//      * @var string
-//      */
-//     #[ExposeInTemplate(name: 'company', getter: 'doNotExpose')]
-//     public string $company;
+    #[ExposeInTemplate(name: 'company', getter: 'doNotExpose')]
+    public string $company;
 
-//    #[ExposeInTemplate(name: 'copyright', getter: 'fetchCopyright')]
-//    private string $copyright;
+    #[ExposeInTemplate(name: 'copyright', getter: 'fetchCopyright')]
+    private string $copyright;
+
 
     public function __construct(
-        protected AttributeClassService $classlist,
-        protected AttributeDataService $attributeDataService
-    ){}
+        #[Autowire(service: 'service_container')] private ContainerInterface $container,
+    )
+    {
+        $this->params = $container->getParameter(Configuration::NAME);
+    }
 
     #[PreMount]
     public function preMount(array $data): array
@@ -120,66 +58,47 @@ final class Copyright
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
-        // $resolver->setDefaults(['id' => ""]);
-        // $resolver->setAllowedTypes('id', ['string']);
+        $this
+            ->idResolver($resolver)
+            ->classResolver($resolver)
+            ->datasetResolver($resolver)
+        ;
 
-        // $resolver->setDefaults(['class' => ""]);
-        // $resolver->setAllowedTypes('class', ['string']);
+        $resolver->setDefault('symbol', $this->params[static::NAME]['symbol']);
+        $resolver->setAllowedTypes('symbol', ['string']);
 
-        // $resolver->setDefaults(['dataset' => []]);
-        // $resolver->setAllowedTypes('dataset', ['array']);
+        $resolver->setDefault('datesSeparator', $this->params[static::NAME]['dates_separator']);
+        $resolver->setAllowedTypes('datesSeparator', ['string']);
 
-        // $resolver->setDefaults(['symbol' => "&copy;"]);
-        // $resolver->setAllowedTypes('symbol', ['string']);
+        $resolver->setDefault('separator', $this->params[static::NAME]['separator']);
+        $resolver->setAllowedTypes('separator', ['string']);
 
-        // $resolver->setDefaults(['separator' => "-"]);
-        // $resolver->setAllowedTypes('separator', ['string']);
+        $resolver->setDefault('company', $this->params[static::NAME]['company']);
+        $resolver->setAllowedTypes('company', ['string']);
 
-        // $resolver->setDefaults(['company' => ""]);
-        // $resolver->setAllowedTypes('company', ['string']);
-
-        // $resolver->setDefaults(['since' => ""]);
-        // $resolver->setAllowedTypes('since', ['string','integer']);
+        $resolver->setDefault('since', $this->params[static::NAME]['since']);
+        $resolver->setAllowedTypes('since', ['string','integer']);
 
         return $resolver->resolve($data) + $data;
     }
 
-    // public function fetchClass(): string
-    // {
-    //     $this->classlist->reset();
-    //     $this->classlist->add(self::NAME);
+    public function fetchCopyright(): string
+    {
+        $current = date("Y");
 
-    //     // Custom class
-    //     $this->classlist->add($this->class);
+        $copyright = "";
+        $copyright.= $this->symbol;
 
-    //     return $this->classlist->toString();
-    // }
+        if ($this->since < $current)
+        {
+            $copyright.= " {$this->since}";
+            $copyright.= "{$this->datesSeparator}";
+        }
 
-    // public function fetchDataset(): array
-    // {
-    //     $this->attributeDataService->reset();
-    //     // $this->attributeDataService->add(['component' => self::NAME]);
-    //     $this->attributeDataService->add($this->dataset);
+        $copyright.= "{$current}";
+        $copyright.= "{$this->separator}";
+        $copyright.= "{$this->company}";
 
-    //     return $this->attributeDataService->getAll();
-    // }
-
-    // public function fetchCopyright(): string
-    // {
-    //     $current = date("Y");
-
-    //     $copyright = "";
-    //     $copyright.= $this->symbol;
-
-    //     if ($this->since < $current)
-    //     {
-    //         $copyright.= " {$this->since}";
-    //         $copyright.= " {$this->separator}";
-    //     }
-
-    //     $copyright.= " {$current}";
-    //     $copyright.= " {$this->company}";
-
-    //     return $copyright;
-    // }
+        return $copyright;
+    }
 }
