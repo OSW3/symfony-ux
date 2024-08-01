@@ -1,0 +1,34 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Toast
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/corner';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/functions/color';
+
+
+/// Toast variables
+/// =============================================
+///
+
+
+/// Toast component
+/// =============================================
+///
+
+.toast {
+    @include corner.rounded(6px);
+    @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
+    border-width: 1px;
+    border-style: solid;
+}
+
+@each $key, $value in $pallet {
+    .toast-#{$key} {
+        color: $value;
+        background-color: color.tint($value, 70%);
+        border-color: $value;
+    }
+}

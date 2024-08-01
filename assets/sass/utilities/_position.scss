@@ -1,0 +1,23 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Define position utilities
+// *
+// ************************************************************************** //
+// *
+// *    <div class="position-static">...</div>
+// *    <div class="position-relative">...</div>
+// *    <div class="position-absolute">...</div>
+// *    <div class="position-fixed">...</div>
+// *    <div class="position-sticky">...</div>
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/position';
+
+$positions: (static, relative, absolute, fixed, sticky);
+
+@each $position in $positions {
+    .position-#{$position} {
+        @include position.set($position);
+    }
+}

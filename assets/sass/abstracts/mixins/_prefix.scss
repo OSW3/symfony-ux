@@ -1,0 +1,34 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Mixins about Prefix of properties.                                     * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/prefix' as prefix                              * //
+// *                                                                        * //
+// ************************************************************************** //
+
+/// Set prefix of the property
+/// =============================================
+/// 
+/// @example @include prefix.set(flex-direction, column, webkit moz ms);
+/// @output
+///   flex-direction: column
+///   -webkit-flex-direction: column
+///   -moz-flex-direction: column
+///   -ms-flex-direction: column
+/// 
+/// @param {string} $property The name of the property
+/// @param {misc} $value The value of the property
+/// @param {list} $prefixes The list of prefixes
+/// 
+@mixin set($property, $value, $prefixes: ()) 
+{
+  // Standard non-prefixed
+  #{$property}: $value;
+
+  // Output with prefix
+  @each $prefix in $prefixes 
+  {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+}

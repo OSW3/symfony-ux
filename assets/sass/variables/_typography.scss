@@ -1,0 +1,40 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Colors definition.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+
+
+
+/// Customize font sizes
+/// =============================================
+
+// Font Base
+// ------------------------------
+$font-size-base        : 1rem !default;
+$heading-font-size-base: $font-size-base * 2.5 !default;
+
+
+// Headings Font sizes
+// ------------------------------
+$heading-font-sizes: (
+    'h1': null,
+    'h2': null,
+    'h3': null,
+    'h4': null,
+    'h5': null,
+    'h6': null
+) !default;
+
+
+// Line Base
+// ------------------------------
+$line-height-base: 1.15 !default;
+
+
+
+/// Build font weight (.font-w100/900)
+/// =============================================
+$add-font-weight: true !default;

@@ -1,0 +1,91 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Button To Top
+// *
+// ************************************************************************** //
+
+@use 'sass:math';
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/corner';
+@use './../abstracts/mixins/position';
+@use './../abstracts/variables/zindex';
+@use './../abstracts/mixins/transition';
+
+@include banner.header('Component To Top');
+
+
+/// Button component
+/// =============================================
+@function calculate-font-size($element-height, $base-rem, $base-height, $multiplier) {
+    $ratio: $base-rem * math.div($multiplier, $base-height);
+    @return $element-height * $ratio;
+}
+
+
+
+/// Button variables
+/// =============================================
+
+// Default Variables
+// --------------------------
+$button-to-top--size     : 40px !default;
+$button-to-top--position : right !default;
+$button-to-top--offset-x : $spacer !default;
+$button-to-top--offset-y : $spacer !default;
+$button-to-top--symbol   : "\23F6" !default;
+$button-to-top--font-size: 2 !default;
+$button-to-top--zindex   : zindex.$button-to-top !default;
+
+// Default Theme
+// --------------------------
+$default--button-to-top--background-color      : $teal;
+$default--button-to-top--border-color          : $teal;
+$default--button-to-top--text-color            : $white;
+$default--button-to-top--background-hover-color: $green;
+$default--button-to-top--border-hover-color    : $green;
+$default--button-to-top--text-hover-color      : $white;
+
+
+
+/// Button component
+/// =============================================
+.to-top {
+    @if $button-to-top--position == 'left' {
+        @include position.fixed(null, null, -$spacer*3, $button-to-top--offset-x);
+    }
+    @else {
+        @include position.fixed(null, $button-to-top--offset-x, -$spacer*3, null);
+    }
+    @include sizes.set($button-to-top--size, $button-to-top--size);
+    @include transition.set((bottom, opacity, background-color, border-color, color), map-get($delays, 'normal'));
+    @include corner.rounded(6px);
+
+    @include flex.row;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--button-to-top--background-color, $default--button-to-top--background-color);
+    border: 1px solid var(--button-to-top--border-color, $default--button-to-top--border-color);
+    color: var(--button-to-top--text-color, $default--button-to-top--text-color);
+    opacity: 0;
+    cursor: pointer;
+    z-index: $button-to-top--zindex;
+
+    &.show {
+        @include position.bottom($button-to-top--offset-y);
+        opacity: 1;
+    }
+
+    &::after {
+        content: $button-to-top--symbol;
+        font-size: calculate-font-size($button-to-top--size, $spacer, 40px, $button-to-top--font-size);
+    }
+
+    &:hover {
+        background-color: var(--button-to-top--background-hover-color, $default--button-to-top--background-hover-color);
+        border-color: var(--button-to-top--border-hover-color, $default--button-to-top--border-hover-color);
+        color: var(--button-to-top--text-hover-color, $default--button-to-top--text-hover-color);
+    }
+}

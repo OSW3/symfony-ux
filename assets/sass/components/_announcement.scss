@@ -1,0 +1,67 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Announcement
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/transition';
+
+
+/// Announcement variables
+/// =============================================
+///
+
+$announcement--height: 40px !default;
+
+
+/// Announcement component
+/// =============================================
+///
+
+.announcement {
+    @include flex.middle;
+    @include sizes.set(null, $announcement--height);
+    @include transition.set((color, background-color), map-get($delays, normal));
+
+    // Theme
+    color           : var(--announcement--text-color);
+    background-color: var(--announcement--background-color);
+}
+
+
+
+
+// /* styles.css */
+// .announcement-bar {
+//     width: 100%;
+//     overflow: hidden;
+//     background-color: #333;
+//     color: #fff;
+//     padding: 10px 0;
+//     position: relative;
+//     white-space: nowrap;
+//   }
+  
+//   .announcement-content {
+//     display: inline-block;
+//     white-space: nowrap;
+//     animation: scroll 20s linear infinite;
+//   }
+  
+//   @keyframes scroll {
+//     0% {
+//       transform: translateX(100%);
+//     }
+//     100% {
+//       transform: translateX(-100%);
+//     }
+//   }
+  
+//   .announcement-text {
+//     display: inline-block;
+//     padding: 0 50px;
+//   }
+  
+  

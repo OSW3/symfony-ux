@@ -1,0 +1,59 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Search bar
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/corner';
+@use './../abstracts/mixins/spaces';
+
+
+/// Searchbar variables
+/// =============================================
+///
+
+
+/// Searchbar component
+/// =============================================
+///
+
+.searchbar {
+    @include flex.row;
+    @include spaces.padding(6px, 6px, 6px, 6px);
+    @include corner.rounded(6px);
+    // @include theme.property(background-color, searchbar--background-color);
+
+    &-control {
+        // @include theme.property(color, searchbar--color);
+        background: none;
+        border: none;
+        outline: none;
+
+        &::placeholder {
+            // @include theme.property(color, searchbar--placeholder-color);
+            opacity: 1;
+        }
+        &::-ms-input-placeholder {
+            // @include theme.property(color, searchbar--placeholder-color);
+        }
+        // &::-webkit-search-cancel-button{
+        //     @include theme.property(color, searchbar--placeholder-color);
+        //     @include theme.property(background-color, searchbar--placeholder-color);
+        //     position:relative;
+        //     right:20px;    
+        // }
+        // &::-webkit-search-cancel-button {
+        //     // -webkit-appearance: none;
+        //     content: URL();
+        //     cursor: pointer;
+        // }
+    }
+
+    &-submit {
+        @include flex.middle;
+        // @include theme.property(color, searchbar--color);
+        background: none;
+        border: none;
+    }
+}

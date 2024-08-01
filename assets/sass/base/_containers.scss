@@ -1,0 +1,86 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Containers builder
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/position';
+@use './../abstracts/functions/collection';
+
+@include banner.header('Containers');
+
+
+/// Containers Base 
+/// =============================================
+/// .container, .container-xx { ... }
+
+$_selectors_str : '';
+$_selectors_list: ('container', 'container-fluid');
+
+// Build the list of containers selectors
+@each $key, $container in $containers {
+  $_selectors_list: append($_selectors_list, container-#{$key});
+}
+
+// Build the string of selectors
+@each $_selector in $_selectors_list {
+  $_selectors_str: $_selectors_str + '.#{$_selector}, ';
+}
+$_selectors_str: unquote(str-slice($_selectors_str, 1, -3));
+
+// Set styles definition
+#{$_selectors_str} {
+  $padding: map-get($spacers, 3);
+
+  @include position.relative;
+  @include sizes.width(100%);
+  @include spaces.padding(null, $padding, null, $padding);
+  @include spaces.margin(null, auto, null, auto);
+
+  display: block;
+  z-index: 1;
+}
+
+
+
+/// Set containers max width
+/// =============================================
+/// .container-phone { ... }
+/// .container-tablet { ... }
+
+@each $key, $value in $containers {
+  .container-#{$key} {
+    max-width: map-get($containers, $key);
+  }
+}
+
+
+
+/// Make responsive .container
+/// =============================================
+/// @media (min-width: ...px) {.container { ... }}
+
+@each $size, $breakpoint in $breakpoints {
+  @if $breakpoint > 0 {
+
+    $container-list : (container);
+    @media (min-width: $breakpoint) {
+
+      $selectors: '';
+      $container-list: collection.reverse($container-list);
+
+      @each $container in $container-list {
+        $selectors: $selectors + '.#{$container}, ';
+      }
+      $selectors: unquote(str-slice($selectors, 1, -3));
+
+      #{$selectors} { 
+        max-width: map-get($containers, $size);
+      }
+
+    }
+  }
+}

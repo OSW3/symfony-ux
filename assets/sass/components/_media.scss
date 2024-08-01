@@ -1,0 +1,62 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Media
+// *
+// ************************************************************************** //
+
+
+/// Media variables
+/// =============================================
+///
+
+$media--caption--font-size: $spacer * .9 !default;
+
+
+/// Media component
+/// =============================================
+///
+
+.media {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+
+    &-inline {
+        display: inline-flex;
+    }
+    &-audio {
+        flex-direction: row;
+        // justify-content: center;
+        align-items: center;
+
+        & audio {
+            margin-right: $spacer;
+        }
+    }
+
+    & img {
+        object-fit: contain;
+        max-height: 100%;
+        max-width: 100%;
+    }
+
+    & video {
+        object-fit: contain;
+        max-height: 100%;
+        max-width: 100%;
+        
+        // object-fit: cover;
+        &[poster] {
+            object-fit: cover;
+        }
+    }
+
+    &-image,
+    &-audio,
+    &-video {
+        & figcaption {
+            font-size: $media--caption--font-size;
+            font-style: italic;
+        }
+    }
+}

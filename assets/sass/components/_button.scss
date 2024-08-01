@@ -1,0 +1,122 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Button
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/corner';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/pallet';
+@use './../abstracts/mixins/transition';
+@use './../abstracts/functions/color';
+
+@include banner.header("Component Button");
+
+// TODO: Revoir le CSS de l'état "disabled" du bouton
+
+
+/// Button variables
+/// =============================================
+
+
+/// Button component
+/// =============================================
+.button {
+    @include corner.rounded(6px);
+    @include transition.set((background-color, border-color, color), .3s);
+    cursor: pointer;
+
+    line-height: 1;
+    border-width: 1px;
+    border-style: solid;
+
+    
+
+    /// Button Sizes
+    /// --
+
+    @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
+    font-size: $spacer * 1;
+
+    &-small {
+        @include spaces.padding( $spacer * .4, $spacer * 1, $spacer * .4, $spacer * 1 );
+        font-size: $spacer * .8;
+    }
+
+    &-large {
+        @include spaces.padding( $spacer * 1, $spacer * 2, $spacer * 1, $spacer * 2 );
+        font-size: $spacer * 1.6;
+    }
+
+
+    /// Button block
+    /// --
+    
+    &-block {
+        display: block;
+        min-width: 100%;
+    }
+
+
+    /// Pallet colors
+    /// --
+    
+    border-color: transparent;
+    background-color: transparent;
+
+    @each $key, $value in $pallet {
+        $shade: color.shade($value, 30%);
+        $tint: color.tint($value, 60%);
+        $contrastText: color.contrastText($shade);
+
+        // Fill color
+        // --
+        &-#{$key} {
+            color: $contrastText;
+            background-color: var(--#{$key});
+            border-color: var(--#{$key});
+
+            &:not(.button-effect).active,
+            &:not(.button-effect):hover {
+                color: $contrastText;
+                background-color: var(--#{$key}-shade);
+                border-color: var(--#{$key}-shade);
+            }
+        }
+
+        // Stroke (outline) color
+        // --
+        &-#{$key}-outline {
+            @include pallet.outline($key);
+
+            &:hover {
+                color: $contrastText;
+                background-color: var(--#{$key}-shade);
+                border-color: var(--#{$key}-shade);
+            }
+        }
+    }
+
+
+    // Disabled
+    // -------------------------
+    &[disabled],
+    &[disabled]:hover {
+        cursor: default;
+        color: var(--muted);
+    }
+}
+
+[rel=js-button] {
+    transition: background-color map-get($delays, 'normal');
+
+    &.active {
+        background-color: chocolate;
+    }
+}
+
+// No Border
+.button-no-border {
+    border: none !important;
+}

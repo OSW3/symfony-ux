@@ -1,0 +1,106 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Theses mixins of "position" properties.                                * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/position' as position;                         * //
+// *                                                                        * //
+// ************************************************************************** //
+
+
+/// Shorthand mixin for positioning
+/// 
+/// @example @include position.position(10px, 10px, 10px, 10px)
+/// 
+/// @param {String} $top Position from top
+/// @param {String} $right Position from right
+/// @param {String} $bottom Position from bottom
+/// @param {String} $left Position from left
+/// 
+@mixin set($position, $top: null, $right: null, $bottom: null, $left: null) 
+{
+  position: $position;
+  @include top($top);
+  @if ($right not null) {right : $right;}
+  @if ($bottom not null) {bottom : $bottom;}
+  @if ($left not null) {left : $left;}
+}
+@mixin top($position: null){@if ($position not null) {top : $position;}}
+@mixin right($position: null){@if ($position not null) {right : $position;}}
+@mixin bottom($position: null){@if ($position not null) {bottom : $position;}}
+@mixin left($position: null){@if ($position not null) {left : $position;}}
+
+
+/// Shorthand mixin for static positioning
+/// 
+/// @example @include position.static(10px, 10px, 10px, 10px)
+/// 
+/// @param {String} $top Position from top
+/// @param {String} $right Position from right
+/// @param {String} $bottom Position from bottom
+/// @param {String} $left Position from left
+/// 
+@mixin static($args...) 
+{
+  @include set(static, $args...);
+}
+
+
+/// Shorthand mixin for relative positioning
+/// 
+/// @example @include position.relative(10px, 10px, 10px, 10px)
+/// 
+/// @param {String} $top Position from top
+/// @param {String} $right Position from right
+/// @param {String} $bottom Position from bottom
+/// @param {String} $left Position from left
+/// 
+@mixin relative($args...) 
+{
+  @include set(relative, $args...);
+}
+
+
+/// Shorthand mixin for absolute positioning
+/// 
+/// @example @include position.absolute(10px, 10px, 10px, 10px)
+/// 
+/// @param {String} $top Position from top
+/// @param {String} $right Position from right
+/// @param {String} $bottom Position from bottom
+/// @param {String} $left Position from left
+/// 
+@mixin absolute($args...) 
+{
+  @include set(absolute, $args...);
+}
+
+
+/// Shorthand mixin for fixed positioning
+/// 
+/// @example @include position.fixed(10px, 10px, 10px, 10px)
+/// 
+/// @param {String} $top  Position from top
+/// @param {String} $right  Position from right
+/// @param {String} $bottom  Position from bottom
+/// @param {String} $left  Position from left
+/// 
+@mixin fixed($args...) 
+{  
+  @include set(fixed, $args...);
+}
+
+
+/// Shorthand mixin for sticky positioning
+/// 
+/// @example @include position.sticky(10px, 10px, 10px, 10px)
+/// 
+/// @param {String} $top Position from top
+/// @param {String} $right Position from right
+/// @param {String} $bottom Position from bottom
+/// @param {String} $left Position from left
+/// 
+@mixin sticky($args...) 
+{
+  @include set(sticky, $args...);
+}

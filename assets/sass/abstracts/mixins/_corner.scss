@@ -1,0 +1,248 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Corners tools to apply border-radius.                                  * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/corner' as corner;                             * //
+// *                                                                        * //
+// ************************************************************************** //
+
+//*   * - *
+//*   -   -   corner.rounded($radius);
+//*   * - *
+//* 
+//*   * - *
+//*   -   -   corner.top($radius);
+//*   - - -
+//* 
+//*   - - x
+//*   -   -   corner.end($radius);
+//*   - - x
+//* 
+//*   - - -
+//*   -   -   corner.bottom($radius);
+//*   * - *
+//* 
+//*   * - -
+//*   -   -   corner.start($radius);
+//*   * - -
+//* 
+//*   * - -
+//*   -   -   corner.top-start($radius);
+//*   - - -
+//* 
+//*   - - *
+//*   -   -   corner.top-end($radius);
+//*   - - -
+//* 
+//*   - - -
+//*   -   -   corner.bottom-end($radius);
+//*   - - *
+//* 
+//*   - - -
+//*   -   -   corner.bottom-start($radius);
+//*   * - -
+//* 
+
+/// Border Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.rounded($radius, false);
+/// 
+///   * - *
+///   -   -
+///   * - *
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin rounded($radius) 
+{
+  border-radius: valid-radius($radius);
+}
+
+/// Border Top Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.top($radius);
+/// 
+///   * - *
+///   -   -
+///   - - -
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin top($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-top-left-radius: valid-radius($radius);
+    border-top-right-radius: valid-radius($radius);
+  }
+}
+
+/// Border End Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.end($radius);
+/// 
+///   - - *
+///   -   -
+///   - - *
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin end($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-top-right-radius: valid-radius($radius);
+    border-bottom-right-radius: valid-radius($radius);
+  }
+}
+
+/// Border Bottom Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.bottom($radius);
+/// 
+///   - - -
+///   -   -
+///   * - *
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin bottom($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-bottom-right-radius: valid-radius($radius);
+    border-bottom-left-radius: valid-radius($radius);
+  }
+}
+
+/// Border Start Radius
+/// =============================================
+/// 
+/// @example
+///   @include corner.start($radius);
+/// 
+///   * - -
+///   -   -
+///   * - -
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin start($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-top-left-radius: valid-radius($radius);
+    border-bottom-left-radius: valid-radius($radius);
+  }
+}
+
+/// Border Top Start Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.top-start($radius);
+/// 
+///   * - -
+///   -   -
+///   - - -
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin top-start($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-top-left-radius: valid-radius($radius);
+  }
+}
+
+/// Border Top End Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.top-end($radius);
+/// 
+///   - - *
+///   -   -
+///   - - -
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin top-end($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-top-right-radius: valid-radius($radius);
+  }
+}
+
+/// Border Bottom End Radius
+/// =============================================
+/// 
+/// @example
+///   @include corner.bottom-end($radius);
+/// 
+///   - - -
+///   -   -
+///   - - *
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin bottom-end($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-bottom-right-radius: valid-radius($radius);
+  }
+}
+
+/// Border Bottom Start Radius
+/// =============================================
+/// 
+/// @example 
+///   @include corner.bottom-start($radius);
+/// 
+///   - - -
+///   -   -
+///   * - -
+/// 
+/// @param {Int} $radius
+///   Border radius value
+/// 
+@mixin bottom-start($radius: $border-radius) 
+{
+  @if $enable-rounded {
+    border-bottom-left-radius: valid-radius($radius);
+  }
+}
+
+/// Radius validator
+/// =============================================
+/// 
+/// @example valid-radius($radius);
+/// 
+/// @access private
+/// @param {Int} $radius - Border radius value
+/// 
+@function valid-radius($radius) 
+{
+    $return: ();
+    @each $value in $radius {
+        @if type-of($value) == number {
+            $return: append($return, max($value, 0));
+        } @else {
+            $return: append($return, $value);
+        }
+    }
+    @return $return;
+}

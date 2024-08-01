@@ -1,0 +1,66 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Breadcrumb
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/banner';
+
+@include banner.header("Component Breadcrumb");
+
+
+/// Breadcrumb variables
+/// =============================================
+
+$breadcrumb--separator : "/" !default;
+
+// Default Theme
+// --------------------------
+
+$default--breadcrumb--background-color: transparent;
+$default--breadcrumb--link-color      : $gray-700;
+$default--breadcrumb--link-hover-color: $gray-900;
+$default--breadcrumb--active-color    : $gray-900;
+
+
+/// Breadcrumb component
+/// =============================================
+.breadcrumb {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 0;
+    background: var(--breadcrumb--background-color, $default--breadcrumb--background-color);
+
+    &-item {
+        display: flex;
+        align-items: center;
+    
+        & a {
+            color: var(--breadcrumb--link-color, $default--breadcrumb--link-color);
+            text-decoration: none;
+        
+            &:hover {
+                color: var(--breadcrumb--link-color-hover, $default--breadcrumb--link-hover-color);
+                text-decoration: none;
+            }
+        }
+
+        &.active {
+            color: var(--breadcrumb--active-color, $default--breadcrumb--active-color);
+        
+            & a {
+                pointer-events: none;
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+
+        & + &::before {
+            content: $breadcrumb--separator;
+            padding: 0 0.5em;
+            color: var(--breadcrumb--active-color, $default--breadcrumb--active-color);
+        }
+    }
+}

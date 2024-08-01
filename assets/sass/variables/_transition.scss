@@ -1,0 +1,36 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Delays variables.
+// *
+// *    - Defaults delays
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+@use './../abstracts/mixins/dumper';
+
+
+/// Defaults delays
+/// =============================================
+
+/// Delays Speed
+/// -------------------------
+$transition-speed  : 1s !default;
+
+
+/// Delays Speed ratio
+/// -------------------------
+$transition-slow  : 0.8 !default;
+$transition-normal: 0.3 !default;
+$transition-fast  : 0.1 !default;
+
+
+/// Delays collection
+/// -------------------------
+$delays: (
+    'default': $transition-speed,
+    'slow'   : $transition-speed * $transition-slow,
+    'normal' : $transition-speed * $transition-normal,
+    'fast'   : $transition-speed * $transition-fast,
+    'none'   : 0,
+);

@@ -1,0 +1,176 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Card
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/spaces';
+
+/// Card variables
+/// =============================================
+///
+
+// Default Size
+// --------------------------
+
+$card--inner--padding: ($spacer * .6) $spacer;
+
+$card--border-radius: $border-radius !default;
+$card--border-width : 1px !default;
+$card--border-style : solid !default;
+
+
+// Card Header
+
+$card-header--border-radius             : $card--border-radius !default;
+$card-header--border-width              : $card--border-width !default;
+$card-header--border-style              : $card--border-style !default;
+
+$card-header--border-top-left-radius    : $card-header--border-radius !default;
+$card-header--border-top-right-radius   : $card-header--border-radius !default;
+$card-header--border-bottom-left-radius : 0 !default;
+$card-header--border-bottom-right-radius: 0 !default;
+
+$card-header--border-top-width          : $card-header--border-width !default;
+$card-header--border-right-width        : $card-header--border-width !default;
+$card-header--border-bottom-width       : $card-header--border-width !default;
+$card-header--border-left-width         : $card-header--border-width !default;
+
+$card-header--border-top-style          : $card-header--border-style !default;
+$card-header--border-right-style        : $card-header--border-style !default;
+$card-header--border-bottom-style       : $card-header--border-style !default;
+$card-header--border-left-style         : $card-header--border-style !default;
+
+
+// Card footer
+
+$card-footer--border-radius             : $card--border-radius !default;
+$card-footer--border-width              : $card--border-width !default;
+$card-footer--border-style              : $card--border-style !default;
+
+$card-footer--border-top-left-radius    : 0 !default;
+$card-footer--border-top-right-radius   : 0 !default;
+$card-footer--border-bottom-left-radius : $card-footer--border-radius !default;
+$card-footer--border-bottom-right-radius: $card-footer--border-radius !default;
+
+$card-footer--border-top-width          : $card-footer--border-width !default;
+$card-footer--border-right-width        : $card-footer--border-width !default;
+$card-footer--border-bottom-width       : $card-footer--border-width !default;
+$card-footer--border-left-width         : $card-footer--border-width !default;
+
+$card-footer--border-top-style          : $card-footer--border-style !default;
+$card-footer--border-right-style        : $card-footer--border-style !default;
+$card-footer--border-bottom-style       : $card-footer--border-style !default;
+$card-footer--border-left-style         : $card-footer--border-style !default;
+
+
+// Default Theme
+// --------------------------
+
+$default--card--text-color             : $black;
+$default--card--border-color           : $gray-500;
+$default--card--background-color       : $white;
+
+$default--card-header--text-color      : $black;
+$default--card-header--border-color    : $gray-500;
+$default--card-header--background-color: $gray-200;
+
+$default--card-footer--text-color      : $black;
+$default--card-footer--border-color    : $gray-500;
+$default--card-footer--background-color: $gray-200;
+
+
+/// Card component
+/// =============================================
+///
+
+.card {
+    border-radius   : $card--border-radius;
+    border-width    : $card--border-width;
+    border-style    : $card--border-style;
+    border-color    : var(--card--border-color, $default--card--border-color);
+    color           : var(--card--text-color, $default--card--text-color);
+    background-color: var(--card--background-color, $default--card--background-color);
+
+    &-header {
+        @include spaces.margin(
+            -$card-header--border-top-width,
+            -$card-header--border-right-width,
+            null,
+            -$card-header--border-left-width
+        );
+
+        border-top-left-radius    : $card-header--border-top-left-radius;
+        border-top-right-radius   : $card-header--border-top-right-radius;
+        border-bottom-left-radius : $card-header--border-bottom-left-radius;
+        border-bottom-right-radius: $card-header--border-bottom-right-radius;
+        border-top-style          : $card-header--border-top-style;
+        border-right-style        : $card-header--border-right-style;
+        border-bottom-style       : $card-header--border-bottom-style;
+        border-left-style         : $card-header--border-left-style;
+        border-top-width          : $card-header--border-top-width;
+        border-right-width        : $card-header--border-right-width;
+        border-bottom-width       : $card-header--border-bottom-width;
+        border-left-width         : $card-header--border-left-width;
+        border-top-color          : var(--card-header--border-top-color, $default--card-header--border-color);
+        border-right-color        : var(--card-header--border-right-color, $default--card-header--border-color);
+        border-bottom-color       : var(--card-header--border-bottom-color, $default--card-header--border-color);
+        border-left-color         : var(--card-header--border-left-color, $default--card-header--border-color);
+        color                     : var(--card-header--text-color, $default--card-header--text-color);
+        background-color          : var(--card-header--background-color, $default--card-header--background-color);
+    }
+    &-footer {
+        @include spaces.margin(
+            null,
+            -$card-footer--border-right-width,
+            -$card-footer--border-bottom-width,
+            -$card-footer--border-left-width
+        );
+
+        padding: $card--inner--padding;
+
+        border-top-left-radius    : $card-footer--border-top-left-radius;
+        border-top-right-radius   : $card-footer--border-top-right-radius;
+        border-bottom-left-radius : $card-footer--border-bottom-left-radius;
+        border-bottom-right-radius: $card-footer--border-bottom-right-radius;
+        border-top-style          : $card-footer--border-top-style;
+        border-right-style        : $card-footer--border-right-style;
+        border-bottom-style       : $card-footer--border-bottom-style;
+        border-left-style         : $card-footer--border-left-style;
+        border-top-width          : $card-footer--border-top-width;
+        border-right-width        : $card-footer--border-right-width;
+        border-bottom-width       : $card-footer--border-bottom-width;
+        border-left-width         : $card-footer--border-left-width;
+        border-top-color          : var(--card-footer--border-top-color, $default--card-footer--border-color);
+        border-right-color        : var(--card-footer--border-right-color, $default--card-footer--border-color);
+        border-bottom-color       : var(--card-footer--border-bottom-color, $default--card-footer--border-color);
+        border-left-color         : var(--card-footer--border-left-color, $default--card-footer--border-color);
+        color                     : var(--card-footer--text-color, $default--card-footer--text-color);
+        background-color          : var(--card-footer--background-color, $default--card-footer--background-color);
+    }
+
+    &-figure {
+        
+    }
+    &-title {
+        font-size: $heading-font-size * .5;
+        font-weight: 700;
+        line-height: 1.33;
+
+        margin: 0;
+        padding: $card--inner--padding;
+
+        &:has( + .card-subtitle) {
+            padding-bottom: 0;
+        }
+    }
+    &-subtitle {
+        margin: 0;
+        padding: $card--inner--padding;
+    }
+    &-body {
+        // border: 1px solid blue;
+        padding: $card--inner--padding;
+
+    }
+}

@@ -1,0 +1,99 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Some functions about "collection" object.                              * //
+// *                                                                        * //
+// * How to import "collection"                                             * //
+// *  @use 'abstracts/functions/collection' as collection                   * //
+// *                                                                        * //
+// ************************************************************************** //
+
+/// Merge list
+/// =============================================
+/// 
+/// @example 
+///   collection.merge($collection1, $collection2); 
+/// 
+/// @param {list} $collections
+///   List of collections you need to merge
+/// @return {list}
+///   The new collection
+/// 
+@function merge($collections...) 
+{
+  $result: ();
+
+  @each $collection in $collections {
+    $result: map-merge($result, $collection);
+  }
+
+  @return $result;
+}
+
+
+@function reverse($list, $recursive: false) {
+  $result: ();
+
+  @for $i from length($list)*-1 through -1 {
+    @if type-of(nth($list, abs($i))) == list and $recursive {
+      $result: append($result, reverse(nth($list, abs($i)), $recursive));      
+    }
+
+    @else {
+      $result: append($result, nth($list, abs($i)));
+    }
+  }
+
+  @return $result;
+}
+
+
+@function empty($collection) {
+  @return length($collection) == 0;
+}
+@function notEmpty($collection) {
+  @return length($collection) != 0;
+}
+
+
+///
+/// Return true if a key is defined in a collection
+/// @example collection.keyExists($collection, $key)
+/// =============================================
+/// 
+/// @param {Map} $collection
+/// @param {String} $key you want to search
+/// @return {Boolean}
+///  
+@function keyExists($collection, $key) {
+  $length: length($collection);
+
+  @for $i from 1 through $length {
+    @if nth($collection, $i) == $key {
+      @return true;
+    }
+  }
+
+  @return false;
+}
+
+/// 
+/// Unset an item form a collection
+/// @example collection.unset($collection, $key)
+/// =============================================
+/// 
+/// @param {Map} $collection
+/// @param {String} $key to unset
+/// @return {Map} modified c$collection
+///  
+@function unset($collection, $key) 
+{
+  $output: ();
+
+  @each $map-key, $value in $collection {
+    @if $map-key != $key {
+      $output: map-merge($output, ($map-key: $value));
+    }
+  }
+
+  @return $output;
+}

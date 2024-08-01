@@ -1,0 +1,101 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Offcanvas
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/position';
+@use './../abstracts/mixins/transition';
+
+
+/// Offcanvas variables
+/// =============================================
+///
+
+$offcanvas--width: 280px !default;
+$offcanvas--z: 1000 !default;
+
+
+// Default Theme
+// --------------------------
+
+$default--backdrop--background-color    : $black;
+$default--offcanvas--background-color   : $white;
+
+
+/// OffCanvas component
+/// =============================================
+///
+
+.offcanvas {
+    @include position.fixed(0, null, 0, null);
+    @include flex.column;
+    @include transition.set((left, right, box-shadow), map-get($delays, normal));
+
+    width: $offcanvas--width;
+    max-width: 100%;
+    max-height: 100%;
+    z-index: $offcanvas--z;
+
+    background-color: var(--offcanvas--background-color, $default--offcanvas--background-color);
+
+    &-left {
+        @include position.left( -$offcanvas--width );
+        &.show {
+            @include position.left( 0 );
+        }
+    }
+
+    &-right {
+        @include position.right( -$offcanvas--width );
+        &.show {
+            @include position.right( 0 );
+        }
+    }
+
+    &.show {
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
+
+    &-inner {
+        display: block;
+        width: 100%;
+        padding: map-get($spacers, 2) map-get($spacers, 3);
+    }
+
+    &-header {
+        // background-color: pink;
+    }
+    &-body {
+        flex-grow: 1;
+        overflow-y: scroll;
+    }
+    &-footer {
+        // background-color: red;
+    }
+
+    & [role=close] {
+        @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+        font-size: 1.25rem;
+        border: none;
+        background: none;
+    }
+}
+
+
+
+
+.offcanvas-backdrop {
+    @include transition.set((opacity), map-get($delays, normal));
+    opacity: 0;
+}
+.offcanvas.show + .offcanvas-backdrop {
+    @include position.fixed(0, 0, 0, 0);
+
+    background-color: rgb(0 0 0 / 70%);
+    backdrop-filter: blur(5px);
+
+    opacity: 1;
+    z-index: ($offcanvas--z - 1);
+}

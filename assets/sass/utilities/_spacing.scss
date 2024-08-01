@@ -1,0 +1,69 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Utilities : Screen Reader Only
+// *
+// ************************************************************************** //
+
+
+@import './../variables/breakpoints';
+
+$properties: (
+    m: margin,
+    p: padding,
+);
+
+// top, right, bottom , left
+@each $property_key, $property in $properties {
+    @each $side_key, $side in $sides {
+        @each $spacer_key, $spacer in $spacers {
+            .#{$property_key}#{$side_key}-#{$spacer_key} {
+                @if not ($property == padding and $spacer == auto)
+                {
+                    #{$property}-#{$side}: $spacer !important;
+                }
+            }
+        }
+
+        // Responsive spacing 
+        @each $size, $breakpoint in $breakpoints {
+            @if $breakpoint > 0 {
+                @media (min-width: $breakpoint) {
+                    @each $spacer_key, $spacer in $spacers {
+                        .#{$property_key}#{$side_key}-#{$size}-#{$spacer_key} {
+                            @if not ($property == padding and $spacer == auto)
+                            {
+                                #{$property}-#{$side}: $spacer !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// left and right both 
+@each $property_key, $property in $properties {
+    @each $spacer_key, $spacer in $spacers {
+        @if not ($spacer == auto)
+        {
+            .#{$property_key}x-#{$spacer_key} {
+                #{$property}-left: $spacer !important;
+                #{$property}-right: $spacer !important;
+            }
+        }
+    }
+}
+
+// top and bottom both
+@each $property_key, $property in $properties {
+    @each $spacer_key, $spacer in $spacers {
+        @if not ($spacer == auto)
+        {
+            .#{$property_key}y-#{$spacer_key} {
+                #{$property}-top: $spacer !important;
+                #{$property}-bottom: $spacer !important;
+            }
+        }
+    }
+}

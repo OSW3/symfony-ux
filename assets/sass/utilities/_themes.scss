@@ -1,0 +1,58 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Themes builder
+// *
+// ************************************************************************** //
+// *
+// *    :root {}
+// *    :root[data-theme=xxx] {}
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/utils';
+@use './../abstracts/functions/collection';
+@use './../abstracts/functions/color';
+@use './../abstracts/mixins/dumper';
+
+
+/// Default Theme
+/// =============================================
+@if utils.not-empty(map-get($themes , $theme-default)) {
+    :root {
+        @each $property, $value in map-get($themes , $theme-default) {
+            --#{$property}: #{$value};
+        }
+    }
+}
+
+
+
+/// Additional Themes
+/// =============================================
+@each $theme, $properties in $themes {
+    @if ($theme != $theme-default) {
+        :root[data-theme=#{$theme}] {
+            @each $property, $value in $properties {
+                --#{$property}: #{$value};
+            }
+        }
+    }
+}
+
+// /**/
+
+// $additional-themes: () !default;
+
+
+// @each $theme in $additional-themes {
+//     $_name: map-get($theme, 'name');
+//     $_components: map-get($theme, 'components');
+//     $_pallet: map-get($theme, 'pallet');
+
+//     @include dumper.dump( $_name );
+
+//     @each $name, $value in $_pallet {
+//         @include dumper.dump( '#{$name} -- #{$value}' );
+//     }
+// }
+// /**/

@@ -1,0 +1,47 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Utilities variables.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+@use './../abstracts/mixins/dumper';
+
+
+
+
+
+
+/// Sides
+/// =============================================
+///
+
+$sides: (
+    t: top,
+    r: right,
+    b: bottom,
+    l: left,
+);
+
+
+/// Spacers
+/// =============================================
+///
+
+$spacer: 1rem !default;
+
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 2,
+  6: $spacer * 3,
+  auto: auto,
+);
+
+
+
+
+$border-radius: 6px !default;

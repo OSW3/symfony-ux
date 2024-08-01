@@ -1,0 +1,156 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Menu components.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/position';
+@use './../abstracts/mixins/transition';
+
+
+/// Menu variables
+/// =============================================
+///
+
+// Default Variables
+// --------------------------
+
+
+// Default Theme
+// --------------------------
+
+$default--menu--background-color              : $white;
+$default--submenu--background-color           : $white;
+
+$default--menu-link--text-color               : $black;
+$default--menu-link--background-color         : transparent;
+
+$default--menu-link--hover-text-color         : $black;
+$default--menu-link--hover-background-color   : $gray-200;
+
+$default--menu-link--active-text-color        : $black;
+$default--menu-link--active-background-color  : $gray-300;
+
+$default--menu-link--disabled-text-color      : $gray-500;
+$default--menu-link--disabled-background-color: transparent;
+
+
+/// Menu component
+/// =============================================
+///
+
+.menu {
+    background-color: var(--menu--background-color, $default--menu--background-color);
+
+
+    // Items
+    // --
+
+    &-items {
+        @include flex.row;
+        @include spaces.margin(0,0,0,0);
+        flex-wrap: wrap;
+
+    }
+
+    &-vertical &-items {
+        @include flex.column;
+    }
+
+    @each $pos in (center, start, end)
+    {
+        &-#{$pos} &-items {
+            justify-content: #{$pos} !important;
+        }
+    }
+    &-fill &-items {
+        justify-content: space-around !important;
+    }
+
+    
+    // Item
+    // --
+
+    &-item {
+        // border: 10px solid pink;
+        @include position.relative;
+    }
+
+    
+    // Link
+    // --
+
+    &-link {
+        @include transition.set((color, background-color), map-get($delays, normal));
+        padding: map-get($spacers, 2) map-get($spacers, 3);
+        display: block;
+        cursor: pointer;
+
+        background-color: var(--menu-link--background-color, $default--menu-link--background-color);
+        color: var(--menu-link--text-color, $default--menu-link--text-color);
+
+        &.active,
+        &.active:hover {
+            background-color: var(--menu-link--active-background-color, $default--menu-link--active-background-color);
+            color: var(--menu-link--active-text-color, $default--menu-link--active-text-color);
+        }
+        &:hover {
+            background-color: var(--menu-link--hover-background-color, $default--menu-link--hover-background-color);
+            color: var(--menu-link--hover-text-color, $default--menu-link--hover-text-color);
+        }
+
+        &[disabled],
+        &[disabled]:hover {
+            background-color: var(--menu-link--disabled-background-color, $default--menu-link--disabled-background-color);
+            color: var(--menu-link--disabled-text-color, $default--menu-link--disabled-text-color);
+            cursor: default !important;
+        }
+    }
+}
+
+
+// Sub Menu
+.with-submenu {
+
+    & > .menu-link {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        &::after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #2f2f2f;
+            font-size: 0;
+            line-height: 0;
+            margin-left: map-get($spacers, 2);
+        }
+    }
+
+    // & > ul {
+    & > .menu-items {
+        @include position.absolute(100%, 0, 0, 0);
+        display: none;
+        height: fit-content;
+
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        background-color: var(--submenu--background-color, $default--submenu--background-color);
+        z-index: 1000;
+    }
+    // & > ul & > ul {
+    & > .menu-items & > .menu-items {
+        @include position.left(100%);
+        @include position.top(0);
+        @include sizes.width(100%);
+    }
+
+    &:hover > ul {
+        display: inline;
+    }
+}

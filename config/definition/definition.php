@@ -15,7 +15,7 @@ return static function($definition)
 
             ->integerNode('grid_divisions')
                 ->info("Specifies the name of the company")
-                ->defaultValue(22)
+                ->defaultValue(12)
             ->end()
 
         ->end()->end()

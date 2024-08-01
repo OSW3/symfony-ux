@@ -1,0 +1,77 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Link components.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/banner';
+
+@include banner.header("Component Link");
+
+
+/// link variables
+/// =============================================
+
+// Default Values
+// --------------------------
+// -- No data
+
+
+// Default Theme
+// --------------------------
+// -- No data
+
+
+
+/// link component
+/// =============================================
+
+.link {
+    --link--text-color: var(--dark);
+
+    cursor: pointer;
+    text-decoration: none;
+    // color: var(--link--text-color);
+}
+
+
+/// Disabled link
+/// --
+
+a[disabled] {
+    cursor: default !important;
+    text-decoration: none !important;
+}
+
+
+/// _blank link symbol
+/// --
+
+a[target]:not([target=_self],[target=_parent]) {
+    position: relative;
+    padding-right: 8px;
+
+    &::after,
+    &::before {
+        content: "";
+        display: block;
+        box-sizing: border-box;
+        position: absolute;
+    }
+    &::before {
+        background: currentColor;
+        transform: rotate(-45deg);
+        width: 8px;
+        height: 2px;
+        top: 6px;
+        right: -3px;
+    }
+    &::after {
+        width: 6px;
+        height: 6px;
+        border-right: 2px solid;
+        border-top: 2px solid;
+        top: 2px;
+        right: -4px;
+    }
+}

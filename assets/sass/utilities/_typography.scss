@@ -1,0 +1,110 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Build Typography
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/banner';
+@use './../abstracts/functions/color';
+@use './../abstracts/functions/utils';
+
+@include banner.header('Typography');
+
+
+
+
+$heading-font-size: $heading-font-size-base;
+
+@function calculate-font-size($index) {
+    @if ($index == 1) {
+        @return $heading-font-size;
+    }
+    @else if ($index == 2)
+    {
+        @return $heading-font-size - .5;
+    }
+    @else
+    {
+        @return $heading-font-size - ($index * .25);
+    }
+}
+
+
+
+/// Headings
+/// =============================================
+
+
+// Headings size
+// ------------------------------
+$_selectors_str : '';
+@for $i from 1 through 6 {
+    .h#{$i}, h#{$i} {
+        $_font_size: map-get($heading-font-sizes, 'h#{$i}');
+        @if utils.is-empty($_font_size) {
+            font-size: calculate-font-size($i);
+        }
+        @else {
+            font-size: $_font_size;
+        }
+    }
+
+    $_selectors_str: $_selectors_str + '.h#{$i}, h#{$i}, ';
+}
+$_selectors_str: unquote(str-slice($_selectors_str, 1, -3));
+
+
+// Headings base properties
+// ------------------------------
+#{$_selectors_str} {
+    margin-top: map-get($spacers, 0);
+    margin-bottom: map-get($spacers, 2);
+    padding: map-get($spacers, 0);
+    font-family: var(--font-#{$font-name-headings});
+    font-weight: 700;
+    line-height: 1.33;
+}
+
+
+// Headings break
+// ------------------------------
+hr {
+    margin: map-get($spacers, 3) map-get($spacers, 0);
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;  
+    opacity: 0.25;
+}
+
+
+
+/// Build font weight (.font-w100/900)
+/// =============================================
+@if $add-font-weight {
+    @for $i from 1 through 9 {
+        .font-w#{$i}00 {
+            font-weight: #{$i}00;
+        }
+    }
+}
+
+
+
+/// Build text colors from Pallet
+/// =============================================
+@each $key, $value in $pallet {
+    .text-#{$key} {
+        color: var(--#{$key});
+        
+        // @if $has-shade {
+        //     &-shade {
+        //         color: var(--#{$key}-shade);
+        //     }
+        // }
+        // @if $has-tint {
+        //     &-tint {
+        //         color: var(--#{$key}-tint);
+        //     }
+        // }
+    }
+}

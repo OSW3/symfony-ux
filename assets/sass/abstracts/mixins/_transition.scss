@@ -1,0 +1,22 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// ************************************************************************** //
+
+
+/// Generate a transition property
+/// 
+/// @example @include transition.set((color, width)), .3s);
+/// 
+/// @param {List} $properties Properties list
+/// @param {String} $delay  Transition delay for all properties
+/// 
+@mixin set($properties: (), $delay: .3s)
+{
+    $transitions: ();
+
+    @each $property in $properties {
+      $transitions: append($transitions, $property + " " + $delay, comma);
+    }
+    
+    transition: $transitions;
+}

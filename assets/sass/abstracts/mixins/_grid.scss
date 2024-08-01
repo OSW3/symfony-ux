@@ -1,0 +1,32 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * The display grid properties.                                           * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/grid' as grid                                  * //
+// *                                                                        * //
+// ************************************************************************** //
+
+
+@mixin template($type, $template, $setGrid: true)
+{
+    @if $setGrid == true
+    {
+        display: grid;
+    }
+
+    // Columns
+    @if $type == columns {
+        grid-template-columns: $template;
+    } 
+
+    // Areas
+    @else if $type == areas {
+        grid-template-areas: $template;
+    } 
+
+    // Rows
+    @else {
+        grid-template-rows: $template;
+    }
+}

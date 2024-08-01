@@ -1,0 +1,49 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Carousel
+// *
+// ************************************************************************** //
+
+
+/// Carousel variables
+/// =============================================
+///
+
+$carousel--slides--height: 300px !default;
+
+
+/// Carousel component
+/// =============================================
+///
+
+.carousel {
+    border: 10px solid red;
+
+    // &-slides {
+    //     border: 10px solid yellowgreen;
+    // }
+    // &-slide {
+    //     border: 10px solid orange;
+    //     height: $carousel--slides--height;
+
+    //     &.active {
+    //         background-color: orchid;
+    //     }
+    // }
+
+    // &-controls {
+    //     border: 10px solid purple;
+    // }
+
+    // &-indicators {
+    //     border: 10px solid green;
+    //     margin: 0;
+    // }
+    // &-indicator {
+    //     border: 10px solid mediumpurple;
+
+    //     &.active {
+    //         background-color: orchid;
+    //     }
+    // }
+}

@@ -1,0 +1,130 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Define effects utilities
+// *
+// ************************************************************************** //
+// *
+// *    <div class="effect-pulse">...</div>
+// *    <div class="effect-close">...</div>
+// *    <div class="effect-fill-in">...</div>
+// *    <div class="effect-fill-up">...</div>
+// *    <div class="effect-fill-down">...</div>
+// *    <div class="effect-fill-left">...</div>
+// *    <div class="effect-fill-right">...</div>
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/transition';
+@use './../abstracts/functions/color';
+// $color: #0cf;
+
+
+
+.effect
+{
+    &-pulse:hover,
+    &-pulse:focus {
+        -webkit-animation: pulse .5s;
+                animation: pulse .5s;
+        box-shadow: 0 0 0 1em transparent;
+    }
+
+
+
+    &-close {
+        transition: all .3s;
+        box-shadow: inset 0 0 0 0 var(--hover, red), inset 0 0 0 0 var(--hover, red);
+    }
+    &-close:hover,
+    &-close:focus {
+        box-shadow: inset -1000px 0 0 0 var(--hover, red), inset 1000px 0 0 0 var(--hover, red);
+    }
+
+    &-fill-in:hover,
+    &-fill-in:focus {
+        box-shadow: inset 0 0 0 2em var(--hover, red);
+    }
+
+    &-fill {
+        &-in,
+        &-down,
+        &-right,
+        &-up,
+        &-left {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            border-color: transparent !important;
+            transition: all .3s;
+    
+            &:before {
+                content: '';
+                position: absolute;
+                // background-color: $color;
+                transition: all .3s;
+                z-index: -1;
+            }
+        }
+    
+        &-down::before,
+        &-up::before {
+            width: 100%;
+            height: 0;
+        }
+        &-down::before {
+            top: 0;
+            left: 0;
+        }
+        &-up::before {
+            bottom: 0;
+            left: 0;
+        }
+        &-down:hover::before,
+        &-up:hover::before {
+            height: 100%;
+        }
+    
+        &-left::before,
+        &-right::before {
+            width: 0;
+            height: 100%;
+        }
+        &-left::before {
+            top: 0;
+            left: 0;
+        }
+        &-right::before {
+            top: 0;
+            right: 0;
+        }
+        &-left:hover::before,
+        &-right:hover::before {
+            width: 100%;
+        }
+    }
+}
+
+
+
+@each $key, $value in $pallet {
+    $shade: color.shade($value, 30%);
+    $tint: color.tint($value, 60%);
+    $contrastText: color.contrastText($shade);
+
+    .button-#{$key}.effect {
+        &:before {
+            background-color: var(--#{$key}-shade);
+        }
+    }
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 var(--hover, red);
+    }
+}
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 var(--hover, red);
+    }
+}

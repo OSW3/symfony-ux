@@ -1,0 +1,7 @@
+@function is-empty($var) {
+    @return $var == null or $var == "" or (type-of($var) == 'list' and length($var) == 0) or (type-of($var) == 'map' and length($var) == 0);
+}
+
+@function not-empty($var) {
+    @return $var != null and $var != "" and (type-of($var) != 'list' or length($var) != 0) and (type-of($var) != 'map' or length($var) != 0);
+}  

@@ -1,0 +1,106 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Cookie Consent
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/transition';
+
+
+/// Cookie Consent variables
+/// =============================================
+///
+
+$cookie-box--backdrop: true !default;
+
+$default--cookie-consent--background-color: $white;
+
+/// Cookie Consent component
+/// =============================================
+///
+.cookie-box {
+
+    &-inner {
+        background-color: var(--cookie-consent--background-color, $default--cookie-consent--background-color);
+        position: relative;
+        z-index: 2;
+    }
+
+
+    &-header {
+        // border: 3px solid green;
+        padding: $spacer;
+    }
+
+    &-content {
+        // border: 3px solid pink;
+        padding: $spacer;
+    }
+
+    &-options {
+        // border: 3px solid orange;
+        padding: $spacer;
+    }
+
+    &-actions {
+        // border: 3px solid blue;
+        padding: $spacer;
+    }
+
+
+    // Cookie Box Backdrop
+    // --
+
+    @if $cookie-box--backdrop {
+        &::after {
+            @include transition.set((opacity), map-get($delays, normal));
+            content: "";
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        
+            opacity: 0;
+        
+            background-color: rgb(0 0 0 / 70%);
+            backdrop-filter: blur(5px);
+        
+            z-index: 1;
+        }
+        &.show::after {
+            position: fixed;
+            opacity: 1;
+        }
+    }
+}
+
+// Cookie Box Banner
+// --
+.cookie-box {
+    &-banner {
+        @include transition.set((top, bottom), map-get($delays, normal));
+        position: fixed;
+        z-index: 9000;
+        right: 0;
+        left: 0;
+
+        // padding: $spacer * 2;
+    }
+
+    &-top {
+        top: -100vh;
+        bottom: auto;
+        &.show {
+            top: 0;
+        }
+    }
+
+    &-bottom {
+        top: auto;
+        bottom: -100vh;
+        &.show {
+            bottom: 0;
+        }
+    }
+}
+

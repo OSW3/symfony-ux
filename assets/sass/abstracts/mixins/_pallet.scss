@@ -1,0 +1,8 @@
+@mixin outline($key)
+{
+    color: var(--#{$key});
+    background-color: transparent;
+    border-color: var(--#{$key}) !important;
+    border-width: 1px !important;
+    border-style: solid !important;
+}

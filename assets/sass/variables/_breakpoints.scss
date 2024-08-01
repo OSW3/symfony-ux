@@ -1,0 +1,113 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Breakpoints & Containers (variables definitions)
+// *
+// *    - Defaults breakpoints
+// *    - Defaults containers
+// *    - Additional Breakpoints & Containers
+// *    - Useless Breakpoints & Containers
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+
+
+/// Defaults breakpoints
+/// =============================================
+    
+/// Breakpoints names
+/// -------------------------
+$breakpoint-name-phone  : 'phone' !default;
+$breakpoint-name-tablet : 'tablet' !default;
+$breakpoint-name-laptop : 'laptop' !default;
+$breakpoint-name-desktop: 'desktop' !default;
+$breakpoint-name-wide   : 'wide' !default;
+$breakpoint-name-ultra  : 'ultra' !default;
+
+/// Defaults Breakpoints values
+/// -------------------------
+$breakpoint-phone  : 576px !default;
+$breakpoint-tablet : 768px !default;
+$breakpoint-laptop : 992px !default;
+$breakpoint-desktop: 1200px !default;
+$breakpoint-wide   : 1400px !default;
+$breakpoint-ultra  : 1600px !default;
+
+/// Breakpoints collection
+/// -------------------------
+$breakpoints: (
+    $breakpoint-name-phone  : $breakpoint-phone,
+    $breakpoint-name-tablet : $breakpoint-tablet,
+    $breakpoint-name-laptop : $breakpoint-laptop,
+    $breakpoint-name-desktop: $breakpoint-desktop,
+    $breakpoint-name-wide   : $breakpoint-wide,
+    $breakpoint-name-ultra  : $breakpoint-ultra,
+);
+
+
+/// Defaults containers
+/// =============================================
+
+/// Defaults Containers values
+/// -------------------------
+$container-phone  : 540px !default;
+$container-tablet : 720px !default;
+$container-laptop : 960px !default;
+$container-desktop: 1140px !default;
+$container-wide   : 1340px !default;
+$container-ultra  : 1520px !default;
+
+/// Defaults Containers collection
+/// -------------------------
+$containers: (
+    $breakpoint-name-phone  : $container-phone,
+    $breakpoint-name-tablet : $container-tablet,
+    $breakpoint-name-laptop : $container-laptop,
+    $breakpoint-name-desktop: $container-desktop,
+    $breakpoint-name-wide   : $container-wide,
+    $breakpoint-name-ultra  : $container-ultra,
+);
+
+
+
+/// Additional Breakpoints & Containers
+/// =============================================
+
+/// Add customs Breakpoints and Containers
+/// -----
+/// $additional-breakpoints: ( ('ultra-wide': (breakpoint: 1800px, container: 1740px)) );
+$additional-breakpoints: () !default;
+
+@if collection.notEmpty($additional-breakpoints) {
+    @each $key, $value in $additional-breakpoints {
+
+        $additional-breakpoint-value: map-get($value, 'breakpoint');
+        $additional-container-value: map-get($value, 'container');
+
+        @if $additional-breakpoint-value {
+            $breakpoints: map-merge($breakpoints, ($key: $additional-breakpoint-value));
+        }
+        @if $additional-container-value {
+            $containers: map-merge($containers, ($key: $additional-container-value));
+        }
+    }
+}
+
+
+
+/// Useless Breakpoints & Containers
+/// =============================================
+
+/// Remove the not needed breakpoints and containers
+/// -----
+/// $disable-breakpoints: ('tablet');
+$useless-breakpoints: () !default;
+
+@if collection.notEmpty($useless-breakpoints) {
+    @each $key, $value in $breakpoints {
+        @if collection.keyExists($useless-breakpoints, $key) {
+            $breakpoints: collection.unset($breakpoints, $key);
+            $containers: collection.unset($containers, $key);
+        }
+    }
+}

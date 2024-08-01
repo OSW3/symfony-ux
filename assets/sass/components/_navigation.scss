@@ -1,0 +1,191 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Navigation
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/position';
+@use './../abstracts/mixins/transition';
+
+
+
+$_arr_containers : (container, container-fluid);
+@each $size, $breakpoint in $breakpoints {
+    @if $breakpoint > 0 {
+        $_arr_containers: append($_arr_containers, container-#{$size});
+    }
+}
+
+$_str_container: '';
+@each $container in $_arr_containers {
+  $_str_container: $_str_container + '.#{$container}, ';
+}
+$_containers: unquote(str-slice($_str_container, 1, -3));
+
+
+
+/// Navigation variables
+/// =============================================
+///
+
+$navigation--side-panel-width: 280px !default;
+
+
+
+// Default Theme
+// --------------------------
+
+$default--navigation--background-color   : $white;
+
+
+/// Navigation component
+/// =============================================
+///
+/// 
+
+.navigation {
+    // border: 10px solid red;
+    
+    #{$_str_container} {
+        // border: 10px solid cyan;
+        @include flex.row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    & .brand {
+        // border: 10px solid purple;
+    }
+
+
+    &-toggler,
+    &-close {
+        background: none;
+        border: none;
+    }
+    &-toggler {
+        position: relative;
+        // Text menu color
+        border: 1px solid #333;
+        height: 30px;
+        width: 30px;
+        overflow: hidden;
+        text-indent: -999px;
+        cursor: pointer;
+
+        background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAK1JREFUaEPtlkEKwCAQxPT/j64/kIEwLNL07Ky7iWL3evzbj/e/HGDaoAY0AAl4hCBAHNcARggL/MLAByHR+BVyYsABoAINQIDdeHIHuh3A6g4AAeK4BjBCWCAx4EPWhKwBSDeJ41+JZJOxNckRGmsu2dgBEkrNNRpo0k1qJwZ8iROSlzX4HdDAtAG4fzeeXOJuB7C6A0CAOK4BjBAW0AAEiOMawAhhAQ1AgDh+AJfZDDGRtEaJAAAAAElFTkSuQmCC");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+    }
+
+    &-content {
+        @include flex.column;
+        @include transition.set((left, right, box-shadow), map-get($delays, normal));
+
+        width: $navigation--side-panel-width;
+
+        background-color: var(--navigation--background-color, $default--navigation--background-color);
+      
+        // border: 10px solid yellow;
+
+        z-index: 1000;
+
+        & .menu {
+            width: 100%;
+        }
+        & .menu > .menu-items {
+            @include flex.column;
+        }
+    }
+
+    // Collapse
+    &-collapse {
+        & #{$_str_container} {
+            @include flex.row;
+            flex-wrap: wrap;
+            & .navigation-content {
+                flex-basis: 100%;
+                max-height: 0;
+                overflow: hidden;
+                @include transition.set((max-height), map-get($delays, normal));
+            }
+        }
+        & .navigation-close {
+            display: none;
+        }
+    }
+    &-collapse.show {
+        & #{$_str_container} {
+            & .navigation-content {
+                // height: auto;
+                // height: 200px;
+                max-height: 100vh;
+                overflow:auto;
+            }
+        }
+    }
+
+    // Left
+    &-left &-content {
+        @include position.fixed(0, null, 0, null);
+        @include position.right(auto);
+        @include position.left(-$navigation--side-panel-width);
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
+    &-left.show &-content {
+        @include position.left(0);
+    }
+
+    // Right
+    &-right &-content {
+        @include position.fixed(0, null, 0, null);
+        @include position.left(auto);
+        @include position.right(-$navigation--side-panel-width);
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
+    &-right.show &-content {
+        @include position.right(0);
+    }
+
+    @each $size, $breakpoint in $breakpoints {
+        @if $breakpoint > 0 {
+            @media (min-width: $breakpoint) {
+
+                &.expand-at-#{$size} {
+    
+                    & #{$_str_container} {
+                        @include flex.row;
+                    }
+    
+                    & .navigation-toggler,
+                    & .navigation-close {
+                        display: none;
+                    }
+                }
+    
+                &.expand-at-#{$size} &-content {
+                    @include position.relative(auto,auto,auto,auto);
+                    @include flex.row;
+                    // width: auto;
+                    flex-grow: 1;
+                    background-color: transparent;
+                    box-shadow: none;
+
+                    max-height: none;
+                    flex-basis: initial;
+                    justify-content: space-between;
+
+
+                    & .menu {
+                        width: auto;
+                    }
+                    & .menu > .menu-items {
+                        @include flex.row;
+                    }
+                }
+            }
+        }
+    }
+}

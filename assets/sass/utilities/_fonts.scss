@@ -1,0 +1,43 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Build fonts
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/banner';
+
+@include banner.header('Fonts');
+
+
+/// Font @import & @font-face
+/// =============================================
+/// Add @import url( ... )
+@each $_name, $_data in $fonts {
+    $_family: map-get($_data, 'family');
+    $_url   : map-get($_data, 'url');
+    $_source: map-get($_data, 'source');
+
+    @if not ($_url == null) {
+        @import url(#{$_url});
+    }
+
+    @if not ($_source == null) {
+        // @import url(#{$_source});
+        // @font-face{
+        //     font-family: $_family;
+            // src: url($_source);
+            // src: url(#{$_source}) format('truetype');
+        // }
+    }
+}
+
+
+
+/// Generate CSS Variable
+/// =============================================
+:root {
+    @each $_name, $_data in $fonts {
+        $_family: map-get($_data, 'family');
+        --font-#{$_name}: #{map-get($_data, 'family')};
+    }
+}

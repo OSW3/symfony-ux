@@ -1,0 +1,49 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Some functions about "color" object.                                   * //
+// *                                                                        * //
+// * How to import "collection"                                             * //
+// *    @use 'abstracts/functions/color' as color                           * //
+// *                                                                        * //
+// ************************************************************************** //
+
+/// Slightly lighten a color
+/// =============================================
+/// 
+/// @example color.tint(#FF9900, 20); 
+/// 
+/// @param {Color} $colorThe original color you need to tint
+/// @param {Number} $percentagePercentage level of tint
+/// @return {Color}The new tinted color
+/// 
+@function tint($color, $percentage) 
+{
+  @return mix(white, $color, $percentage);
+}
+
+/// Slightly darken a color
+/// =============================================
+/// 
+/// @example color.shade(#FF9900, 20); 
+/// 
+/// @param {Color} $color The original color you need to shade
+/// @param {Number} $percentage Percentage level of shade
+/// @return {Color}The new shaded color
+/// 
+@function shade($color, $percentage) 
+{
+  @return mix(black, $color, $percentage);
+}
+
+
+@function contrastText($color) {
+  $result: invert($color);
+  $lightness: lightness($result);
+  @if ($lightness < 50) {
+    $result: black;
+  }
+  @else {
+    $result: white;
+  }
+  @return $result;
+}

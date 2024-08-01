@@ -1,0 +1,82 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Pallet definition.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+@use './../abstracts/functions/color';
+
+
+/// Defaults pallet
+/// =============================================
+    
+/// Default pallet names
+/// -------------------------
+$pallet-name-success  : 'success' !default;
+$pallet-name-danger   : 'danger' !default;
+$pallet-name-warning  : 'warning' !default;
+$pallet-name-info     : 'info' !default;
+$pallet-name-primary  : 'primary' !default;
+$pallet-name-secondary: 'secondary' !default;
+$pallet-name-light    : 'light' !default;
+$pallet-name-dark     : 'dark' !default;
+$pallet-name-muted    : 'muted' !default;
+
+/// Default pallet collection
+/// -------------------------
+$pallet: (
+    $pallet-name-success  : $green,
+    $pallet-name-danger   : $red,
+    $pallet-name-warning  : $orange,
+    $pallet-name-info     : $cyan,
+    $pallet-name-primary  : $blue,
+    $pallet-name-secondary: $gray-600,
+    $pallet-name-light    : $white,
+    $pallet-name-dark     : $black,
+    $pallet-name-muted    : $gray-500,
+);
+
+
+
+/// Shade & Tint
+/// =============================================
+
+/// Shade & Tint allowed
+/// -------------------------
+$has-shade: true !default;
+$has-tint : true !default;
+
+
+
+/// Additional pallet
+/// =============================================
+
+/// Add customs colors to the pallet
+/// -----
+/// $additional-pallet: ( 'my-color': purple );
+$additional-pallet: () !default;
+
+@if collection.notEmpty($additional-pallet) {
+    @each $key, $value in $additional-pallet {
+        $pallet: map-merge($pallet, ($key: $value));
+    }
+}
+
+
+
+/// Useless pallet
+/// =============================================
+
+/// Remove from pallet
+/// -----
+/// $remove-pallet: ('success');
+$useless-pallet: () !default;
+
+@if collection.notEmpty($useless-pallet) {
+    @each $key, $value in $pallet {
+        @if collection.keyExists($useless-pallet, $key) {
+            $pallet: collection.unset($pallet, $key);
+        }
+    }
+}

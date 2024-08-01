@@ -1,0 +1,83 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Some utilities about Theme management.                                 * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/theme' as theme;                               * //
+// *                                                                        * //
+// ************************************************************************** //
+
+// @use '/assets/sass/themes/' as themes;
+// @use '/assets/sass/themes/_directory' as themes;
+
+/// Theme property
+/// =============================================
+/// 
+/// @example 
+///   @include theme.property('background-color', 'bg')
+/// 
+/// @param {string} $property
+///   The name of the property
+/// @param {string} $key
+///   The name of key of the theme value in the themes definitions file
+/// 
+@mixin property($property, $key) 
+{
+  @include _default($property, $key);
+  @include _map($property, $key);
+}
+
+
+/// Set theme to a link
+/// =============================================
+/// 
+/// @example 
+///   @include theme.a('bg')
+/// 
+@mixin a($block)
+{
+  & a {
+    @include _map('color', '#{$block}--color');
+    &:hover,
+    &:focus {
+        @include _map('color', '#{$block}--hover-color');
+    }
+    &.disabled,
+    &:disabled {
+        @include _map('color', '#{$block}--disabled-color');
+    }
+    &.active,
+    &:active {
+        @include _map('color', '#{$block}--active-color');
+    }
+  }
+}
+
+/// Theme property's utilities
+/// =============================================
+/// 
+@mixin _map($property, $key) 
+{
+  @include _output() {
+    #{$property}: map-get($theme-map, $key);
+  }
+}
+@mixin _default($property, $key)
+{
+  #{$property}: map-get(themes.$default-map, $key);
+}
+@mixin _output() 
+{
+  @each $theme, $map in themes.$themes 
+  {
+    .theme-#{$theme} & {
+      $theme-map: () !global;
+      @each $key, $submap in $map {
+        $value: map-get(map-get(themes.$themes, $theme), '#{$key}');
+        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+      }
+      @content;
+      $theme-map: null !global;
+    }
+  }
+}

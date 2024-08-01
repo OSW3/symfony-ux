@@ -1,0 +1,77 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Colors definition.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+
+
+/// Defaults Fonts
+/// =============================================
+    
+/// Fonts names
+/// -------------------------
+$font-name-primary  : 'primary' !default;
+$font-name-secondary: 'secondary' !default;
+$font-name-headings : 'headings' !default;
+$font-name-code     : 'code' !default;
+    
+/// Fonts definition
+/// -------------------------
+$_monospace: (
+    'family': "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+);
+$_open_sans: (
+    'family': "'OpenSans', 'Cantarell', 'Helvetica', 'Arial', sans-serif"
+);
+
+$_headings: (
+    'family': "var(--font-primary)"
+);
+$_code: (
+    'family': "var(--font-secondary)"
+);
+    
+/// Fonts collection
+/// -------------------------
+$fonts: (
+    $font-name-primary  : $_open_sans,
+    $font-name-secondary: $_monospace,
+    $font-name-headings : $_headings,
+    $font-name-code     : $_code,
+);
+
+
+
+/// Additional Fonts
+/// =============================================
+
+/// Add customs fonts to the fonts
+/// -----
+/// $additional-fonts: ( 'my-color': purple );
+$additional-fonts: () !default;
+
+@if collection.notEmpty($additional-fonts) {
+    @each $key, $value in $additional-fonts {
+        $fonts: map-merge($fonts, ($key: $value));
+    }
+}
+
+
+
+/// Useless Fonts
+/// =============================================
+
+/// Remove from fonts
+/// -----
+/// $useless-fonts: ('success');
+$useless-fonts: () !default;
+
+@if collection.notEmpty($useless-fonts) {
+    @each $key, $value in $fonts {
+        @if collection.keyExists($useless-fonts, $key) {
+            $fonts: collection.unset($fonts, $key);
+        }
+    }
+}

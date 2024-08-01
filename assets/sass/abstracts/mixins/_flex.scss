@@ -1,0 +1,97 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * The display flex properties.                                           * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/flex' as flex                                  * //
+// *                                                                        * //
+// ************************************************************************** //
+
+@use 'prefix';
+
+/// Set the display flex as column
+/// =============================================
+/// 
+/// @example 
+///   @include flex.column();
+/// 
+@mixin column() 
+{
+  @include _flex();
+  @include prefix.set(flex-direction, column, webkit moz ms);
+}
+
+/// Set the display flex as row
+/// =============================================
+/// 
+/// @example 
+///   @include flex.row();
+/// 
+@mixin row() 
+{
+  @include _flex();
+  @include prefix.set(flex-direction, row, webkit moz ms);
+}
+
+/// Flex Middle
+/// =============================================
+/// 
+/// @example 
+///   @include flex.middle();
+/// 
+@mixin middle() 
+{
+  @include row();
+
+  // -webkit-box-flex: 0;
+  //         -ms-flex: 0 0 auto;
+  //             flex: 0 0 auto;
+
+  -webkit-box-align: center;
+     -ms-flex-align: center;
+        align-items: center;
+}
+
+/// Flex Middle
+/// =============================================
+/// 
+/// @example 
+///   @include flex.center();
+/// 
+@mixin center() 
+{
+  @include _flex();
+
+  -webkit-box-flex: 0;
+          -ms-flex: 0 0 auto;
+              flex: 0 0 auto;
+
+  -webkit-box-justify-content: center;
+     -ms-flex-justify-content: center;
+              justify-content: center;
+}
+
+/// Flex Middle
+/// =============================================
+/// Combination of flex.middle(); and flex.center();
+/// 
+/// @example 
+///   @include flex.centered();
+/// 
+@mixin centered() 
+{
+  @include _flex();
+  @include center();
+  @include middle();
+}
+
+
+/// Flex mixin's utilities
+/// =============================================
+/// 
+@mixin _flex()
+{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}

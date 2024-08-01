@@ -1,0 +1,27 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Pallet Builder
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/color';
+
+
+/// Pallet
+/// =============================================
+
+/// CSS Variable
+/// -------------------------
+:root {
+    @each $key, $value in $pallet {
+        --#{$key}: #{$value};
+
+        @if $has-shade {
+            --#{$key}-shade: #{color.shade($value, 30%)};
+        }
+
+        @if $has-tint {
+            --#{$key}-tint: #{color.shade($value, 30%)};
+        }
+    }
+}

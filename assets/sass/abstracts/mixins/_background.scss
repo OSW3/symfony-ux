@@ -1,0 +1,101 @@
+// **************************** Livetunes Studio **************************** //
+// *                                                                        * //
+// * Some "background" property utilities.                                  * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/background' as background                      * //
+// *                                                                        * //
+// ************************************************************************** //
+
+
+/// Generate a gradient background
+/// 
+/// @example @include background.gradient(left, green blue pink);
+/// 
+/// @param {String} $direction Angle or direction (left, right, top, bottom)
+/// @param {List} $color-stops  The list of colors of the gradient
+/// 
+@mixin gradient($direction, $colors)
+{
+  background: nth(nth($colors, 1), 1);
+  @if $direction == 'circle' {
+    background: -moz-radial-gradient(circle), $colors;
+    background: -webkit-radial-gradient(circle, $colors);
+    background: radial-gradient(circle, $colors);
+  }
+  @else {
+    $direction: _legacy-direction($direction);
+
+    background: -moz-linear-gradient($direction, $colors);
+    background: -webkit-linear-gradient($direction, $colors);
+    background: linear-gradient($direction, $colors);
+  }
+}
+
+
+/// Generate a linear-gradient
+/// 
+/// @example  @include background.linear-gradient('to right', (green 0%, blue 50%, pink 100%));
+/// 
+/// @param {String} $direction  Angle or direction
+/// @param {List} $colors  The list of colors of the gradient
+/// 
+@mixin linear-gradient ($direction, $colors)
+{
+  @include gradient($direction, $colors);
+}
+
+
+/// Generate a radial-gradient
+/// 
+/// @example  @include background.radial-gradient((green 0%, blue 50%, pink 100%));
+/// 
+/// @param {List} $colors The list of colors of the gradient
+/// 
+@mixin radial-gradient ($colors)
+{
+  @include gradient('circle', $colors);
+}
+
+
+/// Convert a direction to legacy syntax
+/// =============================================
+/// 
+/// @access private
+/// 
+/// @param {Keyword | Angle} $value - Value to convert
+/// @require {function} is-direction
+/// @require {function} convert-angle
+/// 
+/// @throw Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.;
+/// 
+@function _legacy-direction($value) 
+{
+    // @if is-direction($value) == false 
+    // {
+    //     @error "Cannot convert `#{$value}` to legacy syntax because it doesn't seem to be a direction.";
+    // }
+  
+    $conversion-map: (
+      'to top'         : bottom,
+      'to top right'   : bottom left,
+      'to right top'   : left bottom,
+      'to right'       : left,
+      'to bottom right': top left,
+      'to right bottom': left top,
+      'to bottom'      : top,
+      'to bottom left' : top right,
+      'to left bottom' : right top,
+      'to left'        : right,
+      'to left top'    : right bottom,
+      'to top left'    : bottom right
+    );
+  
+    @if map-has-key($conversion-map, $value) 
+    {
+        @return map-get($conversion-map, $value);
+    }
+  
+    // @return 90deg - $value;
+    @return $value;
+}

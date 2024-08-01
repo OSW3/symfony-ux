@@ -1,0 +1,46 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Alert
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/corner';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/position';
+@use './../abstracts/functions/color';
+
+@include banner.header("Component Alert");
+
+
+/// Alert variables
+/// =============================================
+///
+
+$alert--margin-y: $spacer !default;
+
+/// Alert component
+/// =============================================
+///
+
+.alert {
+    @include position.relative;
+    @include corner.rounded(6px);
+    @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
+    @include spaces.margin( $alert--margin-y, auto, $alert--margin-y, auto );
+    border-width: 1px;
+    border-style: solid;
+
+    & .button-close {
+        @include position.absolute(0, 0, null, null);
+    }
+}
+
+@each $key, $value in $pallet {
+    .alert-#{$key} {
+        // color: $value;
+        color: var(--#{$key});
+        background-color: color.tint($value, 70%);
+        border-color: var(--#{$key});;
+    }
+}

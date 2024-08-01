@@ -1,0 +1,56 @@
+// ******************************* DevBrain UI ****************************** //
+// *
+// *    Components: Accordion
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/transition';
+@use './../abstracts/mixins/spaces';
+
+/// Accordion variables
+/// =============================================
+///
+
+
+/// Accordion component
+/// =============================================
+///
+
+.accordion {
+
+    &-panel {
+        border: 1px solid #ccc;
+    }
+    &-panel + &-panel {
+        margin-top: -1px;
+    }
+
+    &-header {
+        @include spaces.padding($spacer,$spacer,$spacer,$spacer);
+        background-color: #f1f1f1;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .show &-header {
+        background-color: #d1d1d1;
+    }
+
+    &-content {
+        // border: 10px solid purple;
+        max-height: 0;
+        overflow: hidden;
+        // display: none;
+
+        @include transition.set((max-height), map-get($delays, normal));
+    }
+
+    &-inner {
+        // border: 10px solid blue;
+        @include spaces.padding($spacer,$spacer,$spacer,$spacer);
+    }
+
+    &-button {
+        cursor: pointer;
+    }
+}
