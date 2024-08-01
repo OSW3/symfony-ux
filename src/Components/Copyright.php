@@ -38,7 +38,7 @@ final class Copyright
     public string|int $since;
     
     #[ExposeInTemplate(name: 'company', getter: 'doNotExpose')]
-    public string $company;
+    public ?string $company;
 
     #[ExposeInTemplate(name: 'copyright', getter: 'fetchCopyright')]
     private string $copyright;
@@ -74,7 +74,7 @@ final class Copyright
         $resolver->setAllowedTypes('separator', ['string']);
 
         $resolver->setDefault('company', $this->params[static::NAME]['company']);
-        $resolver->setAllowedTypes('company', ['string']);
+        $resolver->setAllowedTypes('company', ['null', 'string']);
 
         $resolver->setDefault('since', $this->params[static::NAME]['since']);
         $resolver->setAllowedTypes('since', ['string','integer']);
@@ -96,8 +96,12 @@ final class Copyright
         }
 
         $copyright.= "{$current}";
-        $copyright.= "{$this->separator}";
-        $copyright.= "{$this->company}";
+
+        if (!empty($this->company))
+        {
+            $copyright.= "{$this->separator}";
+            $copyright.= "{$this->company}";
+        }
 
         return $copyright;
     }
