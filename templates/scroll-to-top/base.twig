@@ -1,0 +1,21 @@
+{# ---------------------------------------------- #}
+{# - Component : Scroll To Top                  - #}
+{# - Part : Base                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/scroll-to-top/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'title', title) %}
+{% for _property, _value in dataset %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %}
+

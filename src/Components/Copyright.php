@@ -43,7 +43,6 @@ final class Copyright
     #[ExposeInTemplate(name: 'copyright', getter: 'fetchCopyright')]
     private string $copyright;
 
-
     public function __construct(
         #[Autowire(service: 'service_container')] private ContainerInterface $container,
     )
