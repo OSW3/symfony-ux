@@ -36,9 +36,11 @@ class BuildCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io              = new SymfonyStyle($input, $output);
-        $sassVarDir      = Path::join(__DIR__, "../../", "assets/sass/variables");
+        $sassVarDir      = Path::join(__DIR__, "../../", "assets/sass");
         $sassVariables   = [];
         $sassVariables[] = "// Last gen: ". date("Y-m-d H:i:s");
+
+
 
         foreach ($this->options['layout'] as $name => $value)
         {
@@ -79,6 +81,9 @@ class BuildCommand extends Command
                     }
                 break;
 
+                case 'fonts':
+                break;
+
                 case 'default_theme':
                     $sassVariables[] = "\$theme-default: '{$value}';";
                 break;
@@ -88,8 +93,6 @@ class BuildCommand extends Command
                     $sassVariables[] = "\${$property}: {$value};";
             }
         }
-
-
 
         file_put_contents("{$sassVarDir}/_generated.scss", implode("\n", $sassVariables));
         $io->success("SCSS variables exported successfully.");

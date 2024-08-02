@@ -16,7 +16,7 @@
 
 /// Defaults breakpoints
 /// =============================================
-    
+
 /// Breakpoints names
 /// -------------------------
 $breakpoint-name-phone: if(meta.global-variable-exists('breakpoint-name-phone', $module: generated), generated.$breakpoint-name-phone, 'phone') !default;
@@ -60,12 +60,6 @@ $container-laptop: if(meta.global-variable-exists('container-laptop', $module: g
 $container-desktop: if(meta.global-variable-exists('container-desktop', $module: generated), generated.$container-desktop, 1140px) !default;
 $container-wide: if(meta.global-variable-exists('container-wide', $module: generated), generated.$container-wide, 1340px) !default;
 $container-ultra: if(meta.global-variable-exists('container-ultra', $module: generated), generated.$container-ultra, 1520px) !default;
-// $container-phone  : 540px !default;
-// $container-tablet : 720px !default;
-// $container-laptop : 960px !default;
-// $container-desktop: 1140px !default;
-// $container-wide   : 1340px !default;
-// $container-ultra  : 1520px !default;
 
 
 /// Defaults Containers collection

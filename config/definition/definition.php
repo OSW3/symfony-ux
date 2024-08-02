@@ -4,15 +4,11 @@ return static function($definition)
 {
     $definition->rootNode()->children()
 
-        // ->scalarNode('sass_directory')
-        //     ->info("Specifies the SASS directory of the project")
-        //     ->cannotBeEmpty()
-        //     ->defaultValue('%kernel.project_dir%/assets/sass')
-        // ->end()
-
-
         ->arrayNode('layout')->addDefaultsIfNotSet()->children()
 
+            /**
+             * Breakpoints
+             */
             ->arrayNode('breakpoints')
                 ->addDefaultsIfNotSet()->children()
 
@@ -75,15 +71,52 @@ return static function($definition)
                 ->end()
             ->end()
 
+            /**
+             * Colors
+             */
+
+            /**
+             * Fonts
+             */
+            ->arrayNode('fonts')
+                ->addDefaultsIfNotSet()->children()
+
+                    
+
+                ->end()
+            ->end()
+
+            /**
+             * Grid divisions
+             */
             ->integerNode('grid_divisions')
                 ->info("Specifies the number of division of the grid system")
                 ->defaultValue(12)
             ->end()
 
+            /**
+             * Pallet
+             */
+
+            /**
+             * Themes
+             */
             ->scalarNode('default_theme')
                 ->info("Specifies the name of the default theme")
                 ->defaultValue('light')
             ->end()
+
+            /**
+             * Transition
+             */
+
+            /**
+             * Typography
+             */
+
+            /**
+             * Z-Index
+             */
 
         ->end()->end()
 
