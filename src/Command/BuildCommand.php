@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 )]
 class BuildCommand extends Command
 {
-    // protected static $defaultName = 'ux:build';
     private array $options;
 
     public function __construct(ParameterBagInterface $params)
@@ -41,8 +40,6 @@ class BuildCommand extends Command
         $sassVariables   = [];
         $sassVariables[] = "// Last gen: ". date("Y-m-d H:i:s");
 
-
-
         foreach ($this->options['layout'] as $name => $value)
         {
             $property = str_replace("_", "-", $name);
@@ -50,27 +47,9 @@ class BuildCommand extends Command
             switch ($name)
             {
                 case 'breakpoints':
-
                     $breakpoints = $value['base'];
                     $additional  = $value['additional'];
                     $useless     = $value['useless'];
-
-                    // // Additional
-                    // foreach ($additional as $breakpointName => $breakpointValue)
-                    // {
-                    //     $breakpoints[$breakpointName] = [
-                    //         'name' => $breakpointName,
-                    //         'value' => $breakpointValue,
-                    //     ];
-                    // }
-
-
-                    // Sort breakpoint (mobile first)
-                    // usort($breakpoints, function($a, $b) {
-                    //     return $a['value'] <=> $b['value'];
-                    // });
-
-                    // dump($breakpoints);
 
                     foreach ($breakpoints as $breakpoint) 
                     {
@@ -98,7 +77,6 @@ class BuildCommand extends Command
                     if (!empty($useless)) {
                         $sassVariables[] = "\$useless-breakpoints: ('".implode("','", $useless)."');";
                     }
-
                 break;
 
                 case 'default_theme':
