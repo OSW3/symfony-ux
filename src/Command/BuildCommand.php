@@ -40,63 +40,69 @@ class BuildCommand extends Command
         $sassVariables   = [];
         $sassVariables[] = "// Last gen: ". date("Y-m-d H:i:s");
 
-
-
-        foreach ($this->options['layout'] as $name => $value)
-        {
-            $property = str_replace("_", "-", $name);
-
-            switch ($name)
-            {
-                case 'breakpoints':
-                    $breakpoints = $value['base'];
-                    $additional  = $value['additional'];
-                    $useless     = $value['useless'];
-
-                    foreach ($breakpoints as $breakpoint) 
-                    {
-                        $sassVariables[] = "\$breakpoint-name-{$breakpoint['name']}: '{$breakpoint['name']}';";
-                        $sassVariables[] = "\$breakpoint-{$breakpoint['name']}: {$breakpoint['breakpoint']}px;";
-                        $sassVariables[] = "\$container-{$breakpoint['name']}: {$breakpoint['container']}px;";
-                    }
-
-                    // Additional breakpoints
-                    if (!empty($additional)) {
-    
-                        $sassString = '$additional-breakpoints: (';
-    
-                        foreach ($additional as $name => $values) {
-                            $sassString .= "'$name': (breakpoint: {$values['breakpoint']}px, container: {$values['container']}px), ";
-                        }
-                    
-                        $sassString = rtrim($sassString, ', ');
-                        $sassString .= ');';
-
-                        $sassVariables[] = $sassString;
-                    }
-
-                    // Excludes breakpoints
-                    if (!empty($useless)) {
-                        $sassVariables[] = "\$useless-breakpoints: ('".implode("','", $useless)."');";
-                    }
-                break;
-
-                case 'fonts':
-                break;
-
-                case 'default_theme':
-                    $sassVariables[] = "\$theme-default: '{$value}';";
-                break;
-
-                case 'grid_divisions':
-                default: 
-                    $sassVariables[] = "\${$property}: {$value};";
-            }
-        }
+        foreach ($this->options['layout'] as $name => $value) match ($name) {
+            'breakpoints' => $this->uxBreakpoints($sassVariables, $value),
+            'transitions' => $this->uxTransitions($sassVariables, $value),
+            'default_theme' => $this->uxDefaultTheme($sassVariables, $value),
+            'grid_divisions' => $this->uxGridDivisions($sassVariables, $value),
+            default => null,
+        };
 
         file_put_contents("{$sassVarDir}/_generated.scss", implode("\n", $sassVariables));
         $io->success("SCSS variables exported successfully.");
 
         return Command::SUCCESS;
+    }
+
+    private function uxGridDivisions(array &$vars, $value)
+    {
+        $vars[] = "\$grid-divisions: {$value};";
+    }
+
+    private function uxBreakpoints(array &$vars, $options)
+    {
+        $breakpoints = $options['base'];
+        $additional  = $options['additional'];
+        $useless     = $options['useless'];
+
+        foreach ($breakpoints as $breakpoint) 
+        {
+            $vars[] = "\$breakpoint-name-{$breakpoint['name']}: '{$breakpoint['name']}';";
+            $vars[] = "\$breakpoint-{$breakpoint['name']}: {$breakpoint['breakpoint']}px;";
+            $vars[] = "\$container-{$breakpoint['name']}: {$breakpoint['container']}px;";
+        }
+
+        // Additional breakpoints
+        if (!empty($additional)) {
+
+            $sassString = '$additional-breakpoints: (';
+
+            foreach ($additional as $name => $values) {
+                $sassString .= "'$name': (breakpoint: {$values['breakpoint']}px, container: {$values['container']}px), ";
+            }
+        
+            $sassString = rtrim($sassString, ', ');
+            $sassString .= ');';
+
+            $vars[] = $sassString;
+        }
+
+        // Excludes breakpoints
+        if (!empty($useless)) {
+            $vars[] = "\$useless-breakpoints: ('".implode("','", $useless)."');";
+        }
+    }
+
+    private function uxTransitions(array &$vars, $transitions)
+    {
+        foreach ($transitions as $name => $value)
+        {
+            $vars[] = "\$transition-{$name}: {$value};";
+        }
+    }
+
+    private function uxDefaultTheme(array &$vars, $name)
+    {
+        $vars[] = "\$theme-default: '{$name}';";
     }
 }

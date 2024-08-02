@@ -6,6 +6,8 @@
 // *
 // ************************************************************************** //
 
+@use 'sass:meta';
+@use './../generated';
 @use './../abstracts/functions/collection';
 @use './../abstracts/mixins/dumper';
 
@@ -15,14 +17,16 @@
 
 /// Delays Speed
 /// -------------------------
-$transition-speed  : 1s !default;
+$transition-speed: if(meta.global-variable-exists('transition-speed', $module: generated), generated.$transition-speed, 1s) !default;
+
 
 
 /// Delays Speed ratio
 /// -------------------------
-$transition-slow  : 0.8 !default;
-$transition-normal: 0.3 !default;
-$transition-fast  : 0.1 !default;
+$transition-slow: if(meta.global-variable-exists('transition-slow', $module: generated), generated.$transition-slow, 0.8) !default;
+$transition-normal: if(meta.global-variable-exists('transition-normal', $module: generated), generated.$transition-normal, 0.3) !default;
+$transition-fast: if(meta.global-variable-exists('transition-fast', $module: generated), generated.$transition-fast, 0.1) !default;
+
 
 
 /// Delays collection

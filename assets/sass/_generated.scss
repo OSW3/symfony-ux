@@ -1,4 +1,8 @@
-// Last gen: 2024-08-02 16:52:07
+// Last gen: 2024-08-02 17:30:25
+$transition-base: 1;
+$transition-slow: 0.8;
+$transition-normal: 0.3;
+$transition-fast: 0.1;
 $breakpoint-name-phone: 'phone';
 $breakpoint-phone: 576px;
 $container-phone: 540px;
