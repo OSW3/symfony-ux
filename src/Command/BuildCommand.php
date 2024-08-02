@@ -44,8 +44,60 @@ class BuildCommand extends Command
 
             switch ($name)
             {
+                case 'breakpoints':
+
+                    $breakpoints = $value['base'];
+                    $additional  = $value['additional'];
+                    $useless     = $value['useless'];
+
+                    // // Additional
+                    // foreach ($additional as $breakpointName => $breakpointValue)
+                    // {
+                    //     $breakpoints[$breakpointName] = [
+                    //         'name' => $breakpointName,
+                    //         'value' => $breakpointValue,
+                    //     ];
+                    // }
+
+
+                    // Sort breakpoint (mobile first)
+                    // usort($breakpoints, function($a, $b) {
+                    //     return $a['value'] <=> $b['value'];
+                    // });
+
+                    // dump($breakpoints);
+
+                    foreach ($breakpoints as $breakpoint) 
+                    {
+                        $sassVariables[] = "\$breakpoint-name-{$breakpoint['name']}: '{$breakpoint['name']}';";
+                        $sassVariables[] = "\$breakpoint-{$breakpoint['name']}: {$breakpoint['breakpoint']}px;";
+                        $sassVariables[] = "\$container-{$breakpoint['name']}: {$breakpoint['container']}px;";
+                    }
+
+                    // Additional breakpoints
+                    if (!empty($additional)) {
+    
+                        $sassString = '$additional-breakpoints: (';
+    
+                        foreach ($additional as $name => $values) {
+                            $sassString .= "'$name': (breakpoint: {$values['breakpoint']}px, container: {$values['container']}px), ";
+                        }
+                    
+                        $sassString = rtrim($sassString, ', ');
+                        $sassString .= ');';
+
+                        $sassVariables[] = $sassString;
+                    }
+
+                    // Excludes breakpoints
+                    if (!empty($useless)) {
+                        $sassVariables[] = "\$useless-breakpoints: ('".implode("','", $useless)."');";
+                    }
+
+                break;
+
                 case 'default_theme':
-                    $sassVariables[] = "\$theme-default: {$value};";
+                    $sassVariables[] = "\$theme-default: '{$value}';";
                 break;
 
                 case 'grid_divisions':

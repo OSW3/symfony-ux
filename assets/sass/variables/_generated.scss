@@ -1,3 +1,23 @@
-// Last gen: 2024-08-01 13:37:43
+// Last gen: 2024-08-02 14:22:33
 $grid-divisions: 12;
-$theme-default: light;
+$theme-default: 'dark';
+$breakpoint-name-phone: 'phone';
+$breakpoint-phone: 576px;
+$container-phone: 540px;
+$breakpoint-name-tablet: 'tablet';
+$breakpoint-tablet: 768px;
+$container-tablet: 720px;
+$breakpoint-name-laptop: 'laptop';
+$breakpoint-laptop: 992px;
+$container-laptop: 960px;
+$breakpoint-name-desktop: 'desktop';
+$breakpoint-desktop: 1200px;
+$container-desktop: 1140px;
+$breakpoint-name-wide: 'wide';
+$breakpoint-wide: 1400px;
+$container-wide: 1440px;
+$breakpoint-name-ultra: 'ultra';
+$breakpoint-ultra: 1600px;
+$container-ultra: 1520px;
+$additional-breakpoints: ('extra': (breakpoint: 576px, container: 540px), 'plop': (breakpoint: 576px, container: 540px));
+$useless-breakpoints: ('wide','ultra');

@@ -13,6 +13,68 @@ return static function($definition)
 
         ->arrayNode('layout')->addDefaultsIfNotSet()->children()
 
+            ->arrayNode('breakpoints')
+                ->addDefaultsIfNotSet()->children()
+
+                    ->arrayNode('base')->addDefaultsIfNotSet()->children()
+                        ->arrayNode('phone')->addDefaultsIfNotSet()->children()
+                            ->scalarNode('name')->defaultValue('phone')->end()
+                            ->integerNode('breakpoint')->defaultValue(576)->end()
+                            ->integerNode('container')->defaultValue(540)->end()
+                        ->end()->end()
+
+                        ->arrayNode('tablet')->addDefaultsIfNotSet()->children()
+                            ->scalarNode('name')->defaultValue('tablet')->end()
+                            ->integerNode('breakpoint')->defaultValue(768)->end()
+                            ->integerNode('container')->defaultValue(720)->end()
+                        ->end()->end()
+
+                        ->arrayNode('laptop')->addDefaultsIfNotSet()->children()
+                            ->scalarNode('name')->defaultValue('laptop')->end()
+                            ->integerNode('breakpoint')->defaultValue(992)->end()
+                            ->integerNode('container')->defaultValue(960)->end()
+                        ->end()->end()
+
+                        ->arrayNode('desktop')->addDefaultsIfNotSet()->children()
+                            ->scalarNode('name')->defaultValue('desktop')->end()
+                            ->integerNode('breakpoint')->defaultValue(1200)->end()
+                            ->integerNode('container')->defaultValue(1140)->end()
+                        ->end()->end()
+
+                        ->arrayNode('wide')->addDefaultsIfNotSet()->children()
+                            ->scalarNode('name')->defaultValue('wide')->end()
+                            ->integerNode('breakpoint')->defaultValue(1400)->end()
+                            ->integerNode('container')->defaultValue(1440)->end()
+                        ->end()->end()
+
+                        ->arrayNode('ultra')->addDefaultsIfNotSet()->children()
+                            ->scalarNode('name')->defaultValue('ultra')->end()
+                            ->integerNode('breakpoint')->defaultValue(1600)->end()
+                            ->integerNode('container')->defaultValue(1520)->end()
+                        ->end()->end()
+                    ->end()->end()
+
+                    ->arrayNode('additional')
+                        ->useAttributeAsKey('name')
+                        ->arrayPrototype()
+                            ->children()
+                                ->integerNode('breakpoint')
+                                    ->isRequired()
+                                ->end()
+                                ->integerNode('container')
+                                    ->isRequired()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+
+                    ->arrayNode('useless')
+                        ->scalarPrototype()->end()
+                    ->end()
+
+                ->end()
+            ->end()
+
             ->integerNode('grid_divisions')
                 ->info("Specifies the number of division of the grid system")
                 ->defaultValue(12)
@@ -87,4 +149,36 @@ return static function($definition)
         ->end()->end()
 
     ->end();
+    
+    $definition->rootNode()->validate()->always(function ($config) {
+
+        //  Defaults Breakpoints
+        // --
+
+        // $breakpoints = [
+        //     'phone'  => 576,
+        //     'tablet'  => 768,
+        //     'laptop'  => 992,
+        //     'desktop' => 1200,
+        //     'wide'    => 1400,
+        //     'ultra'   => 1600
+        // ];
+
+        // foreach ($breakpoints as $name => $value) 
+        // {
+        //     if (!isset($config['layout']['breakpoints'][$value])) {
+        //         // dump([$name, $value]);
+        //         $config['layout']['breakpoints'][$name] = [
+        //             'name'  => $name,
+        //             'value' => $value
+        //         ];
+        //     }
+        // }
+
+
+        // dump($config['layout']['breakpoints']);
+        
+        return $config;
+
+    })->end();
 };
