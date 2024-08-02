@@ -18,9 +18,9 @@
         }
     },
     "require": {
-        "symfony/twig-bundle": "6.4.*",
-        "symfony/options-resolver": "6.4.*",
-        "symfony/ux-twig-component": "^2.18",
-        "symfony/webpack-encore-bundle": "^2.1"
+        "symfony/twig-bundle": "*",
+        "symfony/options-resolver": "*",
+        "symfony/ux-twig-component": "*",
+        "symfony/webpack-encore-bundle": "*"
     }
 }
