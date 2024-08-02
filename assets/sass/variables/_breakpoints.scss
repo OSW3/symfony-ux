@@ -88,7 +88,6 @@ $containers: (
 /// -----
 // $additional-breakpoints: (
 //     'ultra-wide': (breakpoint: 1800px, container: 1740px),
-//     'plop': (breakpoint: 1800px, container: 1740px) 
 // );
 // $additional-breakpoints: () !default;
 $additional-breakpoints: if(meta.global-variable-exists('additional-breakpoints', $module: generated), generated.$additional-breakpoints, ()) !default;
