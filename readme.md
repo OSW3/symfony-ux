@@ -13,7 +13,7 @@ Add many UX Components to your app.
 - Components
     - [Copyright](./docs/components/copyright.md)
     - [Scroll to top](./docs/components/scroll-to-top.md)
-<vr>
+<br>
 
 ## How UX Components works ?
 
@@ -23,4 +23,4 @@ Each of the parameters can be overloaded in 2 ways:
 - overloaded by the ux.yaml configuration file
 - overloaded by SCSS variable definition
 
-> **Higher priority is given to SCSS variables**
+> **!!! Higher priority is given to SCSS variables !!!**
