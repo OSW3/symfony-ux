@@ -41,9 +41,10 @@ class BuildCommand extends Command
         $sassVariables[] = "// Last gen: ". date("Y-m-d H:i:s");
 
         foreach ($this->options['layout'] as $name => $value) match ($name) {
-            'breakpoints' => $this->uxBreakpoints($sassVariables, $value),
-            'transitions' => $this->uxTransitions($sassVariables, $value),
-            'default_theme' => $this->uxDefaultTheme($sassVariables, $value),
+            'breakpoints'    => $this->uxBreakpoints($sassVariables, $value),
+            'spacer'         => $this->uxSpacer($sassVariables, $value),
+            'transitions'    => $this->uxTransitions($sassVariables, $value),
+            'default_theme'  => $this->uxDefaultTheme($sassVariables, $value),
             'grid_divisions' => $this->uxGridDivisions($sassVariables, $value),
             default => null,
         };
@@ -92,7 +93,21 @@ class BuildCommand extends Command
             $vars[] = "\$useless-breakpoints: ('".implode("','", $useless)."');";
         }
     }
+    
+    private function uxSpacer(array &$vars, $options)
+    {
+        foreach ($options as $name => $value)
+        {
+            $name = str_replace("spacer_", "", $name);
 
+            if ($name === 'base') {
+                $value.= 'rem';
+            }
+
+            $vars[] = "\$spacer-{$name}: {$value};";
+        }
+    }
+    
     private function uxTransitions(array &$vars, $transitions)
     {
         foreach ($transitions as $name => $value)
