@@ -18,7 +18,10 @@ trait AttributeClassTrait
 
     public function fetchClass(): string
     {
-        $classList = [static::NAME];
+        $classname = static::NAME;
+        $classname = str_replace("_", "-", $classname);
+        
+        $classList = [$classname];
         $classList[] = $this->class;
 
         return implode(" ", $classList);

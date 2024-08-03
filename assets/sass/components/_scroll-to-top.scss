@@ -5,12 +5,12 @@
 // ************************************************************************** //
 
 @use 'sass:math';
+@use './../variables/zindex';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/position';
-@use './../abstracts/variables/zindex';
 @use './../abstracts/mixins/transition';
 
 @include banner.header('Component To Top');
@@ -51,7 +51,7 @@ $default--button-to-top--text-hover-color      : $white;
 
 /// Button component
 /// =============================================
-.to-top {
+.scroll-to-top {
     @if $button-to-top--position == 'left' {
         @include position.fixed(null, null, -$spacer*3, $button-to-top--offset-x);
     }

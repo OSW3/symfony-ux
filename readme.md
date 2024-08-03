@@ -24,3 +24,5 @@ Each of the parameters can be overloaded in 2 ways:
 - overloaded by SCSS variable definition
 
 > **!!! Higher priority is given to SCSS variables !!!**
+
+This means that UX component bundle variables can be overridden by parameter definition in ux.yaml file and parameter definition in ux.yaml file can be overridden by SCSS variables.
