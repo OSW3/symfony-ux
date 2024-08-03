@@ -1,6 +1,18 @@
 /// DevBrain UI Base
 /// =============================================
 
+@use 'sass:meta';
+@use './generated';
+
+
+$prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux') !default;
+
+@if type-of($prefix) == 'string' and $prefix != '' {
+    $prefix: '#{$prefix}-';
+}
+
+
+
 /// Abstracts Variables
 /// -------------------------
 

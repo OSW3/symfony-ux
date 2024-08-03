@@ -1,6 +1,6 @@
 # Copyright
 
-Display a copyright, generally on the website footer
+Display a copyright, generally on the website footer.
 
 ## Configuration
 
@@ -44,7 +44,7 @@ ux:
 
 - Add your custom ID.
     ```twig 
-    <twig:Copyright id="my-custom-is" />
+    <twig:Copyright id="my-custom-id" />
     ```
 
 - Add your custom class.

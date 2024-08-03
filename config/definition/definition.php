@@ -4,6 +4,11 @@ return static function($definition)
 {
     $definition->rootNode()->children()
 
+        ->scalarNode('prefix')
+            ->info("Specifies the prefix")
+            ->defaultValue('ux')
+        ->end()
+
         ->arrayNode('layout')->addDefaultsIfNotSet()->children()
 
             /**

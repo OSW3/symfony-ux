@@ -26,7 +26,7 @@
 /// link component
 /// =============================================
 
-.ux-link {
+.#{$prefix}link {
     --link--text-color: var(--dark);
 
     cursor: pointer;

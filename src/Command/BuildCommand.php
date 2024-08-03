@@ -40,6 +40,10 @@ class BuildCommand extends Command
         $sassVariables   = [];
         $sassVariables[] = "// Last gen: ". date("Y-m-d H:i:s");
 
+        if (isset($this->options['prefix'])) {
+            $sassVariables[] = "\$prefix: '{$this->options['prefix']}';";
+        }
+
         foreach ($this->options['layout'] as $name => $value) match ($name) {
             'breakpoints'    => $this->uxBreakpoints($sassVariables, $value),
             'spacer'         => $this->uxSpacer($sassVariables, $value),
