@@ -15,15 +15,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 #[AsTwigComponent(template: '@UxComponents/scroll-to-top/base.twig')]
 final class ScrollToTop
-{
+{    
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
-    
-    const NAME = "scroll_to_top";
 
-    private array $options;
 
     #[ExposeInTemplate(name: 'title', getter: 'fetchTitle')]
     public string $title;
@@ -31,18 +28,21 @@ final class ScrollToTop
     #[ExposeInTemplate(name: 'symbol', getter: 'fetchSymbol')]
     public string $symbol;
 
-   #[ExposeInTemplate(name: 'topAt', getter: 'doNotExpose')]
-   public int $topAt;
+    #[ExposeInTemplate(name: 'topAt', getter: 'doNotExpose')]
+    public int $topAt;
 
-   #[ExposeInTemplate(name: 'toggleAt', getter: 'doNotExpose')]
-   public int $toggleAt;
+    #[ExposeInTemplate(name: 'toggleAt', getter: 'doNotExpose')]
+    public int $toggleAt;
+
+    private array $options;
+
 
     public function __construct(
         #[Autowire(service: 'service_container')] private ContainerInterface $container,
     )
     {
         $params = $container->getParameter(Configuration::NAME);
-        $this->options = $params['component'][static::NAME];
+        $this->options = $params['component']['scroll_to_top'];
     }
 
     #[PreMount]
@@ -71,6 +71,11 @@ final class ScrollToTop
         $resolver->setAllowedTypes('toggleAt', ['numeric']);
 
         return $resolver->resolve($data) + $data;
+    }
+
+    public function getComponentClassname(): string 
+    {
+        return "ux-scroll-to-top";
     }
 
     public function fetchTitle(): string

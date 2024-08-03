@@ -21,9 +21,6 @@ final class Copyright
     use AttributeClassTrait;
     use AttributeDatasetTrait;
     
-    const NAME = "copyright";
-
-    private array $options;
 
     #[ExposeInTemplate(name: 'symbol', getter: 'doNotExpose')]
     public string $symbol;
@@ -43,12 +40,15 @@ final class Copyright
     #[ExposeInTemplate(name: 'copyright', getter: 'fetchCopyright')]
     private string $copyright;
 
+    private array $options;
+
+
     public function __construct(
         #[Autowire(service: 'service_container')] private ContainerInterface $container,
     )
     {
         $params = $container->getParameter(Configuration::NAME);
-        $this->options = $params['component'][static::NAME];
+        $this->options = $params['component']['copyright'];
     }
 
     #[PreMount]
@@ -80,6 +80,11 @@ final class Copyright
         $resolver->setAllowedTypes('since', ['string','integer']);
 
         return $resolver->resolve($data) + $data;
+    }
+
+    public function getComponentClassname(): string 
+    {
+        return "ux-copyright";
     }
 
     public function fetchCopyright(): string

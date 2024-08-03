@@ -18,10 +18,12 @@ trait AttributeClassTrait
 
     public function fetchClass(): string
     {
-        $classname = static::NAME;
-        $classname = str_replace("_", "-", $classname);
+        $classList = [];
+
+        if (method_exists($this, 'getComponentClassname')) {
+            $classList = [$this->getComponentClassname()];
+        }
         
-        $classList = [$classname];
         $classList[] = $this->class;
 
         return implode(" ", $classList);

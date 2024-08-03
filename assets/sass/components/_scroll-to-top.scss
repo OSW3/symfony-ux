@@ -51,7 +51,7 @@ $default--button-to-top--text-hover-color      : $white;
 
 /// Button component
 /// =============================================
-.scroll-to-top {
+.ux-scroll-to-top {
     @if $button-to-top--position == 'left' {
         @include position.fixed(null, null, -$spacer*3, $button-to-top--offset-x);
     }
