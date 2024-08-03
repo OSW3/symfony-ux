@@ -12,6 +12,7 @@ Add many UX Components to your app.
     - [Transitions](./docs/layout/transitions.md)
 - Components
     - [Copyright](./docs/components/copyright.md)
+    - [link](./docs/components/link.md)
     - [Scroll to top](./docs/components/scroll-to-top.md)
 <br>
 
