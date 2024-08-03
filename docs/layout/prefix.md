@@ -12,13 +12,13 @@ The prefix is used to identify the component of this Bundle.
 ```html 
 <div class="ux-copyright"> ... </div>
 <a class="ux-link"> ... </a>
-```
+```  
 <br>
 
 ## Default prefix
 
 The default prefix is `ux`.
-the prefix will be applied to components such as `ux-`.
+the prefix will be applied to components such as `ux-`.  
 <br>
 
 ## How to change the prefix
@@ -31,7 +31,7 @@ ux:
 ```
 
 If your custom prefix is `my-prefix`.
-the prefix will be applied to components such as `my-prefix-`.
+the prefix will be applied to components such as `my-prefix-`.  
 <br>
 
 ### Method 2: by SCSS variable
@@ -44,7 +44,7 @@ You must place this variable before importing the elements of the Bundle.
 $prefix: 'my-custom-prefix';
 ```
 
-SCSS variable overrides ux.yaml configuration.
+SCSS variable overrides ux.yaml configuration.  
 <br>
 
 ## No prefix
