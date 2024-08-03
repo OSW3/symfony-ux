@@ -53,4 +53,4 @@ export default class ScrollToTopComponent extends AbstractComponent
     }
 }
 
-document.querySelectorAll('[data-component=to-top]').forEach(node => new ScrollToTopComponent(node));
+document.querySelectorAll('[rel=js-ux--scroll-to-top]').forEach(node => new ScrollToTopComponent(node));

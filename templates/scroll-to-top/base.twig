@@ -15,7 +15,8 @@
 {% set _attr = _add_attribute(_attr, 'id', id) %}
 {% set _attr = _add_attribute(_attr, 'class', class) %}
 {% set _attr = _add_attribute(_attr, 'title', title) %}
+{% set _attr = _add_attribute(_attr, 'rel', "js-ux--scroll-to-top") %}
+
 {% for _property, _value in dataset %}
     {% set _attr = _add_attribute(_attr, _property, _value) %}
 {% endfor %}
-
