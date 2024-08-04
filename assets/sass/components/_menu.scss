@@ -42,7 +42,7 @@ $default--menu-link--disabled-background-color: transparent;
 /// =============================================
 ///
 
-.menu {
+.#{$prefix}menu {
     background-color: var(--menu--background-color, $default--menu--background-color);
 
 

@@ -154,7 +154,7 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 // @import './../../lib/devbrain-ui/src/Resources/sass/components/loading';
 // @import './../../lib/devbrain-ui/src/Resources/sass/components/map';
 // @import './../../lib/devbrain-ui/src/Resources/sass/components/media';
-// @import './../../lib/devbrain-ui/src/Resources/sass/components/menu';
+@import './components/menu';
 // @import './../../lib/devbrain-ui/src/Resources/sass/components/navigation';
 // @import './../../lib/devbrain-ui/src/Resources/sass/components/offcanvas';
 // @import './../../lib/devbrain-ui/src/Resources/sass/components/pagination';

@@ -6,6 +6,7 @@ Add many UX Components to your app.
     - [Installation (no comment process)](./docs/install/no-comment.md)
     - [Installation (process explained)](./docs/install/explained.md)
 - Layout
+    - [Prefix](./docs/layout/prefix.md)
     - [Breakpoints](./docs/layout/breakpoints.md)
     - [Grid](./docs/layout/grid.md)
     - [Themes](./docs/layout/themes.md)

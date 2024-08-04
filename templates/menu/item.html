@@ -1,0 +1,18 @@
+<li {{ _get_attributes(_attr) }}>
+{% if children is not empty %}
+    <span class="menu-link">{{ label|raw }}</span>
+    <twig:Menu:Items 
+        :items="children"
+        :level="level"
+    />
+{% else %}
+    <twig:Link 
+        class="menu-link"
+        :label="label"
+        :url="url"
+        :target="target"
+        :isActive="isActive"
+        :isDisabled="isDisabled"
+    />
+{% endif %}
+</li>

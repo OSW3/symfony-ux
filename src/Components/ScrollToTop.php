@@ -5,21 +5,19 @@ use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\DoNotExposeTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
-use OSW3\UX\DependencyInjection\Configuration;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 #[AsTwigComponent(template: '@UxComponents/scroll-to-top/base.twig')]
-final class ScrollToTop
+final class ScrollToTop extends AbstractComponent
 {    
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
+
 
 
     #[ExposeInTemplate(name: 'title', getter: 'fetchTitle')]
@@ -34,21 +32,15 @@ final class ScrollToTop
     #[ExposeInTemplate(name: 'toggleAt', getter: 'doNotExpose')]
     public int $toggleAt;
 
-    private array $options;
+    #[ExposeInTemplate(name: 'rel', getter: 'fetchRel')]
+    private string $rel;
+    
 
-
-    public function __construct(
-        #[Autowire(service: 'service_container')] private ContainerInterface $container,
-    )
-    {
-        $params = $container->getParameter(Configuration::NAME);
-        $this->options = $params['component']['scroll_to_top'];
-    }
 
     #[PreMount]
     public function preMount(array $data): array
     {
-        // validate data
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -58,25 +50,32 @@ final class ScrollToTop
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('title', $this->options['title']);
+        $resolver->setDefault('title', $options['title']);
         $resolver->setAllowedTypes('title', ['string']);
 
-        $resolver->setDefault('symbol', $this->options['symbol']);
+        $resolver->setDefault('symbol', $options['symbol']);
         $resolver->setAllowedTypes('symbol', ['string']);
 
-        $resolver->setDefault('topAt', $this->options['top_at']);
+        $resolver->setDefault('topAt', $options['top_at']);
         $resolver->setAllowedTypes('topAt', ['numeric']);
 
-        $resolver->setDefault('toggleAt', $this->options['toggle_at']);
+        $resolver->setDefault('toggleAt', $options['toggle_at']);
         $resolver->setAllowedTypes('toggleAt', ['numeric']);
 
         return $resolver->resolve($data) + $data;
     }
 
+    private function getConfig(): array 
+    {
+        return $this->config['component']['scroll_to_top'];
+    }
+
     public function getComponentClassname(): string 
     {
-        return "ux-scroll-to-top";
+        return "{$this->prefix}scroll-to-top";
     }
+
+
 
     public function fetchTitle(): string
     {
@@ -86,5 +85,10 @@ final class ScrollToTop
     public function fetchSymbol(): string
     {
         return $this->symbol;
+    }
+
+    public function fetchRel(): string
+    {
+        return "js-{$this->getComponentClassname()}";
     }
 }

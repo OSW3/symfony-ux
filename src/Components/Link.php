@@ -11,12 +11,13 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent(template: '@UxComponents/link/base.twig')]
-final class Link
+final class Link extends AbstractComponent
 {    
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
+
 
 
     #[ExposeInTemplate(name: 'label')]
@@ -33,6 +34,8 @@ final class Link
 
     public bool $noClassLink;
     public bool $isActive;
+
+
 
     #[PreMount]
     public function preMount(array $data): array
@@ -70,8 +73,10 @@ final class Link
 
     public function getComponentClassname(): string 
     {
-        return "ux-link";
+        return "{$this->prefix}link";
     }
+
+
 
     public function fetchClass(): string
     {

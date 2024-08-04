@@ -1,0 +1,15 @@
+<ul {{ _get_attributes(_attr) }}>
+{% for item in items %}
+<twig:Menu:Item
+    :class="item.class|default('')"
+    :label="item.label|default('')"
+    :url="item.url|default('')"
+    :target="item.target|default('')"
+    :isActive="item.active|default(false)"
+    :isDisabled="item.disabled|default(false)"
+    :children="item.children|default([])"
+    :dataset="item.dataset|default([])"
+    :level="level + 1"
+/>
+{% endfor %}
+</ul>

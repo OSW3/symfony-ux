@@ -1,0 +1,13 @@
+{# ---------------------------------------------- #}
+{# - Component : Menu                           - #}
+{# - Part : Item                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/menu/item.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+{# Set the Class attribute #}
+{% set _attr = _add_attribute(_attr, 'class', class) %}

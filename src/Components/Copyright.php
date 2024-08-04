@@ -5,16 +5,13 @@ use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\DoNotExposeTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
-use OSW3\UX\DependencyInjection\Configuration;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 #[AsTwigComponent(template: '@UxComponents/copyright/base.twig')]
-final class Copyright
+final class Copyright extends AbstractComponent
 {
     use DoNotExposeTrait;
     use AttributeIdTrait;
@@ -40,21 +37,12 @@ final class Copyright
     #[ExposeInTemplate(name: 'copyright', getter: 'fetchCopyright')]
     private string $copyright;
 
-    private array $options;
 
-
-    public function __construct(
-        #[Autowire(service: 'service_container')] private ContainerInterface $container,
-    )
-    {
-        $params = $container->getParameter(Configuration::NAME);
-        $this->options = $params['component']['copyright'];
-    }
 
     #[PreMount]
     public function preMount(array $data): array
     {
-        // validate data
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -64,28 +52,35 @@ final class Copyright
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('symbol', $this->options['symbol']);
+        $resolver->setDefault('symbol', $options['symbol']);
         $resolver->setAllowedTypes('symbol', ['string']);
 
-        $resolver->setDefault('datesSeparator', $this->options['dates_separator']);
+        $resolver->setDefault('datesSeparator', $options['dates_separator']);
         $resolver->setAllowedTypes('datesSeparator', ['string']);
 
-        $resolver->setDefault('separator', $this->options['separator']);
+        $resolver->setDefault('separator', $options['separator']);
         $resolver->setAllowedTypes('separator', ['string']);
 
-        $resolver->setDefault('company', $this->options['company']);
+        $resolver->setDefault('company', $options['company']);
         $resolver->setAllowedTypes('company', ['null', 'string']);
 
-        $resolver->setDefault('since', $this->options['since']);
+        $resolver->setDefault('since', $options['since']);
         $resolver->setAllowedTypes('since', ['string','integer']);
 
         return $resolver->resolve($data) + $data;
     }
 
+    private function getConfig(): array 
+    {
+        return $this->config['component']['copyright'];
+    }
+
     public function getComponentClassname(): string 
     {
-        return "ux-copyright";
+        return "{$this->prefix}copyright";
     }
+
+
 
     public function fetchCopyright(): string
     {

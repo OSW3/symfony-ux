@@ -18,6 +18,11 @@ trait AttributeClassTrait
 
     public function fetchClass(): string
     {
+        return implode(" ", $this->classList());
+    }
+
+    private function classList(): array
+    {
         $classList = [];
 
         if (method_exists($this, 'getComponentClassname')) {
@@ -26,6 +31,6 @@ trait AttributeClassTrait
         
         $classList[] = $this->class;
 
-        return implode(" ", $classList);
+        return $classList;
     }
 }
