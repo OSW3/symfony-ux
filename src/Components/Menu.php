@@ -20,8 +20,6 @@ final class Menu extends AbstractComponent
     use AttributeClassTrait;
     use AttributeDatasetTrait;
 
-
-
     #[ExposeInTemplate(name: 'justify', getter: 'doNotExpose')]
     public string $justify;
 
@@ -34,12 +32,9 @@ final class Menu extends AbstractComponent
     #[ExposeInTemplate(name: 'items')]
     public array $items;
 
-
-
     #[PreMount]
     public function preMount(array $data): array
     {
-        // validate data
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -70,8 +65,6 @@ final class Menu extends AbstractComponent
     {
         return "{$this->prefix}menu";
     }
-
-
 
     public function fetchLabel(): string 
     {

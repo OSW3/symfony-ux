@@ -4,15 +4,57 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 
-/// Segment variables
-/// =============================================
-///
+$_component: 'segment';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Segment component
-/// =============================================
-///
 
-.segment {
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
 }

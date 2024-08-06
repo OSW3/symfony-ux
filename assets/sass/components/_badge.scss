@@ -10,30 +10,45 @@
 @use './../abstracts/mixins/pallet';
 @use './../abstracts/functions/color';
 
-@include banner.header('Component Badge');
+$_component: 'badge';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Badge variables
-/// =============================================
-
-// Default Values
-// --------------------------
-// -- No data
-
-
-// Default Theme
-// --------------------------
-// -- No data
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
 
 
 
-/// Badge component
-/// =============================================
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
 
-.badge {
-    // --badge--font-size: 1em;
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Badge container
+    /// --
     
-    @include corner.rounded($spacer);
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -41,6 +56,7 @@
     border-style: solid;
     color: var(--white);
     font-weight: 700;
+    @include corner.rounded($spacer);
 
 
     /// Badge sizes
@@ -80,7 +96,6 @@
             background-color: var(--#{$key});
             border-color: var(--#{$key});
         }
-
 
         // Stroke (outline) color
         // --

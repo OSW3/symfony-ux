@@ -4,21 +4,51 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
+$_component: 'cookie-box';
+$_classname: '#{$prefix}#{$_component}';
 
-/// Cookie Consent variables
-/// =============================================
-///
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $cookie-box--backdrop: true !default;
-
 $default--cookie-consent--background-color: $white;
 
-/// Cookie Consent component
-/// =============================================
-///
-.cookie-box {
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// CookieBox container inner
+    /// --
 
     &-inner {
         background-color: var(--cookie-consent--background-color, $default--cookie-consent--background-color);
@@ -27,20 +57,35 @@ $default--cookie-consent--background-color: $white;
     }
 
 
+    /// CookieBox header
+    /// --
+
     &-header {
         // border: 3px solid green;
         padding: $spacer;
     }
+
+
+    /// CookieBox content
+    /// --
 
     &-content {
         // border: 3px solid pink;
         padding: $spacer;
     }
 
+
+    /// CookieBox options
+    /// --
+
     &-options {
         // border: 3px solid orange;
         padding: $spacer;
     }
+
+
+    /// CookieBox action buttons
+    /// --
 
     &-actions {
         // border: 3px solid blue;
@@ -48,8 +93,8 @@ $default--cookie-consent--background-color: $white;
     }
 
 
-    // Cookie Box Backdrop
-    // --
+    /// CookieBox backdrop
+    /// --
 
     @if $cookie-box--backdrop {
         &::after {
@@ -76,7 +121,7 @@ $default--cookie-consent--background-color: $white;
 
 // Cookie Box Banner
 // --
-.cookie-box {
+.#{$_classname} {
     &-banner {
         @include transition.set((top, bottom), map-get($delays, normal));
         position: fixed;
@@ -103,4 +148,3 @@ $default--cookie-consent--background-color: $white;
         }
     }
 }
-

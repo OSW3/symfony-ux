@@ -1,0 +1,23 @@
+{# ---------------------------------------------- #}
+{# - Component : Brand                          - #}
+{# - Part : Link                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/brand/link.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{# Set the Class attribute #}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+
+{# Set the href attribute #}
+{% set _attr = _add_attribute(_attr, 'href', link) %}
+
+{# Set the target attribute #}
+{% set _attr = _add_attribute(_attr, 'target', "_self") %}

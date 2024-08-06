@@ -1,0 +1,23 @@
+{# ---------------------------------------------- #}
+{# - Component : Brand                          - #}
+{# - Part : Figure                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/brand/figure.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{# Set the Class attribute #}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+
+{# Set the SRC attribute #}
+{% set _attr = _add_attribute(_attr, 'src', src) %}
+
+{# Set the alternative text attribute #}
+{% set _attr = _add_attribute(_attr, 'alt', alt) %}

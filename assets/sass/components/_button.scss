@@ -4,6 +4,8 @@
 // *
 // ************************************************************************** //
 
+// TODO: Revoir le CSS de l'état "disabled" du bouton
+
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/banner';
@@ -11,47 +13,72 @@
 @use './../abstracts/mixins/transition';
 @use './../abstracts/functions/color';
 
-@include banner.header("Component Button");
+$_component: 'button';
+$_classname: '#{$prefix}#{$_component}';
 
-// TODO: Revoir le CSS de l'état "disabled" du bouton
-
-
-/// Button variables
-/// =============================================
+@include banner.header('Component #{$_component}');
 
 
-/// Button component
-/// =============================================
-.button {
-    @include corner.rounded(6px);
-    @include transition.set((background-color, border-color, color), .3s);
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Button container
+    /// --
+    
     cursor: pointer;
 
     line-height: 1;
     border-width: 1px;
     border-style: solid;
+    border-color: transparent;
+    background-color: transparent;
+    @include corner.rounded(6px);
+    @include transition.set((background-color, border-color, color), .3s);
 
-    
 
     /// Button Sizes
     /// --
 
-    @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
     font-size: $spacer * 1;
+    @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
 
     &-small {
-        @include spaces.padding( $spacer * .4, $spacer * 1, $spacer * .4, $spacer * 1 );
         font-size: $spacer * .8;
+        @include spaces.padding( $spacer * .4, $spacer * 1, $spacer * .4, $spacer * 1 );
     }
 
     &-large {
-        @include spaces.padding( $spacer * 1, $spacer * 2, $spacer * 1, $spacer * 2 );
         font-size: $spacer * 1.6;
+        @include spaces.padding( $spacer * 1, $spacer * 2, $spacer * 1, $spacer * 2 );
     }
-
-
-    /// Button block
-    /// --
     
     &-block {
         display: block;
@@ -59,12 +86,9 @@
     }
 
 
-    /// Pallet colors
+    /// Button pallet
     /// --
     
-    border-color: transparent;
-    background-color: transparent;
-
     @each $key, $value in $pallet {
         $shade: color.shade($value, 30%);
         $tint: color.tint($value, 60%);
@@ -99,12 +123,18 @@
     }
 
 
-    // Disabled
-    // -------------------------
+    /// Button state
+    /// --
+    
     &[disabled],
     &[disabled]:hover {
         cursor: default;
         color: var(--muted);
+    }
+
+
+    & .no-border {
+        border: none !important;
     }
 }
 
@@ -116,7 +146,7 @@
     }
 }
 
-// No Border
-.button-no-border {
-    border: none !important;
-}
+// // No Border
+// .button-no-border {
+//     border: none !important;
+// }

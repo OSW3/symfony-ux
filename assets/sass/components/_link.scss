@@ -6,27 +6,59 @@
 
 @use './../abstracts/mixins/banner';
 
-@include banner.header("Component Link");
+$_component: 'link';
+$_classname: '#{$prefix}#{$_component}';
 
-
-/// link variables
-/// =============================================
-
-// Default Values
-// --------------------------
-// -- No data
-
-
-// Default Theme
-// --------------------------
-// -- No data
+@include banner.header('Component #{$_component}');
 
 
 
-/// link component
-/// =============================================
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
 
-.#{$prefix}link {
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
+
     --link--text-color: var(--dark);
 
     cursor: pointer;

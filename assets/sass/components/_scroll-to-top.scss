@@ -1,6 +1,6 @@
 // ******************************* DevBrain UI ****************************** //
 // *
-// *    Components: Button To Top
+// *    Components: Scroll To Top
 // *
 // ************************************************************************** //
 
@@ -13,11 +13,19 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-@include banner.header('Component To Top');
+$_component: 'scroll-to-top';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Button component
-/// =============================================
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
 @function calculate-font-size($element-height, $base-rem, $base-height, $multiplier) {
     $ratio: $base-rem * math.div($multiplier, $base-height);
     @return $element-height * $ratio;
@@ -25,21 +33,27 @@
 
 
 
-/// Button variables
-/// =============================================
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
 
-// Default Variables
-// --------------------------
+// * Default sizes and/or positions variables
+// * =========================
+
 $button-to-top--size     : 40px !default;
 $button-to-top--position : right !default;
 $button-to-top--offset-x : $spacer !default;
 $button-to-top--offset-y : $spacer !default;
 $button-to-top--symbol   : "\23F6" !default;
 $button-to-top--font-size: 2 !default;
-$button-to-top--zindex   : zindex.$button-to-top !default;
+$button-to-top--z-index   : zindex.$button-to-top !default;
 
-// Default Theme
-// --------------------------
+
+// * Default theme variables
+// * =========================
+
 $default--button-to-top--background-color      : $teal;
 $default--button-to-top--border-color          : $teal;
 $default--button-to-top--text-color            : $white;
@@ -48,10 +62,17 @@ $default--button-to-top--border-hover-color    : $green;
 $default--button-to-top--text-hover-color      : $white;
 
 
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-/// Button component
-/// =============================================
-.ux-scroll-to-top {
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+    
     @if $button-to-top--position == 'left' {
         @include position.fixed(null, null, -$spacer*3, $button-to-top--offset-x);
     }
@@ -71,7 +92,19 @@ $default--button-to-top--text-hover-color      : $white;
     color: var(--button-to-top--text-color, $default--button-to-top--text-color);
     opacity: 0;
     cursor: pointer;
-    z-index: $button-to-top--zindex;
+    z-index: $button-to-top--z-index;
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
 
     &.show {
         @include position.bottom($button-to-top--offset-y);

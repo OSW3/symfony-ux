@@ -4,43 +4,79 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
-@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/position';
 @use './../abstracts/functions/color';
 
-@include banner.header("Component Alert");
+$_component: 'alert';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Alert variables
-/// =============================================
-///
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $alert--margin-y: $spacer !default;
 
-/// Alert component
-/// =============================================
-///
 
-.alert {
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Alert container
+    /// --
+    
+    border-width: 1px;
+    border-style: solid;
     @include position.relative;
     @include corner.rounded(6px);
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
     @include spaces.margin( $alert--margin-y, auto, $alert--margin-y, auto );
-    border-width: 1px;
-    border-style: solid;
 
+
+    /// Alert dismiss button
+    /// --
+    
     & .button-close {
         @include position.absolute(0, 0, null, null);
     }
-}
-
-@each $key, $value in $pallet {
-    .alert-#{$key} {
-        // color: $value;
-        color: var(--#{$key});
-        background-color: color.tint($value, 70%);
-        border-color: var(--#{$key});;
+    
+    
+    /// Alert pallet
+    /// --
+    
+    @each $key, $value in $pallet {
+        &-#{$key} {
+            // color: $value;
+            color: var(--#{$key});
+            background-color: color.tint($value, 70%);
+            border-color: var(--#{$key});;
+        }
     }
 }

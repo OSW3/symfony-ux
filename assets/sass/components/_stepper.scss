@@ -4,15 +4,57 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 
-/// Stepper variables
-/// =============================================
-///
+$_component: 'stepper';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Stepper component
-/// =============================================
-///
 
-.stepper {
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
 }

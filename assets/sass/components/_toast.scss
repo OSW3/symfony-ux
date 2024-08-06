@@ -1,32 +1,73 @@
-// ******************************* DevBrain UI ****************************** //
+// **************************** OSW3 - Symfony UX *************************** //
 // *
 // *    Components: Toast
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/functions/color';
 
+$_component: 'toast';
+$_classname: '#{$prefix}#{$_component}';
 
-/// Toast variables
-/// =============================================
-///
+@include banner.header('Component #{$_component}');
 
 
-/// Toast component
-/// =============================================
-///
 
-.toast {
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+    
     @include corner.rounded(6px);
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
     border-width: 1px;
     border-style: solid;
+
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
 }
 
 @each $key, $value in $pallet {
-    .toast-#{$key} {
+    .#{$_classname}-#{$key} {
         color: $value;
         background-color: color.tint($value, 70%);
         border-color: $value;

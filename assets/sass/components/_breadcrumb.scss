@@ -6,16 +6,35 @@
 
 @use './../abstracts/mixins/banner';
 
-@include banner.header("Component Breadcrumb");
+$_component: 'breadcrumb';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Breadcrumb variables
-/// =============================================
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $breadcrumb--separator : "/" !default;
 
-// Default Theme
-// --------------------------
+
+// * Default theme variables
+// * =========================
 
 $default--breadcrumb--background-color: transparent;
 $default--breadcrumb--link-color      : $gray-700;
@@ -23,9 +42,17 @@ $default--breadcrumb--link-hover-color: $gray-900;
 $default--breadcrumb--active-color    : $gray-900;
 
 
-/// Breadcrumb component
-/// =============================================
-.breadcrumb {
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Breadcrumb container
+    /// --
+    
     list-style: none;
     display: flex;
     flex-wrap: wrap;
@@ -33,10 +60,16 @@ $default--breadcrumb--active-color    : $gray-900;
     margin: 0;
     background: var(--breadcrumb--background-color, $default--breadcrumb--background-color);
 
+    
+    /// Breadcrumb items
+    /// --
+    
     &-item {
         display: flex;
         align-items: center;
     
+        // Item link
+
         & a {
             color: var(--breadcrumb--link-color, $default--breadcrumb--link-color);
             text-decoration: none;
@@ -47,6 +80,8 @@ $default--breadcrumb--active-color    : $gray-900;
             }
         }
 
+        // Active item
+
         &.active {
             color: var(--breadcrumb--active-color, $default--breadcrumb--active-color);
         
@@ -56,6 +91,8 @@ $default--breadcrumb--active-color    : $gray-900;
                 color: inherit;
             }
         }
+
+        // Items separator
 
         & + &::before {
             content: $breadcrumb--separator;

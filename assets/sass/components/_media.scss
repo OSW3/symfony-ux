@@ -4,22 +4,65 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 
-/// Media variables
-/// =============================================
-///
+$_component: 'media';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $media--caption--font-size: $spacer * .9 !default;
 
 
-/// Media component
-/// =============================================
-///
+// * Default theme variables
+// * =========================
 
-.media {
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
     display: flex;
     flex-direction: column;
     margin: 0;
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
 
     &-inline {
         display: inline-flex;

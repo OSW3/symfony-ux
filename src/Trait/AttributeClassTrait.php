@@ -29,7 +29,9 @@ trait AttributeClassTrait
             $classList = [$this->getComponentClassname()];
         }
         
-        $classList[] = $this->class;
+        if(!empty($this->class)) {
+            $classList[] = $this->class;
+        }
 
         return $classList;
     }

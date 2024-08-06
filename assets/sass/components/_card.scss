@@ -4,14 +4,32 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-/// Card variables
-/// =============================================
-///
+$_component: 'card';
+$_classname: '#{$prefix}#{$_component}';
 
-// Default Size
-// --------------------------
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $card--inner--padding: ($spacer * .6) $spacer;
 
@@ -64,8 +82,8 @@ $card-footer--border-bottom-style       : $card-footer--border-style !default;
 $card-footer--border-left-style         : $card-footer--border-style !default;
 
 
-// Default Theme
-// --------------------------
+// * Default theme variables
+// * =========================
 
 $default--card--text-color             : $black;
 $default--card--border-color           : $gray-500;
@@ -80,11 +98,17 @@ $default--card-footer--border-color    : $gray-500;
 $default--card-footer--background-color: $gray-200;
 
 
-/// Card component
-/// =============================================
-///
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-.card {
+.#{$_classname} {
+
+    /// Card container
+    /// --
+
     border-radius   : $card--border-radius;
     border-width    : $card--border-width;
     border-style    : $card--border-style;
@@ -92,6 +116,10 @@ $default--card-footer--background-color: $gray-200;
     color           : var(--card--text-color, $default--card--text-color);
     background-color: var(--card--background-color, $default--card--background-color);
 
+
+    /// Card header
+    /// --
+    
     &-header {
         @include spaces.margin(
             -$card-header--border-top-width,
@@ -119,6 +147,11 @@ $default--card-footer--background-color: $gray-200;
         color                     : var(--card-header--text-color, $default--card-header--text-color);
         background-color          : var(--card-header--background-color, $default--card-header--background-color);
     }
+
+
+    /// Card footer
+    /// --
+    
     &-footer {
         @include spaces.margin(
             null,
@@ -149,9 +182,18 @@ $default--card-footer--background-color: $gray-200;
         background-color          : var(--card-footer--background-color, $default--card-footer--background-color);
     }
 
+    
+    /// Card illustration / figure
+    /// --
+    
     &-figure {
         
     }
+
+    
+    /// Card title
+    /// --
+    
     &-title {
         font-size: $heading-font-size * .5;
         font-weight: 700;
@@ -168,9 +210,13 @@ $default--card-footer--background-color: $gray-200;
         margin: 0;
         padding: $card--inner--padding;
     }
+
+
+    /// Card body
+    /// --
+    
     &-body {
         // border: 1px solid blue;
         padding: $card--inner--padding;
-
     }
 }

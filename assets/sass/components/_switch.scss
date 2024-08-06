@@ -5,20 +5,46 @@
 // ************************************************************************** //
 
 @use "sass:math";
-
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
+$_component: 'switch';
+$_classname: '#{$prefix}#{$_component}';
 
-/// Switch variables
-/// =============================================
-///
+@include banner.header('Component #{$_component}');
 
-// Default Theme
-// --------------------------
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+$switch-width: 30 !default;
+$switch-height: 14 !default;
+
+$_switch-width-px: #{$switch-width}px;
+$_switch-height-px: #{$switch-height}px;
+
+
+// * Default theme variables
+// * =========================
 
 $default--switch-off--border-color         : $gray-700;
 $default--switch-off--background-color     : $gray-200;
@@ -32,25 +58,23 @@ $default--switch-disabled--border-color    : $gray-500;
 $default--switch-disabled--background-color: $gray-200;
 $default--switch-disabled--indicator-color : $gray-500;
 
-// Sizes & positions
-// --------------------------
-
-$switch-width: 30 !default;
-$switch-height: 14 !default;
-
-$switch-width-px: #{$switch-width}px;
-$switch-height-px: #{$switch-height}px;
 
 
-/// Switch component
-/// =============================================
-///
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-.switch {
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+    
+    padding-left: math.div($switch-width, 16) + map-get($spacers, 3 );
+    
     @include flex.middle;
     @include position.relative;
-
-    padding-left: math.div($switch-width, 16) + map-get($spacers, 3 );
 
 
     // Switch Input
@@ -66,13 +90,13 @@ $switch-height-px: #{$switch-height}px;
 
     &-slider {
         @include position.absolute(null, null, null, 0);
-        @include sizes.set($switch-width-px, $switch-height-px);
+        @include sizes.set($_switch-width-px, $_switch-height-px);
         @include transition.set((background-color), map-get($delays, normal));
     
         cursor: pointer;
         border-width: 1px;
         border-style: solid;
-        border-radius: $switch-height-px;
+        border-radius: $_switch-height-px;
 
         // Theme
         border-color    : var(--switch-off--border-color, $default--switch-off--border-color);
@@ -80,7 +104,7 @@ $switch-height-px: #{$switch-height}px;
 
         &:before {
             @include position.absolute(null, null, 1px, 2px);
-            @include sizes.set(calc($switch-height-px - 4px), calc($switch-height-px - 4px));
+            @include sizes.set(calc($_switch-height-px - 4px), calc($_switch-height-px - 4px));
             @include transition.set((left, background-color), map-get($delays, normal));
             content: "";
             border-radius: 50%;
@@ -97,7 +121,7 @@ $switch-height-px: #{$switch-height}px;
 
             &:before {
                 background-color: var(--switch-on--indicator-color, $default--switch-on--indicator-color);
-                left: calc($switch-width-px - $switch-height-px + 1px);
+                left: calc($_switch-width-px - $_switch-height-px + 1px);
             }
         }
 
@@ -118,4 +142,17 @@ $switch-height-px: #{$switch-height}px;
     &-label {
         // border: 1px solid red;
     }
+
+
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
 }

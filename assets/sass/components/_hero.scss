@@ -4,22 +4,63 @@
 // *
 // ************************************************************************** //
 
-// @use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/banner';
 
-/// Hero variables
-/// =============================================
-///
+$_component: 'hero';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
 
 $default--hero--text-color          : $black;
 $default--hero--background-color    : $gray-200;
 
 
-/// Hero component
-/// =============================================
-///
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-.hero {
-    // border: 3px solid red;
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+
     display: flex;
     flex-direction: column;
 

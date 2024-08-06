@@ -1,0 +1,20 @@
+{# ---------------------------------------------- #}
+{# - Component : Brand                          - #}
+{# - Part : Name                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/brand/name.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{# Set the Class attribute #}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+
+{# Set No translation attribute #}
+{% set _attr = _add_attribute(_attr, 'translate', "no") %}

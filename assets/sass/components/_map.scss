@@ -6,27 +6,58 @@
 
 @use './../abstracts/mixins/banner';
 
-@include banner.header('Component Map');
+$_component: 'map';
+$_classname: '#{$prefix}#{$_component}';
 
-
-/// Badge variables
-/// =============================================
-
-// Default Values
-// --------------------------
-// -- No data
-
-
-// Default Theme
-// --------------------------
-// -- No data
+@include banner.header('Component #{$_component}');
 
 
 
-/// Badge component
-/// =============================================
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
 
-.map {
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+
     $offset: 0;
     $offset_px: 1px * $offset;
 

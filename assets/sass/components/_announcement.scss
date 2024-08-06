@@ -6,32 +6,56 @@
 
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
+$_component: 'announcement';
+$_classname: '#{$prefix}#{$_component}';
 
-/// Announcement variables
-/// =============================================
-///
+@include banner.header('Component #{$_component}');
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $announcement--height: 40px !default;
 
 
-/// Announcement component
-/// =============================================
-///
+// * Default theme variables
+// * =========================
 
-.announcement {
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Announcement container
+    /// --
+
+    color: var(--announcement--text-color);
+    background-color: var(--announcement--background-color);
     @include flex.middle;
     @include sizes.set(null, $announcement--height);
     @include transition.set((color, background-color), map-get($delays, normal));
-
-    // Theme
-    color           : var(--announcement--text-color);
-    background-color: var(--announcement--background-color);
 }
-
-
-
 
 // /* styles.css */
 // .announcement-bar {
@@ -63,5 +87,3 @@ $announcement--height: 40px !default;
 //     display: inline-block;
 //     padding: 0 50px;
 //   }
-  
-  

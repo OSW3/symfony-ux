@@ -5,10 +5,22 @@
 // ************************************************************************** //
 
 @use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
+$_component: 'navigation';
+$_classname: '#{$prefix}#{$_component}';
 
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
 
 $_arr_containers : (container, container-fluid);
 @each $size, $breakpoint in $breakpoints {
@@ -24,35 +36,55 @@ $_str_container: '';
 $_containers: unquote(str-slice($_str_container, 1, -3));
 
 
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
 
-/// Navigation variables
-/// =============================================
-///
+// * Default sizes and/or positions variables
+// * =========================
 
 $navigation--side-panel-width: 280px !default;
 
 
+// * Default theme variables
+// * =========================
 
-// Default Theme
-// --------------------------
-
-$default--navigation--background-color   : $white;
+$default--navigation--background-color : $white;
 
 
-/// Navigation component
-/// =============================================
-///
-/// 
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-.navigation {
-    // border: 10px solid red;
-    
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
     #{$_str_container} {
-        // border: 10px solid cyan;
-        @include flex.row;
         align-items: center;
         justify-content: space-between;
+        @include flex.row;
     }
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
+
+
 
     & .brand {
         // border: 10px solid purple;
@@ -85,7 +117,6 @@ $default--navigation--background-color   : $white;
         @include transition.set((left, right, box-shadow), map-get($delays, normal));
 
         width: $navigation--side-panel-width;
-
         background-color: var(--navigation--background-color, $default--navigation--background-color);
       
         // border: 10px solid yellow;

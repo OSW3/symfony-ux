@@ -8,14 +8,30 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-@include banner.header('Component Brand');
+$_component: 'brand';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Brand variables
-/// =============================================
 
-/// Sizes values
-/// -------------------------
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
 $brand--small--font-size     : 1.2rem !default;
 $brand--small--tagline-size  : .8rem !default;
 $brand--small--tagline-offset: 6px !default;
@@ -34,8 +50,6 @@ $brand--large--tagline-offset: 12px !default;
 $brand--large--font-weight   : 900 !default;
 $brand--large--img-height    : 56px !default;
 
-/// Sizes Collection
-/// -------------------------
 $sizes: (
     small: (
         font-size     : $brand--small--font-size,
@@ -61,38 +75,34 @@ $sizes: (
 );
 
 
-// Default Theme
-// --------------------------
-$default--brand--text-color             : $gray-600;
-$default--brand--text-hover-color       : $black;
+// * Default theme variables
+// * =========================
+
+$default--brand--text-color      : $gray-600;
+$default--brand--text-hover-color: $black;
 
 
-/// Brand component
-/// =============================================
-.brand 
-{
-    @each $size, $properties in $sizes {
-        &-#{$size} {
-            font-size: map-get($properties, 'font-size');
-            font-weight: map-get($properties, 'font-weight');
-            
-            .brand-tagline {
-                font-size: map-get($properties, 'tagline-size');
-                font-weight: map-get($properties, 'font-weight');
-                margin-top: map-get($properties, 'tagline-offset');;
-            }
-            .brand-logo {
-                max-height: map-get($properties, 'img-height');
-            }
-        }
-    }
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
+.#{$_classname} {
+
+    /// Brand container
+    /// --
+    
     display: inline-block;
     text-decoration: none;
     white-space: nowrap;
     height: fit-content;
     color : var(--brand--text-color, $default--brand--text-color);
 
+    
+    /// Brand Link
+    /// --
+    
     &-link {
         color: inherit;
         display: table;
@@ -103,9 +113,11 @@ $default--brand--text-hover-color       : $black;
             color : var(--brand--text-hover-color, $default--brand--text-hover-color);
         }
     }
+    
 
-    &-logo ,
-    &-icon ,
+    /// Brand Text
+    /// --
+
     &-text {
         display: block;
         font-size: inherit;
@@ -116,11 +128,40 @@ $default--brand--text-hover-color       : $black;
         @include spaces.margin(0, 0, 0, 0);
         display: block;
     }
+    
 
-    & img {
-        // max-width: 100%;
+    /// Brand images (logo & icon)
+    /// --
+    
+    &-logo ,
+    &-icon {
+    // & img {
         display: block;
         width: auto;
         height: auto;
+    }
+
+    // &-logo {
+    //     display: none;
+    // }
+
+
+    /// Brand Sizes
+    /// --
+
+    @each $size, $properties in $sizes {
+        &-#{$size} {
+            font-size: map-get($properties, 'font-size');
+            font-weight: map-get($properties, 'font-weight');
+            
+            .#{$_classname}-tagline {
+                font-size: map-get($properties, 'tagline-size');
+                font-weight: map-get($properties, 'font-weight');
+                margin-top: map-get($properties, 'tagline-offset');;
+            }
+            .#{$_classname}-logo {
+                max-height: map-get($properties, 'img-height');
+            }
+        }
     }
 }

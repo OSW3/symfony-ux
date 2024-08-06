@@ -4,20 +4,49 @@
 // *
 // ************************************************************************** //
 
-@use './../abstracts/mixins/transition';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/transition';
 
-/// Accordion variables
-/// =============================================
-///
+$_component: 'accordion';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
 
 
-/// Accordion component
-/// =============================================
-///
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
 
-.accordion {
 
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    /// Accordion panel
+    /// --
+    
     &-panel {
         border: 1px solid #ccc;
     }
@@ -25,6 +54,10 @@
         margin-top: -1px;
     }
 
+    
+    /// Accordion header
+    /// --
+    
     &-header {
         @include spaces.padding($spacer,$spacer,$spacer,$spacer);
         background-color: #f1f1f1;
@@ -36,6 +69,10 @@
         background-color: #d1d1d1;
     }
 
+
+    /// Accordion content
+    /// --
+    
     &-content {
         // border: 10px solid purple;
         max-height: 0;
@@ -44,6 +81,10 @@
 
         @include transition.set((max-height), map-get($delays, normal));
     }
+
+    
+    /// Accordion content inner
+    /// --
 
     &-inner {
         // border: 10px solid blue;

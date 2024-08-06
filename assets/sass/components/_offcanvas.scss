@@ -5,40 +5,65 @@
 // ************************************************************************** //
 
 @use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
+$_component: 'offcanvas';
+$_classname: '#{$prefix}#{$_component}';
 
-/// Offcanvas variables
-/// =============================================
-///
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
 
 $offcanvas--width: 280px !default;
-$offcanvas--z: 1000 !default;
+$offcanvas--z    : 1000 !default;
 
 
-// Default Theme
-// --------------------------
+// * Default theme variables
+// * =========================
 
-$default--backdrop--background-color    : $black;
-$default--offcanvas--background-color   : $white;
+$default--backdrop--background-color : $black;
+$default--offcanvas--background-color: $white;
 
 
-/// OffCanvas component
-/// =============================================
-///
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-.offcanvas {
-    @include position.fixed(0, null, 0, null);
-    @include flex.column;
-    @include transition.set((left, right, box-shadow), map-get($delays, normal));
+.#{$_classname} {
+
+    /// Component definition
+    /// --
 
     width: $offcanvas--width;
     max-width: 100%;
     max-height: 100%;
     z-index: $offcanvas--z;
-
     background-color: var(--offcanvas--background-color, $default--offcanvas--background-color);
+    
+    @include position.fixed(0, null, 0, null);
+    @include flex.column;
+    @include transition.set((left, right, box-shadow), map-get($delays, normal));
 
     &-left {
         @include position.left( -$offcanvas--width );
@@ -52,10 +77,6 @@ $default--offcanvas--background-color   : $white;
         &.show {
             @include position.right( 0 );
         }
-    }
-
-    &.show {
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     }
 
     &-inner {
@@ -81,16 +102,31 @@ $default--offcanvas--background-color   : $white;
         border: none;
         background: none;
     }
+
+    /// Component Sizes
+    /// --
+
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
+    &.show {
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
 }
 
 
 
 
-.offcanvas-backdrop {
+.#{$_classname}-backdrop {
     @include transition.set((opacity), map-get($delays, normal));
     opacity: 0;
 }
-.offcanvas.show + .offcanvas-backdrop {
+.#{$_classname}.show + .#{$_classname}-backdrop {
     @include position.fixed(0, 0, 0, 0);
 
     background-color: rgb(0 0 0 / 70%);

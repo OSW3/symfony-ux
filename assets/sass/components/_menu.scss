@@ -6,21 +6,38 @@
 
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
+$_component: 'menu';
+$_classname: '#{$prefix}#{$_component}';
 
-/// Menu variables
-/// =============================================
-///
-
-// Default Variables
-// --------------------------
+@include banner.header('Component #{$_component}');
 
 
-// Default Theme
-// --------------------------
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default sizes and/or positions variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
 
 $default--menu--background-color              : $white;
 $default--submenu--background-color           : $white;
@@ -38,11 +55,30 @@ $default--menu-link--disabled-text-color      : $gray-500;
 $default--menu-link--disabled-background-color: transparent;
 
 
-/// Menu component
-/// =============================================
-///
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
 
-.#{$prefix}menu {
+.#{$_classname} {
+
+    /// Component definition
+    /// --
+
+    
+    /// Component Sizes
+    /// --
+    
+
+    /// Component Pallets
+    /// --
+    
+
+    /// Component States
+    /// --
+    
+
     background-color: var(--menu--background-color, $default--menu--background-color);
 
 

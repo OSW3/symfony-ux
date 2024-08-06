@@ -40,7 +40,6 @@ final class Link extends AbstractComponent
     #[PreMount]
     public function preMount(array $data): array
     {
-        // validate data
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 

@@ -200,6 +200,32 @@ return static function($definition)
 
         ->arrayNode('component')->addDefaultsIfNotSet()->children()
 
+            ->arrayNode('brand')
+                ->info("Parameters settings of the Brand component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->scalarNode('name')
+                    ->info("Specifies the name of the company")
+                    ->defaultNull()
+                ->end()
+    
+                ->scalarNode('tagline')
+                    ->info("Specifies the tagline of the company")
+                    ->defaultNull()
+                ->end()
+    
+                ->scalarNode('logo')
+                    ->info("Specifies the logo of the company")
+                    ->defaultNull()
+                ->end()
+    
+                ->scalarNode('icon')
+                    ->info("Specifies the icon (responsive logo) of the company")
+                    ->defaultNull()
+                ->end()
+    
+            ->end()->end()
+
             ->arrayNode('copyright')
                 ->info("Parameters settings of the Copyright component.")
                 ->addDefaultsIfNotSet()->children()
