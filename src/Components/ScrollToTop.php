@@ -67,7 +67,7 @@ final class ScrollToTop extends AbstractComponent
 
     private function getConfig(): array 
     {
-        return $this->config['component']['scroll_to_top'];
+        return $this->config['components']['scroll_to_top'];
     }
 
     public function getComponentClassname(): string 

@@ -1,0 +1,18 @@
+{# ---------------------------------------------- #}
+{# - Component : Analytics                      - #}
+{# - Part : Clicky                              - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/analytics/clicky/clicky.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'async', true) %}
+{% set _attr = _add_attribute(_attr, 'data-id', trackingId) %}
+{% set _attr = _add_attribute(_attr, 'src', "//static.getclicky.com/js") %}

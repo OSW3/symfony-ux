@@ -1,0 +1,17 @@
+{% if provider == 'clicky' %}
+<twig:Analytics:Clicky :trackingId="trackingId" />
+{% elseif provider == 'google' %}
+<twig:Analytics:Google :trackingId="trackingId" />
+{% elseif provider == 'go_squared' %}
+<twig:Analytics:GoSquared :trackingId="trackingId" />
+{% elseif provider == 'heap' %}
+<twig:Analytics:Heap :trackingId="trackingId" />
+{% elseif provider == 'matomo' %}
+<twig:Analytics:Matomo :trackingId="trackingId" :trackingUrl="trackingUrl" />
+{% elseif provider == 'piwik' %}
+<twig:Analytics:Piwik :trackingId="trackingId" :trackingUrl="trackingUrl" />
+{% elseif provider == 'plausible' %}
+<twig:Analytics:Plausible :trackingDomain="trackingDomain" />
+{% elseif provider == 'woopra' %}
+<twig:Analytics:Woopra :trackingDomain="trackingDomain" />
+{% endif %}

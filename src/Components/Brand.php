@@ -75,7 +75,7 @@ final class Brand extends AbstractComponent
 
     private function getConfig(): array 
     {
-        return $this->config['component']['brand'];
+        return $this->config['components']['brand'];
     }
 
     public function getComponentClassname(): string 

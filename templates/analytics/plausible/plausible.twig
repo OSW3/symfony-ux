@@ -1,0 +1,18 @@
+{# ---------------------------------------------- #}
+{# - Component : Analytics                      - #}
+{# - Part : Plausible                           - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/analytics/plausible/plausible.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'defer', true) %}
+{% set _attr = _add_attribute(_attr, 'data-domain', trackingDomain) %}
+{% set _attr = _add_attribute(_attr, 'src', "https://plausible.io/js/script.js") %}

@@ -72,7 +72,7 @@ final class Copyright extends AbstractComponent
 
     private function getConfig(): array 
     {
-        return $this->config['component']['copyright'];
+        return $this->config['components']['copyright'];
     }
 
     public function getComponentClassname(): string 
