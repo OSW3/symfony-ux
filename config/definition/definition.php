@@ -200,6 +200,25 @@ return static function($definition)
 
         ->arrayNode('components')->addDefaultsIfNotSet()->children()
 
+            // Alerts
+            // -- 
+            ->arrayNode('alerts')
+                ->info("Parameters settings of Alerts component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->booleanNode('dismissible')
+                    ->info("Set whether Alerts can be dismissible by default.")
+                    ->defaultTrue()
+                ->end()
+    
+                ->integerNode('delay')
+                    ->info("Set the delay (in second) before alerts are automatically dismiss.")
+                    ->min(0)
+                    ->defaultValue(0)
+                ->end()
+
+            ->end()->end()
+
             // Analytics
             // -- 
             ->arrayNode('analytics')
@@ -323,16 +342,21 @@ return static function($definition)
                     ->defaultNull()
                 ->end()
     
-                ->scalarNode('logo')
-                    ->info("Specifies the logo of the company")
+                ->arrayNode('logo')
+                    ->useAttributeAsKey('name')
+                    ->scalarPrototype() 
+                ->end()->end()
+    
+                ->scalarNode('url')
+                    ->info("Specifies the url of the brand link")
                     ->defaultNull()
                 ->end()
     
-                ->scalarNode('icon')
-                    ->info("Specifies the icon (responsive logo) of the company")
+                ->scalarNode('route')
+                    ->info("Specifies the route of the brand link")
                     ->defaultNull()
                 ->end()
-    
+
             ->end()->end()
 
 

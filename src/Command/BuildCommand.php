@@ -35,15 +35,27 @@ class BuildCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $io              = new SymfonyStyle($input, $output);
-        $sassVarDir      = Path::join(__DIR__, "../../", "assets/sass");
-        $sassVariables   = [];
-        $sassVariables[] = "// Last gen: ". date("Y-m-d H:i:s");
+        $io                = new SymfonyStyle($input, $output);
+        $sassVarDir        = Path::join(__DIR__, "../../", "assets/sass");
+        $scriptVarDir      = Path::join(__DIR__, "../../", "assets/scripts");
+        $lastGen           = "// Last gen: ". date("Y-m-d H:i:s");
+        $sassVariables     = [];
+        $sassVariables[]   = $lastGen;
+        $scriptVariables   = [];
+        $scriptVariables[] = $lastGen;
+
+        // Prefix
+        // --
 
         if (isset($this->options['prefix'])) {
             $sassVariables[] = "\$prefix: '{$this->options['prefix']}';";
+            $scriptVariables[] = "export const PREFIX = '{$this->options['prefix']}';";
         }
 
+
+        // Layout
+        // --
+        
         foreach ($this->options['layout'] as $name => $value) match ($name) {
             'breakpoints'    => $this->uxBreakpoints($sassVariables, $value),
             'spacer'         => $this->uxSpacer($sassVariables, $value),
@@ -53,7 +65,21 @@ class BuildCommand extends Command
             default => null,
         };
 
+
+        // Components
+        // --
+        
+        foreach ($this->options['components'] as $name => $value) match ($name) {
+            'brand'    => $this->brandResponsive($sassVariables, $value),
+            default => null,
+        };
+
+
+        // Generate Files
+        // --
+
         file_put_contents("{$sassVarDir}/_generated.scss", implode("\n", $sassVariables));
+        file_put_contents("{$scriptVarDir}/generated.js", implode("\n", $scriptVariables));
         $io->success("SCSS variables exported successfully.");
 
         return Command::SUCCESS;
@@ -123,5 +149,15 @@ class BuildCommand extends Command
     private function uxDefaultTheme(array &$vars, $name)
     {
         $vars[] = "\$theme-default: '{$name}';";
+    }
+
+    private function brandResponsive(array &$vars, $options)
+    {
+        $brandBreakpoint = [];
+
+        if (isset($options['logo'])) {
+            $brandBreakpoint = array_keys($options['logo']);
+        }
+        $vars[] = "\$brand-breakpoints: ('".implode("','", $brandBreakpoint)."');";
     }
 }

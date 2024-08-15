@@ -1,4 +1,4 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Dialog
 // *
@@ -8,7 +8,7 @@
 // *
 // ************************************************************************** //
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 
 const SELECTOR          = '[rel=js-dialog]';
 const CLASS_NAME_ACTIVE = 'active';

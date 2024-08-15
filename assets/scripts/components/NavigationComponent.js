@@ -1,4 +1,4 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Offcanvas
 // *
@@ -8,7 +8,7 @@
 // *
 // ************************************************************************** //
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 import ButtonComponent from "./ButtonComponent";
 
 const SELECTOR          = '.navigation';

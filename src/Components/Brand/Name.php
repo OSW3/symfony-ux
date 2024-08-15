@@ -3,6 +3,7 @@ namespace OSW3\UX\Components\Brand;
 
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Components\AbstractComponent;
+use OSW3\UX\Components\Brand;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -30,13 +31,29 @@ final class Name extends AbstractComponent
         return $resolver->resolve($data) + $data;
     }
 
-    public function getComponentClassname(): string 
+    protected function getConfig(): array 
     {
-        return "{$this->prefix}brand-name";
+        return $this->config['components'][Brand::NAME];
     }
 
-    public function fetchName(): string
+    protected function getComponentClassname(): string 
     {
-        return trim($this->name);
+        return $this->prefix . Brand::NAME . "-name";
+    }
+
+    public function fetchName(): ?string
+    {
+        $options = $this->getConfig();
+        $name = null;
+
+        if (!empty($options['name'])) {
+            $name = $options['name'];
+        }
+
+        if (!empty($this->name)) {
+            $name = $this->name;
+        }
+
+        return trim($name);
     }
 }

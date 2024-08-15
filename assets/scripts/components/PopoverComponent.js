@@ -1,4 +1,4 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Popover
 // *
@@ -8,7 +8,7 @@
 // *
 // ************************************************************************** //
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 
 const SELECTOR          = '[rel=js-popover]';
 const CLASS_NAME_ACTIVE = 'active';

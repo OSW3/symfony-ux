@@ -82,7 +82,7 @@ export default class AbstractComponent
     on(eventName)
     {
         if (!EVENTS.has(eventName)) return;
-
+        
         this.node.addEventListener(eventName, event => {
             EVENTS_PREFIX.forEach(subEvent => {
                 const subEventName = `${subEvent}${this.#capitalized(eventName)}`;

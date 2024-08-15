@@ -1,36 +1,61 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Alert
 // *
 // ************************************************************************** //
-// *
-// *    <div rel="js-alert">
-// *
-// ************************************************************************** //
+"use strict";
 
-import AbstractComponent from "./AbstractComponent";
+import Animate from "../utils/Animate";
+import { getPrefix } from "../utils/prefix";
 import ButtonComponent from "./ButtonComponent";
 
-const SELECTOR          = '[rel=js-alert]';
-const CLASS_NAME_ACTIVE = 'active';
 
-export default class AlertComponent extends AbstractComponent
+/** @var string Component classname */
+const NAME = 'alert';
+
+/** @var string Components prefix */
+const PREFIX = getPrefix();
+
+/** @var string Component selector */
+const SELECTOR = `.${PREFIX}${NAME}[data-dismissible]`;
+
+
+export default class AlertComponent
 {
+    #node;
+    #button;
+
     constructor(node)
     {
-        super(node);
-        this.element = node;
-    }
+        this.#node = node;
 
-    _onInit() 
-    {
-        const btn = this.node.querySelector('[data-dismiss=alert]');
-        new ButtonComponent(btn).onClick = (event, element) => this.close();
-    }
+        // Close button
+        // --
 
-    close()
+        this.#button = this.#node.querySelector(`.button-close`);
+
+        let button = new ButtonComponent(this.#button);
+            button.onClick = (event, element) => {
+                new Animate(
+                    this.#node
+                ).fadeOut(() => this.#close());
+            };
+        
+        // Auto close delay
+        // --
+
+        if (this.#node.dataset.delay)
+        {
+            new Animate(
+                this.#node, 
+                this.#node.dataset.delay
+            ).fadeOut(() => this.#close());
+        }        
+    }
+    
+    #close()
     {
-        this.node.remove();
+        this.#node.remove();
     }
 }
 

@@ -13,7 +13,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent(template: '@UxComponents/cookieBox/base.twig')]
 final class CookieBox extends AbstractComponent
 {
-    private const NAME = "cookieBox";
+    public const NAME = "cookieBox";
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
@@ -33,15 +33,5 @@ final class CookieBox extends AbstractComponent
             ->datasetResolver($resolver)
         ;
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components'][static::NAME];
-    }
-    
-    public function getComponentClassname(): string 
-    {
-        return $this->prefix . static::NAME;
     }
 }

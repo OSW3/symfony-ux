@@ -1,10 +1,11 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Components: Alert
 // *
 // ************************************************************************** //
 
 @use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/position';
@@ -56,6 +57,7 @@ $alert--margin-y: $spacer !default;
     border-style: solid;
     @include position.relative;
     @include corner.rounded(6px);
+    @include sizes.width(100%);
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
     @include spaces.margin( $alert--margin-y, auto, $alert--margin-y, auto );
 
@@ -64,7 +66,9 @@ $alert--margin-y: $spacer !default;
     /// --
     
     & .button-close {
+        z-index: 2;
         @include position.absolute(0, 0, null, null);
+        @include spaces.padding($spacer * 1.25, $spacer, $spacer * 1.25, $spacer);
     }
     
     
@@ -73,10 +77,9 @@ $alert--margin-y: $spacer !default;
     
     @each $key, $value in $pallet {
         &-#{$key} {
-            // color: $value;
-            color: var(--#{$key});
-            background-color: color.tint($value, 70%);
-            border-color: var(--#{$key});;
+            color: var(--#{$prefix}#{$key});
+            background-color: var(--#{$prefix}#{$key}-tint-70);
+            border-color: var(--#{$prefix}#{$key});
         }
     }
 }

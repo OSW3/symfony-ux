@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Components: Announcement
 // *
@@ -37,6 +37,8 @@ $announcement--height: 40px !default;
 
 // * Default theme variables
 // * =========================
+$default--announcement--text-color: $gray-600;
+$default--announcement--background-color: $gray-600;
 
 
 // * =============================================
@@ -50,8 +52,8 @@ $announcement--height: 40px !default;
     /// Announcement container
     /// --
 
-    color: var(--announcement--text-color);
-    background-color: var(--announcement--background-color);
+    color: var(--#{$prefix}announcement--text-color, $default--announcement--text-color);
+    background-color: var(--#{$prefix}announcement--background-color, $default--announcement--background-color);
     @include flex.middle;
     @include sizes.set(null, $announcement--height);
     @include transition.set((color, background-color), map-get($delays, normal));

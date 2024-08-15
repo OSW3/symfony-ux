@@ -13,7 +13,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent(template: '@UxComponents/thumbnail/base.twig')]
 final class Thumbnail extends AbstractComponent
 {
-    private const NAME = "thumbnail";
+    public const NAME = "thumbnail";
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
@@ -33,15 +33,5 @@ final class Thumbnail extends AbstractComponent
             ->datasetResolver($resolver)
         ;
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components'][static::NAME];
-    }
-    
-    public function getComponentClassname(): string 
-    {
-        return $this->prefix . static::NAME;
     }
 }

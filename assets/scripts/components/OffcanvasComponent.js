@@ -1,16 +1,16 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Offcanvas
 // *
 // ************************************************************************** //
 // *
 // *    Import
-// *        import OffcanvasComponent from '../../vendor/devbraincode/devbrain-ui/src/Resources/scripts/OffcanvasComponent';
+// *        import OffcanvasComponent from './../../../bundle/assets/scripts/components/OffcanvasComponent';
 // *
 // *
 // ************************************************************************** //
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 import ButtonComponent from "./ButtonComponent";
 
 const SELECTOR          = '.offcanvas';

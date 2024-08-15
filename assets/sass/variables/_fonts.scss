@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Colors definition.
 // *
@@ -27,10 +27,10 @@ $_open_sans: (
 );
 
 $_headings: (
-    'family': "var(--font-primary)"
+    'family': "var(--#{$prefix}font-primary)"
 );
 $_code: (
-    'family': "var(--font-secondary)"
+    'family': "var(--#{$prefix}font-secondary)"
 );
     
 /// Fonts collection

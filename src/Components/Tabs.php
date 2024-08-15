@@ -13,7 +13,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent(template: '@UxComponents/tabs/base.twig')]
 final class Tabs extends AbstractComponent
 {
-    private const NAME = "tabs";
+    public const NAME = "tabs";
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
@@ -33,15 +33,5 @@ final class Tabs extends AbstractComponent
             ->datasetResolver($resolver)
         ;
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components'][static::NAME];
-    }
-    
-    public function getComponentClassname(): string 
-    {
-        return $this->prefix . static::NAME;
     }
 }

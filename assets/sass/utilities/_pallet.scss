@@ -1,27 +1,41 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Pallet Builder
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
 
+@include banner.header('Base pallet');
 
-/// Pallet
-/// =============================================
 
-/// CSS Variable
-/// -------------------------
+// * =============================================
+// *
+// *    Generate pallet variables
+// *
+// * =============================================
+
 :root {
     @each $key, $value in $pallet {
-        --#{$key}: #{$value};
+        --#{$prefix}#{$key}: #{$value};
 
         @if $has-shade {
-            --#{$key}-shade: #{color.shade($value, 30%)};
+            --#{$prefix}#{$key}-shade: --#{$prefix}#{$key}-shade-30;
+            @for $i from 1 through 10 {
+                $int_percentage: $i * 10;
+                $str_percentage: $i * 10%;
+                --#{$prefix}#{$key}-shade-#{$int_percentage}:  #{color.shade($value, $str_percentage)};
+            }
         }
 
         @if $has-tint {
-            --#{$key}-tint: #{color.shade($value, 30%)};
+            --#{$prefix}#{$key}-tint: --#{$prefix}#{$key}-tint-30;
+            @for $i from 1 through 10 {
+                $int_percentage: $i * 10;
+                $str_percentage: $i * 10%;
+                --#{$prefix}#{$key}-tint-#{$int_percentage}:  #{color.tint($value, $str_percentage)};
+            }
         }
     }
 }

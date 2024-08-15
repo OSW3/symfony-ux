@@ -12,7 +12,7 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent(template: '@UxComponents/analytics/base.twig')]
 final class Analytics extends AbstractComponent
 {
-    private const NAME = "analytics";
+    public const NAME = "analytics";
     
     use DoNotExposeTrait;
     
@@ -48,16 +48,6 @@ final class Analytics extends AbstractComponent
         $resolver->setAllowedTypes('trackingDomain', ['string']);
 
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components'][static::NAME];
-    }
-    
-    public function getComponentClassname(): string 
-    {
-        return $this->prefix . static::NAME;
     }
 
     public function fetchProvider()

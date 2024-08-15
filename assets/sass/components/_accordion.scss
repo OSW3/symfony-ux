@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Components: Accordion
 // *
@@ -44,13 +44,15 @@ $_classname: '#{$prefix}#{$_component}';
 
 .#{$_classname} {
 
-    /// Accordion panel
+    // border: 10px solid red;
+
+    /// Accordion Item
     /// --
-    
-    &-panel {
+
+    &-item {
         border: 1px solid #ccc;
     }
-    &-panel + &-panel {
+    &-item + &-item {
         margin-top: -1px;
     }
 
@@ -59,15 +61,16 @@ $_classname: '#{$prefix}#{$_component}';
     /// --
     
     &-header {
-        @include spaces.padding($spacer,$spacer,$spacer,$spacer);
         background-color: #f1f1f1;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        @include spaces.margin(0,0,0,0);
+        @include spaces.padding($spacer,$spacer,$spacer,$spacer);
     }
-    .show &-header {
-        background-color: #d1d1d1;
-    }
+    // .show &-header {
+    //     background-color: #d1d1d1;
+    // }
 
 
     /// Accordion content
@@ -82,16 +85,20 @@ $_classname: '#{$prefix}#{$_component}';
         @include transition.set((max-height), map-get($delays, normal));
     }
 
+    // &-item.open &-content {
+    //     max-height: 100px;
+    // }
+
     
-    /// Accordion content inner
-    /// --
+    // /// Accordion content inner
+    // /// --
 
-    &-inner {
-        // border: 10px solid blue;
-        @include spaces.padding($spacer,$spacer,$spacer,$spacer);
-    }
+    // &-inner {
+    //     // border: 10px solid blue;
+    //     @include spaces.padding($spacer,$spacer,$spacer,$spacer);
+    // }
 
-    &-button {
-        cursor: pointer;
-    }
+    // &-button {
+    //     cursor: pointer;
+    // }
 }

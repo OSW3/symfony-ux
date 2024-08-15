@@ -12,7 +12,7 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent(template: '@UxComponents/analytics/matomo/matomo.twig')]
 final class Matomo extends AbstractComponent
 {
-    private const NAME = 'analytics';
+    public const NAME = 'analytics';
     private const PROVIDER = 'matomo';
     
     use DoNotExposeTrait;
@@ -40,16 +40,6 @@ final class Matomo extends AbstractComponent
         $resolver->setAllowedTypes('trackingUrl', ['string']);
 
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components'][static::NAME];
-    }
-    
-    public function getComponentClassname(): string 
-    {
-        return $this->prefix . static::NAME;
     }
 
     public function fetchTrackingId(): string|int

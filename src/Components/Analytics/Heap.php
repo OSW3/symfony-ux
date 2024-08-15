@@ -12,7 +12,7 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent(template: '@UxComponents/analytics/heap/heap.twig')]
 final class Heap extends AbstractComponent
 {
-    private const NAME = 'analytics';
+    public const NAME = 'analytics';
     private const PROVIDER = 'heap';
     
     use DoNotExposeTrait;
@@ -31,16 +31,6 @@ final class Heap extends AbstractComponent
         $resolver->setAllowedTypes('trackingId', ['string','integer']);
 
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components'][static::NAME];
-    }
-    
-    public function getComponentClassname(): string 
-    {
-        return $this->prefix . static::NAME;
     }
 
     public function fetchTrackingId()

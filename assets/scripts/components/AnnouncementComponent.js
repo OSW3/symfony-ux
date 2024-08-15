@@ -1,4 +1,4 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Announcement
 // *
@@ -8,7 +8,7 @@
 // *
 // ************************************************************************** //
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 
 const SELECTOR          = '[rel=js-announcement]';
 const CLASS_NAME_ACTIVE = 'active';

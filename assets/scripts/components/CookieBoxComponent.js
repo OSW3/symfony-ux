@@ -1,4 +1,4 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Cookieconsent
 // *
@@ -8,7 +8,7 @@
 // *
 // ************************************************************************** //
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 import ButtonComponent from "./ButtonComponent";
 
 const SELECTOR          = '[rel=js-cookie-box]';

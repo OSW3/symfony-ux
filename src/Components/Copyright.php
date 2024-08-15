@@ -13,6 +13,8 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent(template: '@UxComponents/copyright/base.twig')]
 final class Copyright extends AbstractComponent
 {
+    public const NAME = "copyright";
+
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
@@ -68,16 +70,6 @@ final class Copyright extends AbstractComponent
         $resolver->setAllowedTypes('since', ['string','integer']);
 
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components']['copyright'];
-    }
-
-    public function getComponentClassname(): string 
-    {
-        return "{$this->prefix}copyright";
     }
 
 

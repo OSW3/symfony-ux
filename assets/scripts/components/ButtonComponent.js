@@ -1,4 +1,4 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: Button
 // *
@@ -26,7 +26,7 @@
 // ************************************************************************** //
 "use strict";
 
-import AbstractComponent from "./AbstractComponent";
+import AbstractComponent from "../abstracts/AbstractComponent";
 
 const SELECTOR          = '[rel=js-button]';
 const CLASS_NAME_ACTIVE = 'active';
@@ -35,12 +35,23 @@ const CLASS_NAME_ACTIVE = 'active';
 // Available events for the component
 // const EVENTS = ['click', 'mousedown', 'mouseup', 'mouseout'];
 
-const COMPONENT_EVENTS = [
+const EVENTS_PREFIX = new Set([
+    'onBefore', 
+    'on',
+    'onAfter'
+]);
+const EVENTS = new Set([
     'click', // can create function onClick, onBeforeClick, onAfterClick
     'mousedown', 
     'mouseup', 
     'mouseout'
-]; 
+]);
+// const EVENTS = [
+//     'click', // can create function onClick, onBeforeClick, onAfterClick
+//     'mousedown', 
+//     'mouseup', 
+//     'mouseout'
+// ]; 
 
 // const COMPONENT_EVENTS = ['click']; 
 // _onClickAlways           onClick          _onClickDefault
@@ -48,8 +59,45 @@ const COMPONENT_EVENTS = [
 // _onAfterClickAlways      onAfterClick     _onAfterClickDefault
 
 
-export default class ButtonComponent extends AbstractComponent
+export default class ButtonComponent // extends AbstractComponent
 {
+    #node;
+
+    constructor(node)
+    {
+        this.#node = node;
+        EVENTS.forEach(eventName => this.on(eventName));
+    }
+
+    on(eventName)
+    {
+        this.#node.addEventListener(eventName, event => {
+            EVENTS_PREFIX.forEach(subEvent => {
+                const subEventName = `${subEvent}${this.#capitalized(eventName)}`;
+                
+                // Always do on event
+                if (typeof this[`_${subEventName}Always`] === 'function') {
+                    (this[`_${subEventName}Always`])(this, event)
+                }
+
+                // Do custom action
+                if (typeof this[subEventName] === 'function') {
+                    (this[subEventName])(this, event)
+                }
+                // or do default action
+                else if (typeof this[subEventName] !== 'function' && typeof this[`_${subEventName}Default`] === 'function') {
+                    (this[`_${subEventName}Default`])(this, event)
+                }
+            });
+        });
+    }
+
+    #capitalized(str)
+    {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    } 
+
+
     // constructor(node)
     // {
     //     super(node, EVENTS);
@@ -58,18 +106,18 @@ export default class ButtonComponent extends AbstractComponent
     //     // this.element = node;
     // }
 
-    _onInit() 
-    {
-        // Node represent The HTML Component
-        // console.log(this.node);
+    // _onInit() 
+    // {
+    //     // Node represent The HTML Component
+    //     console.log(this.node);
 
-        // the ID of the Node
-        // console.log(this.id);
+    //     // the ID of the Node
+    //     // console.log(this.id);
 
-        for (let i = 0; i < COMPONENT_EVENTS.length; i++) {
-            this.on(COMPONENT_EVENTS[i]);
-        }
-    }
+    //     for (let i = 0; i < COMPONENT_EVENTS.length; i++) {
+    //         this.on(COMPONENT_EVENTS[i]);
+    //     }
+    // }
 
 
     // Do ALWAYS on Click event

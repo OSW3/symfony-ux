@@ -8,12 +8,15 @@ use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent(template: '@UxComponents/brand/base.twig')]
 final class Brand extends AbstractComponent
 {
+    public const NAME = "brand";
+
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
@@ -22,20 +25,20 @@ final class Brand extends AbstractComponent
     #[ExposeInTemplate(getter: 'doNotExpose')]
     public string $size;
     
-    #[ExposeInTemplate(name: 'name')]
+    #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
     public ?string $name;
     
     #[ExposeInTemplate(name: 'tagline')]
     public ?string $tagline;
     
-    #[ExposeInTemplate(name: 'link')]
-    public ?string $link;
+    #[ExposeInTemplate(name: 'link', getter: 'fetchLink')]
+    public ?string $url;
+
+    #[ExposeInTemplate(name: 'link', getter: 'fetchLink')]
+    public ?string $route;
     
     #[ExposeInTemplate(name: 'logo')]
-    public ?string $logo;
-    
-    #[ExposeInTemplate(name: 'icon')]
-    public ?string $icon;
+    public array $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -54,33 +57,22 @@ final class Brand extends AbstractComponent
         $resolver->setAllowedTypes('size', 'string');
         $resolver->setAllowedValues('size', Size::toArray());
 
-        // $resolver->setRequired('name');
         $resolver->setDefault('name', $options['name']);
         $resolver->setAllowedTypes('name', ['null', 'string']);
 
         $resolver->setDefault('tagline', $options['tagline']);
         $resolver->setAllowedTypes('tagline', ['null', 'string']);
 
-        $resolver->setDefault('link', "");
-        $resolver->setAllowedTypes('link', ['null', 'string']);
+        $resolver->setDefault('url', "");
+        $resolver->setAllowedTypes('url', ['null', 'string']);
+
+        $resolver->setDefault('route', "");
+        $resolver->setAllowedTypes('route', ['null', 'string']);
 
         $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['null', 'string']);
-
-        $resolver->setDefault('icon', $options['icon']);
-        $resolver->setAllowedTypes('icon', ['null', 'string']);
+        $resolver->setAllowedTypes('logo', ['array']);
 
         return $resolver->resolve($data) + $data;
-    }
-
-    private function getConfig(): array 
-    {
-        return $this->config['components']['brand'];
-    }
-
-    public function getComponentClassname(): string 
-    {
-        return "{$this->prefix}brand";
     }
 
     public function fetchClass(): string
@@ -93,5 +85,52 @@ final class Brand extends AbstractComponent
         }
 
         return implode(" ", $classList);
+    }
+
+    public function fetchName(): ?string
+    {
+        $options = $this->getConfig();
+        $name = null;
+
+        if (!empty($options['name'])) {
+            $name = $options['name'];
+        }
+
+        if (!empty($this->name)) {
+            $name = $this->name;
+        }
+
+        return trim($name);
+    }
+
+    public function fetchLink(): ?string
+    {
+        $options = $this->getConfig();
+        $link = null;
+        $url = null;
+        $route = null;
+
+        if (!empty($options['url'])) {
+            $url = $options['url'];
+        }
+        if (!empty($this->url)) {
+            $url = $this->url;
+        }
+
+        if (!empty($options['route'])) {
+            $route = $options['route'];
+        }
+        if (!empty($this->route)) {
+            $route = $this->route;
+        }
+
+        if (!empty($url)) {
+            $link = $url;
+        }
+        if (!empty($route)) {
+            $link = $this->urlGenerator->generate($route, [], UrlGenerator::ABSOLUTE_URL);
+        }
+        
+        return $link;
     }
 }

@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Build fonts
 // *
@@ -38,6 +38,6 @@
 :root {
     @each $_name, $_data in $fonts {
         $_family: map-get($_data, 'family');
-        --font-#{$_name}: #{map-get($_data, 'family')};
+        --#{$prefix}font-#{$_name}: #{map-get($_data, 'family')};
     }
 }

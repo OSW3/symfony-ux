@@ -1,9 +1,11 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Components: Brand
 // *
 // ************************************************************************** //
 
+@use 'sass:meta';
+@use './../generated';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
@@ -74,6 +76,11 @@ $sizes: (
     )
 );
 
+// * Available responsive logo + Default logo
+// * =========================
+
+$brand-breakpoints: if(meta.global-variable-exists('brand-breakpoints', $module: generated), generated.$brand-breakpoints, ()) !default;
+
 
 // * Default theme variables
 // * =========================
@@ -133,17 +140,13 @@ $default--brand--text-hover-color: $black;
     /// Brand images (logo & icon)
     /// --
     
-    &-logo ,
-    &-icon {
+    &-logo {
     // & img {
-        display: block;
+        display: none;
+        // display: block;
         width: auto;
         height: auto;
     }
-
-    // &-logo {
-    //     display: none;
-    // }
 
 
     /// Brand Sizes
@@ -161,6 +164,30 @@ $default--brand--text-hover-color: $black;
             }
             .#{$_classname}-logo {
                 max-height: map-get($properties, 'img-height');
+            }
+        }
+    }
+
+
+    /// Responsive Brand
+    /// --
+    
+    @if length($brand-breakpoints) > 0 {
+        $brand-default: nth($brand-breakpoints, 1);
+        &-logo-#{$brand-default} {
+            display: block;
+        }
+    }
+    
+    @each $breakpoint-name, $breakpoint-value in $breakpoints {
+        @if index($brand-breakpoints, $breakpoint-name) {
+            @media (min-width: $breakpoint-value) {
+                .#{$_classname}-logo {
+                    display: none;
+                }
+                .#{$_classname}-logo-#{$breakpoint-name} {
+                    display: block;
+                }
             }
         }
     }

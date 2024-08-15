@@ -3,6 +3,7 @@ namespace OSW3\UX\Components\Brand;
 
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Components\AbstractComponent;
+use OSW3\UX\Components\Brand;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -30,9 +31,9 @@ final class Tagline extends AbstractComponent
         return $resolver->resolve($data) + $data;
     }
 
-    public function getComponentClassname(): string 
+    protected function getComponentClassname(): string 
     {
-        return "{$this->prefix}brand-tagline";
+        return $this->prefix . Brand::NAME . "-tagline";
     }
 
     public function fetchTagline(): string

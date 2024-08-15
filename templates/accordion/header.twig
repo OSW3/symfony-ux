@@ -1,0 +1,18 @@
+{# ---------------------------------------------- #}
+{# - Component : Brand                          - #}
+{# - Part : Header                              - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/accordion/header.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'aria-expanded', open ? 'true' : 'false') %}
+{% set _attr = _add_attribute(_attr, 'aria-controls', id) %}

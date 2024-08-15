@@ -1,6 +1,7 @@
 <?php 
 namespace OSW3\UX\Components\Brand;
 
+use OSW3\UX\Components\Brand;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Components\AbstractComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
@@ -13,8 +14,8 @@ final class Figure extends AbstractComponent
 {
     use AttributeClassTrait;
 
-    #[ExposeInTemplate(name: 'type')]
-    public string $type;
+    #[ExposeInTemplate(name: 'breakpoint')]
+    public string $breakpoint;
 
     #[ExposeInTemplate(name: 'src')]
     public string $src;
@@ -25,15 +26,13 @@ final class Figure extends AbstractComponent
     #[PreMount]
     public function preMount(array $data): array
     {
-        // $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
         $this->classResolver($resolver);
 
-        $resolver->setDefaults(['type' => "logo"]);
-        $resolver->setAllowedTypes('type', ['string']);
-        $resolver->setAllowedValues('type', ['logo', 'icon']);
+        $resolver->setDefaults(['breakpoint' => "default"]);
+        $resolver->setAllowedTypes('breakpoint', ['string']);
 
         $resolver->setRequired('src');
         $resolver->setAllowedTypes('src', ['string']);
@@ -44,16 +43,16 @@ final class Figure extends AbstractComponent
         return $resolver->resolve($data) + $data;
     }
 
-    public function getComponentClassname(): string 
+    protected function getComponentClassname(): string 
     {
-        return match($this->type) {
-            'logo' => "{$this->prefix}brand-logo",
-            'icon' => "{$this->prefix}brand-icon",
-        };
+        return $this->prefix . Brand::NAME . "-logo";
     }
 
-    // private function getConfig(): array 
-    // {
-    //     return $this->config['components']['brand'];
-    // }
+    public function fetchClass(): string
+    {
+        $classList = $this->classList();
+        $classList[] = "{$this->getComponentClassname()}-{$this->breakpoint}";
+
+        return implode(" ", $classList);
+    }
 }

@@ -1,0 +1,20 @@
+{# ---------------------------------------------- #}
+{# - Component : Alert                          - #}
+{# - Part : Base                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/alert/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Fill in the values ------------------------ #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% for _property, _value in dataset %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %}

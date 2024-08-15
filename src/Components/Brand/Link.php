@@ -3,6 +3,7 @@ namespace OSW3\UX\Components\Brand;
 
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Components\AbstractComponent;
+use OSW3\UX\Components\Brand;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -13,7 +14,7 @@ final class Link extends AbstractComponent
 {
     use AttributeClassTrait;
 
-    #[ExposeInTemplate(name: 'name')]
+    #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
     public ?string $name;
 
     #[ExposeInTemplate(name: 'tagline')]
@@ -21,12 +22,9 @@ final class Link extends AbstractComponent
 
     #[ExposeInTemplate(name: 'link')]
     public string $link;
-    
+
     #[ExposeInTemplate(name: 'logo')]
-    public ?string $logo;
-    
-    #[ExposeInTemplate(name: 'icon')]
-    public ?string $icon;
+    public array $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -48,21 +46,34 @@ final class Link extends AbstractComponent
         $resolver->setAllowedTypes('link', ['null', 'string']);
 
         $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['null', 'string']);
-
-        $resolver->setDefault('icon', $options['icon']);
-        $resolver->setAllowedTypes('icon', ['null', 'string']);
+        $resolver->setAllowedTypes('logo', ['array']);
 
         return $resolver->resolve($data) + $data;
     }
 
-    private function getConfig(): array 
+    protected function getConfig(): array 
     {
-        return $this->config['components']['brand'];
+        return $this->config['components'][Brand::NAME];
     }
 
-    public function getComponentClassname(): string 
+    protected function getComponentClassname(): string 
     {
-        return "{$this->prefix}brand-link";
+        return $this->prefix . Brand::NAME . "-link";
+    }
+
+    public function fetchName(): ?string
+    {
+        $options = $this->getConfig();
+        $name = null;
+
+        if (!empty($options['name'])) {
+            $name = $options['name'];
+        }
+
+        if (!empty($this->name)) {
+            $name = $this->name;
+        }
+
+        return trim($name);
     }
 }

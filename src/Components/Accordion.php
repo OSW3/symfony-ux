@@ -6,19 +6,29 @@ use OSW3\UX\Trait\DoNotExposeTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
 use OSW3\UX\Components\AbstractComponent;
+use OSW3\UX\Enum\Accordion\Item\Properties;
+use OSW3\UX\Trait\AttributeRelTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent(template: '@UxComponents/accordion/base.twig')]
 final class Accordion extends AbstractComponent
 {
-    private const NAME = "accordion";
+    public const NAME = "accordion";
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
+    use AttributeRelTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
+    
+    #[ExposeInTemplate(name: 'items', getter: 'fetchItems')]
+    public array $items;
+    
+    #[ExposeInTemplate(name: 'multiple', getter: 'fetchMultiple')]
+    public bool $multiple;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -32,16 +42,43 @@ final class Accordion extends AbstractComponent
             ->classResolver($resolver)
             ->datasetResolver($resolver)
         ;
+
+        $resolver->setDefault('items', []);
+        $resolver->setAllowedTypes('items', ['array']);
+
+        $resolver->setDefault('multiple', false);
+        $resolver->setAllowedTypes('multiple', ['bool']);
+
         return $resolver->resolve($data) + $data;
     }
 
-    private function getConfig(): array 
+    // public function fetchClass(): string
+    // {
+    //     return implode(" ", $this->classList());
+    // }
+
+    public function fetchMultiple()
     {
-        return $this->config['components'][static::NAME];
+        $this->dataset['multiple'] = $this->multiple;
+        // return implode(" ", $this->classList());
     }
-    
-    public function getComponentClassname(): string 
+
+    public function fetchItems()
     {
-        return $this->prefix . static::NAME;
+        $expected = Properties::toArray();
+        $defaults = array_flip( array_values($expected) );
+        array_walk($defaults, fn(&$property) => $property = null);
+
+        foreach ($this->items as $key => $item)
+        {
+            $this->checkItemProperties($item, $expected);
+            $this->items[$key] = array_merge($defaults, $item);
+
+            if (empty($this->items[$key]['id'])) {
+                $this->items[$key]['id'] = uniqid();
+            }
+        }
+
+        return $this->items;
     }
 }

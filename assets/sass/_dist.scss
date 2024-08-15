@@ -122,6 +122,7 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 
 
 
+@import './utilities/close';
 @import './utilities/effects';
 @import './utilities/position';
 @import './utilities/spacing';
@@ -161,11 +162,12 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 @import './components/popover';
 @import './components/quiz';
 @import './components/rating';
-@import './components/searchbar';
+@import './components/scroll-text';
+@import './components/scroll-to-top';
+@import './components/search-bar';
 @import './components/segment';
 @import './components/stepper';
 @import './components/switch';
 @import './components/tabs';
 @import './components/thumbnail';
 @import './components/toast';
-@import './components/scroll-to-top';

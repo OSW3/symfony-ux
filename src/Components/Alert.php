@@ -9,21 +9,32 @@ use OSW3\UX\Components\AbstractComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
+use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent(template: '@UxComponents/alert/base.twig')]
-final class Alert extends AbstractComponent
+class Alert extends AbstractComponent
 {
-    private const NAME = "alert";
+    public const NAME = "alert";
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
+    
+    #[ExposeInTemplate(name: 'type', getter: 'fetchType')]
+    public string $is;
+    
+    #[ExposeInTemplate(name: 'message')]
+    public string $message;
+    
+    #[ExposeInTemplate(name: 'dismissible')]
+    public bool $dismissible;
+    public int|string $delay;
 
     #[PreMount]
     public function preMount(array $data): array
     {
-        // $options  = $this->getConfig();
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -32,16 +43,59 @@ final class Alert extends AbstractComponent
             ->classResolver($resolver)
             ->datasetResolver($resolver)
         ;
+
+        $resolver->setDefault('is', 'success');
+        $resolver->setAllowedTypes('is', ['string']);
+
+        $resolver->setRequired('message');
+        $resolver->setAllowedTypes('message', ['string']);
+
+        $resolver->setDefault('dismissible', $options['dismissible']);
+        $resolver->setAllowedTypes('dismissible', ['bool']);
+
+        $resolver->setDefault('delay', $options['delay']);
+        $resolver->setAllowedTypes('delay', ['integer','string']);
+
         return $resolver->resolve($data) + $data;
     }
 
-    private function getConfig(): array 
+    protected function getConfig(): array 
     {
-        return $this->config['components'][static::NAME];
+        return $this->config['components']['alerts'];
     }
-    
-    public function getComponentClassname(): string 
+
+    public function fetchClass(): string
     {
-        return $this->prefix . static::NAME;
+        $classList = $this->classList();
+        $classList[] = "{$this->getComponentClassname()}-{$this->fetchType()}";
+
+        return implode(" ", $classList);
     }
+
+    public function fetchDataset(): array
+    {
+        $dataset = [];
+        $dataset = array_merge($dataset, $this->dataset);
+
+        if ($this->dismissible) {
+            $dataset['dismissible'] = true;
+
+            if ($this->delay) {
+                $dataset['delay'] = $this->delay;
+            }
+        }
+        
+        foreach ($dataset as $property => $value) {
+            $dataset["data-{$property}"] = $value;
+            unset($dataset[$property]);
+        }
+
+        return $dataset;
+    }
+
+    public function fetchType(): string 
+    {
+        return $this->is;
+    }
+
 }

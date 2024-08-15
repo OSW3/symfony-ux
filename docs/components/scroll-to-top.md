@@ -2,7 +2,23 @@
 
 Add a Scroll to top button.
 
-## Configuration
+## Configuration properties
+
+| Property              | [ux.yaml](#configuration-yaml)    | component |
+|-----------------------|:---------------------------------:|:---------:|
+| [`top_at`](#top_at)   |x                                  |x          |
+
+
+#### `top_at` 
+
+Specifies the position of the top of the page.
+
+@var `integer`
+@default 0
+@example 0
+
+
+## Configuration YAML
 
 ```yaml
 ux: 

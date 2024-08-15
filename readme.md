@@ -7,11 +7,14 @@ Add many UX Components to your app.
     - [Installation (process explained)](./docs/install/explained.md)
 - Layout
     - [Prefix](./docs/layout/prefix.md)
-    - [Breakpoints](./docs/layout/breakpoints.md)
-    - [Grid](./docs/layout/grid.md)
-    - [Themes](./docs/layout/themes.md)
-    - [Transitions](./docs/layout/transitions.md)
+    - [Breakpoints & Containers](./docs/layout/breakpoints.md)
+    - [Pallet & Context](./docs/layout/pallet.md)
+    <!-- - [Grid](./docs/layout/grid.md) -->
+    <!-- - [Themes](./docs/layout/themes.md) -->
+    <!-- - [Transitions](./docs/layout/transitions.md) -->
 - Components
+    - [Accordions](./docs/components/accordion.md)
+    - [Alerts](./docs/components/alert.md)
     - [Copyright](./docs/components/copyright.md)
     - [link](./docs/components/link.md)
     - [Scroll to top](./docs/components/scroll-to-top.md)

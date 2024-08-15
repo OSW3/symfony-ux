@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Themes builder
 // *
@@ -20,7 +20,7 @@
 @if utils.not-empty(map-get($themes , $theme-default)) {
     :root {
         @each $property, $value in map-get($themes , $theme-default) {
-            --#{$property}: #{$value};
+            --#{$prefix}#{$property}: #{$value};
         }
     }
 }
@@ -33,7 +33,7 @@
     @if ($theme != $theme-default) {
         :root[data-theme=#{$theme}] {
             @each $property, $value in $properties {
-                --#{$property}: #{$value};
+                --#{$prefix}#{$property}: #{$value};
             }
         }
     }

@@ -1,0 +1,6 @@
+<div {{ _get_attributes(_attr) }}>
+    {{ message|raw }}
+    {% if dismissible is same as true %}
+    <button type="button" class="button-close" aria-label="Close"></button>
+    {% endif %}
+</div>

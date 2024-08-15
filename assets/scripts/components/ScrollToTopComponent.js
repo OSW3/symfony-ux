@@ -1,11 +1,11 @@
-// ***************************** DevBrain Theme ***************************** //
+// ************************************************************************** //
 // *
 // *    Components: ScrollToTopComponent
 // *
 // ************************************************************************** //
 // *
 // *    Import
-// *        import ScrollToTopComponent from '../../vendor/devbraincode/devbrain-ui/src/Resources/scripts/ScrollToTopComponent';
+// *        import ScrollToTopComponent from './../../../bundle/assets/scripts/components/ScrollToTopComponent';
 // *
 // *    Instance
 // *        new ScrollToTopComponent( document.querySelector('.my-custom-component') );
@@ -21,7 +21,7 @@
 // ************************************************************************** //
 "use strict";
 
-import AbstractComponent from "./../abstracts/AbstractComponent";
+import AbstractComponent from './../abstracts/AbstractComponent';
 
 const defaults = {
     topAt   : 0,

@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Define effects utilities
 // *
@@ -14,11 +14,19 @@
 // *
 // ************************************************************************** //
 
-@use './../abstracts/mixins/transition';
+@use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
+@use './../abstracts/mixins/transition';
 // $color: #0cf;
 
+@include banner.header('Utils : Effects');
 
+
+// * =============================================
+// *
+// *    Effects Definition
+// *
+// * =============================================
 
 .effect
 {

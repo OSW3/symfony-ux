@@ -1,9 +1,8 @@
-{% if logo is not empty or icon is not empty %}
-    <twig:Brand:Figure :src="logo" :alt="name" type="logo" />
-    <twig:Brand:Figure :src="icon" :alt="name" type="icon" />
+{% for breakpoint, figure in logo %}
+    <twig:Brand:Figure :src="figure" :alt="name" :breakpoint="breakpoint" />
 {% else %}
-    <twig:Brand:Name :name="name" />
-{% endif %}
+<twig:Brand:Name :name="name" />
+{% endfor %}
 {% if tagline is not empty %}
 <twig:Brand:Tagline :tagline="tagline" />
 {% endif %}

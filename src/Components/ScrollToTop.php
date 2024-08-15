@@ -65,12 +65,12 @@ final class ScrollToTop extends AbstractComponent
         return $resolver->resolve($data) + $data;
     }
 
-    private function getConfig(): array 
+    protected function getConfig(): array 
     {
         return $this->config['components']['scroll_to_top'];
     }
 
-    public function getComponentClassname(): string 
+    protected function getComponentClassname(): string 
     {
         return "{$this->prefix}scroll-to-top";
     }

@@ -1,4 +1,4 @@
-// ******************************* DevBrain UI ****************************** //
+// ************************************************************************** //
 // *
 // *    Breakpoints & Containers (variables definitions)
 // *
@@ -14,11 +14,16 @@
 @use './../abstracts/functions/collection';
 
 
-/// Defaults breakpoints
-/// =============================================
+
+// * =============================================
+// *
+// *    Defaults breakpoints
+// *
+// * =============================================
 
 /// Breakpoints names
-/// -------------------------
+/// ==============================================
+
 $breakpoint-name-phone: if(meta.global-variable-exists('breakpoint-name-phone', $module: generated), generated.$breakpoint-name-phone, 'phone') !default;
 $breakpoint-name-tablet: if(meta.global-variable-exists('breakpoint-name-tablet', $module: generated), generated.$breakpoint-name-tablet, 'tablet') !default;
 $breakpoint-name-laptop: if(meta.global-variable-exists('breakpoint-name-laptop', $module: generated), generated.$breakpoint-name-laptop, 'laptop') !default;
@@ -27,8 +32,9 @@ $breakpoint-name-wide: if(meta.global-variable-exists('breakpoint-name-wide', $m
 $breakpoint-name-ultra: if(meta.global-variable-exists('breakpoint-name-ultra', $module: generated), generated.$breakpoint-name-ultra, 'ultra') !default;
 
 
-/// Defaults Breakpoints values
-/// -------------------------
+/// Defaults breakpoints values
+/// ==============================================
+
 $breakpoint-phone: if(meta.global-variable-exists('breakpoint-phone', $module: generated), generated.$breakpoint-phone, 576px) !default;
 $breakpoint-tablet: if(meta.global-variable-exists('breakpoint-tablet', $module: generated), generated.$breakpoint-tablet, 768px) !default;
 $breakpoint-laptop: if(meta.global-variable-exists('breakpoint-laptop', $module: generated), generated.$breakpoint-laptop, 992px) !default;
@@ -38,7 +44,8 @@ $breakpoint-ultra: if(meta.global-variable-exists('breakpoint-ultra', $module: g
 
 
 /// Breakpoints collection
-/// -------------------------
+/// ==============================================
+
 $breakpoints: (
     $breakpoint-name-phone  : $breakpoint-phone,
     $breakpoint-name-tablet : $breakpoint-tablet,
@@ -49,11 +56,16 @@ $breakpoints: (
 );
 
 
-/// Defaults containers
-/// =============================================
 
-/// Defaults Containers values
-/// -------------------------
+// * =============================================
+// *
+// *    Defaults containers
+// *
+// * =============================================
+
+/// Defaults containers values
+/// ==============================================
+
 $container-phone: if(meta.global-variable-exists('container-phone', $module: generated), generated.$container-phone, 540px) !default;
 $container-tablet: if(meta.global-variable-exists('container-tablet', $module: generated), generated.$container-tablet, 720px) !default;
 $container-laptop: if(meta.global-variable-exists('container-laptop', $module: generated), generated.$container-laptop, 960px) !default;
@@ -62,8 +74,9 @@ $container-wide: if(meta.global-variable-exists('container-wide', $module: gener
 $container-ultra: if(meta.global-variable-exists('container-ultra', $module: generated), generated.$container-ultra, 1520px) !default;
 
 
-/// Defaults Containers collection
-/// -------------------------
+/// Containers collection
+/// ==============================================
+
 $containers: (
     $breakpoint-name-phone  : $container-phone,
     $breakpoint-name-tablet : $container-tablet,
@@ -75,15 +88,16 @@ $containers: (
 
 
 
-/// Additional Breakpoints & Containers
-/// =============================================
+// * =============================================
+// *
+// *    Additional Breakpoints & Containers
+// *
+// * =============================================
 
 /// Add customs Breakpoints and Containers
-/// -----
-// $additional-breakpoints: (
-//     'ultra-wide': (breakpoint: 1800px, container: 1740px),
-// );
-// $additional-breakpoints: () !default;
+/// ==============================================
+/// $additional-breakpoints: ('ultra-wide': (breakpoint: 1800px, container: 1740px));
+
 $additional-breakpoints: if(meta.global-variable-exists('additional-breakpoints', $module: generated), generated.$additional-breakpoints, ()) !default;
 
 @if collection.notEmpty($additional-breakpoints) {
@@ -103,13 +117,16 @@ $additional-breakpoints: if(meta.global-variable-exists('additional-breakpoints'
 
 
 
-/// Useless Breakpoints & Containers
-/// =============================================
+// * =============================================
+// *
+// *    Useless Breakpoints & Containers
+// *
+// * =============================================
 
 /// Remove the not needed breakpoints and containers
-/// -----
-/// $disable-breakpoints: ('tablet');
-// $useless-breakpoints: () !default;
+/// ==============================================
+/// $useless-breakpoints: ('tablet', 'ultra-wide');
+
 $useless-breakpoints: if(meta.global-variable-exists('useless-breakpoints', $module: generated), generated.$useless-breakpoints, ()) !default;
 
 @if collection.notEmpty($useless-breakpoints) {
