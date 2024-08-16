@@ -1,0 +1,34 @@
+// ************************************************************************** //
+// *
+// *    Spacers
+// *
+// ************************************************************************** //
+
+@use 'sass:meta';
+@use './../generated';
+
+
+/// Spacers
+/// =============================================
+///
+
+$spacer-base: if(meta.global-variable-exists('spacer-base', $module: generated), generated.$spacer-base, 1rem) !default;
+$spacer-1: if(meta.global-variable-exists('spacer-1', $module: generated), generated.$spacer-1, 0.25) !default;
+$spacer-2: if(meta.global-variable-exists('spacer-2', $module: generated), generated.$spacer-2, 0.5) !default;
+$spacer-3: if(meta.global-variable-exists('spacer-3', $module: generated), generated.$spacer-3, 1) !default;
+$spacer-4: if(meta.global-variable-exists('spacer-4', $module: generated), generated.$spacer-4, 1.5) !default;
+$spacer-5: if(meta.global-variable-exists('spacer-5', $module: generated), generated.$spacer-5, 2) !default;
+$spacer-6: if(meta.global-variable-exists('spacer-6', $module: generated), generated.$spacer-6, 3) !default;
+
+$spacer: $spacer-base;
+
+$spacers: (
+  0: 0,
+  1: $spacer * $spacer-1,
+  2: $spacer * $spacer-2,
+  3: $spacer * $spacer-3,
+  4: $spacer * $spacer-4,
+  5: $spacer * $spacer-5,
+  6: $spacer * $spacer-6,
+  auto: auto,
+);

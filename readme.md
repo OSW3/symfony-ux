@@ -15,6 +15,8 @@ Add many UX Components to your app.
 - Components
     - [Accordions](./docs/components/accordion.md)
     - [Alerts](./docs/components/alert.md)
+    - [Analytics](./docs/components/analytics.md)
+    - [Announcement](./docs/components/analytics.md)
     - [Copyright](./docs/components/copyright.md)
     - [link](./docs/components/link.md)
     - [Scroll to top](./docs/components/scroll-to-top.md)

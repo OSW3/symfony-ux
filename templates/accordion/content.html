@@ -1,3 +1,5 @@
 <div {{ _get_attributes(_attr) }}>
-    {{ content|raw }}
+    <div class="{{ class }}-inner">
+        {{ content|raw }}
+    </div>
 </div>

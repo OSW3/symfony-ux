@@ -1,5 +1,5 @@
-// Last gen: 2024-08-14 02:02:50
-$prefix: 'ux';
+// Last gen: 2024-08-16 21:57:56
+$prefix: 'plop';
 $breakpoint-name-phone: 'phone';
 $breakpoint-phone: 576px;
 $container-phone: 540px;
@@ -18,7 +18,11 @@ $container-wide: 1440px;
 $breakpoint-name-ultra: 'ultra';
 $breakpoint-ultra: 1600px;
 $container-ultra: 1520px;
-$grid-divisions: 12;
+$additional-breakpoints: ('extra': (breakpoint: 576px, container: 540px));
+$transition-base: 1;
+$transition-slow: 0.8;
+$transition-normal: 0.3;
+$transition-fast: 0.1;
 $spacer-base: 1rem;
 $spacer-1: 0.25;
 $spacer-2: 0.5;
@@ -26,9 +30,6 @@ $spacer-3: 1;
 $spacer-4: 1.5;
 $spacer-5: 2;
 $spacer-6: 3;
+$grid-divisions: 12;
 $theme-default: 'light';
-$transition-base: 1;
-$transition-slow: 0.8;
-$transition-normal: 0.3;
-$transition-fast: 0.1;
 $brand-breakpoints: ('');

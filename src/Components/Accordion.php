@@ -29,11 +29,14 @@ final class Accordion extends AbstractComponent
     
     #[ExposeInTemplate(name: 'multiple', getter: 'fetchMultiple')]
     public bool $multiple;
+    
+    #[ExposeInTemplate(name: 'headerTag')]
+    public string $headerTag;
 
     #[PreMount]
     public function preMount(array $data): array
     {
-        // $options  = $this->getConfig();
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -46,10 +49,18 @@ final class Accordion extends AbstractComponent
         $resolver->setDefault('items', []);
         $resolver->setAllowedTypes('items', ['array']);
 
-        $resolver->setDefault('multiple', false);
+        $resolver->setDefault('multiple', $options['multiple']);
         $resolver->setAllowedTypes('multiple', ['bool']);
 
+        $resolver->setDefault('headerTag', $options['header']['tag']);
+        $resolver->setAllowedTypes('headerTag', ['string']);
+
         return $resolver->resolve($data) + $data;
+    }
+
+    protected function getConfig(): array 
+    {
+        return $this->config['components']['accordions'];
     }
 
     // public function fetchClass(): string

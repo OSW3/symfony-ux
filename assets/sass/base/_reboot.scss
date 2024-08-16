@@ -41,7 +41,7 @@ body {
     margin: map-get($spacers , 0);
     padding: map-get($spacers , 0);
 
-    font-family: var(--#{$prefix}font-#{$font-name-primary});
+    font-family: var(--font-#{$font-name-primary});
     font-size: $font-size-base;
     line-height: 1.45; 
     -webkit-font-smoothing: antialiased;

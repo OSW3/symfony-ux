@@ -1,0 +1,22 @@
+// ************************************************************************** //
+// *
+// *    Prefix
+// *
+// ************************************************************************** //
+
+@use 'sass:meta';
+@use './../generated';
+
+
+/// Prefix definition
+/// ==============================================
+
+$prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux') !default;
+
+
+/// Add prefix separator
+/// ==============================================
+
+@if type-of($prefix) == 'string' and $prefix != '' {
+    $prefix: '#{$prefix}-';
+}

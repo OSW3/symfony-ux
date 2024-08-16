@@ -9,13 +9,28 @@
 
 @mixin margin($top: null, $right: null, $bottom: null, $left: null) 
 {
-  // margin: $top $right $bottom $left;
   @include _coords('margin', $top, $right, $bottom, $left);
+}
+@mixin margin-x($value: null) 
+{
+  @include _coords-x('margin', $value);
+}
+@mixin margin-y($value: null) 
+{
+  @include _coords-y('margin', $value);
 }
 
 @mixin padding($top: null, $right: null, $bottom: null, $left: null) 
 {
   @include _coords('padding', $top, $right, $bottom, $left);
+}
+@mixin padding-x($value: null) 
+{
+  @include _coords-x('padding', $value);
+}
+@mixin padding-y($value: null) 
+{
+  @include _coords-y('padding', $value);
 }
 
 /// Position mixin's utilities
@@ -35,4 +50,14 @@
     @if ($bottom not null) {#{$type}-bottom : $bottom;}
     @if ($left not null) {#{$type}-left : $left;}
   }
+}
+@mixin _coords-x($type, $value: null) 
+{
+  #{$type}-right : $value;
+  #{$type}-left : $value;
+}
+@mixin _coords-y($type, $value: null) 
+{
+  #{$type}-top : $value;
+  #{$type}-bottom : $value;
 }

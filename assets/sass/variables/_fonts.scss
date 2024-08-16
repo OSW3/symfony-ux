@@ -27,10 +27,12 @@ $_open_sans: (
 );
 
 $_headings: (
-    'family': "var(--#{$prefix}font-primary)"
+    // 'family': "var(--#{$prefix}font-primary)"
+    'family': "var(--font-primary)"
 );
 $_code: (
-    'family': "var(--#{$prefix}font-secondary)"
+    // 'family': "var(--#{$prefix}font-secondary)"
+    'family': "var(--font-secondary)"
 );
     
 /// Fonts collection

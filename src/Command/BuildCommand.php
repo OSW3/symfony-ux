@@ -70,7 +70,8 @@ class BuildCommand extends Command
         // --
         
         foreach ($this->options['components'] as $name => $value) match ($name) {
-            'brand'    => $this->brandResponsive($sassVariables, $value),
+            'accordions' => $this->accordions($sassVariables, $value),
+            'brand'      => $this->brand($sassVariables, $value),
             default => null,
         };
 
@@ -151,7 +152,17 @@ class BuildCommand extends Command
         $vars[] = "\$theme-default: '{$name}';";
     }
 
-    private function brandResponsive(array &$vars, $options)
+    private function accordions(array &$vars, $options)
+    {
+        // Content max height
+        $contentMaxHeight = $options['content']['max_height'];
+
+        if ($contentMaxHeight !== null) {
+            $vars[] = "\$accordion--item--content--max-height: {$contentMaxHeight}px;";
+        }
+    }
+
+    private function brand(array &$vars, $options)
     {
         $brandBreakpoint = [];
 

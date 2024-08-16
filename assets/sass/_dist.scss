@@ -1,20 +1,15 @@
 /// DevBrain UI Base
 /// =============================================
 
-@use 'sass:meta';
-@use './generated';
-
-
-$prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux') !default;
-
-@if type-of($prefix) == 'string' and $prefix != '' {
-    $prefix: '#{$prefix}-';
-}
 
 
 
 /// Abstracts Variables
 /// -------------------------
+
+// Prefix
+// --
+@import './variables/prefix';
 
 // Breakpoints & Containers
 // --
@@ -34,6 +29,13 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 // required for transition delays
 @import './variables/transitions';
 
+// Spacers
+// --
+// Add default Transition variables
+// required for transition delays
+@import './variables/spacers';
+
+
 // Colors
 // --
 // Add default colors variables
@@ -51,6 +53,7 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 // Add default themes variables
 // required to add themes
 @import './variables/themes';
+
 
 // Fonts
 // --

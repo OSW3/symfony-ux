@@ -1,0 +1,41 @@
+// ************************************************************************** //
+// *
+// *    Radius variables.
+// *
+// *    - Defaults delays
+// *
+// ************************************************************************** //
+
+@use 'sass:meta';
+@use './../generated';
+@use './../abstracts/functions/collection';
+@use './../abstracts/mixins/dumper';
+
+
+/// Defaults radius
+/// =============================================
+
+/// Base of radius
+/// -------------------------
+$radius-base: if(meta.global-variable-exists('radius-base', $module: generated), generated.$radius-base, 12px) !default;
+
+
+/// Radius ratio
+/// -------------------------
+$radius-tiny: if(meta.global-variable-exists('radius-tiny', $module: generated), generated.$radius-tiny, .25) !default;
+$radius-small: if(meta.global-variable-exists('radius-small', $module: generated), generated.$radius-small, .5) !default;
+$radius-normal: if(meta.global-variable-exists('radius-normal', $module: generated), generated.$radius-normal, 1) !default;
+$radius-large: if(meta.global-variable-exists('radius-large', $module: generated), generated.$radius-large, 1.5) !default;
+$radius-extra: if(meta.global-variable-exists('radius-extra', $module: generated), generated.$radius-extra, 2) !default;
+
+
+/// Delays collection
+/// -------------------------
+$radius: (
+    'none'  : $radius-base * 0,
+    'tiny'  : $radius-base * $radius-tiny,
+    'small' : $radius-base * $radius-small,
+    'normal': $radius-base * $radius-normal,
+    'large' : $radius-base * $radius-large,
+    'extra' : $radius-base * $radius-extra,
+);

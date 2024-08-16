@@ -4,7 +4,11 @@
 // *
 // ************************************************************************** //
 
+@use 'sass:meta';
+@use './../generated';
+@use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/transition';
 
@@ -12,13 +16,6 @@ $_component: 'accordion';
 $_classname: '#{$prefix}#{$_component}';
 
 @include banner.header('Component #{$_component}');
-
-
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
 
 
 
@@ -31,9 +28,42 @@ $_classname: '#{$prefix}#{$_component}';
 // * Default sizes and/or positions variables
 // * =========================
 
+$accordion--border-radius: 'small' !default;
+
+$accordion--item--gap: -1px !default; // gap between items
+$accordion--item--transition-speed: 'normal' !default;
+
+$accordion--item--header--font-size: 1.2rem !default;
+$accordion--item--header--padding-x: $spacer !default;
+$accordion--item--header--padding-y: $spacer !default;
+
+$accordion--item--content--max-height: if(meta.global-variable-exists('accordion--item--content--max-height', $module: generated), generated.$accordion--item--content--max-height, null) !default;
+$accordion--item--content--padding-x: $spacer !default;
+$accordion--item--content--padding-y: $spacer !default;
+
 
 // * Default theme variables
 // * =========================
+
+/// Accordion Items
+/// -------------------------
+
+$accordion--item--border-color: $gray-500 !default;
+
+
+/// Accordion Items Header
+/// -------------------------
+
+$accordion--item--header--text-color: $gray-700 !default;
+$accordion--item--header--background-color: $gray-200 !default;
+
+
+/// Accordion Items Open Header
+/// -------------------------
+
+$accordion--item-open--header--text-color: $gray-900 !default;
+$accordion--item-open--header--background-color: $gray-400 !default;
+
 
 
 // * =============================================
@@ -44,16 +74,33 @@ $_classname: '#{$prefix}#{$_component}';
 
 .#{$_classname} {
 
-    // border: 10px solid red;
-
     /// Accordion Item
     /// --
 
     &-item {
-        border: 1px solid #ccc;
-    }
-    &-item + &-item {
-        margin-top: -1px;
+        border-width: 1px;
+        border-style: solid;
+        border-color: var(--accordion--item--border-color, $accordion--item--border-color);
+
+        &:not(:first-child) {
+            margin-top: $accordion--item--gap;
+        }
+
+        &:not(.open) {
+            overflow: hidden;
+        }
+
+        @if $accordion--item--gap > 0 {
+            @include corner.rounded(map-get($radius, $accordion--border-radius));
+        }
+        @else {
+            &:first-child {
+                @include corner.top(map-get($radius, $accordion--border-radius));
+            }
+            &:last-child {
+                @include corner.bottom(map-get($radius, $accordion--border-radius));
+            }
+        }
     }
 
     
@@ -61,44 +108,66 @@ $_classname: '#{$prefix}#{$_component}';
     /// --
     
     &-header {
-        background-color: #f1f1f1;
-        display: flex;
-        flex-direction: row;
+        color: var(--accordion--item--header--text-color, $accordion--item--header--text-color);
+        background-color: var(--accordion--item--header--background-color, $accordion--item--header--background-color);
+        font-size: $accordion--item--header--font-size;
         justify-content: space-between;
+        cursor: pointer;
+
+        @if $accordion--item--gap > 0 {
+            @include corner.top(map-get($radius, $accordion--border-radius));
+        }
+
+        @include flex.row;
         @include spaces.margin(0,0,0,0);
-        @include spaces.padding($spacer,$spacer,$spacer,$spacer);
+        @include spaces.padding(
+            $accordion--item--header--padding-y,
+            $accordion--item--header--padding-x,
+            $accordion--item--header--padding-y,
+            $accordion--item--header--padding-x
+        );
+        @include transition.set((color, background-color), map-get($delays, $accordion--item--transition-speed));
+
+        // &::after {
+        //     content: "x";
+        //     background-color: red;
+        //     height: 30px;
+        //     width: 30px;
+        //     @include flex.centered;
+        // }
     }
-    // .show &-header {
-    //     background-color: #d1d1d1;
-    // }
+    &-item.open &-header {
+        color: var(--accordion--item-open--header--text-color, $accordion--item-open--header--text-color);
+        background-color: var(--accordion--item-open--header--background-color, $accordion--item-open--header--background-color);        
+    }
+    @if $accordion--item--gap < 0 {
+        &-item:first-child.open &-header {
+            @include corner.top(map-get($radius, $accordion--border-radius));
+        }
+    }
 
 
     /// Accordion content
     /// --
     
     &-content {
-        // border: 10px solid purple;
         max-height: 0;
         overflow: hidden;
-        // display: none;
+        @include transition.set((max-height), map-get($delays, $accordion--item--transition-speed));
 
-        @include transition.set((max-height), map-get($delays, normal));
+        &-inner {
+            @include spaces.padding(
+                $accordion--item--content--padding-y,
+                $accordion--item--content--padding-x,
+                $accordion--item--content--padding-y,
+                $accordion--item--content--padding-x
+            );
+        }
     }
-
-    // &-item.open &-content {
-    //     max-height: 100px;
-    // }
-
-    
-    // /// Accordion content inner
-    // /// --
-
-    // &-inner {
-    //     // border: 10px solid blue;
-    //     @include spaces.padding($spacer,$spacer,$spacer,$spacer);
-    // }
-
-    // &-button {
-    //     cursor: pointer;
-    // }
+    @if $accordion--item--content--max-height != null {
+        &-item.open &-content {
+            max-height: $accordion--item--content--max-height !important;
+            overflow-y: auto;
+        }
+    }
 }

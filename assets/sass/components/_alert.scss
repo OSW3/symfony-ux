@@ -20,14 +20,6 @@ $_classname: '#{$prefix}#{$_component}';
 
 // * =============================================
 // *
-// *    Component functions
-// *
-// * =============================================
-
-
-
-// * =============================================
-// *
 // *    Component Properties
 // *
 // * =============================================
@@ -59,8 +51,12 @@ $alert--margin-y: $spacer !default;
     @include corner.rounded(6px);
     @include sizes.width(100%);
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
-    @include spaces.margin( $alert--margin-y, auto, $alert--margin-y, auto );
+    // @include spaces.margin( $alert--margin-y, auto, $alert--margin-y, auto );
+    @include spaces.margin( null, null, $alert--margin-y, null );
 
+    & + & {
+        @include spaces.margin( $alert--margin-y, null, null, null );
+    }
 
     /// Alert dismiss button
     /// --
@@ -77,9 +73,9 @@ $alert--margin-y: $spacer !default;
     
     @each $key, $value in $pallet {
         &-#{$key} {
-            color: var(--#{$prefix}#{$key});
-            background-color: var(--#{$prefix}#{$key}-tint-70);
-            border-color: var(--#{$prefix}#{$key});
+            color: var(--#{$key});
+            background-color: var(--#{$key}-tint-70);
+            border-color: var(--#{$key});
         }
     }
 }

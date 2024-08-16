@@ -38,7 +38,7 @@
 @include banner.section('The grid');
 
 // Set .grid styles definition
-.grid {
+.#{$prefix}grid {
     flex-wrap: wrap;
     
     @include flex.row;
@@ -71,22 +71,22 @@
     $padding: $spacer;
 
     // Padding gap for the Grid
-    .grid.gap-#{$i}
+    .#{$prefix}grid.#{$prefix}gap-#{$i}
     {
         @include spaces.margin(null, $margin, null, $margin);
     }
 
     // (All) Padding gap for thr grid Columns
-    .gap-#{$i} [class^="column"]
+    .#{$prefix}gap-#{$i} [class^="column"]
     {
         @include spaces.padding($padding, $padding, $padding, $padding);
     }
     // (Left & right) Padding gap for thr grid Columns
-    .gap-x-#{$i} [class^="column"]{
+    .#{$prefix}gap-x-#{$i} [class^="column"]{
         @include spaces.padding(0, $padding, 0, $padding);
     }
     // (Top & Bottom) Padding gap for thr grid Columns
-    .gap-y-#{$i} [class^="column"]{
+    .#{$prefix}gap-y-#{$i} [class^="column"]{
         @include spaces.padding($padding, 0, $padding, 0);
     }
 }
@@ -98,7 +98,7 @@
 @include banner.section('The grid columns');
 
 // Set .column & .column-x styles definition
-.column {
+.#{$prefix}column {
     flex: 1 0 0%;
 
     // .column-break
@@ -136,7 +136,7 @@
 /// =============================================
 @include banner.section('The grid offsets');
 
-.offset {
+.#{$prefix}offset {
 
     // .offset-x
     @for $i from 1 through $grid-divisions {

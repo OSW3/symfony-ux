@@ -1,18 +1,14 @@
 # Analytics
 
-Add one or more analytics services.
+- [What is it about ?](#what-is-it-about-)
+- [Supported services](#supported-services)
+- [Component configuration](#component-configuration)
+- [Twig integration](#twig-integration)
 
-## Configuration
+## What is it about ?
 
-```yaml
-ux: 
-    components: 
-        analytics: 
-            providerName:
-                tracking_id: 1234
-                tracking_url https://mysite.provider.url/
-                tracking_domain mysite.com
-```
+Add analytics service to your app.
+
 
 ## Supported services
 
@@ -26,25 +22,66 @@ ux:
 | Piwik | `piwik` | [https://piwik.pro/](https://piwik.pro/) | 
 | Plausible | `plausible` | [https://plausible.io/](https://plausible.io/) | 
 | Woopra | `woopra` | [https://woopra.com/](https://woopra.com/) | 
-<br>
 
-## How to use
+## Component configuration
 
-### Basic usage
+```yaml
+ux: 
+    components: 
+        analytics: 
+            provider:
+                tracking_id: 1234
+                tracking_url https://mysite.provider.url/
+                tracking_domain mysite.com
+```
+
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `tracking_id` | `int\|string` | Set the tracking ID. | no |  |
+| `tracking_url` | `string` | Set the tracking URL. | no |  |
+| `tracking_domain` | `string` | Set the tracking domain. | no |  |
+
+### Required options by provider
+
+| Provider | tracking_id | tracking_url | tracking_domain | 
+|-|:-:|:-:|:-:|
+| Clicky | x |  |  | 
+| Google Analytics | x |  |  | 
+| GoSquared | x |  |  | 
+| Heap | x |  |  | 
+| Matomo | x | x |  | 
+| Piwik | x | x |  | 
+| Plausible |  |  | x | 
+| Woopra |  |  | x | 
+
+
+## Twig integration
+
+### Method 1 
+
+This method suppose the Tracking ID is defined in the `ux.yaml` configuration
+
+```twig 
+<twig:Analytics:Google />
+```
+
+### Method 2 
+
+This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 
 ```twig 
 <twig:Analytics provider="google" />
 ```
 
+### Method 3
+
+This method passe the tracking ID
+
 ```twig 
 <twig:Analytics provider="google" trackingId="1234" />
 ```
 
-```twig 
-<twig:Analytics:Google trackingId="1234" />
-```
 
-```twig 
-<twig:Analytics:Google trackingId="1234" />
-```
-<br>
+### Twig component attributes
+
+Attributes are `trackingId`, `trackingUrl`, `trackingDomain`

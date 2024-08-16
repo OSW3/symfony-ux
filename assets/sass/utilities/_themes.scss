@@ -20,7 +20,8 @@
 @if utils.not-empty(map-get($themes , $theme-default)) {
     :root {
         @each $property, $value in map-get($themes , $theme-default) {
-            --#{$prefix}#{$property}: #{$value};
+            // --#{$prefix}#{$property}: #{$value};
+            --#{$property}: #{$value};
         }
     }
 }
@@ -33,7 +34,8 @@
     @if ($theme != $theme-default) {
         :root[data-theme=#{$theme}] {
             @each $property, $value in $properties {
-                --#{$prefix}#{$property}: #{$value};
+                // --#{$prefix}#{$property}: #{$value};
+                --#{$property}: #{$value};
             }
         }
     }
@@ -42,7 +44,6 @@
 // /**/
 
 // $additional-themes: () !default;
-
 
 // @each $theme in $additional-themes {
 //     $_name: map-get($theme, 'name');

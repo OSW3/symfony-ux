@@ -16,6 +16,9 @@ final class Item extends AbstractComponent
     use AttributeIdTrait;
     use AttributeClassTrait;
     
+    #[ExposeInTemplate(name: 'headerTag')]
+    public string $headerTag;
+    
     #[ExposeInTemplate(name: 'open', getter: 'fetchOpen')]
     public ?bool $open;
     
@@ -31,6 +34,7 @@ final class Item extends AbstractComponent
     #[PreMount]
     public function preMount(array $data): array
     {
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -38,6 +42,9 @@ final class Item extends AbstractComponent
             ->idResolver($resolver)
             ->classResolver($resolver)
         ;
+
+        $resolver->setDefault('headerTag', $options['header']['tag']);
+        $resolver->setAllowedTypes('headerTag', ['string']);
 
         $resolver->setDefaults(['open' => false]);
         $resolver->setAllowedTypes('open', ['null','bool']);
@@ -49,6 +56,11 @@ final class Item extends AbstractComponent
         $resolver->setAllowedTypes('content', ['null','string']);
 
         return $resolver->resolve($data) + $data;
+    }
+
+    protected function getConfig(): array 
+    {
+        return $this->config['components']['accordions'];
     }
 
     protected function getComponentClassname(): string 

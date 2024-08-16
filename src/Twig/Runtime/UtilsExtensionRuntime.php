@@ -2,9 +2,31 @@
 namespace OSW3\UX\Twig\Runtime;
 
 use Twig\Extension\RuntimeExtensionInterface;
+use OSW3\UX\DependencyInjection\Configuration;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class UtilsExtensionRuntime implements RuntimeExtensionInterface
 {
+    private array $options;
+
+    public function __construct(ParameterBagInterface $params)
+    {
+        $options = $params->all();
+        $this->options = $options[Configuration::NAME];
+    }
+    
+    public function getUxClassName(string $classname): string
+    {
+        $prefix = $this->options['prefix'];
+
+        if (!empty($prefix))
+        {
+            $prefix.= "-";
+        }
+
+       return "{$prefix}{$classname}";
+    }
+
     public function addAttribute(array $attributes=[], ?string $name=null, mixed $value=null): array
     {
         $attributes[$name] = $value;

@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+use OSW3\UX\Enum\Announcement\Animation\Strategy as AnimationStrategy;
+use OSW3\UX\Enum\Announcement\Animation\Type as AnimationType;
 
 return static function($definition)
 {
@@ -200,6 +203,44 @@ return static function($definition)
 
         ->arrayNode('components')->addDefaultsIfNotSet()->children()
 
+            // Accordions
+            // -- 
+            ->arrayNode('accordions')
+                ->info("Parameters settings of Accordions component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->booleanNode('multiple')
+                    ->info("Set whether Accordions can open multiple items in same time.")
+                    ->defaultFalse()
+                ->end()
+    
+                ->arrayNode('header')
+                    ->addDefaultsIfNotSet()->children()
+
+                    ->scalarNode('tag')
+                        ->info("Set the tag type of items header.")
+                        ->defaultValue('h2')
+                    ->end()
+
+                ->end()->end()
+    
+                ->arrayNode('content')
+                    ->addDefaultsIfNotSet()->children()
+
+                    ->scalarNode('max_height')
+                        ->info("Set the max height of items content.")
+                        ->defaultNull()
+                        ->validate()
+                            ->ifTrue(fn($v) => !is_null($v) && (!is_int($v) || $v < 0))
+                            ->thenInvalid('The max_height must be a positive integer or null.')
+                        ->end()
+                    
+                    ->end()
+
+                ->end()->end()
+
+            ->end()->end()
+
             // Alerts
             // -- 
             ->arrayNode('alerts')
@@ -323,6 +364,32 @@ return static function($definition)
 
                 ->end()->end()
                 
+            ->end()->end()
+
+            // Announcement
+            // -- 
+            ->arrayNode('announcement')
+                ->info("Parameters settings of Announcement component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->enumNode('animated')
+                    ->info("Set the animation strategy.")
+                    ->values(AnimationStrategy::toArray())
+                    ->defaultValue(AnimationStrategy::ALWAYS->value)
+                ->end()
+    
+                ->enumNode('animation')
+                    ->info("Set the animation type.")
+                    ->values(AnimationType::toArray())
+                    ->defaultValue(AnimationType::SCROLL->value)
+                ->end()
+    
+                ->integerNode('speed')
+                    ->info("Set the animation dismiss.")
+                    ->min(0)
+                    ->defaultValue(500)
+                ->end()
+
             ->end()->end()
 
 
