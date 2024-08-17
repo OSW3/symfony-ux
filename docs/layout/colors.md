@@ -77,4 +77,47 @@ $cyan    : #0dcaf0;
 
 ## Add custom colors
 
+1. Create a color variable
+
+```scss
+$pumpkin : #FF5E15;
+```
+
+2. Add the color to the `$additional-colors` list
+
+```scss 
+
+$additional-colors: (
+    'pumpkin' : $pumpkin,
+);
+```
+
 ## Exclude useless colors
+
+Add the color's names into the `$useless-colors` list.
+
+```scss 
+$useless-colors: ('teal');
+```
+
+## Colors declination
+
+### Shades collection
+
+Add the color's names into the `$colors-shades` list and the levels of shade (percent has integer) in the sub-list;
+
+```scss 
+$colors-shades: (
+    'pumpkin' : (10, 35),
+);
+```
+
+### Tints collection
+
+Add the color's names into the `$colors-tints` list and the levels of tint (percent has integer) in the sub-list;
+
+```scss 
+$colors-tints: (
+    'pumpkin' : (20, 30),
+);
+```

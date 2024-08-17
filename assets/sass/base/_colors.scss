@@ -5,6 +5,7 @@
 // ************************************************************************** //
 
 @use './../abstracts/mixins/banner';
+@use './../abstracts/functions/color';
 
 @include banner.header('Base colors');
 
@@ -16,7 +17,25 @@
 // * =============================================
 
 :root {
-    @each $key, $value in $colors {
-        --#{$key}: #{$value};
+    @each $color-name, $value in $colors {
+        --#{$color-name}: #{$value};
+
+
+        $shades: map-get($colors-shades, $color-name);
+        $tints: map-get($colors-tints, $color-name);
+
+        @if $shades {
+            @for $i from 1 through length($shades) {
+                $percent: nth($shades, $i) * 1%;
+                --#{$color-name}--shade-#{nth($shades, $i)}: #{color.shade($value, $percent)};
+            }
+        }
+
+        @if $tints {
+            @for $i from 1 through length($tints) {
+                $percent: nth($tints, $i) * 1%;
+                --#{$color-name}--tint-#{nth($tints, $i)}: #{color.shade($value, $percent)};
+            }
+        }
     }
 }
