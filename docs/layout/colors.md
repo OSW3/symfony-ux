@@ -75,6 +75,34 @@ $teal    : #20c997;
 $cyan    : #0dcaf0;
 ```
 
+These variables will generate the `:root` css
+
+```css
+:root {
+  --black: #111111;
+  --white: #ffFFFf;
+  --gray-100: #f8f9fa;
+  --gray-200: #e9ecef;
+  --gray-300: #dee2e6;
+  --gray-400: #ced4da;
+  --gray-500: #adb5bd;
+  --gray-600: #6c757d;
+  --gray-700: #495057;
+  --gray-800: #343a40;
+  --gray-900: #212529;
+  --blue: #0d6efd;
+  --indigo: #6610f2;
+  --purple: #6f42c1;
+  --pink: #d63384;
+  --red: #dc3545;
+  --orange: #fd7e14;
+  --yellow: #ffc107;
+  --green: #198754;
+  --teal: #20c997;
+  --cyan: #0dcaf0;
+}
+```
+
 ## Add custom colors
 
 1. Create a color variable
@@ -92,12 +120,34 @@ $additional-colors: (
 );
 ```
 
+Adding colors will generate the `:root` css
+
+```css
+:root {
+  /* ... */
+  --cyan: #0dcaf0;
+  --pumpkin: #FF5E15;
+}
+```
+
 ## Exclude useless colors
 
 Add the color's names into the `$useless-colors` list.
 
 ```scss 
 $useless-colors: ('teal');
+```
+
+Exclude colors will generate the `:root` css
+
+```css
+:root {
+  /* ... */
+  --green: #198754;
+  /* --teal: #20c997; */ <-- will be removed
+  --cyan: #0dcaf0;
+  --pumpkin: #FF5E15;
+}
 ```
 
 ## Colors declination
@@ -112,6 +162,16 @@ $colors-shades: (
 );
 ```
 
+Exclude colors will generate the `:root` css
+
+```css
+:root {
+  /* ... */
+  --pumpkin--shade-10: #e65513;
+  --pumpkin--shade-35: #a63d0e;
+}
+```
+
 ### Tints collection
 
 Add the color's names into the `$colors-tints` list and the levels of tint (percent has integer) in the sub-list;
@@ -120,4 +180,14 @@ Add the color's names into the `$colors-tints` list and the levels of tint (perc
 $colors-tints: (
     'pumpkin' : (20, 30),
 );
+```
+
+Exclude colors will generate the `:root` css
+
+```css
+:root {
+  /* ... */
+  --pumpkin--tint-20: #ff7e44;
+  --pumpkin--tint-30: #ff8e5b;
+}
 ```
