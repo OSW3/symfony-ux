@@ -1,3 +1,8 @@
 <div {{ _get_attributes(_attr) }}>
-    <twig:ScrollText :items="messages" :orientation="orientation" />
+
+    {# {{ animated }}
+    {{ animation }}
+    {{ orientation }} #}
+    {# <twig:Ticker :items="messages" :orientation="orientation" /> #}
+    <twig:Ticker :items="messages" />
 </div>

@@ -1,8 +1,8 @@
 {# ---------------------------------------------- #}
-{# - Component : ScrollText                     - #}
+{# - Component : Ticker                         - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends '@UxComponents/scroll-text/base.html' %}
+{% extends '@UxComponents/ticker/base.html' %}
 
 
 {# ---------------------------------------------- #}
@@ -15,6 +15,7 @@
 
 {% set _attr = _add_attribute(_attr, 'id', id) %}
 {% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'rel', rel) %}
 {% for _property, _value in dataset %}
     {% set _attr = _add_attribute(_attr, _property, _value) %}
 {% endfor %}

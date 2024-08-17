@@ -19,4 +19,5 @@ import SearchbarComponent from './components/SearchbarComponent';
 import StepperComponent from './components/StepperComponent';
 import SwitchComponent from './components/SwitchComponent';
 import TabsComponent from './components/TabsComponent';
+import TickerComponent from './components/TickerComponent';
 import ToastComponent from './components/ToastComponent';

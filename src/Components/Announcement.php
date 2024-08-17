@@ -27,13 +27,19 @@ final class Announcement extends AbstractComponent
     #[ExposeInTemplate(name: 'messages', getter: 'fetchMessages')]
     public array $messages;
     
+    #[ExposeInTemplate(name: 'animated')]
+    public string $animated;
+    
+    #[ExposeInTemplate(name: 'animation')]
+    public string $animation;
+    
     #[ExposeInTemplate(name: 'orientation')]
     public string $orientation;
 
     #[PreMount]
     public function preMount(array $data): array
     {
-        // $options  = $this->getConfig();
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -49,7 +55,13 @@ final class Announcement extends AbstractComponent
         $resolver->setDefault('messages', []);
         $resolver->setAllowedTypes('messages', ['array']);
 
-        $resolver->setDefault('orientation', 'horizontal');
+        $resolver->setDefault('animated', $options['animated']);
+        $resolver->setAllowedTypes('animated', ['string']);
+
+        $resolver->setDefault('animation', $options['animation']);
+        $resolver->setAllowedTypes('animation', ['string']);
+
+        $resolver->setDefault('orientation', $options['orientation']);
         $resolver->setAllowedTypes('orientation', ['string']);
 
         return $resolver->resolve($data) + $data;

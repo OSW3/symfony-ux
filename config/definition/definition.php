@@ -2,6 +2,7 @@
 
 use OSW3\UX\Enum\Announcement\Animation\Strategy as AnimationStrategy;
 use OSW3\UX\Enum\Announcement\Animation\Type as AnimationType;
+use OSW3\UX\Enum\Orientation;
 
 return static function($definition)
 {
@@ -384,8 +385,14 @@ return static function($definition)
                     ->defaultValue(AnimationType::SCROLL->value)
                 ->end()
     
+                ->enumNode('orientation')
+                    ->info("Set the animation orientation.")
+                    ->values(Orientation::toArray())
+                    ->defaultValue(Orientation::HORIZONTAL->value)
+                ->end()
+    
                 ->integerNode('speed')
-                    ->info("Set the animation dismiss.")
+                    // ->info("Set the animation dismiss.")
                     ->min(0)
                     ->defaultValue(500)
                 ->end()
@@ -485,6 +492,37 @@ return static function($definition)
                 ->scalarNode('title')
                     ->info("Specifies the title attribute value")
                     ->defaultValue("Go to top")
+                ->end()
+    
+            ->end()->end()
+    
+
+            // Scroll to top
+            // -- 
+            ->arrayNode('tickers')
+                ->info("Parameters settings of the Tickers component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->integerNode('speed')
+                    ->info("Set the speed of scroll")
+                    ->min(0)
+                    ->defaultValue(15)
+                ->end()
+    
+                ->integerNode('delay')
+                    ->info("Set the delay before next message")
+                    ->min(0)
+                    ->defaultValue(0)
+                ->end()
+    
+                ->booleanNode('loop')
+                    ->info("Set whether the ticker will be played in loop")
+                    ->defaultTrue()
+                ->end()
+    
+                ->booleanNode('pause_hover')
+                    ->info("Set whether the ticker will be paused on mouseover")
+                    ->defaultTrue()
                 ->end()
     
             ->end()->end()

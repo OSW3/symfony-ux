@@ -70,24 +70,28 @@
     $margin: calc(-1 * $spacer);
     $padding: $spacer;
 
-    // Padding gap for the Grid
-    .#{$prefix}grid.#{$prefix}gap-#{$i}
-    {
-        @include spaces.margin(null, $margin, null, $margin);
-    }
+    @if $i != 'auto' {
 
-    // (All) Padding gap for thr grid Columns
-    .#{$prefix}gap-#{$i} [class^="column"]
-    {
-        @include spaces.padding($padding, $padding, $padding, $padding);
-    }
-    // (Left & right) Padding gap for thr grid Columns
-    .#{$prefix}gap-x-#{$i} [class^="column"]{
-        @include spaces.padding(0, $padding, 0, $padding);
-    }
-    // (Top & Bottom) Padding gap for thr grid Columns
-    .#{$prefix}gap-y-#{$i} [class^="column"]{
-        @include spaces.padding($padding, 0, $padding, 0);
+        // Padding gap for the Grid
+        .#{$prefix}grid.#{$prefix}gap-#{$i}
+        {
+            @include spaces.margin(null, $margin, null, $margin);
+        }
+
+        // (All) Padding gap for thr grid Columns
+        .#{$prefix}gap-#{$i} [class^="column"]
+        {
+            @include spaces.padding($padding, $padding, $padding, $padding);
+        }
+        // (Left & right) Padding gap for thr grid Columns
+        .#{$prefix}gap-x-#{$i} [class^="column"]{
+            @include spaces.padding-x($padding);
+        }
+        // (Top & Bottom) Padding gap for thr grid Columns
+        .#{$prefix}gap-y-#{$i} [class^="column"]{
+            @include spaces.padding-y($padding);
+        }
+    
     }
 }
 

@@ -1,2 +1,2 @@
-// Last gen: 2024-08-16 21:57:56
-export const PREFIX = 'plop';
+// Last gen: 2024-08-17 21:27:03
+export const PREFIX = 'ux';

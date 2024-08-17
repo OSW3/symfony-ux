@@ -17,29 +17,23 @@
 // * =============================================
 
 :root {
-    @each $key, $value in $pallet {
-        // --#{$prefix}#{$key}: #{$value};
-        --#{$key}: #{$value};
+    @each $pallet-name, $value in $pallet {
+        --#{$pallet-name}: #{$value};
 
-        @if $has-shade {
-            // --#{$prefix}#{$key}-shade: --#{$prefix}#{$key}-shade-30;
-            --#{$key}-shade: --#{$key}-shade-30;
-            @for $i from 1 through 10 {
-                $int_percentage: $i * 10;
-                $str_percentage: $i * 10%;
-                // --#{$prefix}#{$key}-shade-#{$int_percentage}:  #{color.shade($value, $str_percentage)};
-                --#{$key}-shade-#{$int_percentage}:  #{color.shade($value, $str_percentage)};
+        $shades: map-get($pallet-shades, $pallet-name);
+        $tints: map-get($pallet-tints, $pallet-name);
+
+        @if $shades {
+            @for $i from 1 through length($shades) {
+                $percent: nth($shades, $i) * 1%;
+                --#{$pallet-name}--shade-#{nth($shades, $i)}: #{color.shade($value, $percent)};
             }
         }
 
-        @if $has-tint {
-            // --#{$prefix}#{$key}-tint: --#{$prefix}#{$key}-tint-30;
-            --#{$key}-tint: --#{$key}-tint-30;
-            @for $i from 1 through 10 {
-                $int_percentage: $i * 10;
-                $str_percentage: $i * 10%;
-                // --#{$prefix}#{$key}-tint-#{$int_percentage}:  #{color.tint($value, $str_percentage)};
-                --#{$key}-tint-#{$int_percentage}:  #{color.tint($value, $str_percentage)};
+        @if $tints {
+            @for $i from 1 through length($tints) {
+                $percent: nth($tints, $i) * 1%;
+                --#{$pallet-name}--tint-#{nth($tints, $i)}: #{color.tint($value, $percent)};
             }
         }
     }

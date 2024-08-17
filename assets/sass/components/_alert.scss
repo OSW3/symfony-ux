@@ -24,7 +24,7 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-// * Default sizes and/or positions variables
+// * Default layout variables
 // * =========================
 
 $alert--margin-y: $spacer !default;
@@ -74,7 +74,7 @@ $alert--margin-y: $spacer !default;
     @each $key, $value in $pallet {
         &-#{$key} {
             color: var(--#{$key});
-            background-color: var(--#{$key}-tint-70);
+            background-color: var(--#{$key}--tint-70);
             border-color: var(--#{$key});
         }
     }

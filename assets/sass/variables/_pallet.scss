@@ -39,13 +39,14 @@ $pallet: (
 
 
 
-/// Shade & Tint
-/// =============================================
+// * =============================================
+// *
+// *    Pallets declination
+// *
+// * =============================================
 
-/// Shade & Tint allowed
-/// -------------------------
-$has-shade: true !default;
-$has-tint : true !default;
+$pallet-shades: () !default;
+$pallet-tints: () !default;
 
 
 

@@ -21,7 +21,7 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-// * Default sizes and/or positions variables
+// * Default layout variables
 // * =========================
 
 $announcement--height: 40px !default;
@@ -30,7 +30,7 @@ $announcement--height: 40px !default;
 // * Default theme variables
 // * =========================
 
-$announcement--text-color: $gray-600 !default;
+$announcement--text-color: $white !default;
 $announcement--background-color: $gray-600 !default;
 
 
@@ -47,7 +47,7 @@ $announcement--background-color: $gray-600 !default;
 
     color: var(--announcement--text-color, $announcement--text-color);
     background-color: var(--announcement--background-color, $announcement--background-color);
-    @include flex.middle;
+    // @include flex.middle;
     @include sizes.set(null, $announcement--height);
     @include transition.set((color, background-color), map-get($delays, normal));
 }

@@ -20,7 +20,6 @@
     @each $color-name, $value in $colors {
         --#{$color-name}: #{$value};
 
-
         $shades: map-get($colors-shades, $color-name);
         $tints: map-get($colors-tints, $color-name);
 
