@@ -75,33 +75,33 @@ $teal    : #20c997;
 $cyan    : #0dcaf0;
 ```
 
-These variables will generate the `:root` css
-
-```css
-:root {
-  --black: #111111;
-  --white: #ffFFFf;
-  --gray-100: #f8f9fa;
-  --gray-200: #e9ecef;
-  --gray-300: #dee2e6;
-  --gray-400: #ced4da;
-  --gray-500: #adb5bd;
-  --gray-600: #6c757d;
-  --gray-700: #495057;
-  --gray-800: #343a40;
-  --gray-900: #212529;
-  --blue: #0d6efd;
-  --indigo: #6610f2;
-  --purple: #6f42c1;
-  --pink: #d63384;
-  --red: #dc3545;
-  --orange: #fd7e14;
-  --yellow: #ffc107;
-  --green: #198754;
-  --teal: #20c997;
-  --cyan: #0dcaf0;
-}
-```
+> These variables will generate the `:root` css
+> 
+> ```css
+> :root {
+>   --black: #111111;
+>   --white: #ffFFFf;
+>   --gray-100: #f8f9fa;
+>   --gray-200: #e9ecef;
+>   --gray-300: #dee2e6;
+>   --gray-400: #ced4da;
+>   --gray-500: #adb5bd;
+>   --gray-600: #6c757d;
+>   --gray-700: #495057;
+>   --gray-800: #343a40;
+>   --gray-900: #212529;
+>   --blue: #0d6efd;
+>   --indigo: #6610f2;
+>   --purple: #6f42c1;
+>   --pink: #d63384;
+>   --red: #dc3545;
+>   --orange: #fd7e14;
+>   --yellow: #ffc107;
+>   --green: #198754;
+>   --teal: #20c997;
+>   --cyan: #0dcaf0;
+> }
+> ```
 
 ## Add custom colors
 
@@ -120,15 +120,15 @@ $additional-colors: (
 );
 ```
 
-Adding colors will generate the `:root` css
-
-```css
-:root {
-  /* ... */
-  --cyan: #0dcaf0;
-  --pumpkin: #FF5E15;
-}
-```
+> Adding colors will generate the `:root` css
+> 
+> ```css
+> :root {
+>   /* ... */
+>   --cyan: #0dcaf0;
+>   --pumpkin: #FF5E15;
+> }
+> ```
 
 ## Exclude useless colors
 
@@ -138,17 +138,17 @@ Add the color's names into the `$useless-colors` list.
 $useless-colors: ('teal');
 ```
 
-Exclude colors will generate the `:root` css
-
-```css
-:root {
-  /* ... */
-  --green: #198754;
-  /* --teal: #20c997; */ <-- will be removed
-  --cyan: #0dcaf0;
-  --pumpkin: #FF5E15;
-}
-```
+> Exclude colors will generate the `:root` css
+> 
+> ```css
+> :root {
+>   /* ... */
+>   --green: #198754;
+>   /* --teal: #20c997; */ <-- will be removed
+>   --cyan: #0dcaf0;
+>   --pumpkin: #FF5E15;
+> }
+> ```
 
 ## Colors declination
 
@@ -162,15 +162,15 @@ $colors-shades: (
 );
 ```
 
-Exclude colors will generate the `:root` css
-
-```css
-:root {
-  /* ... */
-  --pumpkin--shade-10: #e65513;
-  --pumpkin--shade-35: #a63d0e;
-}
-```
+> Exclude colors will generate the `:root` css
+> 
+> ```css
+> :root {
+>   /* ... */
+>   --pumpkin--shade-10: #e65513;
+>   --pumpkin--shade-35: #a63d0e;
+> }
+> ```
 
 ### Tints collection
 
@@ -182,12 +182,12 @@ $colors-tints: (
 );
 ```
 
-Exclude colors will generate the `:root` css
-
-```css
-:root {
-  /* ... */
-  --pumpkin--tint-20: #ff7e44;
-  --pumpkin--tint-30: #ff8e5b;
-}
-```
+> Exclude colors will generate the `:root` css
+>
+> ```css
+> :root {
+>   /* ... */
+>   --pumpkin--tint-20: #ff7e44;
+>   --pumpkin--tint-30: #ff8e5b;
+> }
+> ```
