@@ -79,16 +79,16 @@
         }
 
         // (All) Padding gap for thr grid Columns
-        .#{$prefix}gap-#{$i} [class^="column"]
+        .#{$prefix}gap-#{$i} [class^="#{$prefix}column"]
         {
             @include spaces.padding($padding, $padding, $padding, $padding);
         }
         // (Left & right) Padding gap for thr grid Columns
-        .#{$prefix}gap-x-#{$i} [class^="column"]{
+        .#{$prefix}gap-x-#{$i} [class^="#{$prefix}column"]{
             @include spaces.padding-x($padding);
         }
         // (Top & Bottom) Padding gap for thr grid Columns
-        .#{$prefix}gap-y-#{$i} [class^="column"]{
+        .#{$prefix}gap-y-#{$i} [class^="#{$prefix}column"]{
             @include spaces.padding-y($padding);
         }
     

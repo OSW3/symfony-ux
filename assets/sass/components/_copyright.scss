@@ -1,24 +1,15 @@
 // ************************************************************************** //
 // *
-// *    Components: Dropdown
+// *    Components: Copyright
 // *
 // ************************************************************************** //
 
 @use './../abstracts/mixins/banner';
 
-$_component: 'dropdown';
+$_component: 'copyright';
 $_classname: '#{$prefix}#{$_component}';
 
 @include banner.header('Component #{$_component}');
-
-
-
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
-
 
 
 // * =============================================
@@ -30,9 +21,13 @@ $_classname: '#{$prefix}#{$_component}';
 // * Default layout variables
 // * =========================
 
+$copyright--font-size: $spacer * .8 !default;
+
 
 // * Default theme variables
 // * =========================
+
+$copyright--text-color: $gray-600 !default;
 
 
 // * =============================================
@@ -43,19 +38,7 @@ $_classname: '#{$prefix}#{$_component}';
 
 .#{$_classname} {
 
-    /// Component definition
-    /// --
-
-    
-    /// Component Sizes
-    /// --
-    
-
-    /// Component Pallets
-    /// --
-    
-
-    /// Component States
-    /// --
+    color: var(--copyright--text-color, $copyright--text-color);
+    font-size: $copyright--font-size;
     
 }

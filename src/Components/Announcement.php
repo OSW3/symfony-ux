@@ -33,8 +33,8 @@ final class Announcement extends AbstractComponent
     #[ExposeInTemplate(name: 'animation')]
     public string $animation;
     
-    #[ExposeInTemplate(name: 'orientation')]
-    public string $orientation;
+    #[ExposeInTemplate(name: 'speed')]
+    public int $speed;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -61,8 +61,8 @@ final class Announcement extends AbstractComponent
         $resolver->setDefault('animation', $options['animation']);
         $resolver->setAllowedTypes('animation', ['string']);
 
-        $resolver->setDefault('orientation', $options['orientation']);
-        $resolver->setAllowedTypes('orientation', ['string']);
+        $resolver->setDefault('speed', $options['speed']);
+        $resolver->setAllowedTypes('speed', ['integer']);
 
         return $resolver->resolve($data) + $data;
     }

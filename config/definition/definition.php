@@ -385,12 +385,6 @@ return static function($definition)
                     ->defaultValue(AnimationType::TICKER->value)
                 ->end()
     
-                ->enumNode('orientation')
-                    ->info("Set the animation orientation.")
-                    ->values(Orientation::toArray())
-                    ->defaultValue(Orientation::HORIZONTAL->value)
-                ->end()
-    
                 ->integerNode('speed')
                     // ->info("Set the animation dismiss.")
                     ->min(0)
