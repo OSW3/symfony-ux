@@ -10,6 +10,7 @@
 ## What is it about ?
 
 Create vertically collapsing accordions.
+<br>
 
 ## Component configuration
 
@@ -23,24 +24,28 @@ ux:
             content:
                 max_height: 200
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `multiple` | `bool` | Set whether Accordions can open multiple items in same time. | no | `false` |
 | `header` | `array` | Set options for items header. | no |  |
 | `content` | `array` | Set options for items content. | no |  |
+<br>
 
 ### `header` properties
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `tag` | `string` | Set the tag type of items header. | no | `h2` |
+<br>
 
 ### `content` properties
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `max_height` | `null|int` | Set the max height of items content. | no | `null` |
+<br>
 
 ## Twig integration
 
@@ -59,6 +64,7 @@ ux:
 ] %}
 <twig:Accordion :items="items" />
 ``` 
+<br>
 
 ### Accordion attributes
 
@@ -70,6 +76,7 @@ ux:
 | `items` | `array` | Set accordion items list. | yes |  |
 | `multiple` | `bool` | Set whether Accordion can open multiple items in same time. | no | `false` |
 | `headerTag` | `string` | Set the tag type for items header. | no | `h2` |
+<br>
 
 ### Accordion items properties
 
@@ -79,6 +86,7 @@ ux:
 | `content` | `string` | Set the content of the item. | no |  |
 | `template` | `string` | Set the template of the content of the item. | no |  |
 | `open` | `bool` | Set whether the item is open or not. | no | `false` |
+<br>
 
 ## SASS variables
 
@@ -95,6 +103,7 @@ $accordion--item--content--max-height: null;
 $accordion--item--content--padding-x: 1rem;
 $accordion--item--content--padding-y: 1rem;
 ```
+<br>
 
 ### Theme variables
 
@@ -110,6 +119,7 @@ $accordion--item--header--background-color: #e9ecef;
 $accordion--item-open--header--text-color: #212529;
 $accordion--item-open--header--background-color: #ced4da;
 ```
+<br>
 
 #### Multiple themes
 
