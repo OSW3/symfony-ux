@@ -40,7 +40,7 @@ $_selectors_str: unquote(str-slice($_selectors_str, 1, -3));
 
   @include position.relative;
   @include sizes.width(100%);
-  @include spaces.padding(null, $padding, null, $padding);
+  @include spaces.padding-x($padding);
   @include spaces.margin-x(auto);
 }
 
