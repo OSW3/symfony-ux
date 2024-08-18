@@ -1,6 +1,5 @@
 import AccordionComponent from './components/AccordionComponent';
 import AlertComponent from './components/AlertComponent';
-import AnnouncementComponent from './components/AnnouncementComponent';
 import ButtonComponent from './components/ButtonComponent';
 import CalendarComponent from './components/CalendarComponent';
 import CarouselComponent from './components/CarouselComponent';
