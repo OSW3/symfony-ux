@@ -15,7 +15,7 @@ final class Inner extends AbstractComponent
     public ?string $name;
 
     #[ExposeInTemplate(name: 'tagline')]
-    public string $tagline;
+    public ?string $tagline;
 
     #[ExposeInTemplate(name: 'logo')]
     public array $logo;
