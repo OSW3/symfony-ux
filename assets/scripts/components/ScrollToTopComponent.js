@@ -24,7 +24,6 @@
 import AbstractComponent from './../abstracts/AbstractComponent';
 import { getPrefix } from "../utils/prefix";
 
-
 /** @var string Component classname */
 const NAME = 'scroll-to-top';
 
