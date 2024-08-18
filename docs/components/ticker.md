@@ -11,6 +11,9 @@ Create an horizontal text scroll.
 ux:
     components:
         tickers:
+            speed: 15
+            delay: 0
+            loop: true
             pause_hover: true
 ```
 

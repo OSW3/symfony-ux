@@ -11,6 +11,8 @@ Create an horizontal text scroll.
 ux:
     components:
         rotators:
+            delay: 5000
+            loop: true
             pause_hover: true
 ```
 
