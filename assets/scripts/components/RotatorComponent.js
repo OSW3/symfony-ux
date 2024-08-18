@@ -1,15 +1,16 @@
 // ************************************************************************** //
 // *
-// *    Components: Ticker
+// *    Components: Rotator
 // *
 // ************************************************************************** //
 "use strict";
 
 import { getPrefix } from "../utils/prefix";
 import { parseBoolean } from "../utils/parseBoolean";
+import Animate from "../utils/Animate";
 
 /** @var string Component classname */
-const NAME = 'ticker';
+const NAME = 'rotator';
 
 /** @var string Components prefix */
 const PREFIX = getPrefix();
@@ -23,14 +24,11 @@ const CLASS_TICKER_INNER = `${PREFIX}${NAME}-inner`;
 /** @var string Component element classname; Item wrapper */
 const CLASS_TICKER_ITEM = `${PREFIX}${NAME}-item`;
 
-/** @var number time interval of setting new location */
-const SPEED = 15;
-
 /** @var number Delay before playing next message */
-const DELAY = 0;
+const DELAY = 3000;
 
 /** @var number change position of XX pixel at every #play */
-const CHUNK = 1;
+// const CHUNK = 1;
 
 /** @var bool Play in loop */
 const LOOP = true;
@@ -38,14 +36,13 @@ const LOOP = true;
 /** @var bool Pause ticker on mouse over */
 const PAUSE_HOVER = true;
 
-export default class TickerComponent
+export default class RotatorComponent
 {
     #node;
     #items;
     #index = 0;
     #instance;
 
-    #speed = SPEED;
     #delay = DELAY;
     #loop = LOOP;
     #pauseHover = PAUSE_HOVER;
@@ -54,9 +51,6 @@ export default class TickerComponent
     {
         this.#node = node;
         this.#items = this.#node.querySelectorAll(`.${CLASS_TICKER_ITEM}`);
-
-        // Option speed
-        this.#speed = this.#node.dataset.speed ?? SPEED;
 
         // Option delay
         this.#delay = this.#node.dataset.delay ?? DELAY;
@@ -86,43 +80,42 @@ export default class TickerComponent
 
         this.#node.append(container);
 
-        this.#play(this.#node.offsetWidth);
+        this.#play(true);
     }
 
-    #play(trans_width)
+    #play(animate)
     {
-		this.#items[this.#index].style.left = trans_width + "px";
 		this.#items[this.#index].style.display = 'block';
-
-        if (this.#speed > 0) {
-            this.#instance = setInterval(() => {
-                if (parseInt(this.#items[this.#index].style.left) > -this.#items[this.#index].offsetWidth) {
-                    this.#items[this.#index].style.left = parseInt(this.#items[this.#index].style.left) - CHUNK + "px";
-                } else {
-                    this.#items[this.#index].style.display = 'none';
-                    clearInterval(this.#instance);
-                    trans_width = this.#node.offsetWidth;
-                    this.#index++;
-    
-                    // Replay
-                    if (this.#index == this.#items.length && this.#loop == true) {
-                        this.#index = 0;
-                        this.#play(trans_width);
-                    } 
-                    // Next
-                    else if (this.#index < this.#items.length) {
-                        setTimeout(() => this.#play(trans_width), this.#delay);
-                    }
-                }
-            }, this.#speed);
+        if (animate) {
+            new Animate(this.#items[this.#index]).fadeIn();
         }
+
+        this.#instance = setTimeout(() => {
+            new Animate(this.#items[this.#index]).fadeOut(() => {
+
+                this.#items[this.#index].style.display = 'none';
+                clearInterval(this.#instance);
+                this.#index++;
+
+                // Replay
+                if (this.#index == this.#items.length && this.#loop == true) {
+                    this.#index = 0;
+                    this.#play(true);
+                } 
+                // Next
+                else if (this.#index < this.#items.length) {
+                    this.#play(true);
+                }
+            });
+            
+        }, this.#delay);
 
         if (this.#pauseHover)
         {
             this.#node.onmouseover = () => clearInterval(this.#instance);
-            this.#node.onmouseout = () => this.#play(parseInt(this.#items[this.#index].style.left));
+            this.#node.onmouseout = () => this.#play(false);
         }
     }
 }
 
-document.querySelectorAll(SELECTOR).forEach(node => new TickerComponent(node));
+document.querySelectorAll(SELECTOR).forEach(node => new RotatorComponent(node));

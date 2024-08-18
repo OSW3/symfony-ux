@@ -8,6 +8,6 @@ enum Strategy: string
     use EnumTrait;
 
     case ALWAYS   = 'always';
-    case MULTIPLE = 'multiple';
+    // case MULTIPLE = 'multiple';
     case NONE     = 'none';
 }

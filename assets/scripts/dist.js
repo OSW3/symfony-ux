@@ -14,6 +14,7 @@ import OffcanvasComponent from './components/OffcanvasComponent';
 import PopoverComponent from './components/PopoverComponent';
 import QuizComponent from './components/QuizComponent';
 import RattingComponent from './components/RattingComponent';
+import RotatorComponent from './components/RotatorComponent';
 import ScrollToTopComponent from './components/ScrollToTopComponent';
 import SearchbarComponent from './components/SearchbarComponent';
 import StepperComponent from './components/StepperComponent';

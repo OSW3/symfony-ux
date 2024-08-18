@@ -79,6 +79,13 @@ final class Announcement extends AbstractComponent
             $messages[] = $this->message;
         }
 
+        array_walk($messages, function (&$item) {
+            $item = preg_replace_callback(
+                '/<([a-zA-Z][a-zA-Z0-9]*)[^>]*>/i',
+                fn($matches) => preg_replace('/&nbsp;/', ' ', $matches[0]),
+                str_replace(" ", "&nbsp;", $item)
+            );
+        });
         return $messages;
     }
 }

@@ -31,6 +31,7 @@ $announcement--height: 40px !default;
 // * =========================
 
 $announcement--text-color: $white !default;
+$announcement--link-color: $white !default;
 $announcement--background-color: $gray-600 !default;
 
 
@@ -47,9 +48,13 @@ $announcement--background-color: $gray-600 !default;
 
     color: var(--announcement--text-color, $announcement--text-color);
     background-color: var(--announcement--background-color, $announcement--background-color);
-    // @include flex.middle;
+    @include flex.centered;
     @include sizes.set(null, $announcement--height);
     @include transition.set((color, background-color), map-get($delays, normal));
+
+    & a {
+        color: var(--announcement--link-color, $announcement--link-color);
+    }
 }
 
 // /* styles.css */

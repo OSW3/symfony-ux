@@ -1,8 +1,11 @@
 <div {{ _get_attributes(_attr) }}>
-
-    {# {{ animated }}
-    {{ animation }}
-    {{ orientation }} #}
-    {# <twig:Ticker :items="messages" :orientation="orientation" /> #}
+{% if animated == 'none' %}
+    {{ messages[0]|raw }}
+{% else %}
+{% if animation == 'rotator' %}
+    <twig:Rotator :items="messages" />
+{% else %}
     <twig:Ticker :items="messages" />
+{% endif %}
+{% endif %}
 </div>

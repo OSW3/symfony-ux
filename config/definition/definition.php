@@ -382,7 +382,7 @@ return static function($definition)
                 ->enumNode('animation')
                     ->info("Set the animation type.")
                     ->values(AnimationType::toArray())
-                    ->defaultValue(AnimationType::SCROLL->value)
+                    ->defaultValue(AnimationType::TICKER->value)
                 ->end()
     
                 ->enumNode('orientation')
@@ -468,6 +468,31 @@ return static function($definition)
             ->end()->end()
     
 
+            // Rotators
+            // -- 
+            ->arrayNode('rotators')
+                ->info("Parameters settings of the Rotators component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->integerNode('delay')
+                    ->info("Set the delay before next message")
+                    ->min(0)
+                    ->defaultValue(3000)
+                ->end()
+    
+                ->booleanNode('loop')
+                    ->info("Set whether the ticker will be played in loop")
+                    ->defaultTrue()
+                ->end()
+    
+                ->booleanNode('pause_hover')
+                    ->info("Set whether the ticker will be paused on mouseover")
+                    ->defaultTrue()
+                ->end()
+    
+            ->end()->end()
+    
+
             // Scroll to top
             // -- 
             ->arrayNode('scroll_to_top')
@@ -497,7 +522,7 @@ return static function($definition)
             ->end()->end()
     
 
-            // Scroll to top
+            // Tickers
             // -- 
             ->arrayNode('tickers')
                 ->info("Parameters settings of the Tickers component.")

@@ -7,7 +7,7 @@ enum Type: string
 {
     use EnumTrait;
 
-    case SCROLL = 'scroll';
-    case FADE   = 'fade';
-    case NONE   = 'none';
+    case TICKER  = 'ticker';
+    case ROTATOR = 'rotator';
+    case NONE    = 'none';
 }

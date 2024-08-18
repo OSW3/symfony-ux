@@ -19,7 +19,9 @@ Add many UX Components to your app.
     - [Announcement](./docs/components/analytics.md)
     - [Copyright](./docs/components/copyright.md)
     - [link](./docs/components/link.md)
+    - [Rotators](./docs/components/rotator.md)
     - [Scroll to top](./docs/components/scroll-to-top.md)
+    - [Tickers](./docs/components/ticker.md)
 <br>
 
 ## How UX Components works ?
