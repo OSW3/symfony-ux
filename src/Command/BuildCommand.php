@@ -78,8 +78,9 @@ class BuildCommand extends Command
         // --
         
         foreach ($this->options['components'] as $name => $value) match ($name) {
-            'accordions' => $this->accordions($sassVariables, $value),
-            'brand'      => $this->brand($sassVariables, $value),
+            'accordions'    => $this->accordions($sassVariables, $value),
+            'brand'         => $this->brand($sassVariables, $value),
+            'scroll_to_top' => $this->scrollToTop($sassVariables, $value),
             default => null,
         };
 
@@ -178,5 +179,13 @@ class BuildCommand extends Command
             $brandBreakpoint = array_keys($options['logo']);
         }
         $vars[] = "\$brand-breakpoints: ('".implode("','", $brandBreakpoint)."');";
+    }
+
+    private function scrollToTop(array &$vars, $options)
+    {
+        $vars[] = "\$scroll-to-top--shape: '{$options['shape']}';";
+        $vars[] = "\$scroll-to-top--symbol: '{$options['symbol']}';";
+        $vars[] = "\$scroll-to-top--position: '{$options['position']}';";
+        $vars[] = "\$scroll-to-top--transition: '{$options['transition']}';";
     }
 }

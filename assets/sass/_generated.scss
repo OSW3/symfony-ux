@@ -1,4 +1,4 @@
-// Last gen: 2024-08-19 13:25:53
+// Last gen: 2024-08-19 20:59:06
 $prefix: 'ux';
 $varWithDefault: 'false';
 $breakpoint-name-phone: 'phone';
@@ -34,3 +34,7 @@ $spacer-6: 3;
 $grid-divisions: 12;
 $theme-default: 'light';
 $brand-breakpoints: ('phone','tablet');
+$scroll-to-top--shape: 'square';
+$scroll-to-top--symbol: 'arrow-up';
+$scroll-to-top--position: 'bottom-right';
+$scroll-to-top--transition: 'natural';

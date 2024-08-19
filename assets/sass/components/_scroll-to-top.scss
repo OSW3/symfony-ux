@@ -5,17 +5,19 @@
 // ************************************************************************** //
 
 @use 'sass:math';
-@use './../abstracts/mixins/var';
+@use 'sass:meta';
+@use './../generated';
 @use './../variables/zindex';
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
+@use './../abstracts/functions/icon';
 @use './../abstracts/mixins/position';
-@use './../abstracts/mixins/transition';
 @use './../abstracts/functions/color';
 @use './../abstracts/functions/utils';
-@use './../abstracts/functions/icon';
+@use './../abstracts/mixins/transition';
 
 
 $_component: 'scroll-to-top';
@@ -47,9 +49,10 @@ $_classname: '#{$prefix}#{$_component}';
 // * Default layout variables
 // * =========================
 
-$scroll-to-top--shape : 'square' !default;
-$scroll-to-top--position : 'bottom-right' !default;
-$scroll-to-top--transition : 'natural' !default;
+$scroll-to-top--shape: if(meta.global-variable-exists('scroll-to-top--shape', $module: generated), generated.$scroll-to-top--shape, 'square') !default;
+$scroll-to-top--position: if(meta.global-variable-exists('scroll-to-top--position', $module: generated), generated.$scroll-to-top--position, 'bottom-right') !default;
+$scroll-to-top--transition: if(meta.global-variable-exists('scroll-to-top--transition', $module: generated), generated.$scroll-to-top--transition, 'natural') !default;
+$scroll-to-top--symbol: if(meta.global-variable-exists('scroll-to-top--symbol', $module: generated), generated.$scroll-to-top--symbol, 'arrow-up') !default;
 
 
 $scroll-to-top--size     : 40px !default;
@@ -57,9 +60,9 @@ $scroll-to-top--position-x : $spacer *2 !default;
 $scroll-to-top--position-y : $spacer *2 !default;
 $scroll-to-top--offset-x : 0px !default;
 $scroll-to-top--offset-y : 0px !default;
-$scroll-to-top--symbol   : "arrow-up" !default;
 $scroll-to-top--font-size: 2 !default;
 $scroll-to-top--z-index   : zindex.$button-to-top !default;
+
 
 
 // * Default theme variables
@@ -86,14 +89,12 @@ $scroll-to-top--text-color--hover      : $white;
 
     // $ratio: 1;
 
-
     // Button Shape
 
     @if $scroll-to-top--shape == 'circle' {
         @include corner.rounded(50%);
     }
     @else if $scroll-to-top--shape == 'corner' {
-        // @include corner.rounded(50%);
     }
     @else {
         @include corner.rounded(6px);

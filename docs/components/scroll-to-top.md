@@ -48,10 +48,14 @@ ux:
 ### Layout variables
 
 ```scss
+$scroll-to-top--shape : 'square';
+$scroll-to-top--position: 'bottom-right';
+$scroll-to-top--transition : 'natural';
 $scroll-to-top--size: 40px;
-$scroll-to-top--position: right;
 $scroll-to-top--position-x: 1rem;
 $scroll-to-top--position-y: 1rem;
+$scroll-to-top--offset-x : 0px !default;
+$scroll-to-top--offset-y : 0px !default;
 $scroll-to-top--symbol: "\23F6";
 $scroll-to-top--font-size: 2;
 $scroll-to-top--z-index: 1040;

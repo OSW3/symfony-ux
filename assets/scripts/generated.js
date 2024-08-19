@@ -1,2 +1,2 @@
-// Last gen: 2024-08-19 13:25:53
+// Last gen: 2024-08-19 20:59:06
 export const PREFIX = 'ux';
