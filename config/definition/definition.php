@@ -526,7 +526,7 @@ return static function($definition)
     
                 ->scalarNode('symbol')
                     ->info("Specifies the symbol of the button")
-                    ->defaultValue("&ShortUpArrow;")
+                    ->defaultValue("arrow-up")
                 ->end()
     
                 ->scalarNode('title')

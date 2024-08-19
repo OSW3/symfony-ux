@@ -44,6 +44,7 @@ export default class ScrollToTopComponent extends AbstractComponent
 {
     _onInit() 
     {
+        window.onload = x => this.#scroll();
         window.onscroll = x => this.#scroll();
         this.on('click');
     }

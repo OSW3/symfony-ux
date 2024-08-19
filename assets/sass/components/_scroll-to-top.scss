@@ -13,6 +13,10 @@
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
+@use './../abstracts/functions/color';
+@use './../abstracts/functions/utils';
+@use './../abstracts/functions/icon';
+
 
 $_component: 'scroll-to-top';
 $_classname: '#{$prefix}#{$_component}';
@@ -43,11 +47,17 @@ $_classname: '#{$prefix}#{$_component}';
 // * Default layout variables
 // * =========================
 
+$scroll-to-top--shape : 'square' !default;
+$scroll-to-top--position : 'bottom-right' !default;
+$scroll-to-top--transition : 'natural' !default;
+
+
 $scroll-to-top--size     : 40px !default;
-$scroll-to-top--position : right !default;
-$scroll-to-top--offset-x : $spacer !default;
-$scroll-to-top--offset-y : $spacer !default;
-$scroll-to-top--symbol   : "\23F6" !default;
+$scroll-to-top--position-x : $spacer *2 !default;
+$scroll-to-top--position-y : $spacer *2 !default;
+$scroll-to-top--offset-x : 0px !default;
+$scroll-to-top--offset-y : 0px !default;
+$scroll-to-top--symbol   : "arrow-up" !default;
 $scroll-to-top--font-size: 2 !default;
 $scroll-to-top--z-index   : zindex.$button-to-top !default;
 
@@ -70,51 +80,705 @@ $scroll-to-top--text-color--hover      : $white;
 // * =============================================
 
 .#{$_classname} {
+    --icon : #{icon.get(#{$scroll-to-top--symbol}, var(--scroll-to-top--text-color, color.encode($scroll-to-top--text-color)))};
+    $transition-list: (opacity, background-color, border-color, color);
+    $background-position: center;
 
-    /// Component definition
-    /// --
-    
-    @if scroll-to-top--position == 'left' {
-        @include position.fixed(null, null, -$spacer*3, scroll-to-top--offset-x);
+    // $ratio: 1;
+
+
+    // Button Shape
+
+    @if $scroll-to-top--shape == 'circle' {
+        @include corner.rounded(50%);
+    }
+    @else if $scroll-to-top--shape == 'corner' {
+        // @include corner.rounded(50%);
     }
     @else {
-        @include position.fixed(null, scroll-to-top--offset-x, -$spacer*3, null);
+        @include corner.rounded(6px);
     }
-    @include sizes.set(scroll-to-top--size, scroll-to-top--size);
-    @include transition.set((bottom, opacity, background-color, border-color, color), map-get($delays, 'normal'));
-    @include corner.rounded(6px);
+    
+    // $scroll-to-top--size: $scroll-to-top--size * $ratio;
 
-    @include flex.row;
-    align-items: center;
-    justify-content: center;
+    // Button position
 
-    background-color: var(--button-to-top--background-color, $scroll-to-top--background-color);
+    $position-top   : null;
+    $position-right : null;
+    $position-bottom: null;
+    $position-left  : null;
+
+    $offset-top   : null;
+    $offset-right : null;
+    $offset-bottom: null;
+    $offset-left  : null;
+
+    @if $scroll-to-top--position == 'top-left' {
+        @if $scroll-to-top--offset-y != 0 {$offset-top: $scroll-to-top--offset-y;}
+        @if $scroll-to-top--offset-x != 0 {$offset-left: $scroll-to-top--offset-x;}
+        
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-top   : 100%;
+            $position-left  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-left  : 100%;
+            $transition-list: append($transition-list, left);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-left  : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, left);
+        }
+        @else {
+            $position-top   : 0 - $scroll-to-top--size;
+            $position-left  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+    }
+    @else if $scroll-to-top--position == 'top-center' {
+        @if $scroll-to-top--offset-y != 0 {$offset-top: $scroll-to-top--offset-y;}
+        @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-top   : 100%;
+            $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+            $transition-list: append($transition-list, top);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-right : 0 - $scroll-to-top--size;
+
+            @if $offset-right != null {
+                $position-right : 0 - $scroll-to-top--size;
+                $position-left  : null;
+            }
+            @if $offset-left != null {
+                $position-right: null;
+                $position-left : 0 - $scroll-to-top--size;
+            }
+
+            $transition-list: append($transition-list, right);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-left : 0 - $scroll-to-top--size;
+
+            @if $offset-right != null {
+                $position-right: null;
+                $position-left : 0 - $scroll-to-top--size;
+            }
+            @if $offset-left != null {
+                $position-right : 0 - $scroll-to-top--size;
+                $position-left  : null;
+            }
+
+            $transition-list: append($transition-list, left);
+        }
+        @else {
+            $position-top   : 0 - $scroll-to-top--size;
+            $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+            $transition-list: append($transition-list, top);
+        }
+    }
+    @else if $scroll-to-top--position == 'top-right' {
+        @if $scroll-to-top--offset-y != 0 {$offset-top: $scroll-to-top--offset-y;}
+        @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        @if $scroll-to-top--offset-x > 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-top   : 100%;
+            $position-right  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-right  : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, right);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-right  : 100%;
+            $transition-list: append($transition-list, right);
+        }
+        @else {
+            $position-top   : 0 - $scroll-to-top--size;
+            $position-right  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+    }
+    @else if $scroll-to-top--position == 'middle-left' {
+        @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        @if $scroll-to-top--offset-x != 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-top   : 0 - $scroll-to-top--size;
+            $position-left  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-left  : 100%;
+            $transition-list: append($transition-list, left);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-left  : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, left);
+        }
+        @else {
+            $position-top   : 100%;
+            $position-left  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+    }
+    @else if $scroll-to-top--position == 'middle-center' or $scroll-to-top--position == 'centered' {
+        @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        @if $scroll-to-top--offset-x > 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-top   : 0 - $scroll-to-top--size;
+            $position-right  : calc(50% - math.div($scroll-to-top--size, 2));;
+            $transition-list: append($transition-list, top);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right  : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, right);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right  : 100%;
+            $transition-list: append($transition-list, right);
+        }
+        @else {
+            $position-top   : 100%;
+            $position-right  : calc(50% - math.div($scroll-to-top--size, 2));;
+            $transition-list: append($transition-list, top);
+        }
+    }
+    @else if $scroll-to-top--position == 'middle-right' {
+        @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        @if $scroll-to-top--offset-x != 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-top   : 0 - $scroll-to-top--size;
+            $position-right  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right  : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, right);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right  : 100%;
+            $transition-list: append($transition-list, right);
+        }
+        @else {
+            $position-top   : 100%;
+            $position-right  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, top);
+        }
+    }
+    @else if $scroll-to-top--position == 'bottom-left' {
+        @if $scroll-to-top--offset-y != 0 {$offset-bottom: $scroll-to-top--offset-y;}
+        @if $scroll-to-top--offset-x != 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-bottom   : 100%;
+            $position-left  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, bottom);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-bottom   : $scroll-to-top--position-y;
+            $position-left  : 100%;
+            $transition-list: append($transition-list, left);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-bottom   : $scroll-to-top--position-y;
+            $position-left  : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, left);
+        }
+        @else {
+            $position-bottom   : 0 - $scroll-to-top--size;
+            $position-left  : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, bottom);
+        }
+    }
+    @else if $scroll-to-top--position == 'bottom-center' {
+        @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        @if $scroll-to-top--offset-y != 0 {$offset-bottom: $scroll-to-top--offset-y;}
+        @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-bottom   : 100%;
+            $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+            $transition-list: append($transition-list, bottom);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-bottom   : $scroll-to-top--position-y;
+            $position-right : 0 - $scroll-to-top--size;
+
+            @if $offset-right != null {
+                $position-right : 0 - $scroll-to-top--size;
+                $position-left  : null;
+            }
+            @if $offset-left != null {
+                $position-right: null;
+                $position-left : 0 - $scroll-to-top--size;
+            }
+
+            $transition-list: append($transition-list, right);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-bottom   : $scroll-to-top--position-y;
+            $position-left : 0 - $scroll-to-top--size;
+
+            @if $offset-right != null {
+                $position-right: null;
+                $position-left : 0 - $scroll-to-top--size;
+            }
+            @if $offset-left != null {
+                $position-right : 0 - $scroll-to-top--size;
+                $position-left  : null;
+            }
+
+            $transition-list: append($transition-list, left);
+        }
+        @else {
+            $position-bottom   : 0 - $scroll-to-top--size;
+            $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+            $transition-list: append($transition-list, bottom);
+        }
+    }
+    @else {
+        @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        @if $scroll-to-top--offset-x > 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        @if $scroll-to-top--offset-y != 0 {$offset-bottom: $scroll-to-top--offset-y;}
+
+        @if $scroll-to-top--transition == 'inverse' {
+            $position-bottom: 100%;
+            $position-right : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, bottom);
+        }
+        @else if $scroll-to-top--transition == 'right' {
+            $position-bottom: $scroll-to-top--position-y;
+            $position-right : 0 - $scroll-to-top--size;
+            $transition-list: append($transition-list, right);
+        }
+        @else if $scroll-to-top--transition == 'left' {
+            $position-bottom: $scroll-to-top--position-y;
+            $position-right : 100%;
+            $transition-list: append($transition-list, right);
+        }
+        @else {
+            $position-bottom: 0 - $scroll-to-top--size;
+            $position-right : $scroll-to-top--position-x;
+            $transition-list: append($transition-list, bottom);
+        }
+    }
+
+    // @if $scroll-to-top--shape == 'corner' {
+
+    //     // $scroll-to-top--size: $scroll-to-top--size * 2;
+    //     transform: rotate(45deg);
+    //     $background-position: math.div($scroll-to-top--size, 4);
+
+    //     // Initial position
+    //     $position: $scroll-to-top--size * -1;
+
+    //     @if $scroll-to-top--position == 'top-left' {
+    //         $offset-top     : 0;
+    //         $offset-left    : 0;
+
+    //         $position-top   : $position;
+    //         $position-left  : $position;
+
+    //         $transition-list: append($transition-list, top);
+    //         $transition-list: append($transition-list, left);
+    //     }
+    // //     @else if $scroll-to-top--position == 'top-center' {
+
+    // //         @if $scroll-to-top--offset-y != 0 {$offset-top: $scroll-to-top--offset-y;}
+    // //         @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+    // //         $offset-bottom: null;
+    // //         @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+    // //         $position-top   : $scroll-to-top--position-y;
+    // //         $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         $position-bottom: null;
+    // //         $position-left  : null;
+
+    // //         @if $offset-right != null {
+    // //             $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+    // //             $position-left  : null;
+    // //         }
+    // //         @if $offset-left != null {
+    // //             $position-right: null;
+    // //             $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         }
+    // //     }
+    // //     @else if $scroll-to-top--position == 'top-right' {
+    // //         $offset-top     : 0;
+    // //         $offset-right   : 0;
+    // //         $offset-bottom  : null;
+    // //         $offset-left    : null;
+
+    // //         $position-top   : 0;
+    // //         $position-right : 0;
+    // //         $position-bottom: null;
+    // //         $position-left  : null;
+    // //     }
+    // //     @else if $scroll-to-top--position == 'middle-left' {
+    // //         @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+    // //         @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+    // //         $offset-right : null;
+    // //         $offset-bottom: null;
+    // //         @if $scroll-to-top--offset-x != 0 {$offset-left: $scroll-to-top--offset-x;}
+
+    // //         $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         $position-right : null;
+    // //         $position-bottom: null;
+    // //         $position-left  : $scroll-to-top--position-x;
+    // //     }
+    // //     @else if $scroll-to-top--position == 'middle-center' or $scroll-to-top--position == 'centered' {
+    // //         $offset-top   : null;
+    // //         $offset-right : null;
+    // //         $offset-bottom: null;
+    // //         $offset-left  : null;
+
+    // //         $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         $position-bottom: null;
+    // //         $position-left  : null;
+    // //     }
+    // //     @else if $scroll-to-top--position == 'middle-right' {
+    // //         @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+    // //         @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+    // //         @if $scroll-to-top--offset-x != 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+    // //         $offset-bottom: null;
+    // //         $offset-left  : null;
+
+    // //         $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         $position-right : $scroll-to-top--position-x;
+    // //         $position-bottom: null;
+    // //         $position-left  : null;
+    // //     }
+    // //     @else if $scroll-to-top--position == 'bottom-left' {
+    // //         $offset-top     : null;
+    // //         $offset-right   : null;
+    // //         $offset-bottom  : 0;
+    // //         $offset-left    : 0;
+
+    // //         $position-top   : null;
+    // //         $position-right : null;
+    // //         $position-bottom: 0;
+    // //         $position-left  : 0;
+    // //     }
+    // //     @else if $scroll-to-top--position == 'bottom-center' {
+    // //         $offset-top   : null;
+    // //         @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+    // //         @if $scroll-to-top--offset-y != 0 {$offset-bottom: $scroll-to-top--offset-y;}
+    // //         @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+    // //         $position-top   : null;
+    // //         $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         $position-bottom: $scroll-to-top--position-y;
+    // //         $position-left  : null;
+
+    // //         @if $offset-right != null {
+    // //             $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+    // //             $position-left  : null;
+    // //         }
+    // //         @if $offset-left != null {
+    // //             $position-right: null;
+    // //             $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+    // //         }
+    // //     }
+    // //     @else {
+    // //         $offset-top     : null;
+    // //         $offset-right   : 0;
+    // //         $offset-bottom  : 0;
+    // //         $offset-left    : null;
+
+    // //         $position-top   : null;
+    // //         $position-right : 0;
+    // //         $position-bottom: 0;
+    // //         $position-left  : null;
+    // //     }
+    // }
+
+    @include position.fixed($position-top, $position-right, $position-bottom, $position-left);
+
+    
+    // Button position offset
+
+    @if $offset-top != null and $offset-top != 0 {margin-top: $offset-top;}
+    @if $offset-right != null and $offset-right != 0 {margin-right: $offset-right;}
+    @if $offset-bottom != null and $offset-bottom != 0 {margin-bottom: $offset-bottom;}
+    @if $offset-left != null and $offset-left != 0 {margin-left: $offset-left;}
+
+    @include transition.set($transition-list, map-get($delays, 'normal'));
+
+    /* #{$scroll-to-top--size} */
+    @include sizes.set($scroll-to-top--size, $scroll-to-top--size);
+    @include flex.centered;
+    background: var(--button-to-top--background-color, $scroll-to-top--background-color) var(--icon) $background-position no-repeat;
     border: 1px solid var(--button-to-top--border-color, $scroll-to-top--border-color);
     color: var(--button-to-top--text-color, $scroll-to-top--text-color);
-    opacity: 0;
     cursor: pointer;
-    z-index: scroll-to-top--z-index;
+    opacity: 0;
 
-    
-    /// Component Sizes
-    /// --
-    
-
-    /// Component Pallets
-    /// --
-    
-
-    /// Component States
-    /// --
+    z-index: $scroll-to-top--z-index;
 
     &.show {
-        @include position.bottom($scroll-to-top--offset-y);
-        opacity: 1;
-    }
+        $position-top   : null;
+        $position-right : null;
+        $position-bottom: null;
+        $position-left  : null;
 
-    &::after {
-        content: $scroll-to-top--symbol;
-        font-size: calculate-font-size($scroll-to-top--size, $spacer, 40px, $scroll-to-top--font-size);
+        $offset-top   : null;
+        $offset-right : null;
+        $offset-bottom: null;
+        $offset-left  : null;
+
+        @if $scroll-to-top--position == 'top-left' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-left  : $scroll-to-top--position-x;
+        }
+        @else if $scroll-to-top--position == 'top-center' {
+            @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+            @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+            $position-top   : $scroll-to-top--position-y;
+
+            @if $scroll-to-top--transition == 'left' {
+                $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+
+                @if $offset-right != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+                }
+                @if $offset-left != null {
+                    $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+                    $position-left  : null;
+                }
+            }
+            @else {
+                $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+
+                @if $offset-right != null {
+                    $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+                    $position-left  : null;
+                }
+                @if $offset-left != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+                }
+            }
+        }
+        @else if $scroll-to-top--position == 'top-right' {
+            $position-top   : $scroll-to-top--position-y;
+            $position-right : $scroll-to-top--position-x;
+            $position-bottom: null;
+            $position-left  : null;
+        }
+        @else if $scroll-to-top--position == 'middle-left' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right : null;
+            $position-bottom: null;
+            $position-left  : $scroll-to-top--position-x;
+        }
+        @else if $scroll-to-top--position == 'middle-center' or $scroll-to-top--position == 'centered' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-bottom: null;
+            $position-left  : null;
+        }
+        @else if $scroll-to-top--position == 'middle-right' {
+            $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+            $position-right : $scroll-to-top--position-x;
+        }
+        @else if $scroll-to-top--position == 'bottom-left' {
+            $position-bottom: $scroll-to-top--position-y;
+            $position-left  : $scroll-to-top--position-x;
+        }
+        @else if $scroll-to-top--position == 'bottom-center' {
+            @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+            @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+            $position-bottom: $scroll-to-top--position-y;
+            
+            @if $scroll-to-top--transition == 'left' {
+                $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+
+                @if $offset-right != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+                }
+                @if $offset-left != null {
+                    $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+                    $position-left  : null;
+                }
+            }
+            @else {
+                $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+
+                @if $offset-right != null {
+                    $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+                    $position-left  : null;
+                }
+                @if $offset-left != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+                }
+            }
+        }
+        @else {
+            $position-right : $scroll-to-top--position-x;
+            $position-bottom: $scroll-to-top--position-y;
+        }
+
+        // @if $scroll-to-top--shape == 'corner' {
+
+        //     // Final position
+        //     $position: math.div($scroll-to-top--size, 2) * -1;
+
+        //     @if $scroll-to-top--position == 'top-left' {
+        //         $offset-top     : 0;
+        //         $offset-left    : 0;
+
+        //         $position-top   : $position;
+        //         $position-left  : $position;
+        //     }
+        // //     @else if $scroll-to-top--position == 'top-center' {
+
+        // //         @if $scroll-to-top--offset-y != 0 {$offset-top: $scroll-to-top--offset-y;}
+        // //         @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        // //         $offset-bottom: null;
+        // //         @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        // //         $position-top   : $scroll-to-top--position-y;
+        // //         $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         $position-bottom: null;
+        // //         $position-left  : null;
+
+        // //         @if $offset-right != null {
+        // //             $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+        // //             $position-left  : null;
+        // //         }
+        // //         @if $offset-left != null {
+        // //             $position-right: null;
+        // //             $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         }
+        // //     }
+        // //     @else if $scroll-to-top--position == 'top-right' {
+        // //         $offset-top     : 0;
+        // //         $offset-right   : 0;
+        // //         $offset-bottom  : null;
+        // //         $offset-left    : null;
+
+        // //         $position-top   : 0;
+        // //         $position-right : 0;
+        // //         $position-bottom: null;
+        // //         $position-left  : null;
+        // //     }
+        // //     @else if $scroll-to-top--position == 'middle-left' {
+        // //         @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        // //         @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        // //         $offset-right : null;
+        // //         $offset-bottom: null;
+        // //         @if $scroll-to-top--offset-x != 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        // //         $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         $position-right : null;
+        // //         $position-bottom: null;
+        // //         $position-left  : $scroll-to-top--position-x;
+        // //     }
+        // //     @else if $scroll-to-top--position == 'middle-center' or $scroll-to-top--position == 'centered' {
+        // //         $offset-top   : null;
+        // //         $offset-right : null;
+        // //         $offset-bottom: null;
+        // //         $offset-left  : null;
+
+        // //         $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         $position-bottom: null;
+        // //         $position-left  : null;
+        // //     }
+        // //     @else if $scroll-to-top--position == 'middle-right' {
+        // //         @if $scroll-to-top--offset-y > 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        // //         @if $scroll-to-top--offset-y < 0 {$offset-top: $scroll-to-top--offset-y * -1;}
+        // //         @if $scroll-to-top--offset-x != 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        // //         $offset-bottom: null;
+        // //         $offset-left  : null;
+
+        // //         $position-top   : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         $position-right : $scroll-to-top--position-x;
+        // //         $position-bottom: null;
+        // //         $position-left  : null;
+        // //     }
+        // //     @else if $scroll-to-top--position == 'bottom-left' {
+        // //         $offset-top     : null;
+        // //         $offset-right   : null;
+        // //         $offset-bottom  : 0;
+        // //         $offset-left    : 0;
+
+        // //         $position-top   : null;
+        // //         $position-right : null;
+        // //         $position-bottom: 0;
+        // //         $position-left  : 0;
+        // //     }
+        // //     @else if $scroll-to-top--position == 'bottom-center' {
+        // //         $offset-top   : null;
+        // //         @if $scroll-to-top--offset-x < 0 {$offset-right: $scroll-to-top--offset-x * -1;}
+        // //         @if $scroll-to-top--offset-y != 0 {$offset-bottom: $scroll-to-top--offset-y;}
+        // //         @if $scroll-to-top--offset-x > 0 {$offset-left: $scroll-to-top--offset-x;}
+
+        // //         $position-top   : null;
+        // //         $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         $position-bottom: $scroll-to-top--position-y;
+        // //         $position-left  : null;
+
+        // //         @if $offset-right != null {
+        // //             $position-right : calc(50% - math.div($scroll-to-top--size, 2));
+        // //             $position-left  : null;
+        // //         }
+        // //         @if $offset-left != null {
+        // //             $position-right: null;
+        // //             $position-left : calc(50% - math.div($scroll-to-top--size, 2));
+        // //         }
+        // //     }
+        // //     @else {
+        // //         $offset-top     : null;
+        // //         $offset-right   : 0;
+        // //         $offset-bottom  : 0;
+        // //         $offset-left    : null;
+                
+        // //         $position-top   : null;
+        // //         $position-right : 0;
+        // //         $position-bottom: 0;
+        // //         $position-left  : null;
+        // //     }
+        // }
+
+        // Button position
+
+        @if $position-top != null {top: $position-top;}
+        @if $position-right != null {right: $position-right;}
+        @if $position-bottom != null {bottom: $position-bottom;}
+        @if $position-left != null {left: $position-left;}
+
+        opacity: 1;
     }
 
     &:hover {

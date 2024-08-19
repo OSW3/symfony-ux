@@ -12,7 +12,7 @@ ux:
     scroll_to_top: 
         top_at: 0
         toggle_at: 200
-        symbol: "&&ShortUpArrow;;"
+        symbol: "arrow-up"
         title: "Go to to"
 ```
 <br>
@@ -21,7 +21,7 @@ ux:
 |-|-|-|-|-|
 | `top_at` | `integer` | Specifies the position of the top of the page. | no | `0` |
 | `toggle_at` | `integer` | Specifies the position of the button's display or hiding point on the page. | no | `200` |
-| `symbol` | `string` | Specifies the symbol of the button. | no | `\&ShortUpArrow;` |
+| `symbol` | `string` | Specifies the symbol of the button. | no | `arrow-up` |
 | `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
 <br>
 
@@ -39,7 +39,7 @@ ux:
 | `dataset` | `array` | Set list of `data` attributes; | no |  |
 | `top_at` | `integer` | Specifies the position of the top of the page. | no | `0` |
 | `toggle_at` | `integer` | Specifies the position of the button's display or hiding point on the page. | no | `200` |
-| `symbol` | `string` | Specifies the symbol of the button. | no | `\&ShortUpArrow;` |
+| `symbol` | `string` | Specifies the symbol of the button. | no | `arrow-up` |
 | `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
 <br>
 
@@ -50,8 +50,8 @@ ux:
 ```scss
 $scroll-to-top--size: 40px;
 $scroll-to-top--position: right;
-$scroll-to-top--offset-x: 1rem;
-$scroll-to-top--offset-y: 1rem;
+$scroll-to-top--position-x: 1rem;
+$scroll-to-top--position-y: 1rem;
 $scroll-to-top--symbol: "\23F6";
 $scroll-to-top--font-size: 2;
 $scroll-to-top--z-index: 1040;
