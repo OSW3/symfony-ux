@@ -1,13 +1,9 @@
 # Alerts
 
-- [What is it about ?](#what-is-it-about-)
-- [Available alerts contexts](#available-alerts-contexts)
-- [Component configuration](#component-configuration)
-- [Twig integration](#twig-integration)
-
 ## What is it about ?
 
-Provide contextual feedback messages for typical user actions
+Provide contextual feedback messages for typical user actions.
+<br>
 
 ## Available alerts contexts
 
@@ -22,6 +18,7 @@ Provide contextual feedback messages for typical user actions
 | Dark | `<twig:Alert:Dark />` | `.alert-dark` |
 | Light | `<twig:Alert:Light />` | `.alert-light` |
 | Muted | `<twig:Alert:Muted />` | `.alert-muted` |
+<br>
 
 ## Component configuration
 
@@ -32,11 +29,13 @@ ux:
             dismissible: true
             delay: 0
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `dismissible` | `bool` | Set whether Alerts can be dismissible by default. | no | `true` |
 | `delay` | `int` | Set the delay (in second) before alerts are automatically dismiss. If the value is 0, no delay will be applied. | no | `5` |
+<br>
 
 ## Twig integration
 

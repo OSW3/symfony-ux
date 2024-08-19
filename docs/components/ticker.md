@@ -1,9 +1,9 @@
 # Tickers
 
-
 ## What is it about ?
 
 Create an horizontal text scroll.
+<br>
 
 ## Component configuration
 
@@ -16,6 +16,7 @@ ux:
             loop: true
             pause_hover: true
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -23,6 +24,7 @@ ux:
 | `delay` | `integer` | Set the delay before next message. | no | `0` |
 | `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
 | `pause_hover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |
+<br>
 
 ## Twig integration
 
@@ -35,6 +37,7 @@ ux:
 <twig:Ticker :items="[messages[0]]"/>
 <twig:Ticker :items="messages" />
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|

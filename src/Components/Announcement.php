@@ -33,7 +33,7 @@ final class Announcement extends AbstractComponent
     #[ExposeInTemplate(name: 'animation')]
     public string $animation;
     
-    #[ExposeInTemplate(name: 'speed')]
+    #[ExposeInTemplate(name: 'speed', getter: 'fetchSpeed')]
     public int $speed;
 
     #[PreMount]
@@ -87,5 +87,38 @@ final class Announcement extends AbstractComponent
             );
         });
         return $messages;
+    }
+
+    public function fetchSpeed()
+    {
+        return match($this->animation) {
+            'ticker' => match($this->speed) {
+                0 => 0,
+                1 => 90,
+                2 => 80,
+                3 => 60,
+                4 => 40,
+                5 => 20,
+                6 => 15,
+                7 => 10,
+                8 => 5,
+                9 => 1,
+                default => 15,
+            },
+            'rotator' => match($this->speed) {
+                0 => 0,
+                1 => 20000,
+                2 => 16000,
+                3 => 12000,
+                4 => 9000,
+                5 => 7000,
+                6 => 5000,
+                7 => 3500,
+                8 => 2000,
+                9 => 1000,
+                default => 5000,
+            },
+            default => 0,
+        };
     }
 }

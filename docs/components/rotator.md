@@ -1,9 +1,9 @@
 # Rotators
 
-
 ## What is it about ?
 
 Create an horizontal text scroll.
+<br>
 
 ## Component configuration
 
@@ -15,12 +15,14 @@ ux:
             loop: true
             pause_hover: true
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `delay` | `integer` | Set the delay before next message. | no | `5000` |
 | `loop` | `bool` | Set whether the rotator will be played in loop. | no | `true` |
 | `pause_hover` | `bool` | Set whether the rotator will be paused on mouseover. | no | `true` |
+<br>
 
 ## Twig integration
 

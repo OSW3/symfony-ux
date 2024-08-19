@@ -1,24 +1,11 @@
 # Scroll to top
 
+## What is it about ?
+
 Add a Scroll to top button.
+<br>
 
-## Configuration properties
-
-| Property              | [ux.yaml](#configuration-yaml)    | component |
-|-----------------------|:---------------------------------:|:---------:|
-| [`top_at`](#top_at)   |x                                  |x          |
-
-
-#### `top_at` 
-
-Specifies the position of the top of the page.
-
-@var `integer`
-@default 0
-@example 0
-
-
-## Configuration YAML
+## Component configuration
 
 ```yaml
 ux: 
@@ -28,58 +15,79 @@ ux:
         symbol: "&&ShortUpArrow;;"
         title: "Go to to"
 ```
-
-- `top_at` (`integer`) : Specifies the position of the top of the page.
-    - Default : 0
-    - Example : 0
-- `toggle_at` (`integer`) : Specifies the position of the button's display or hiding point on the page.
-    - Default : 200
-    - Example : 200
-- `symbol` (`string`) : Specifies the symbol of the button.
-    - Default : "&ShortUpArrow;"
-    - Example : "&ShortUpArrow;"
-- `title` (`string`) : Specifies the title attribute value.
-    - Default : "Go to top"
-    - Example : "Go to top"
 <br>
 
-## How to use
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `top_at` | `integer` | Specifies the position of the top of the page. | no | `0` |
+| `toggle_at` | `integer` | Specifies the position of the button's display or hiding point on the page. | no | `200` |
+| `symbol` | `string` | Specifies the symbol of the button. | no | `\&ShortUpArrow;` |
+| `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
+<br>
 
-### Basic usage
+## Twig integration
 
 ```twig 
 <twig:ScrollToTop />
 ```
 <br>
 
-### Extra attributes usage
-
-- Add your custom ID.
-    ```twig 
-    <twig:ScrollToTop id="my-custom-id" />
-    ```
-
-- Add your custom class.
-    ```twig 
-    <twig:ScrollToTop class="my-custom-class" />
-    ```
-
-- Add your custom data attributes.
-    ```twig 
-    {% set my_dataset = {extra: "Extra data value"} %}
-    <twig:ScrollToTop :dataset="my_dataset" />
-    ```
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `id` | `string` | Set the accordion `id` attribute. | no |  |
+| `class` | `string` | Set custom classname. | no |  |
+| `dataset` | `array` | Set list of `data` attributes; | no |  |
+| `top_at` | `integer` | Specifies the position of the top of the page. | no | `0` |
+| `toggle_at` | `integer` | Specifies the position of the button's display or hiding point on the page. | no | `200` |
+| `symbol` | `string` | Specifies the symbol of the button. | no | `\&ShortUpArrow;` |
+| `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
 <br>
 
-### Overriding configuration attributes
+## SASS variables
 
-```twig 
-<twig:ScrollToTop toggleAt="380" title="Top" />
+### Layout variables
+
+```scss
+$scroll-to-top--size: 40px;
+$scroll-to-top--position: right;
+$scroll-to-top--offset-x: 1rem;
+$scroll-to-top--offset-y: 1rem;
+$scroll-to-top--symbol: "\23F6";
+$scroll-to-top--font-size: 2;
+$scroll-to-top--z-index: 1040;
 ```
+<br>
 
-The replaceable configuration attributes are :
+### Theme variables
 
-- topAt
-- toggleAt
-- symbol
-- title
+#### Single theme or default theme values
+
+If your application has only one theme, you can set the values ​​of it in the SCSS variables.
+These variables will also be used to set default values ​​if your application has multiple themes.
+
+```scss
+$scroll-to-top--text-color: #ffffff;
+$scroll-to-top--text-color--hover: #ffffff;
+$scroll-to-top--background-color: #20c997;
+$scroll-to-top--background-color--hover: #198754;
+$scroll-to-top--border-color: #20c997;
+$scroll-to-top--border-color--hover: #198754;
+```
+<br>
+
+#### Multiple themes
+
+If your application has multiple themes, you need to set the component's theme properties in the theme property list.
+
+Learn more about [creating a theme](./../layout/themes.md).
+
+```scss
+$properties: map-merge($properties, (
+    scroll-to-top--text-color: #ffffff,
+    scroll-to-top--text-color--hover: #ffffff,
+    scroll-to-top--background-color: #20c997,
+    scroll-to-top--background-color--hover: #198754,
+    scroll-to-top--border-color: #20c997,
+    scroll-to-top--border-color--hover: #198754,
+));
+```

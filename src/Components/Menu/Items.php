@@ -15,15 +15,11 @@ final class Items extends AbstractComponent
     use DoNotExposeTrait;
     use AttributeClassTrait;
 
-
-
     #[ExposeInTemplate(name: 'level')]
     public int $level;
     
     #[ExposeInTemplate(name: 'items')]
     public array $items;
-
-
 
     #[PreMount]
     public function preMount(array $data): array

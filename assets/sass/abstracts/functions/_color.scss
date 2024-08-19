@@ -1,4 +1,4 @@
-// **************************** Livetunes Studio **************************** //
+// ************************************************************************** //
 // *                                                                        * //
 // * Some functions about "color" object.                                   * //
 // *                                                                        * //
@@ -6,6 +6,8 @@
 // *    @use 'abstracts/functions/color' as color                           * //
 // *                                                                        * //
 // ************************************************************************** //
+
+@use './utils';
 
 /// Slightly lighten a color
 /// =============================================
@@ -36,7 +38,6 @@
   @return mix(black, $color, $percentage);
 }
 
-
 @function contrastText($color) {
   $result: invert($color);
   $lightness: lightness($result);
@@ -47,4 +48,21 @@
     $result: white;
   }
   @return $result;
+}
+
+
+/// Encode Hex color to URL #FF9900 -> %23FF9900
+/// =============================================
+/// 
+/// @example color.encode(#FF9900); 
+/// 
+/// @param {Color} $color The original color you need to encode
+/// @return {string} The encoded color
+@function encode($color)
+{
+    @if type-of($color) == color {
+        $color: utils.str-replace(#{$color}, '#', '%23');
+    }
+
+    @return $color;
 }

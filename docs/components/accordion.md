@@ -1,12 +1,5 @@
 # Accordions
 
-- [What is it about ?](#what-is-it-about-)
-- [Component configuration](#component-configuration)
-- [Twig integration](#twig-integration)
-- [SASS variables](#sass-variables)
-    - [Layout variables](#layout-variables)
-    - [Theme variables](#theme-variables)
-
 ## What is it about ?
 
 Create vertically collapsing accordions.

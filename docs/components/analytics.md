@@ -1,14 +1,9 @@
 # Analytics
 
-- [What is it about ?](#what-is-it-about-)
-- [Supported services](#supported-services)
-- [Component configuration](#component-configuration)
-- [Twig integration](#twig-integration)
-
 ## What is it about ?
 
 Add analytics service to your app.
-
+<br>
 
 ## Supported services
 
@@ -22,6 +17,7 @@ Add analytics service to your app.
 | Piwik | `piwik` | [https://piwik.pro/](https://piwik.pro/) | 
 | Plausible | `plausible` | [https://plausible.io/](https://plausible.io/) | 
 | Woopra | `woopra` | [https://woopra.com/](https://woopra.com/) | 
+<br>
 
 ## Component configuration
 
@@ -34,12 +30,14 @@ ux:
                 tracking_url https://mysite.provider.url/
                 tracking_domain mysite.com
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `tracking_id` | `int\|string` | Set the tracking ID. | no |  |
 | `tracking_url` | `string` | Set the tracking URL. | no |  |
 | `tracking_domain` | `string` | Set the tracking domain. | no |  |
+<br>
 
 ### Required options by provider
 
@@ -53,6 +51,7 @@ ux:
 | Piwik | x | x |  | 
 | Plausible |  |  | x | 
 | Woopra |  |  | x | 
+<br>
 
 
 ## Twig integration
@@ -64,6 +63,7 @@ This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 ```twig 
 <twig:Analytics:Google />
 ```
+<br>
 
 ### Method 2 
 
@@ -72,6 +72,7 @@ This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 ```twig 
 <twig:Analytics provider="google" />
 ```
+<br>
 
 ### Method 3
 
@@ -80,7 +81,7 @@ This method passe the tracking ID
 ```twig 
 <twig:Analytics provider="google" trackingId="1234" />
 ```
-
+<br>
 
 ### Twig component attributes
 

@@ -6,6 +6,7 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
@@ -80,7 +81,7 @@ $accordion--item-open--header--background-color: $gray-400 !default;
     &-item {
         border-width: 1px;
         border-style: solid;
-        border-color: var(--accordion--item--border-color, $accordion--item--border-color);
+        @include var.set('border-color', 'accordion--item--border-color', $accordion--item--border-color);
 
         &:not(:first-child) {
             margin-top: $accordion--item--gap;
@@ -108,8 +109,8 @@ $accordion--item-open--header--background-color: $gray-400 !default;
     /// --
     
     &-header {
-        color: var(--accordion--item--header--text-color, $accordion--item--header--text-color);
-        background-color: var(--accordion--item--header--background-color, $accordion--item--header--background-color);
+        @include var.set('color', 'accordion--item--header--text-color', $accordion--item--header--text-color);
+        @include var.set('background-color', 'accordion--item--header--background-color', $accordion--item--header--background-color);
         font-size: $accordion--item--header--font-size;
         justify-content: space-between;
         cursor: pointer;
@@ -128,17 +129,10 @@ $accordion--item-open--header--background-color: $gray-400 !default;
         );
         @include transition.set((color, background-color), map-get($delays, $accordion--item--transition-speed));
 
-        // &::after {
-        //     content: "x";
-        //     background-color: red;
-        //     height: 30px;
-        //     width: 30px;
-        //     @include flex.centered;
-        // }
     }
     &-item.open &-header {
-        color: var(--accordion--item-open--header--text-color, $accordion--item-open--header--text-color);
-        background-color: var(--accordion--item-open--header--background-color, $accordion--item-open--header--background-color);        
+        @include var.set('color', 'accordion--item-open--header--text-color', $accordion--item-open--header--text-color);
+        @include var.set('background-color', 'accordion--item-open--header--background-color', $accordion--item-open--header--background-color);
     }
     @if $accordion--item--gap < 0 {
         &-item:first-child.open &-header {

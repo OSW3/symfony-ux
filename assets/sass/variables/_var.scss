@@ -1,0 +1,15 @@
+// ************************************************************************** //
+// *
+// *    Utilities variables.
+// *
+// ************************************************************************** //
+
+@use 'sass:meta';
+@use './../generated';
+
+
+
+/// Prefix definition
+/// ==============================================
+
+$varWithDefault: if(meta.global-variable-exists('varWithDefault', $module: generated), generated.$varWithDefault, true) !default;

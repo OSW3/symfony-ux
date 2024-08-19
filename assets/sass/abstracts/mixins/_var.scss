@@ -1,0 +1,22 @@
+// ************************************************************************** //
+// *                                                                        * //
+// * Theses mixins of CSS Variable     .                                    * //
+// *                                                                        * //
+// * How to import                                                          * //
+// *  @use 'abstracts/mixins/var' as var;                                   * //
+// *                                                                        * //
+// ************************************************************************** //
+
+@use './../../variables/var';
+
+@mixin set($property, $name, $default: null, $important: false) {
+    @if var.$varWithDefault {
+        @if $default {
+            #{$property}: var(--#{$name}, #{$default})#{if($important, ' !important', '')};
+        } @else {
+            #{$property}: var(--#{$name})#{if($important, ' !important', '')};
+        }
+    } @else {
+        #{$property}: var(--#{$name})#{if($important, ' !important', '')};
+    }
+}

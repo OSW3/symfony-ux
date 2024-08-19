@@ -3,6 +3,7 @@
 use OSW3\UX\Enum\Announcement\Animation\Strategy as AnimationStrategy;
 use OSW3\UX\Enum\Announcement\Animation\Type as AnimationType;
 use OSW3\UX\Enum\Orientation;
+use OSW3\UX\Enum\Size;
 
 return static function($definition)
 {
@@ -11,6 +12,11 @@ return static function($definition)
         ->scalarNode('prefix')
             ->info("Specifies the prefix")
             ->defaultValue('ux')
+        ->end()
+
+        ->booleanNode('var_default')
+            ->info("Specifies wether the CSS var function is printed with default value")
+            ->defaultTrue()
         ->end()
 
         ->arrayNode('layout')->addDefaultsIfNotSet()->children()
@@ -393,7 +399,6 @@ return static function($definition)
 
             ->end()->end()
 
-
             // Brand
             // -- 
             ->arrayNode('brand')
@@ -408,6 +413,12 @@ return static function($definition)
                 ->scalarNode('tagline')
                     ->info("Specifies the tagline of the company")
                     ->defaultNull()
+                ->end()
+    
+                ->enumNode('size')
+                    ->info("Specifies the name of the company")
+                    ->values(Size::toArray())
+                    ->defaultValue(Size::MEDIUM->value)
                 ->end()
     
                 ->arrayNode('logo')
@@ -426,7 +437,6 @@ return static function($definition)
                 ->end()
 
             ->end()->end()
-
 
             // Copyright
             // -- 
@@ -460,8 +470,20 @@ return static function($definition)
                 ->end()
     
             ->end()->end()
-    
 
+            // Copyright
+            // -- 
+            ->arrayNode('links')
+                ->info("Parameters settings of the Links component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->scalarNode('target')
+                    ->info("Specifies the window target of links")
+                    ->defaultValue('_self')
+                ->end()
+    
+            ->end()->end()
+    
             // Rotators
             // -- 
             ->arrayNode('rotators')
@@ -486,7 +508,6 @@ return static function($definition)
     
             ->end()->end()
     
-
             // Scroll to top
             // -- 
             ->arrayNode('scroll_to_top')
@@ -515,7 +536,6 @@ return static function($definition)
     
             ->end()->end()
     
-
             // Tickers
             // -- 
             ->arrayNode('tickers')

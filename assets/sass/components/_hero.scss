@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
 $_component: 'hero';

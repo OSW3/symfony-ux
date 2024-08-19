@@ -4,10 +4,10 @@
 // *
 // ************************************************************************** //
 
-// @use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 
-// @import './../abstracts/variables/utilities';
+
 
 /// Root
 /// =============================================
@@ -40,8 +40,8 @@ body {
     @include flex.column;
     margin: map-get($spacers , 0);
     padding: map-get($spacers , 0);
-
-    font-family: var(--font-#{$font-name-primary});
+    
+    @include var.set('font-family', font-#{$font-name-primary});
     font-size: $font-size-base;
     line-height: 1.45; 
     -webkit-font-smoothing: antialiased;

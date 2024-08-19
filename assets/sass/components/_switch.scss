@@ -5,6 +5,7 @@
 // ************************************************************************** //
 
 @use "sass:math";
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/banner';
@@ -55,7 +56,7 @@ $default--switch-on--background-color      : $blue;
 $default--switch-on--indicator-color       : $white;
 
 $default--switch-disabled--border-color    : $gray-500;
-$default--switch-disabled--background-color: $gray-200;
+$default--switch-background-color--disabled: $gray-200;
 $default--switch-disabled--indicator-color : $gray-500;
 
 
@@ -127,7 +128,7 @@ $default--switch-disabled--indicator-color : $gray-500;
 
         &:disabled + .switch-slider {
             border-color    : var(--switch-disabled--border-color, $default--switch-disabled--border-color);
-            background-color: var(--switch-disabled--background-color, $default--switch-disabled--background-color);
+            background-color: var(--switch-background-color--disabled, $default--switch-background-color--disabled);
 
             &:before {
                 background-color: var(--switch-disabled--indicator-color, $default--switch-disabled--indicator-color);

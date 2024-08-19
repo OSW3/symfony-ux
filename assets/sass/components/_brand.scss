@@ -6,6 +6,7 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
@@ -28,19 +29,19 @@ $_classname: '#{$prefix}#{$_component}';
 
 $brand--small--font-size     : 1.2rem !default;
 $brand--small--tagline-size  : .8rem !default;
-$brand--small--tagline-offset: 6px !default;
+$brand--small--tagline-offset: 0px !default;
 $brand--small--font-weight   : 600 !default;
 $brand--small--img-height    : 32px !default;
 
 $brand--medium--font-size     : 1.5rem !default;
 $brand--medium--tagline-size  : 1rem !default;
-$brand--medium--tagline-offset: 8px !default;
+$brand--medium--tagline-offset: 0px !default;
 $brand--medium--font-weight   : 700 !default;
 $brand--medium--img-height    : 42px !default;
 
 $brand--large--font-size     : 2rem !default;
 $brand--large--tagline-size  : 1.2rem !default;
-$brand--large--tagline-offset: 12px !default;
+$brand--large--tagline-offset: 0px !default;
 $brand--large--font-weight   : 900 !default;
 $brand--large--img-height    : 56px !default;
 
@@ -48,21 +49,21 @@ $sizes: (
     small: (
         font-size     : $brand--small--font-size,
         tagline-size  : $brand--small--tagline-size,
-        tagline-offset: -$brand--small--tagline-offset,
+        tagline-offset: $brand--small--tagline-offset,
         font-weight   : $brand--small--font-weight,
         img-height    : $brand--small--img-height,
     ), 
     medium: (
         font-size     : $brand--medium--font-size,
         tagline-size  : $brand--medium--tagline-size,
-        tagline-offset: -$brand--medium--tagline-offset,
+        tagline-offset: $brand--medium--tagline-offset,
         font-weight   : $brand--medium--font-weight,
         img-height    : $brand--medium--img-height,
     ), 
     large: (
         font-size     : $brand--large--font-size,
         tagline-size  : $brand--large--tagline-size,
-        tagline-offset: -$brand--large--tagline-offset,
+        tagline-offset: $brand--large--tagline-offset,
         font-weight   : $brand--large--font-weight,
         img-height    : $brand--large--img-height,
     )
@@ -77,8 +78,8 @@ $brand-breakpoints: if(meta.global-variable-exists('brand-breakpoints', $module:
 // * Default theme variables
 // * =========================
 
-$default--brand--text-color      : $gray-600;
-$default--brand--text-hover-color: $black;
+$brand--text-color      : $gray-600;
+$brand--text-color--hover: $black;
 
 
 // * =============================================
@@ -96,7 +97,8 @@ $default--brand--text-hover-color: $black;
     text-decoration: none;
     white-space: nowrap;
     height: fit-content;
-    color : var(--brand--text-color, $default--brand--text-color);
+    @include var.set('color', 'brand--text-color', $brand--text-color);
+    
 
     
     /// Brand Link
@@ -109,7 +111,7 @@ $default--brand--text-hover-color: $black;
         transition: color map-get($delays, normal);
 
         &:hover {
-            color : var(--brand--text-hover-color, $default--brand--text-hover-color);
+            @include var.set('color', 'brand--text-color--hover', $brand--text-color--hover);
         }
     }
     
@@ -152,7 +154,7 @@ $default--brand--text-hover-color: $black;
             .#{$_classname}-tagline {
                 font-size: map-get($properties, 'tagline-size');
                 font-weight: map-get($properties, 'font-weight');
-                margin-top: map-get($properties, 'tagline-offset');;
+                margin-top: map-get($properties, 'tagline-offset');
             }
             .#{$_classname}-logo {
                 max-height: map-get($properties, 'img-height');

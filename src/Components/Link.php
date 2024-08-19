@@ -13,12 +13,12 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent(template: '@UxComponents/link/base.twig')]
 final class Link extends AbstractComponent
 {    
+    public const NAME = "link";
+
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
-
-
 
     #[ExposeInTemplate(name: 'label')]
     public string $label;
@@ -35,11 +35,10 @@ final class Link extends AbstractComponent
     public bool $noClassLink;
     public bool $isActive;
 
-
-
     #[PreMount]
     public function preMount(array $data): array
     {
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -55,7 +54,7 @@ final class Link extends AbstractComponent
         $resolver->setRequired('url');
         $resolver->setAllowedTypes('url', 'string');
 
-        $resolver->setDefault('target', "_self");
+        $resolver->setDefault('target', $options['target']);
         $resolver->setAllowedTypes('target', 'string');
 
         $resolver->setDefault('isDisabled', false);
@@ -70,24 +69,17 @@ final class Link extends AbstractComponent
         return $resolver->resolve($data) + $data;
     }
 
-    public function getComponentClassname(): string 
+    protected function getConfig(): array 
     {
-        return "{$this->prefix}link";
+        return $this->config['components']['links'];
     }
-
-
 
     public function fetchClass(): string
     {
         $classList = [];
         
-        if (!$this->noClassLink) {
-            $classList = [$this->getComponentClassname()];
-        }
-
-        if ($this->isActive) {
-            $classList = ['active'];
-        }
+        if (!$this->noClassLink) $classList[] = $this->getComponentClassname();
+        if ($this->isActive)     $classList[] = 'active';
 
         $classList[] = $this->class;
 

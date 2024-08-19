@@ -53,7 +53,7 @@ final class Brand extends AbstractComponent
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('size', Size::MEDIUM->value);
+        $resolver->setDefault('size', $options['size']);
         $resolver->setAllowedTypes('size', 'string');
         $resolver->setAllowedValues('size', Size::toArray());
 

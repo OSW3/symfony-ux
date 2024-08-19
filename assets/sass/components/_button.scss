@@ -6,6 +6,7 @@
 
 // TODO: Revoir le CSS de l'état "disabled" du bouton
 
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/banner';

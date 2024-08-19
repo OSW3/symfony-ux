@@ -1,69 +1,85 @@
 # Link
 
+## What is it about ?
+
 A advanced link.
+<br>
 
-## How to use
+## Component configuration
 
-### Basic usage
-
-```twig 
-<twig:Link label="My link" url="https://github.com/osw3/symfony-ux" target="_blank" />
+```yaml
+ux:
+    components:
+        links:
+            target: _self
+            # external_icon: extern
+            # spy: true
 ```
 <br>
 
-### Attributes
-
-- `label`.
-
-    Text between "a" tag.
-
-    ```twig 
-    <twig:Link label="..." />
-    ```
-
-- `url`.
-
-    The destination of the link.
-    
-    ```twig 
-    <twig:Link url="..." />
-    ```
-
-- `target`.
-
-    The value of the target attribute.
-
-    Default: `_self`.
-    if `_blank` or "custom", an external link symbol will be added
-    
-    ```twig 
-    <twig:Link target="..." />
-    ```
-
-- `isDisabled`.
-
-    Set the link disabled
-    
-    ```twig 
-    <twig:Link :isDisabled="true" />
-    ```
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `target` | `string` | Specifies the window target of links. | no | `_self` |
+<!-- | `multiple` | `bool` | Set. | no | `false` | -->
+<!-- | `multiple` | `bool` | Set. | no | `false` | -->
 <br>
 
-### Extra attributes usage
+## Twig integration
 
-- Add your custom ID.
-    ```twig 
-    <twig:ScrollToTop id="my-custom-id" />
-    ```
-
-- Add your custom class.
-    ```twig 
-    <twig:ScrollToTop class="my-custom-class" />
-    ```
-
-- Add your custom data attributes.
-    ```twig 
-    {% set my_dataset = {extra: "Extra data value"} %}
-    <twig:ScrollToTop :dataset="my_dataset" />
-    ```
+```twig
+<twig:Link label="My link" url="https://github.com/osw3/symfony-ux" target="_blank" />
+``` 
 <br>
+
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `id` | `string` | Set the accordion `id` attribute. | no |  |
+| `class` | `string` | Set custom classname. | no |  |
+| `dataset` | `array` | Set list of `data` attributes; | no |  |
+| `label` | `string` | Set the label of the link. | yes |  |
+| `url` | `string` | Set the destination of the link. | yes |  |
+| `target` | `string` | Specifies the window target of links. | no | `_self` |
+| `isDisabled` | `bool` | If true, the link is not clickable. | no | `false` |
+| `noClassLink` | `bool` | If true, the base classname is removed. | no | `false` |
+<br>
+
+## SASS variables
+
+### Layout variables
+
+```scss
+$link--text-decoration: underline !default;
+$link--text-decoration--hover: none !default;
+$link--text-decoration--active: none !default;
+```
+<br>
+
+### Theme variables
+
+#### Single theme or default theme values
+
+If your application has only one theme, you can set the values ​​of it in the SCSS variables.
+These variables will also be used to set default values ​​if your application has multiple themes.
+
+```scss
+$link--text-color: #0d6efd;
+$link--text-color--hover: #0d6efd;
+$link--text-color--active: #0d6efd;
+$link--text-color--disabled: #6c757d;
+```
+<br>
+
+#### Multiple themes
+
+If your application has multiple themes, you need to set the component's theme properties in the theme property list.
+
+Learn more about [creating a theme](./../layout/themes.md).
+
+```scss
+$properties: map-merge($properties, (
+    link--text-color: #0d6efd,
+    link--text-color--hover: #0d6efd,
+    link--text-color--active: #0d6efd,
+    link--text-color--disabled: #6c757d,
+));
+```

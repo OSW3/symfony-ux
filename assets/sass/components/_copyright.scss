@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
 $_component: 'copyright';
@@ -37,8 +38,6 @@ $copyright--text-color: $gray-600 !default;
 // * =============================================
 
 .#{$_classname} {
-
-    color: var(--copyright--text-color, $copyright--text-color);
+    @include var.set('color', 'copyright--text-color', $copyright--text-color);
     font-size: $copyright--font-size;
-    
 }

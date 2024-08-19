@@ -1,8 +1,12 @@
+
+@use './var';
+
 @mixin outline($key)
 {
-    color: var(--#{$key});
+
+    @include var.set('color', $key);
     background-color: transparent;
-    border-color: var(--#{$key}) !important;
+    @include var.set('border-color', $key, null, true);
     border-width: 1px !important;
     border-style: solid !important;
 }

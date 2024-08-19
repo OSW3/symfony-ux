@@ -1,15 +1,9 @@
 # Copyright# Alerts
 
-- [What is it about ?](#what-is-it-about-)
-- [Component configuration](#component-configuration)
-- [Twig integration](#twig-integration)
-- [SASS variables](#sass-variables)
-    - [Layout variables](#layout-variables)
-    - [Theme variables](#theme-variables)
-
 ## What is it about ?
 
 Display a copyright, generally on the website footer.
+<br>
 
 ## Component configuration
 
@@ -22,6 +16,7 @@ ux:
         dates_separator: "-"
         separator: " • "
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -30,12 +25,14 @@ ux:
 | `symbol` | `string` | Set the copyright symbol to use. | no | \&copy; |
 | `dates_separator` | `string` | Set the separator to use between dates in the display. | no | - |
 | `separator` | `string` | Set the separator to use between elements in the display. | no | • |
+<br>
 
 ## Twig integration
 
 ```twig 
 <twig:Copyright />
 ```
+<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -47,6 +44,7 @@ ux:
 | `symbol` | `string` | Set the copyright symbol to use. | no | \&copy; |
 | `dates_separator` | `string` | Set the separator to use between dates in the display. | no | - |
 | `separator` | `string` | Set the separator to use between elements in the display. | no | • |
+<br>
 
 
 ## SASS variables
@@ -56,6 +54,7 @@ ux:
 ```scss
 $copyright--font-size: .8rem;
 ```
+<br>
 
 ### Theme variables
 
@@ -67,6 +66,7 @@ These variables will also be used to set default values ​​if your applicatio
 ```scss
 $copyright--text-color: #6c757d;
 ```
+<br>
 
 #### Multiple themes
 

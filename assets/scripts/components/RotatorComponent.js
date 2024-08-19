@@ -85,30 +85,33 @@ export default class RotatorComponent
 
     #play(animate)
     {
-		this.#items[this.#index].style.display = 'block';
-        if (animate) {
-            new Animate(this.#items[this.#index]).fadeIn();
+        if (this.#delay > 0)
+        {
+            this.#items[this.#index].style.display = 'block';
+            if (animate) {
+                new Animate(this.#items[this.#index]).fadeIn();
+            }
+
+            this.#instance = setTimeout(() => {
+                new Animate(this.#items[this.#index]).fadeOut(() => {
+    
+                    this.#items[this.#index].style.display = 'none';
+                    clearInterval(this.#instance);
+                    this.#index++;
+    
+                    // Replay
+                    if (this.#index == this.#items.length && this.#loop == true) {
+                        this.#index = 0;
+                        this.#play(true);
+                    } 
+                    // Next
+                    else if (this.#index < this.#items.length) {
+                        this.#play(true);
+                    }
+                });
+                
+            }, this.#delay);
         }
-
-        this.#instance = setTimeout(() => {
-            new Animate(this.#items[this.#index]).fadeOut(() => {
-
-                this.#items[this.#index].style.display = 'none';
-                clearInterval(this.#instance);
-                this.#index++;
-
-                // Replay
-                if (this.#index == this.#items.length && this.#loop == true) {
-                    this.#index = 0;
-                    this.#play(true);
-                } 
-                // Next
-                else if (this.#index < this.#items.length) {
-                    this.#play(true);
-                }
-            });
-            
-        }, this.#delay);
 
         if (this.#pauseHover)
         {

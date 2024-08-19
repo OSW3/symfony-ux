@@ -4,20 +4,14 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/functions/icon';
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
 $_component: 'link';
 $_classname: '#{$prefix}#{$_component}';
 
 @include banner.header('Component #{$_component}');
-
-
-
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
 
 
 
@@ -30,9 +24,19 @@ $_classname: '#{$prefix}#{$_component}';
 // * Default layout variables
 // * =========================
 
+$link--text-decoration: underline !default;
+$link--text-decoration--hover: none !default;
+$link--text-decoration--active: none !default;
+
 
 // * Default theme variables
 // * =========================
+
+$link--text-color: $blue !default;
+$link--text-color--hover: $blue !default;
+$link--text-color--active: $blue !default;
+$link--text-color--disabled: $gray-600 !default;
+
 
 
 // * =============================================
@@ -41,69 +45,48 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-.#{$_classname} {
-
-    /// Component definition
-    /// --
-
-    
-    /// Component Sizes
-    /// --
-    
-
-    /// Component Pallets
-    /// --
-    
-
-    /// Component States
-    /// --
-    
-
-    --link--text-color: var(--dark);
+.#{$_classname} {    
+    --icon         : #{icon.get('external-link', var(--link--text-color))};
+    // --icon-active  : #{icon.get('external-link', var(--link--text-color--active))};
+    // --icon-disabled: #{icon.get('external-link', var(--link--text-color--disabled))};
 
     cursor: pointer;
-    text-decoration: none;
-    // color: var(--link--text-color);
-}
-
-
-/// Disabled link
-/// --
-
-a[disabled] {
-    cursor: default !important;
-    text-decoration: none !important;
-}
-
-
-/// _blank link symbol
-/// --
-
-a[target]:not([target=_self],[target=_parent]) {
-    position: relative;
-    padding-right: 8px;
-
-    &::after,
-    &::before {
-        content: "";
-        display: block;
-        box-sizing: border-box;
-        position: absolute;
+    text-decoration: $link--text-decoration;
+    @include var.set('color', 'link--text-color', $link--text-color);
+    
+    &:hover {
+        @include var.set('color', 'link--text-color--hover', $link--text-color--hover);
+        text-decoration: $link--text-decoration--hover;
     }
-    &::before {
-        background: currentColor;
-        transform: rotate(-45deg);
-        width: 8px;
-        height: 2px;
-        top: 6px;
-        right: -3px;
+
+    &:active, 
+    &.active,
+    &:active:hover, 
+    &.active:hover {
+        @include var.set('color', 'link--text-color--active', $link--text-color--active);
+        text-decoration: $link--text-decoration--active;
     }
-    &::after {
-        width: 6px;
-        height: 6px;
-        border-right: 2px solid;
-        border-top: 2px solid;
-        top: 2px;
-        right: -4px;
+
+    &[disabled] {
+        @include var.set('color', 'link--text-color--disabled', $link--text-color--disabled);
+        cursor: default !important;
+        text-decoration: none !important;
+    }
+
+    &[target]:not([target=_self],[target=_parent]) {
+        position: relative;
+        padding-right: 8px;
+
+        &::after {
+            content: "";
+            display: block;
+            box-sizing: border-box;
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            top: 2px;
+            right: -8px;
+            background: transparent var(--icon) center no-repeat;
+        }
     }
 }
