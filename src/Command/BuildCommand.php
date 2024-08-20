@@ -140,12 +140,13 @@ class BuildCommand extends Command
         $defaults   = $options['defaults'];
         $additional = $options['additional'];
         $useless    = $options['useless'];
+        $shades     = $options['shades'];
+        $tints      = $options['tints'];
 
         foreach ($defaults as $name => $value)
         {
             $vars[] = "\${$name}: {$value};";
         }
-
 
         $additional_collection = [];
         foreach ($additional as $name => $value)
@@ -158,7 +159,6 @@ class BuildCommand extends Command
             $vars[] = "\$generated-additional-colors: (". implode(",", $additional_collection) .");";
         }
 
-
         $useless_collection = [];
         foreach ($useless as $name)
         {
@@ -167,6 +167,28 @@ class BuildCommand extends Command
         if (!empty($useless_collection))
         {
             $vars[] = "\$generated-useless-colors: (". implode(",", $useless_collection) .");";
+        }
+
+        $shades_collection = [];
+        foreach ($shades as $name => $values)
+        {
+            $name = str_replace("_", "-", $name);
+            $shades_collection[] = "'{$name}' : (". implode(",", $values) .")";
+        }
+        if (!empty($shades_collection))
+        {
+            $vars[] = "\$generated-colors-shades: (". implode(",", $shades_collection) .");";
+        }
+
+        $tints_collection = [];
+        foreach ($tints as $name => $values)
+        {
+            $name = str_replace("_", "-", $name);
+            $tints_collection[] = "'{$name}' : (". implode(",", $values) .")";
+        }
+        if (!empty($tints_collection))
+        {
+            $vars[] = "\$generated-colors-tints: (". implode(",", $tints_collection) .");";
         }
     }
     

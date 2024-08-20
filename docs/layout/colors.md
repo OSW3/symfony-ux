@@ -161,42 +161,33 @@ $useless-colors: (
 
 ## Colors declination
 
-### Shades collection
+### From `YAML` configuration
 
-Add the color's names into the `$colors-shades` list and the levels of shade (percent has integer) in the sub-list;
-
-```scss 
-$colors-shades: (
-    'pumpkin' : (10, 35),
-);
+```yaml 
+# config/packages/ux.yaml
+ux:
+    layout:
+        colors:
+            shades:
+                pumpkin: [20, 30]
+                pink-flamingo: [20, 30]
+            tints:
+                pumpkin: [20, 30]
+                pink-flamingo: [20, 30]
 ```
 
-> Exclude colors will generate the `:root` css
-> 
-> ```css
-> :root {
->   /* ... */
->   --pumpkin--shade-10: #e65513;
->   --pumpkin--shade-35: #a63d0e;
-> }
-> ```
+### From `SCSS` variables
 
-### Tints collection
-
-Add the color's names into the `$colors-tints` list and the levels of tint (percent has integer) in the sub-list;
+Add the color's names into the `$colors-shades` and/or `$colors-tints` list and the levels of shade (percent has integer) in the sub-list;
 
 ```scss 
+// my-custom-colors.scss
+$colors-shades: (
+    'pumpkin' : (20, 30),
+    'pink-flamingo' : (20, 30),
+);
 $colors-tints: (
     'pumpkin' : (20, 30),
+    'pink-flamingo' : (20, 30),
 );
 ```
-
-> Exclude colors will generate the `:root` css
->
-> ```css
-> :root {
->   /* ... */
->   --pumpkin--tint-20: #ff7e44;
->   --pumpkin--tint-30: #ff8e5b;
-> }
-> ```

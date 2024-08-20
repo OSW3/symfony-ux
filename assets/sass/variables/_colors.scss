@@ -113,8 +113,19 @@ $additional-colors          : map-merge(
 // *
 // * =============================================
 
-$colors-shades: () !default;
-$colors-tints: () !default;
+$generated-colors-shades: if(meta.global-variable-exists('generated-colors-shades', $module: generated), generated.$generated-colors-shades, ()) !default;
+$colors-shades          : () !default;
+$colors-shades          : map-merge(
+    $generated-colors-shades, 
+    $colors-shades
+);
+
+$generated-colors-tints: if(meta.global-variable-exists('generated-colors-tints', $module: generated), generated.$generated-colors-tints, ()) !default;
+$colors-tints          : () !default;
+$colors-tints          : map-merge(
+    $generated-colors-tints, 
+    $colors-tints
+);
 
 
 
