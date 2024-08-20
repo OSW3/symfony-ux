@@ -44,6 +44,24 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            --#{$_classname}--color           : var(--#{$key});
+            --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
+
 .#{$_classname} {
 
     /// Component definition
@@ -58,7 +76,7 @@ $_classname: '#{$prefix}#{$_component}';
     /// --
     
 
-    /// Component Pallets
+    /// Component palettes
     /// --
     
 
@@ -66,10 +84,10 @@ $_classname: '#{$prefix}#{$_component}';
     /// --
 }
 
-@each $key, $value in $pallet {
-    .#{$_classname}-#{$key} {
-        color: $value;
-        background-color: color.tint($value, 70%);
-        border-color: $value;
-    }
-}
+// @each $key, $value in $palette {
+//     .#{$_classname}-#{$key} {
+//         color: $value;
+//         background-color: color.tint($value, 70%);
+//         border-color: $value;
+//     }
+// }

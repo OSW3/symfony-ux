@@ -10,7 +10,7 @@
 {% set _attr = attr|default({}) %}
 
 
-{# -- Fill in the values ------------------------ #}
+{# -- Render component attributes --------------- #}
 {# ---------------------------------------------- #}
 
 {# Set the ID attribute #}
@@ -29,3 +29,11 @@
 
 {# Aria orientation #}
 {% set _attr = _add_attribute(_attr, 'aria-orientation', orientation) %}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %}

@@ -10,7 +10,7 @@
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/banner';
-@use './../abstracts/mixins/pallet';
+@use './../abstracts/mixins/palette';
 @use './../abstracts/mixins/transition';
 @use './../abstracts/functions/color';
 
@@ -18,14 +18,6 @@ $_component: 'button';
 $_classname: '#{$prefix}#{$_component}';
 
 @include banner.header('Component #{$_component}');
-
-
-
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
 
 
 
@@ -43,11 +35,30 @@ $_classname: '#{$prefix}#{$_component}';
 // * =========================
 
 
+
 // * =============================================
 // *
 // *    Component Definition
 // *
 // * =============================================
+
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            // --#{$_classname}--color           : var(--#{$key});
+            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            // --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
 
 .#{$_classname} {
 
@@ -87,10 +98,10 @@ $_classname: '#{$prefix}#{$_component}';
     }
 
 
-    /// Button pallet
+    /// Button palette
     /// --
     
-    @each $key, $value in $pallet {
+    @each $key, $value in $palette {
         $shade: color.shade($value, 30%);
         $tint: color.tint($value, 60%);
         $contrastText: color.contrastText($shade);
@@ -105,20 +116,20 @@ $_classname: '#{$prefix}#{$_component}';
             &:not(.button-effect).active,
             &:not(.button-effect):hover {
                 color: $contrastText;
-                background-color: var(--#{$key}-shade);
-                border-color: var(--#{$key}-shade);
+                background-color: var(--#{$key}--shade-70);
+                border-color: var(--#{$key}--shade-70);
             }
         }
 
         // Stroke (outline) color
         // --
         &-#{$key}-outline {
-            @include pallet.outline($key);
+            @include palette.outline($key);
 
             &:hover {
                 color: $contrastText;
-                background-color: var(--#{$key}-shade);
-                border-color: var(--#{$key}-shade);
+                background-color: var(--#{$key}--shade-70);
+                border-color: var(--#{$key}--shade-70);
             }
         }
     }
@@ -133,21 +144,7 @@ $_classname: '#{$prefix}#{$_component}';
         color: var(--muted);
     }
 
-
     & .no-border {
         border: none !important;
     }
 }
-
-[rel=js-button] {
-    transition: background-color map-get($delays, 'normal');
-
-    &.active {
-        background-color: chocolate;
-    }
-}
-
-// // No Border
-// .button-no-border {
-//     border: none !important;
-// }

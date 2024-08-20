@@ -10,7 +10,7 @@
 {% set _attr = attr|default({}) %}
 
 
-{# -- Fill in the values ------------------------ #}
+{# -- Render component attributes --------------- #}
 {# ---------------------------------------------- #}
 
 {# Set the ID attribute #}
@@ -30,3 +30,11 @@
 {# Set the rel attribute to trigger javascript events on the component #}
 {% set _attr = _add_attribute(_attr, 'rel', rel) %}
 {# {% set _attr = _add_attribute(_attr, 'style', "var(--"~ symbol ~")") %} #}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{% for name, value in attributes %}
+{% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %}

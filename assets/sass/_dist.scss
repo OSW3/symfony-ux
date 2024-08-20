@@ -40,20 +40,20 @@
 // Colors
 // --
 // Add default colors variables
-// required for pallet
+// required for palette
 @import './variables/colors';
 
-// Pallet
+// palette
 // --
-// Add default pallet variables
-// required for pallet
-@import './variables/pallet';
+// Add default palette variables
+// required for palette
+@import './variables/palette';
 
 
 // Icons
 // --
 // Add default colors variables
-// required for pallet
+// required for palette
 @import './variables/icons';
 
 // Themes
@@ -102,18 +102,18 @@
 // Colors
 // --
 // Build the css colors variables
-// required for pallet
+// required for palette
 @import './base/colors';
 
 
 /// Utilities
 /// -------------------------
 
-// Pallet
+// palette
 // --
-// Build the css pallet variables
+// Build the css palette variables
 // required to colorize components
-@import './utilities/pallet';
+@import './utilities/palette';
 
 // Themes
 // --

@@ -26,9 +26,9 @@
 // ************************************************************************** //
 "use strict";
 
-import AbstractComponent from "../abstracts/AbstractComponent";
+// import AbstractComponent from "../abstracts/AbstractComponent";
 
-const SELECTOR          = '[rel=js-button]';
+// const SELECTOR          = '[rel=js-button]';
 const CLASS_NAME_ACTIVE = 'active';
 
 
@@ -65,7 +65,7 @@ export default class ButtonComponent // extends AbstractComponent
 
     constructor(node)
     {
-        this.#node = node;
+        this.#node = node;        
         EVENTS.forEach(eventName => this.on(eventName));
     }
 
@@ -76,18 +76,18 @@ export default class ButtonComponent // extends AbstractComponent
                 const subEventName = `${subEvent}${this.#capitalized(eventName)}`;
                 
                 // Always do on event
-                if (typeof this[`_${subEventName}Always`] === 'function') {
-                    (this[`_${subEventName}Always`])(this, event)
-                }
+                // if (typeof this[`_${subEventName}Always`] === 'function') {
+                //     (this[`_${subEventName}Always`])(this, event)
+                // }
 
                 // Do custom action
                 if (typeof this[subEventName] === 'function') {
                     (this[subEventName])(this, event)
                 }
                 // or do default action
-                else if (typeof this[subEventName] !== 'function' && typeof this[`_${subEventName}Default`] === 'function') {
-                    (this[`_${subEventName}Default`])(this, event)
-                }
+                // else if (typeof this[subEventName] !== 'function' && typeof this[`_${subEventName}Default`] === 'function') {
+                //     (this[`_${subEventName}Default`])(this, event)
+                // }
             });
         });
     }
@@ -98,32 +98,11 @@ export default class ButtonComponent // extends AbstractComponent
     } 
 
 
-    // constructor(node)
-    // {
-    //     super(node, EVENTS);
-
-    //     console.log( this.node );
-    //     // this.element = node;
-    // }
-
-    // _onInit() 
-    // {
-    //     // Node represent The HTML Component
-    //     console.log(this.node);
-
-    //     // the ID of the Node
-    //     // console.log(this.id);
-
-    //     for (let i = 0; i < COMPONENT_EVENTS.length; i++) {
-    //         this.on(COMPONENT_EVENTS[i]);
-    //     }
-    // }
-
 
     // Do ALWAYS on Click event
     _onClickAlways(handler, event)
     {
-        // console.log("Do always on click");
+        console.log("Do always on click");
     }
 
     // Do Default on Click event, if onClick() is not defined
@@ -131,19 +110,6 @@ export default class ButtonComponent // extends AbstractComponent
     {
         // console.log("Do default on click");
     }
-
-    // _onClick(handler, event, element)
-    // {
-    //     console.log("Default do click");
-    // }
-    // _onBeforeClick(handler, event, element)
-    // {
-    //     console.log("Default Before click");
-    // }
-    // _onAfterClick(handler, event, element)
-    // {
-    //     console.log("Default After click");
-    // }
 
 }
 
@@ -457,16 +423,16 @@ export default class ButtonComponent // extends AbstractComponent
 //     // }
 // }
 
-document.querySelectorAll(SELECTOR).forEach(node => {
-    let t = new ButtonComponent(node) 
-    console.log(t);
+// document.querySelectorAll(SELECTOR).forEach(node => {
+//     let t = new ButtonComponent(node) 
+//     console.log(t);
 
-    t.onClick = (handler, event) => {
-        console.log('Click!');
-        console.log(handler);
-        console.log(event);
-    }
-    t.onBeforeClickk = () => console.log('Before Click!');
-    // t.onAfterClick = () => console.log('After Click!');
+//     t.onClick = (handler, event) => {
+//         console.log('Click!');
+//         console.log(handler);
+//         console.log(event);
+//     }
+//     t.onBeforeClickk = () => console.log('Before Click!');
+//     // t.onAfterClick = () => console.log('After Click!');
     
-});
+// });

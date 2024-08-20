@@ -41,6 +41,24 @@ $alert--margin-y: $spacer !default;
 // *
 // * =============================================
 
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            --#{$_classname}--color           : var(--#{$key});
+            --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
+
 .#{$_classname} {
 
     /// Alert container
@@ -51,9 +69,26 @@ $alert--margin-y: $spacer !default;
     @include position.relative;
     @include corner.rounded(6px);
     @include sizes.width(100%);
-    @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
-    // @include spaces.margin( $alert--margin-y, auto, $alert--margin-y, auto );
-    @include spaces.margin( null, null, $alert--margin-y, null );
+
+    @include spaces.padding(
+        $spacer * .6,
+        $spacer * 1.4,
+        $spacer * .6, 
+        $spacer * 1.4 
+    );
+
+    @include spaces.margin(
+        null, 
+        null, 
+        $alert--margin-y, 
+        null
+    );
+
+
+    @include var.set('color', '#{$_classname}--color');
+    @include var.set('background-color', '#{$_classname}--background-color');
+    @include var.set('border-color', '#{$_classname}--border-color');
+
 
     & + & {
         @include spaces.margin( $alert--margin-y, null, null, null );
@@ -62,21 +97,9 @@ $alert--margin-y: $spacer !default;
     /// Alert dismiss button
     /// --
     
-    & .button-close {
+    & .#{$prefix}button-close {
         z-index: 2;
         @include position.absolute(0, 0, null, null);
         @include spaces.padding($spacer * 1.25, $spacer, $spacer * 1.25, $spacer);
-    }
-    
-    
-    /// Alert pallet
-    /// --
-    
-    @each $key, $value in $pallet {
-        &-#{$key} {
-            @include var.set('color', '#{$key}');
-            @include var.set('background-color', '#{$key}--tint-70');
-            @include var.set('border-color', '#{$key}');
-        }
     }
 }

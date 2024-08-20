@@ -8,7 +8,7 @@
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/banner';
-@use './../abstracts/mixins/pallet';
+@use './../abstracts/mixins/palette';
 @use './../abstracts/functions/color';
 
 $_component: 'badge';
@@ -44,6 +44,24 @@ $_classname: '#{$prefix}#{$_component}';
 // *    Component Definition
 // *
 // * =============================================
+
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            // --#{$_classname}--color           : var(--#{$key});
+            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            // --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
 
 .#{$_classname} {
 
@@ -81,28 +99,28 @@ $_classname: '#{$prefix}#{$_component}';
     }
 
 
-    /// Badge Pallet
+    /// Badge palette
     /// --
     
-    @each $key, $value in $pallet {
+    // @each $key, $value in $palette {
     
-        $_shade       : color.shade($value, 30%);
-        $_tint        : color.tint($value, 60%);
-        $_contrastText: color.contrastText($_shade);
+    //     $_shade       : color.shade($value, 30%);
+    //     $_tint        : color.tint($value, 60%);
+    //     $_contrastText: color.contrastText($_shade);
     
-        // Fill color
-        // --
+    //     // Fill color
+    //     // --
 
-        &-#{$key} {
-            background-color: var(--#{$key});
-            border-color: var(--#{$key});
-        }
+    //     &-#{$key} {
+    //         background-color: var(--#{$key});
+    //         border-color: var(--#{$key});
+    //     }
 
-        // Stroke (outline) color
-        // --
+    //     // Stroke (outline) color
+    //     // --
 
-        &-#{$key}-outline {
-            @include pallet.outline($key);
-        }
-    }
+    //     &-#{$key}-outline {
+    //         @include palette.outline($key);
+    //     }
+    // }
 }

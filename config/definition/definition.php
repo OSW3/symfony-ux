@@ -103,7 +103,7 @@ return static function($definition)
             ->end()
 
             /**
-             * Pallet
+             * palette
              */
 
             /**

@@ -10,7 +10,7 @@
 {% set _attr = attr|default({}) %}
 
 
-{# -- Fill in the values ------------------------ #}
+{# -- Render component attributes --------------- #}
 {# ---------------------------------------------- #}
 
 {% set _attr = _add_attribute(_attr, 'id', id) %}
@@ -18,4 +18,12 @@
 {% set _attr = _add_attribute(_attr, 'rel', rel) %}
 {% for _property, _value in dataset %}
     {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
 {% endfor %}

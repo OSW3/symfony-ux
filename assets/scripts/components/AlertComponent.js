@@ -32,14 +32,17 @@ export default class AlertComponent
         // Close button
         // --
 
-        this.#button = this.#node.querySelector(`.button-close`);
+        this.#button = this.#node.querySelector(`.${PREFIX}button-close`);
 
-        let button = new ButtonComponent(this.#button);
-            button.onClick = (event, element) => {
-                new Animate(
-                    this.#node
-                ).fadeOut(() => this.#close());
-            };
+        if (this.#button) {
+            let button = new ButtonComponent(this.#button);
+                button.onClick = (event, element) => {
+                    new Animate(
+                        this.#node
+                    ).fadeOut(() => this.#close());
+                };
+        }
+        
         
         // Auto close delay
         // --

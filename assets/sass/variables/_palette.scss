@@ -1,0 +1,83 @@
+// ************************************************************************** //
+// *
+// *    palette definition.
+// *
+// ************************************************************************** //
+
+@use './../abstracts/functions/collection';
+@use './../abstracts/functions/color';
+
+
+/// Defaults palette
+/// =============================================
+    
+/// Default palette names
+/// -------------------------
+$palette-name-success  : 'success' !default;
+$palette-name-danger   : 'danger' !default;
+$palette-name-warning  : 'warning' !default;
+$palette-name-info     : 'info' !default;
+$palette-name-primary  : 'primary' !default;
+$palette-name-secondary: 'secondary' !default;
+$palette-name-light    : 'light' !default;
+$palette-name-dark     : 'dark' !default;
+$palette-name-muted    : 'muted' !default;
+
+/// Default palette collection
+/// -------------------------
+$palette: (
+    $palette-name-success  : $green,
+    $palette-name-danger   : $red,
+    $palette-name-warning  : $orange,
+    $palette-name-info     : $cyan,
+    $palette-name-primary  : $blue,
+    $palette-name-secondary: $gray-600,
+    $palette-name-light    : $white,
+    $palette-name-dark     : $black,
+    $palette-name-muted    : $gray-500,
+);
+
+
+
+// * =============================================
+// *
+// *    palettes declination
+// *
+// * =============================================
+
+$palette-shades: () !default;
+$palette-tints: () !default;
+
+
+
+/// Additional palette
+/// =============================================
+
+/// Add customs colors to the palette
+/// -----
+/// $additional-palette: ( 'my-color': purple );
+$additional-palette: () !default;
+
+@if collection.notEmpty($additional-palette) {
+    @each $key, $value in $additional-palette {
+        $palette: map-merge($palette, ($key: $value));
+    }
+}
+
+
+
+/// Useless palette
+/// =============================================
+
+/// Remove from palette
+/// -----
+/// $remove-palette: ('success');
+$useless-palette: () !default;
+
+@if collection.notEmpty($useless-palette) {
+    @each $key, $value in $palette {
+        @if collection.keyExists($useless-palette, $key) {
+            $palette: collection.unset($palette, $key);
+        }
+    }
+}

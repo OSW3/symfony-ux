@@ -67,6 +67,24 @@ $default--switch-disabled--indicator-color : $gray-500;
 // *
 // * =============================================
 
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            // --#{$_classname}--color           : var(--#{$key});
+            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            // --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
+
 .#{$_classname} {
 
     /// Component definition
@@ -149,7 +167,7 @@ $default--switch-disabled--indicator-color : $gray-500;
     /// --
     
 
-    /// Component Pallets
+    /// Component palettes
     /// --
     
 

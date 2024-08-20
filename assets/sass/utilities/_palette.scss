@@ -1,39 +1,39 @@
 // ************************************************************************** //
 // *
-// *    Pallet Builder
+// *    palette Builder
 // *
 // ************************************************************************** //
 
 @use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
 
-@include banner.header('Base pallet');
+@include banner.header('Base palette');
 
 
 // * =============================================
 // *
-// *    Generate pallet variables
+// *    Generate palette variables
 // *
 // * =============================================
 
 :root {
-    @each $pallet-name, $value in $pallet {
-        --#{$pallet-name}: #{$value};
+    @each $palette-name, $value in $palette {
+        --#{$palette-name}: #{$value};
 
-        $shades: map-get($pallet-shades, $pallet-name);
-        $tints: map-get($pallet-tints, $pallet-name);
+        $shades: map-get($palette-shades, $palette-name);
+        $tints: map-get($palette-tints, $palette-name);
 
         @if $shades {
             @for $i from 1 through length($shades) {
                 $percent: nth($shades, $i) * 1%;
-                --#{$pallet-name}--shade-#{nth($shades, $i)}: #{color.shade($value, $percent)};
+                --#{$palette-name}--shade-#{nth($shades, $i)}: #{color.shade($value, $percent)};
             }
         }
 
         @if $tints {
             @for $i from 1 through length($tints) {
                 $percent: nth($tints, $i) * 1%;
-                --#{$pallet-name}--tint-#{nth($tints, $i)}: #{color.tint($value, $percent)};
+                --#{$palette-name}--tint-#{nth($tints, $i)}: #{color.tint($value, $percent)};
             }
         }
     }

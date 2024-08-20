@@ -91,9 +91,9 @@ hr {
 
 
 
-/// Build text colors from Pallet
+/// Build text colors from palette
 /// =============================================
-@each $key, $value in $pallet {
+@each $key, $value in $palette {
     .text-#{$key} {
         color: var(--#{$key});
         

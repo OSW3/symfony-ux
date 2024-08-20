@@ -1,8 +1,8 @@
 {# ---------------------------------------------- #}
-{# - Component : Copyright                      - #}
+{# - Component : Button                         - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends '@UxComponents/link/base.html' %}
+{% extends '@UxComponents/button/base.html' %}
 
 
 {# ---------------------------------------------- #}
@@ -13,25 +13,10 @@
 {# -- Render component attributes --------------- #}
 {# ---------------------------------------------- #}
 
-{# Set the ID attribute #}
+{% set _attr = _add_attribute(_attr, 'type', type) %}
 {% set _attr = _add_attribute(_attr, 'id', id) %}
-
-{# Set the Class attribute #}
 {% set _attr = _add_attribute(_attr, 'class', class) %}
-
-{# Set the Href attribute #}
-{% if isDisabled != 1 %}
-    {% set _attr = _add_attribute(_attr, 'href', href) %}
-    {% set _attr = _add_attribute(_attr, 'target', target) %}
-{% endif %}
-
-{# Set the Disabled attribute #}
-{% if isDisabled == 1 %}
-    {% set _attr = _add_attribute(_attr, 'disabled', true) %}
-    {% set _attr = _add_attribute(_attr, 'aria-disabled', 'true') %}
-{% endif %}
-
-{# Set the data-xxx attributes #}
+{% set _attr = _add_attribute(_attr, 'disabled', disabled) %}
 {% for _property, _value in dataset %}
     {% set _attr = _add_attribute(_attr, _property, _value) %}
 {% endfor %}

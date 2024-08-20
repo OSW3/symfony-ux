@@ -45,6 +45,24 @@ $link--text-color--disabled: $gray-600 !default;
 // *
 // * =============================================
 
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            // --#{$_classname}--color           : var(--#{$key});
+            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            // --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
+
 .#{$_classname} {    
     --icon         : #{icon.get('external-link', var(--link--text-color))};
     // --icon-active  : #{icon.get('external-link', var(--link--text-color--active))};

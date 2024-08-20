@@ -48,11 +48,11 @@
 // @each $theme in $additional-themes {
 //     $_name: map-get($theme, 'name');
 //     $_components: map-get($theme, 'components');
-//     $_pallet: map-get($theme, 'pallet');
+//     $_palette: map-get($theme, 'palette');
 
 //     @include dumper.dump( $_name );
 
-//     @each $name, $value in $_pallet {
+//     @each $name, $value in $_palette {
 //         @include dumper.dump( '#{$name} -- #{$value}' );
 //     }
 // }

@@ -115,7 +115,7 @@
 
 
 
-@each $key, $value in $pallet {
+@each $key, $value in $palette {
     $shade: color.shade($value, 30%);
     $tint: color.tint($value, 60%);
     $contrastText: color.contrastText($shade);

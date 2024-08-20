@@ -44,6 +44,24 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
+
+// * Palette
+// * =========================
+
+.#{$_classname} {
+    @each $key, $value in $palette {
+        &-#{$key} {
+            // --#{$_classname}--color           : var(--#{$key});
+            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
+            // --#{$_classname}--border-color    : var(--#{$key});
+        }
+    }
+}
+
+
+// * Structure
+// * =========================
+
 .#{$_classname} {
 
     /// Chips container
@@ -55,10 +73,10 @@ $_classname: '#{$prefix}#{$_component}';
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
 
 
-    /// Chips pallets
+    /// Chips palettes
     /// --
 
-    @each $key, $value in $pallet {
+    @each $key, $value in $palette {
         &-#{$key} {
             color: $value;
             background-color: color.tint($value, 70%);

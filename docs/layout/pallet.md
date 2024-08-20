@@ -1,4 +1,4 @@
-# Pallet & Contexts
+# palette & Contexts
 
 - [What is it about ?](#what-is-it-about-)
 - [Defaults definitions](#defaults-definitions)

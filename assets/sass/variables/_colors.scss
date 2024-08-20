@@ -19,6 +19,21 @@
 // *
 // * =============================================
 
+/// Colors
+/// ==============================================
+
+$blue                   : #0d6efd !default;
+$indigo                 : #6610f2 !default;
+$purple                 : #6f42c1 !default;
+$pink                   : #d63384 !default;
+$red                    : #dc3545 !default;
+$orange                 : #fd7e14 !default;
+$yellow                 : #ffc107 !default;
+$green                  : #198754 !default;
+$teal                   : #20c997 !default;
+$cyan                   : #0dcaf0 !default;
+
+
 /// Black & White & Gray scales
 /// ==============================================
 
@@ -35,25 +50,21 @@ $gray-800               : #343a40 !default;
 $gray-900               : #212529 !default;
 
 
-/// Colors
-/// ==============================================
-
-$blue                   : #0d6efd !default;
-$indigo                 : #6610f2 !default;
-$purple                 : #6f42c1 !default;
-$pink                   : #d63384 !default;
-$red                    : #dc3545 !default;
-$orange                 : #fd7e14 !default;
-$yellow                 : #ffc107 !default;
-$green                  : #198754 !default;
-$teal                   : #20c997 !default;
-$cyan                   : #0dcaf0 !default;
-
-
 /// Default colors collection
 /// ==============================================
 
 $colors: (
+    'blue'    : $blue,
+    'indigo'  : $indigo,
+    'purple'  : $purple,
+    'pink'    : $pink,
+    'red'     : $red,
+    'orange'  : $orange,
+    'yellow'  : $yellow,
+    'green'   : $green,
+    'teal'    : $teal,
+    'cyan'    : $cyan,
+
     'black'   : $black,
     'white'   : $white,
     'gray-100': $gray-100,
@@ -65,17 +76,6 @@ $colors: (
     'gray-700': $gray-700,
     'gray-800': $gray-800,
     'gray-900': $gray-900,
-
-    'blue'    : $blue,
-    'indigo'  : $indigo,
-    'purple'  : $purple,
-    'pink'    : $pink,
-    'red'     : $red,
-    'orange'  : $orange,
-    'yellow'  : $yellow,
-    'green'   : $green,
-    'teal'    : $teal,
-    'cyan'    : $cyan,
 );
 
 
