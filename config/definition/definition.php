@@ -23,71 +23,110 @@ return static function($definition)
             /**
              * Breakpoints
              */
-            ->arrayNode('breakpoints')
-                ->addDefaultsIfNotSet()->children()
+            ->arrayNode('breakpoints')->addDefaultsIfNotSet()->children()
 
-                    ->arrayNode('base')->addDefaultsIfNotSet()->children()
-                        ->arrayNode('phone')->addDefaultsIfNotSet()->children()
-                            ->scalarNode('name')->defaultValue('phone')->end()
-                            ->integerNode('breakpoint')->defaultValue(576)->end()
-                            ->integerNode('container')->defaultValue(540)->end()
-                        ->end()->end()
-
-                        ->arrayNode('tablet')->addDefaultsIfNotSet()->children()
-                            ->scalarNode('name')->defaultValue('tablet')->end()
-                            ->integerNode('breakpoint')->defaultValue(768)->end()
-                            ->integerNode('container')->defaultValue(720)->end()
-                        ->end()->end()
-
-                        ->arrayNode('laptop')->addDefaultsIfNotSet()->children()
-                            ->scalarNode('name')->defaultValue('laptop')->end()
-                            ->integerNode('breakpoint')->defaultValue(992)->end()
-                            ->integerNode('container')->defaultValue(960)->end()
-                        ->end()->end()
-
-                        ->arrayNode('desktop')->addDefaultsIfNotSet()->children()
-                            ->scalarNode('name')->defaultValue('desktop')->end()
-                            ->integerNode('breakpoint')->defaultValue(1200)->end()
-                            ->integerNode('container')->defaultValue(1140)->end()
-                        ->end()->end()
-
-                        ->arrayNode('wide')->addDefaultsIfNotSet()->children()
-                            ->scalarNode('name')->defaultValue('wide')->end()
-                            ->integerNode('breakpoint')->defaultValue(1400)->end()
-                            ->integerNode('container')->defaultValue(1440)->end()
-                        ->end()->end()
-
-                        ->arrayNode('ultra')->addDefaultsIfNotSet()->children()
-                            ->scalarNode('name')->defaultValue('ultra')->end()
-                            ->integerNode('breakpoint')->defaultValue(1600)->end()
-                            ->integerNode('container')->defaultValue(1520)->end()
-                        ->end()->end()
+                ->arrayNode('base')->addDefaultsIfNotSet()->children()
+                    ->arrayNode('phone')->addDefaultsIfNotSet()->children()
+                        ->scalarNode('name')->defaultValue('phone')->end()
+                        ->integerNode('breakpoint')->defaultValue(576)->end()
+                        ->integerNode('container')->defaultValue(540)->end()
                     ->end()->end()
 
-                    ->arrayNode('additional')
-                        ->useAttributeAsKey('name')
-                        ->arrayPrototype()
-                            ->children()
-                                ->integerNode('breakpoint')
-                                    ->isRequired()
-                                ->end()
-                                ->integerNode('container')
-                                    ->isRequired()
-                                ->end()
+                    ->arrayNode('tablet')->addDefaultsIfNotSet()->children()
+                        ->scalarNode('name')->defaultValue('tablet')->end()
+                        ->integerNode('breakpoint')->defaultValue(768)->end()
+                        ->integerNode('container')->defaultValue(720)->end()
+                    ->end()->end()
+
+                    ->arrayNode('laptop')->addDefaultsIfNotSet()->children()
+                        ->scalarNode('name')->defaultValue('laptop')->end()
+                        ->integerNode('breakpoint')->defaultValue(992)->end()
+                        ->integerNode('container')->defaultValue(960)->end()
+                    ->end()->end()
+
+                    ->arrayNode('desktop')->addDefaultsIfNotSet()->children()
+                        ->scalarNode('name')->defaultValue('desktop')->end()
+                        ->integerNode('breakpoint')->defaultValue(1200)->end()
+                        ->integerNode('container')->defaultValue(1140)->end()
+                    ->end()->end()
+
+                    ->arrayNode('wide')->addDefaultsIfNotSet()->children()
+                        ->scalarNode('name')->defaultValue('wide')->end()
+                        ->integerNode('breakpoint')->defaultValue(1400)->end()
+                        ->integerNode('container')->defaultValue(1440)->end()
+                    ->end()->end()
+
+                    ->arrayNode('ultra')->addDefaultsIfNotSet()->children()
+                        ->scalarNode('name')->defaultValue('ultra')->end()
+                        ->integerNode('breakpoint')->defaultValue(1600)->end()
+                        ->integerNode('container')->defaultValue(1520)->end()
+                    ->end()->end()
+                ->end()->end()
+
+                ->arrayNode('additional')
+                    ->useAttributeAsKey('name')
+                    ->arrayPrototype()
+                        ->children()
+                            ->integerNode('breakpoint')
+                                ->isRequired()
+                            ->end()
+                            ->integerNode('container')
+                                ->isRequired()
                             ->end()
                         ->end()
                     ->end()
-
-                    ->arrayNode('useless')
-                        ->scalarPrototype()->end()
-                    ->end()
-
                 ->end()
-            ->end()
+
+                ->arrayNode('useless')
+                    ->scalarPrototype()->end()
+                ->end()
+
+            ->end()->end()
+
 
             /**
              * Colors
              */
+
+            ->arrayNode('colors')->addDefaultsIfNotSet()->children()
+
+                ->arrayNode('defaults')->addDefaultsIfNotSet()->children()
+
+                    ->scalarNode('blue')->defaultValue('#0d6efd')->end()
+                    ->scalarNode('indigo')->defaultValue('#6610f2')->end()
+                    ->scalarNode('purple')->defaultValue('#6f42c1')->end()
+                    ->scalarNode('pink')->defaultValue('#d63384')->end()
+                    ->scalarNode('red')->defaultValue('#dc3545')->end()
+                    ->scalarNode('orange')->defaultValue('#fd7e14')->end()
+                    ->scalarNode('yellow')->defaultValue('#ffc107')->end()
+                    ->scalarNode('green')->defaultValue('#198754')->end()
+                    ->scalarNode('teal')->defaultValue('#20c997')->end()
+                    ->scalarNode('cyan')->defaultValue('#0dcaf0')->end()
+
+                    ->scalarNode('black')->defaultValue('#111111')->end()
+                    ->scalarNode('white')->defaultValue('#ffffff')->end()
+                    ->scalarNode('gray-100')->defaultValue('#f8f9fa')->end()
+                    ->scalarNode('gray-200')->defaultValue('#e9ecef')->end()
+                    ->scalarNode('gray-300')->defaultValue('#dee2e6')->end()
+                    ->scalarNode('gray-400')->defaultValue('#ced4da')->end()
+                    ->scalarNode('gray-500')->defaultValue('#adb5bd')->end()
+                    ->scalarNode('gray-600')->defaultValue('#6c757d')->end()
+                    ->scalarNode('gray-700')->defaultValue('#495057')->end()
+                    ->scalarNode('gray-800')->defaultValue('#343a40')->end()
+                    ->scalarNode('gray-900')->defaultValue('#212529')->end()
+
+                ->end()->end()
+
+                ->arrayNode('additional')
+                    ->useAttributeAsKey('name')
+                    ->scalarPrototype()->end()
+                ->end()
+
+                ->arrayNode('useless')
+                    ->scalarPrototype()->end()
+                ->end()
+
+            ->end()->end()
 
             /**
              * Fonts

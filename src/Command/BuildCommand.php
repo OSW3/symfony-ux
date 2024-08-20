@@ -66,6 +66,7 @@ class BuildCommand extends Command
         
         foreach ($this->options['layout'] as $name => $value) match ($name) {
             'breakpoints'    => $this->uxBreakpoints($sassVariables, $value),
+            'colors'         => $this->uxColors($sassVariables, $value),
             'spacer'         => $this->uxSpacer($sassVariables, $value),
             'transitions'    => $this->uxTransitions($sassVariables, $value),
             'default_theme'  => $this->uxDefaultTheme($sassVariables, $value),
@@ -131,6 +132,41 @@ class BuildCommand extends Command
         // Excludes breakpoints
         if (!empty($useless)) {
             $vars[] = "\$useless-breakpoints: ('".implode("','", $useless)."');";
+        }
+    }
+
+    private function uxColors(array &$vars, $options)
+    {
+        $defaults   = $options['defaults'];
+        $additional = $options['additional'];
+        $useless    = $options['useless'];
+
+        foreach ($defaults as $name => $value)
+        {
+            $vars[] = "\${$name}: {$value};";
+        }
+
+
+        $additional_collection = [];
+        foreach ($additional as $name => $value)
+        {
+            $vars[] = "\${$name}: {$value};";
+            $additional_collection[] = "'{$name}': \${$name}";
+        }
+        if (!empty($additional_collection))
+        {
+            $vars[] = "\$generated-additional-colors: (". implode(",", $additional_collection) .");";
+        }
+
+
+        $useless_collection = [];
+        foreach ($useless as $name)
+        {
+            $useless_collection[] = "'{$name}'";
+        }
+        if (!empty($useless_collection))
+        {
+            $vars[] = "\$generated-useless-colors: (". implode(",", $useless_collection) .");";
         }
     }
     

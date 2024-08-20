@@ -8,34 +8,34 @@ Set the colors palette of themes.
 
 ### Colors
 
-| Name | Variable | Value |
-|-|-|-|
-| blue | $blue | #0d6efd |
-| indigo | $indigo | #6610f2 |
-| purple | $purple | #6f42c1 |
-| pink | $pink | #d63384 |
-| red | $red | #dc3545 |
-| orange | $orange | #fd7e14 |
-| yellow | $yellow | #ffc107 |
-| green | $green | #198754 |
-| teal | $teal | #20c997 |
-| cyan | $cyan | #0dcaf0 |
+| Name | Variable | Value | CSS Variable |
+|-|-|-|-|
+| blue | $blue | #0d6efd | --blue: #0d6efd; |
+| indigo | $indigo | #6610f2 | --indigo: #6610f2; |
+| purple | $purple | #6f42c1 | --purple: #6f42c1; |
+| pink | $pink | #d63384 | --pink: #d63384; |
+| red | $red | #dc3545 | --red: #dc3545; |
+| orange | $orange | #fd7e14 | --orange: #fd7e14; |
+| yellow | $yellow | #ffc107 | --yellow: #ffc107; |
+| green | $green | #198754 | --green: #198754; |
+| teal | $teal | #20c997 | --teal: #20c997; |
+| cyan | $cyan | #0dcaf0 | --cyan: #0dcaf0; |
 
 ### Black, White & Gray scales
 
-| Name | Variable | Value |
-|-|-|-|
-| black | $black | #111111 |
-| white | $white | #ffFFFf |
-| gray-100 | $gray-100 | #f8f9fa |
-| gray-200 | $gray-200 | #e9ecef |
-| gray-300 | $gray-300 | #dee2e6 |
-| gray-400 | $gray-400 | #ced4da |
-| gray-500 | $gray-500 | #adb5bd |
-| gray-600 | $gray-600 | #6c757d |
-| gray-700 | $gray-700 | #495057 |
-| gray-800 | $gray-800 | #343a40 |
-| gray-900 | $gray-900 | #212529 |
+| Name | Variable | Value | CSS Variable |
+|-|-|-|-|
+| black | $black | #111111 | --black: #111111; |
+| white | $white | #ffFFFf | --white: #ffFFFf; |
+| gray-100 | $gray-100 | #f8f9fa | --gray-100: #f8f9fa; |
+| gray-200 | $gray-200 | #e9ecef | --gray-200: #e9ecef; |
+| gray-300 | $gray-300 | #dee2e6 | --gray-300: #dee2e6; |
+| gray-400 | $gray-400 | #ced4da | --gray-400: #ced4da; |
+| gray-500 | $gray-500 | #adb5bd | --gray-500: #adb5bd; |
+| gray-600 | $gray-600 | #6c757d | --gray-600: #6c757d; |
+| gray-700 | $gray-700 | #495057 | --gray-700: #495057; |
+| gray-800 | $gray-800 | #343a40 | --gray-800: #343a40; |
+| gray-900 | $gray-900 | #212529 | --gray-900: #212529; |
 
 ## Integration
 
@@ -51,117 +51,113 @@ Or add only the color definition files.
 @import './<path-to-bundle>/assets/sass/variables/colors';
 ```
 
-## Customize colors
+## Customize defaults colors
+
+### From `YAML` configuration
+
+*see variable names*
+
+```yaml 
+# config/packages/ux.yaml
+ux:
+    layout:
+        colors:
+            defaults:
+                blue: '#018490'
+                red: '#dc3545'
+                # ...
+```
 
 ### From `SCSS` variables
 
 > SCSS variables will always override the `ux.yaml` definition.
 
+Add your custom variables before the `dist` or `colors` SASS files *[see integration](#integration)*.
+
+
 ```scss
-$blue    : #0d6efd;
-$indigo  : #6610f2;
-$purple  : #6f42c1;
-$pink    : #d63384;
-$red     : #dc3545;
-$orange  : #fd7e14;
-$yellow  : #ffc107;
-$green   : #198754;
-$teal    : #20c997;
-$cyan    : #0dcaf0;
-
-$black   : #111111;
-$white   : #ffFFFf;
-$gray-100: #f8f9fa;
-$gray-200: #e9ecef;
-$gray-300: #dee2e6;
-$gray-400: #ced4da;
-$gray-500: #adb5bd;
-$gray-600: #6c757d;
-$gray-700: #495057;
-$gray-800: #343a40;
-$gray-900: #212529;
-
+// main.scss
+@import './my-custom-colors';
+@import './<path-to-bundle>/assets/sass/dist';
 ```
 
-<details>
-    <summary>test</summary>
-    plop
-</details>
+Redefine default colors by simple name/value assignment.
 
-> These variables will generate the `:root` css
-> 
-> ```css
-> :root {
->   --blue: #0d6efd;
->   --indigo: #6610f2;
->   --purple: #6f42c1;
->   --pink: #d63384;
->   --red: #dc3545;
->   --orange: #fd7e14;
->   --yellow: #ffc107;
->   --green: #198754;
->   --teal: #20c997;
->   --cyan: #0dcaf0;
->   --black: #111111;
->   --white: #ffFFFf;
->   --gray-100: #f8f9fa;
->   --gray-200: #e9ecef;
->   --gray-300: #dee2e6;
->   --gray-400: #ced4da;
->   --gray-500: #adb5bd;
->   --gray-600: #6c757d;
->   --gray-700: #495057;
->   --gray-800: #343a40;
->   --gray-900: #212529;
-> }
-> ```
+*see variable names*
+
+```scss
+// my-custom-colors.scss
+$blue: #0d6efd;
+$red: #dc3545;
+// ...
+
+```
 
 ## Add custom colors
 
-1. Create a color variable
+You can add additional colors.
 
-```scss
-$pumpkin : #FF5E15;
+> Additional colors from `yaml` and `scss` are merged.
+
+### From `YAML` configuration
+
+```yaml 
+# config/packages/ux.yaml
+ux:
+    layout:
+        colors:
+            additional:
+                pumpkin: '#FF5E15'
 ```
 
-2. Add the color to the `$additional-colors` list
+### From `SCSS` variables
 
-```scss 
+1. Create a color variables
+2. Add the color to the `$additional-colors` collection
 
+```scss
+// my-custom-colors.scss
+
+// 1. color variables
+$robin-egg-blue: #00cdcb;
+$pink-flamingo: #ff38ff;
+
+// 2. $additional-colors collection
 $additional-colors: (
-    'pumpkin' : $pumpkin,
+    'robin-egg-blue': $robin-egg-blue,
+    'pink-flamingo': $pink-flamingo,
 );
 ```
 
-> Adding colors will generate the `:root` css
-> 
-> ```css
-> :root {
->   /* ... */
->   --cyan: #0dcaf0;
->   --pumpkin: #FF5E15;
-> }
-> ```
-
 ## Exclude useless colors
+
+Useless colors are remove from CSS variables.
+
+> Useless colors from `yaml` and `scss` are merged.
+
+### From `YAML` configuration
+
+```yaml 
+# config/packages/ux.yaml
+ux:
+    layout:
+        colors:
+            useless:
+                - teal
+                - pumpkin
+```
+
+### From `SCSS` variables
 
 Add the color's names into the `$useless-colors` list.
 
 ```scss 
-$useless-colors: ('teal');
+// my-custom-colors.scss
+$useless-colors: (
+    'teal',
+    'pink-flamingo'
+);
 ```
-
-> Exclude colors will generate the `:root` css
-> 
-> ```css
-> :root {
->   /* ... */
->   --green: #198754;
->   /* --teal: #20c997; */ <-- will be removed
->   --cyan: #0dcaf0;
->   --pumpkin: #FF5E15;
-> }
-> ```
 
 ## Colors declination
 
