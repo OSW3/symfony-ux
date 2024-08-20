@@ -9,7 +9,7 @@ Add many UX Components to your app.
 ## Layout
 - [Prefix](./docs/layout/prefix.md)
 - [Breakpoints & Containers](./docs/layout/breakpoints.md)
-- [paleColors](./docs/layout/colors.md)
+- [Colors](./docs/layout/colors.md)
 - [palette & Context](./docs/layout/palette.md)
 <!-- - [Grid](./docs/layout/grid.md) -->
 <!-- - [Themes](./docs/layout/themes.md) -->
