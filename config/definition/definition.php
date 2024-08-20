@@ -2,7 +2,6 @@
 
 use OSW3\UX\Enum\Announcement\Animation\Strategy as AnimationStrategy;
 use OSW3\UX\Enum\Announcement\Animation\Type as AnimationType;
-use OSW3\UX\Enum\Orientation;
 use OSW3\UX\Enum\Size;
 
 return static function($definition)
