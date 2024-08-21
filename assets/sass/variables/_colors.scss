@@ -2,8 +2,9 @@
 // *
 // *    Colors definition.
 // *
-// *    - Default colors
-// *    - Add colors
+// *    - Base colors
+// *    - Additional colors
+// *    - Colors variations
 // *    - Useless colors
 // *
 // ************************************************************************** //
@@ -17,7 +18,7 @@
 
 // * =============================================
 // *
-// *    Defaults colors
+// *    Base colors
 // *
 // * =============================================
 
@@ -109,10 +110,15 @@ $additional-colors          : map-merge(
 
 // * =============================================
 // *
-// *    Colors declination
+// *    Colors variations
 // *
 // * =============================================
 
+/// Add shades variations
+/// -----
+// $colors-shades: (
+//     'pumpkin' : (20, 30),
+// );
 $generated-colors-shades: if(meta.global-variable-exists('generated-colors-shades', $module: generated), generated.$generated-colors-shades, ()) !default;
 $colors-shades          : () !default;
 $colors-shades          : map-merge(
@@ -120,6 +126,11 @@ $colors-shades          : map-merge(
     $colors-shades
 );
 
+/// Add tints variations
+/// -----
+// $colors-tints: (
+//     'pumpkin' : (20, 30),
+// );
 $generated-colors-tints: if(meta.global-variable-exists('generated-colors-tints', $module: generated), generated.$generated-colors-tints, ()) !default;
 $colors-tints          : () !default;
 $colors-tints          : map-merge(

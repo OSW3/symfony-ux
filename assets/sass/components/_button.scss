@@ -48,25 +48,53 @@ $_classname: '#{$prefix}#{$_component}';
 
 .#{$_classname} {
     @each $key, $value in $palette {
+
+        $base-color: map-get($palette, $key);
+        $contrast  : color.contrastText($base-color);
+        $text-color: map-get($colors, #{$contrast});
+
         &-#{$key} {
-            // --#{$_classname}--color           : var(--#{$key});
-            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
-            // --#{$_classname}--border-color    : var(--#{$key});
+            --#{$_classname}--text: #{$text-color};
+            --#{$_classname}--text-hover: #{$text-color};
+            --#{$_classname}--text-active: #{$text-color};
+            --#{$_classname}--text-disabled: #{$text-color};
+            --#{$_classname}--background: #{$base-color};
+            --#{$_classname}--background-hover: #{color.shade($base-color, 15%)};
+            --#{$_classname}--background-active: #{color.shade($base-color, 20%)};
+            --#{$_classname}--background-disabled: #{$base-color};
+            --#{$_classname}--border: #{$base-color};
+            --#{$_classname}--border-hover: #{color.shade($base-color, 20%)};
+            --#{$_classname}--border-active: #{color.shade($base-color, 25%)};
+            --#{$_classname}--border-disabled: #{$base-color};
+            --#{$_classname}--focus: #{color.tint($base-color, 15%)};
+        }
+        &-#{$key}-outline {
+            --#{$_classname}--text: #{$base-color};
+            --#{$_classname}--text-hover: #{$text-color};
+            --#{$_classname}--text-active: #{$text-color};
+            --#{$_classname}--text-disabled: #{$base-color};
+            --#{$_classname}--background: transparent;
+            --#{$_classname}--background-hover: #{$base-color};
+            --#{$_classname}--background-active: #{$base-color};
+            --#{$_classname}--background-disabled: transparent;
+            --#{$_classname}--border: #{$base-color};
+            --#{$_classname}--border-hover: #{$base-color};
+            --#{$_classname}--border-active: #{$base-color};
+            --#{$_classname}--border-disabled: #{$base-color};
+            --#{$_classname}--focus: #{$base-color};
         }
     }
 }
-
 
 // * Structure
 // * =========================
 
 .#{$_classname} {
-
-    /// Button container
-    /// --
     
     cursor: pointer;
 
+    font-size: $spacer * 1;
+    font-weight: 400;
     line-height: 1;
     border-width: 1px;
     border-style: solid;
@@ -74,14 +102,46 @@ $_classname: '#{$prefix}#{$_component}';
     background-color: transparent;
     @include corner.rounded(6px);
     @include transition.set((background-color, border-color, color), .3s);
-
-
-    /// Button Sizes
-    /// --
-
-    font-size: $spacer * 1;
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
 
+    @include var.set('color', '#{$_classname}--text');
+    @include var.set('background-color', '#{$_classname}--background');
+    @include var.set('border-color', '#{$_classname}--border');
+
+    &:hover {
+        @include var.set('color', '#{$_classname}--text-hover');
+        @include var.set('background-color', '#{$_classname}--background-hover');
+        @include var.set('border-color', '#{$_classname}--border-hover');
+    }
+
+    &.active, &:active {
+        @include var.set('color', '#{$_classname}--text-active');
+        @include var.set('background-color', '#{$_classname}--background-active');
+        @include var.set('border-color', '#{$_classname}--border-active');
+    }
+    &.focus, &:focus, &:focus-visible {
+        @include var.set('outline-color', '#{$_classname}--focus');
+        outline-style: solid;
+        outline-width: 4px;
+    }
+
+    &[disabled] {
+        cursor: default;
+        opacity: .65;
+        @include var.set('color', '#{$_classname}--text-disabled');
+        @include var.set('background-color', '#{$_classname}--background-disabled');
+        @include var.set('border-color', '#{$_classname}--border-disabled');
+    }
+
+    & .no-border {
+        border: none !important;
+    }
+}
+
+// * Sizes
+// * =========================
+
+.#{$_classname} {
     &-small {
         font-size: $spacer * .8;
         @include spaces.padding( $spacer * .4, $spacer * 1, $spacer * .4, $spacer * 1 );
@@ -95,56 +155,5 @@ $_classname: '#{$prefix}#{$_component}';
     &-block {
         display: block;
         min-width: 100%;
-    }
-
-
-    /// Button palette
-    /// --
-    
-    @each $key, $value in $palette {
-        $shade: color.shade($value, 30%);
-        $tint: color.tint($value, 60%);
-        $contrastText: color.contrastText($shade);
-
-        // Fill color
-        // --
-        &-#{$key} {
-            color: $contrastText;
-            background-color: var(--#{$key});
-            border-color: var(--#{$key});
-
-            &:not(.button-effect).active,
-            &:not(.button-effect):hover {
-                color: $contrastText;
-                background-color: var(--#{$key}--shade-70);
-                border-color: var(--#{$key}--shade-70);
-            }
-        }
-
-        // Stroke (outline) color
-        // --
-        &-#{$key}-outline {
-            @include palette.outline($key);
-
-            &:hover {
-                color: $contrastText;
-                background-color: var(--#{$key}--shade-70);
-                border-color: var(--#{$key}--shade-70);
-            }
-        }
-    }
-
-
-    /// Button state
-    /// --
-    
-    &[disabled],
-    &[disabled]:hover {
-        cursor: default;
-        color: var(--muted);
-    }
-
-    & .no-border {
-        border: none !important;
     }
 }

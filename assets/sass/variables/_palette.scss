@@ -4,27 +4,36 @@
 // *
 // ************************************************************************** //
 
-@use './../abstracts/functions/collection';
+@use 'sass:meta';
+@use './../generated';
 @use './../abstracts/functions/color';
+@use './../abstracts/functions/collection';
 
 
-/// Defaults palette
+// * =============================================
+// *
+// *    Base UI Colors
+// *
+// * =============================================
+
+/// UI Colors names
 /// =============================================
-    
-/// Default palette names
-/// -------------------------
-$palette-name-success  : 'success' !default;
-$palette-name-danger   : 'danger' !default;
-$palette-name-warning  : 'warning' !default;
-$palette-name-info     : 'info' !default;
-$palette-name-primary  : 'primary' !default;
-$palette-name-secondary: 'secondary' !default;
-$palette-name-light    : 'light' !default;
-$palette-name-dark     : 'dark' !default;
-$palette-name-muted    : 'muted' !default;
 
-/// Default palette collection
-/// -------------------------
+$palette-name-success  : if(meta.global-variable-exists('palette-name-success', $module: generated), generated.$palette-name-success, 'success') !default;
+$palette-name-danger   : if(meta.global-variable-exists('palette-name-danger', $module: generated), generated.$palette-name-danger, 'danger') !default;
+$palette-name-warning  : if(meta.global-variable-exists('palette-name-warning', $module: generated), generated.$palette-name-warning, 'warning') !default;
+$palette-name-info     : if(meta.global-variable-exists('palette-name-info', $module: generated), generated.$palette-name-info, 'info') !default;
+$palette-name-primary  : if(meta.global-variable-exists('palette-name-primary', $module: generated), generated.$palette-name-primary, 'primary') !default;
+$palette-name-secondary: if(meta.global-variable-exists('palette-name-secondary', $module: generated), generated.$palette-name-secondary, 'secondary') !default;
+$palette-name-light    : if(meta.global-variable-exists('palette-name-light', $module: generated), generated.$palette-name-light, 'light') !default;
+$palette-name-dark     : if(meta.global-variable-exists('palette-name-dark', $module: generated), generated.$palette-name-dark, 'dark') !default;
+$palette-name-muted    : if(meta.global-variable-exists('palette-name-muted', $module: generated), generated.$palette-name-muted, 'muted') !default;
+
+
+/// UI Colors collection
+/// =============================================
+/// Default names and colors assignment
+
 $palette: (
     $palette-name-success  : $green,
     $palette-name-danger   : $red,
@@ -41,7 +50,7 @@ $palette: (
 
 // * =============================================
 // *
-// *    palettes declination
+// *    UI Colors variations
 // *
 // * =============================================
 
@@ -50,13 +59,21 @@ $palette-tints: () !default;
 
 
 
-/// Additional palette
-/// =============================================
+// * =============================================
+// *
+// *    Additional UI Colors
+// *
+// * =============================================
 
 /// Add customs colors to the palette
 /// -----
 /// $additional-palette: ( 'my-color': purple );
-$additional-palette: () !default;
+$generated-additional-palette: if(meta.global-variable-exists('generated-additional-palette', $module: generated), generated.$generated-additional-palette, ()) !default;
+$additional-palette          : () !default;
+$additional-palette          : map-merge(
+    $generated-additional-palette, 
+    $additional-palette
+);
 
 @if collection.notEmpty($additional-palette) {
     @each $key, $value in $additional-palette {
@@ -66,13 +83,18 @@ $additional-palette: () !default;
 
 
 
-/// Useless palette
-/// =============================================
+// * =============================================
+// *
+// *    Useless UI Colors
+// *
+// * =============================================
 
 /// Remove from palette
 /// -----
 /// $remove-palette: ('success');
-$useless-palette: () !default;
+$generated-useless-palette: if(meta.global-variable-exists('generated-useless-palette', $module: generated), generated.$generated-useless-palette, ()) !default;
+$useless-palette          : () !default;
+$useless-palette          : append($generated-useless-palette, $useless-palette, 'comma');
 
 @if collection.notEmpty($useless-palette) {
     @each $key, $value in $palette {

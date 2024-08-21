@@ -76,11 +76,11 @@ $_classname: '#{$prefix}#{$_component}';
     /// Chips palettes
     /// --
 
-    @each $key, $value in $palette {
-        &-#{$key} {
-            color: $value;
-            background-color: color.tint($value, 70%);
-            border-color: $value;
-        }
-    }
+    // @each $key, $value in $palette {
+    //     &-#{$key} {
+    //         color: $value;
+    //         // background-color: color.tint($value, 70%);
+    //         border-color: $value;
+    //     }
+    // }
 }

@@ -48,9 +48,9 @@ $alert--margin-y: $spacer !default;
 .#{$_classname} {
     @each $key, $value in $palette {
         &-#{$key} {
-            --#{$_classname}--color           : var(--#{$key});
-            --#{$_classname}--background-color: var(--#{$key}--tint-70);
-            --#{$_classname}--border-color    : var(--#{$key});
+            --#{$_classname}--text      : var(--#{$key}--text);
+            --#{$_classname}--background: var(--#{$key}--background);
+            --#{$_classname}--border    : var(--#{$key}--border);
         }
     }
 }
@@ -84,10 +84,9 @@ $alert--margin-y: $spacer !default;
         null
     );
 
-
-    @include var.set('color', '#{$_classname}--color');
-    @include var.set('background-color', '#{$_classname}--background-color');
-    @include var.set('border-color', '#{$_classname}--border-color');
+    @include var.set('color', '#{$_classname}--text');
+    @include var.set('background-color', '#{$_classname}--background');
+    @include var.set('border-color', '#{$_classname}--border');
 
 
     & + & {

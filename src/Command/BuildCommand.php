@@ -67,6 +67,7 @@ class BuildCommand extends Command
         foreach ($this->options['layout'] as $name => $value) match ($name) {
             'breakpoints'    => $this->uxBreakpoints($sassVariables, $value),
             'colors'         => $this->uxColors($sassVariables, $value),
+            'ui_colors'      => $this->uxUiColors($sassVariables, $value),
             'spacer'         => $this->uxSpacer($sassVariables, $value),
             'transitions'    => $this->uxTransitions($sassVariables, $value),
             'default_theme'  => $this->uxDefaultTheme($sassVariables, $value),
@@ -189,6 +190,40 @@ class BuildCommand extends Command
         if (!empty($tints_collection))
         {
             $vars[] = "\$generated-colors-tints: (". implode(",", $tints_collection) .");";
+        }
+    }
+
+    private function uxUiColors(array &$vars, $options)
+    {
+        $defaults   = $options['defaults'];
+        $additional = $options['additional'];
+        $useless    = $options['useless'];
+
+        foreach ($defaults as $name => $value)
+        {
+            $vars[] = "\$palette-name-{$name}: '{$value}';";
+        }
+
+        $additional_collection = [];
+        foreach ($additional as $name => $value)
+        {
+            $name = str_replace("_", "-", $name);
+            $vars[] = "\${$name}: {$value};";
+            $additional_collection[] = "'{$name}': {$value}";
+        }
+        if (!empty($additional_collection))
+        {
+            $vars[] = "\$generated-additional-palette: (". implode(",", $additional_collection) .");";
+        }
+
+        $useless_collection = [];
+        foreach ($useless as $name)
+        {
+            $useless_collection[] = "'{$name}'";
+        }
+        if (!empty($useless_collection))
+        {
+            $vars[] = "\$generated-useless-palette: (". implode(",", $useless_collection) .");";
         }
     }
     

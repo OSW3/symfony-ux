@@ -7,7 +7,7 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
 
-@include banner.header('Base palette');
+@include banner.header('UI Colors');
 
 
 // * =============================================
@@ -18,23 +18,27 @@
 
 :root {
     @each $palette-name, $value in $palette {
+
         --#{$palette-name}: #{$value};
+        --#{$palette-name}--text: #{color.shade($value, 60%)};
+        --#{$palette-name}--background: #{color.tint($value, 80%)};
+        --#{$palette-name}--border: #{color.tint($value, 60%)};
 
-        $shades: map-get($palette-shades, $palette-name);
-        $tints: map-get($palette-tints, $palette-name);
+        // $shades: map-get($palette-shades, $palette-name);
+        // $tints: map-get($palette-tints, $palette-name);
 
-        @if $shades {
-            @for $i from 1 through length($shades) {
-                $percent: nth($shades, $i) * 1%;
-                --#{$palette-name}--shade-#{nth($shades, $i)}: #{color.shade($value, $percent)};
-            }
-        }
+        // @if $shades {
+        //     @for $i from 1 through length($shades) {
+        //         $percent: nth($shades, $i) * 1%;
+        //         --#{$palette-name}--shade-#{nth($shades, $i)}: #{color.shade($value, $percent)};
+        //     }
+        // }
 
-        @if $tints {
-            @for $i from 1 through length($tints) {
-                $percent: nth($tints, $i) * 1%;
-                --#{$palette-name}--tint-#{nth($tints, $i)}: #{color.tint($value, $percent)};
-            }
-        }
+        // @if $tints {
+        //     @for $i from 1 through length($tints) {
+        //         $percent: nth($tints, $i) * 1%;
+        //         --#{$palette-name}--tint-#{nth($tints, $i)}: #{color.tint($value, $percent)};
+        //     }
+        // }
     }
 }

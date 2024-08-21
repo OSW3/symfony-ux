@@ -22,6 +22,7 @@ ux:
 |-|-|-|-|-|
 | `speed` | `integer` | Set the speed of scroll. 0 = No scroll | no | `15` |
 | `delay` | `integer` | Set the delay before next message. | no | `0` |
+| `direction` | `string` | Set the scroll direction. | no | `rtl` |
 | `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
 | `pause_hover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |
 <br>
@@ -44,5 +45,6 @@ ux:
 | `items` | `array` | Set the list of messages. | yes |  |
 | `speed` | `integer` | Set the speed of scroll. 0 = No scroll | no | `15` |
 | `delay` | `integer` | Set the delay before next message. | no | `0` |
+| `direction` | `string` | Set the scroll direction. | no | `rtl` |
 | `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
 | `pauseHover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |

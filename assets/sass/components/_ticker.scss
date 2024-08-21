@@ -58,5 +58,7 @@ $ticker--min-height: 100% !default;
         position: absolute;
         white-space: nowrap;
         display: none;
+
+        // transition: left 0.3s, right 0.3s;
     }
 }

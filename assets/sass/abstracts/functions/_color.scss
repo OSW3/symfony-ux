@@ -41,7 +41,7 @@
 @function contrastText($color) {
   $result: invert($color);
   $lightness: lightness($result);
-  @if ($lightness < 50) {
+  @if ($lightness < 40) {
     $result: black;
   }
   @else {
@@ -65,4 +65,34 @@
     }
 
     @return $color;
+}
+
+
+
+@function luminance($color) {
+  $color: if(type-of($color) == 'color', $color, color($color));
+  
+  // Convertir la couleur en RGB
+  $r: red($color) / 255;
+  $g: green($color) / 255;
+  $b: blue($color) / 255;
+
+  // Appliquer le facteur de correction gamma
+  $r: if($r <= 0.03928, $r / 12.92, pow(($r + 0.055) / 1.055, 2.4));
+  $g: if($g <= 0.03928, $g / 12.92, pow(($g + 0.055) / 1.055, 2.4));
+  $b: if($b <= 0.03928, $b / 12.92, pow(($b + 0.055) / 1.055, 2.4));
+
+  // Calculer la luminance relative
+  @return ($r * 0.2126 + $g * 0.7152 + $b * 0.0722);
+}
+
+@function contrast-color($color) {
+  // Calculer la luminance de la couleur
+  $luminance: luminance($color);
+
+  // Définir un seuil de luminance (généralement 0.5)
+  $threshold: 0.5;
+
+  // Choisir la couleur de contraste en fonction de la luminance
+  @return if($luminance > $threshold, #000000, #ffffff);
 }

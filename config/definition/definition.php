@@ -152,9 +152,56 @@ return static function($definition)
 
             ->end()->end()
 
+            ->arrayNode('ui_colors')->addDefaultsIfNotSet()->children()
+
+                ->arrayNode('defaults')->addDefaultsIfNotSet()->children()
+
+                    ->scalarNode('success')
+                        ->defaultValue('success')
+                    ->end()
+                    ->scalarNode('danger')
+                        ->defaultValue('danger')
+                    ->end()
+                    ->scalarNode('warning')
+                        ->defaultValue('warning')
+                    ->end()
+                    ->scalarNode('info')
+                        ->defaultValue('info')
+                    ->end()
+                    ->scalarNode('primary')
+                        ->defaultValue('primary')
+                    ->end()
+                    ->scalarNode('secondary')
+                        ->defaultValue('secondary')
+                    ->end()
+                    ->scalarNode('light')
+                        ->defaultValue('light')
+                    ->end()
+                    ->scalarNode('dark')
+                        ->defaultValue('dark')
+                    ->end()
+                    ->scalarNode('muted')
+                        ->defaultValue('muted')
+                    ->end()
+
+                ->end()->end()
+
+                ->arrayNode('additional')
+                    ->useAttributeAsKey('name')
+                    ->scalarPrototype()->end()
+                ->end()
+
+                ->arrayNode('useless')
+                    ->scalarPrototype()->end()
+                ->end()
+
+            ->end()->end()
+
+
             /**
              * Fonts
              */
+
 
             /**
              * Grid divisions
@@ -164,9 +211,6 @@ return static function($definition)
                 ->defaultValue(12)
             ->end()
 
-            /**
-             * palette
-             */
 
             /**
              * Spacer
@@ -632,6 +676,12 @@ return static function($definition)
                     ->info("Set the delay before next message")
                     ->min(0)
                     ->defaultValue(0)
+                ->end()
+    
+                ->enumNode('direction')
+                    ->info("Set the scroll direction")
+                    ->values(['ltr', 'rtl'])
+                    ->defaultValue('rtl')
                 ->end()
     
                 ->booleanNode('loop')

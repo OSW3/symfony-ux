@@ -38,6 +38,9 @@ const LOOP = true;
 /** @var bool Pause ticker on mouse over */
 const PAUSE_HOVER = true;
 
+const DIRECTION = 'rtl';
+// const DIRECTION = 'ltr';
+
 export default class TickerComponent
 {
     #node;
@@ -47,6 +50,7 @@ export default class TickerComponent
 
     #speed = SPEED;
     #delay = DELAY;
+    #direction = DIRECTION;
     #loop = LOOP;
     #pauseHover = PAUSE_HOVER;
 
@@ -60,6 +64,9 @@ export default class TickerComponent
 
         // Option delay
         this.#delay = this.#node.dataset.delay ?? DELAY;
+
+        // Option direction
+        this.#direction = this.#node.dataset.direction ?? DIRECTION;
 
         // Option loop
         let loop = this.#node.dataset.loop ?? PAUSE_HOVER;
@@ -91,13 +98,19 @@ export default class TickerComponent
 
     #play(trans_width)
     {
-		this.#items[this.#index].style.left = trans_width + "px";
-		this.#items[this.#index].style.display = 'block';
-
+        this.#items[this.#index].style.display = 'block';
+        this.#direction != 'ltr'
+            ? this.#items[this.#index].style.left = `${trans_width}px`
+            : this.#items[this.#index].style.right = `${trans_width}px`
+        ;
+        
         if (this.#speed > 0) {
             this.#instance = setInterval(() => {
-                if (parseInt(this.#items[this.#index].style.left) > -this.#items[this.#index].offsetWidth) {
+
+                if (this.#direction != 'ltr' && parseInt(this.#items[this.#index].style.left) > -this.#items[this.#index].offsetWidth) {
                     this.#items[this.#index].style.left = parseInt(this.#items[this.#index].style.left) - CHUNK + "px";
+                } else if (this.#direction == 'ltr' && parseInt(this.#items[this.#index].style.right) > -this.#items[this.#index].offsetWidth) {
+                    this.#items[this.#index].style.right = parseInt(this.#items[this.#index].style.right) - CHUNK + "px";
                 } else {
                     this.#items[this.#index].style.display = 'none';
                     clearInterval(this.#instance);
@@ -119,9 +132,20 @@ export default class TickerComponent
 
         if (this.#pauseHover)
         {
-            this.#node.onmouseover = () => clearInterval(this.#instance);
-            this.#node.onmouseout = () => this.#play(parseInt(this.#items[this.#index].style.left));
+            this.#node.onmouseover = () => this.#pause();
+            this.#node.onmouseout = () => this.#resume();
         }
+    }
+
+    #pause() {
+        // this.#items[this.#index].style.transition = "left 1s ease-in-out"; // Smoothly stop the movement
+        clearInterval(this.#instance);
+        
+    }
+
+    #resume() {
+        // this.#items[this.#index].style.transition = ""; // Remove smooth effect when resuming
+        this.#play(parseInt(this.#items[this.#index].style.left));
     }
 }
 

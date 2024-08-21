@@ -29,6 +29,9 @@ final class Ticker extends AbstractComponent
     #[ExposeInTemplate(name: 'delay')]
     public int $delay;
     
+    #[ExposeInTemplate(name: 'direction')]
+    public string $direction;
+    
     #[ExposeInTemplate(name: 'loop')]
     public bool $loop;
     
@@ -57,6 +60,11 @@ final class Ticker extends AbstractComponent
         $resolver->setDefault('delay', $options['delay']);
         $resolver->setAllowedTypes('delay', ['integer']);
 
+        $resolver->setDefault('direction', $options['direction']);
+        // $resolver->setDefault('direction', 'rtl');
+        $resolver->setAllowedValues('direction', ['ltr', 'rtl']);
+        $resolver->setAllowedTypes('direction', ['string']);
+
         $resolver->setDefault('loop', $options['loop']);
         $resolver->setAllowedTypes('loop', ['bool']);
 
@@ -79,6 +87,7 @@ final class Ticker extends AbstractComponent
         $dataset = [];
         $dataset['speed'] = $this->speed;
         $dataset['delay'] = $this->delay;
+        $dataset['direction'] = $this->direction;
         $dataset['loop'] = $this->loop ? "true" : "false";
         $dataset['pauseHover'] = $this->pauseHover ? "true" : "false";
 
@@ -92,13 +101,4 @@ final class Ticker extends AbstractComponent
 
         return $dataset;
     }
-
-    // public function fetchClass(): string
-    // {
-    //     $classlist = $this->classList();
-
-    //     $classlist[] = $this->orientation;
-
-    //     return implode(" ", $classlist);
-    // }
 }
