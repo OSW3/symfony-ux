@@ -19,11 +19,11 @@ const PREFIX = getPrefix();
 /** @var string Component selector */
 const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
 
-
 /** @var array Allowed actions */
 const ACTIONS = ['show','hide','toggle'];
 
-const CLASS_OFFCANVAS_SHOW = 'show';
+/** @var string State classname */
+const CLASS_OPEN = 'show';
 
 
 export default class OffcanvasComponent
@@ -37,6 +37,10 @@ export default class OffcanvasComponent
         this.#node = node;
         this.#hasBackdrop = !this.#node.classList.contains(`${PREFIX}${NAME}-no-backdrop`);
         
+        if (!this.#node.id) {
+            return;
+        }
+
         if (this.#hasBackdrop) {
             this.#overlay = new OverlayComponent(this.#node);
             this.#overlay.onClick(() => this.hide());
@@ -52,15 +56,15 @@ export default class OffcanvasComponent
     }
 
     show() {
-        this.#node.classList.add(CLASS_OFFCANVAS_SHOW);
+        this.#node.classList.add(CLASS_OPEN);
         if (this.#hasBackdrop) this.#overlay.show();
     }
     hide() {
-        this.#node.classList.remove(CLASS_OFFCANVAS_SHOW);
+        this.#node.classList.remove(CLASS_OPEN);
         if (this.#hasBackdrop) this.#overlay.hide();
     }
     toggle() {
-        this.#node.classList.toggle(CLASS_OFFCANVAS_SHOW);
+        this.#node.classList.toggle(CLASS_OPEN);
         if (this.#hasBackdrop) this.#overlay.toggle();
     }
 }

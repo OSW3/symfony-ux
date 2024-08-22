@@ -15,9 +15,11 @@
 /// @example 
 ///   @include flex.column();
 /// 
-@mixin column() 
+@mixin column($base: true) 
 {
-  @include _flex();
+  @if $base {
+    @include _display();
+  }
   @include prefix.set(flex-direction, column, webkit moz ms);
 }
 
@@ -27,9 +29,11 @@
 /// @example 
 ///   @include flex.row();
 /// 
-@mixin row() 
+@mixin row($base: true) 
 {
-  @include _flex();
+  @if $base {
+    @include _display();
+  }
   @include prefix.set(flex-direction, row, webkit moz ms);
 }
 
@@ -41,7 +45,7 @@
 /// 
 @mixin middle() 
 {
-  @include row();
+  @include row(false);
 
   // -webkit-box-flex: 0;
   //         -ms-flex: 0 0 auto;
@@ -58,9 +62,11 @@
 /// @example 
 ///   @include flex.center();
 /// 
-@mixin center() 
+@mixin center($base: true) 
 {
-  @include _flex();
+  @if $base {
+    @include _display();
+  }
 
   -webkit-box-flex: 0;
           -ms-flex: 0 0 auto;
@@ -78,10 +84,12 @@
 /// @example 
 ///   @include flex.centered();
 /// 
-@mixin centered() 
+@mixin centered($base: true) 
 {
-  @include _flex();
-  @include center();
+  @if $base {
+    @include _display();
+  }
+  @include center(false);
   @include middle();
 }
 
@@ -89,7 +97,7 @@
 /// Flex mixin's utilities
 /// =============================================
 /// 
-@mixin _flex()
+@mixin _display()
 {
   display: -webkit-box;
   display: -ms-flexbox;

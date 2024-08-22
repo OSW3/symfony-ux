@@ -5,6 +5,8 @@
 // ************************************************************************** //
 
 @use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/position';
+@use './../abstracts/mixins/transition';
 
 $_component: 'dialog';
 $_classname: '#{$prefix}#{$_component}';
@@ -30,6 +32,10 @@ $_classname: '#{$prefix}#{$_component}';
 // * Default layout variables
 // * =========================
 
+$overlay-blur : 10px;
+$overlay-opacity: 0.5;
+$overlay-color: $black;
+
 
 // * Default theme variables
 // * =========================
@@ -43,19 +49,17 @@ $_classname: '#{$prefix}#{$_component}';
 
 .#{$_classname} {
 
-    /// Component definition
-    /// --
+    display: none;
+    opacity: 0;
 
-    
-    /// Component Sizes
-    /// --
-    
+    background-color:  #{rgba($overlay-color, $overlay-opacity)};
+    backdrop-filter: blur($overlay-blur);
 
-    /// Component palettes
-    /// --
-    
+    @include position.fixed(0,0,0,0);
+    @include transition.set((opacity), map-get($delays, normal));
 
-    /// Component States
-    /// --
+    &.open {
+        opacity: 1;
+    }
     
 }

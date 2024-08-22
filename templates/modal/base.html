@@ -1,0 +1,41 @@
+<div {{ _get_attributes(_attr) }}>
+    <div class="{{ classname('modal-wrapper') }}">
+        <div class="{{ classname('modal-content') }}">
+
+
+            {# <twig:Button:Close :dataset="{target: id, action: 'close'}"/>         #}
+            {% if header is not empty %}<twig:Modal:Section section="header" :content="header" />{% endif %}
+            {% if body is not empty %}<twig:Modal:Section section="body" :content="body" />{% endif %}
+            {% if footer is not empty %}<twig:Modal:Section section="footer" :content="footer" />{% endif %}
+
+
+            {# <div class="{{ classname('modal-header') }}">
+
+                Modal Header
+            </div>
+            <div class="{{ classname('modal-body') }}">
+                Modal Body {{ id }}
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere, voluptates id quam neque assumenda quod, fuga recusandae quis praesentium veritatis omnis! Omnis nobis cupiditate odit aspernatur cumque optio nostrum eius!</p>
+            </div>
+            <div class="{{ classname('modal-footer') }}">
+                Modal Footer
+
+                <twig:Button label="close" role="close" :dataset="{
+                    target: id,
+                    action: 'close'
+                }"/>
+            </div> #}
+        </div>
+    </div>
+</div>

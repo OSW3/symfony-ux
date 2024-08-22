@@ -1,0 +1,207 @@
+// ************************************************************************** //
+// *
+// *    Components: Modal
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/sizes';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/mixins/position';
+@use './../abstracts/mixins/transition';
+
+$_component: 'modal';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default layout variables
+// * =========================
+
+$overlay-blur : 10px;
+$overlay-opacity: 0.5;
+$overlay-color: $black;
+
+$modal--pos-x: ('left', 'center', 'right') !default;
+$modal--pos-y: ('top', 'middle', 'bottom') !default;
+
+$modal--appear-from: top !default;
+
+
+$modal--content--border-radius: 8px !default;
+$modal--content--border-width: 1px !default;
+$modal--content--height: 100% !default;
+$modal--content--width: 500px !default;
+$modal--inner--border-width: 1px !default;
+
+
+// * Default theme variables
+// * =========================
+
+$modal--content--border-color: $gray-500 !default;
+$modal--content--background-color: $white !default;
+$modal--header--background-color: $white !default;
+$modal--body--background-color: $white !default;
+$modal--footer--background-color: $white !default;
+$modal--inner--border-color: $gray-200 !default;
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+
+    display: none;
+
+    flex-direction: column;
+    opacity: 0;
+    overflow: auto;
+
+    @include position.fixed(0,0,0,0);
+    @include transition.set((opacity), map-get($delays, normal));
+
+    &:not(&-no-backdrop) {
+        background-color: #{rgba($overlay-color, $overlay-opacity)};
+        backdrop-filter: blur($overlay-blur);
+    }
+
+
+    &-wrapper {
+        width: $modal--content--width;
+        max-width: $modal--content--width;
+        max-height: 100vh !important;
+        $padding: #{$spacer-6}rem;
+        @include spaces.padding($padding,$padding,$padding,$padding);
+    }
+
+
+
+    @if length($modal--pos-x) != 0 and length($modal--pos-y) != 0 {
+        @for $i from 1 through length($modal--pos-y) {
+            $pos-y: nth($modal--pos-y, $i);
+            &-#{$pos-y} {
+
+                @for $i from 1 through length($modal--pos-x) {
+                    $pos-x: nth($modal--pos-x, $i);
+                    &-#{$pos-x} {
+            
+                        @if $pos-y == 'middle' {
+                            justify-content: center;
+                        }
+                        @else if $pos-y == 'bottom' {
+                            justify-content: end;
+                        }
+                        @else {
+                            justify-content: start;
+                        }
+
+                        @if $pos-x == 'center' {
+                            align-items: center;
+                        }
+                        @else if $pos-x == 'right' {
+                            align-items: end;
+                        }
+                        @else {
+                            align-items: start;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+    @else {
+        & {
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    &-content {
+        position: relative;
+        background-color: $modal--content--background-color;
+        border-style: solid;
+        border-width: $modal--content--border-width;
+        border-color: $modal--content--border-color;
+        border-radius: $modal--content--border-radius;
+        @include flex.column;
+        height: $modal--content--height;
+        max-height: 100vh !important;
+
+        @include transition.set((top), map-get($delays, normal));
+
+        @if $modal--appear-from == bottom {
+            top: $modal--content--width;
+        }
+        @else {
+            top: $modal--content--width * -1;
+        }
+
+        > :first-child {
+            border-top-left-radius: $modal--content--border-radius;
+            border-top-right-radius: $modal--content--border-radius;
+        }
+        > :last-child {
+            border-bottom-left-radius: $modal--content--border-radius;
+            border-bottom-right-radius: $modal--content--border-radius;
+        }
+    }
+
+
+    &-header, &-body, &-footer {
+        z-index: 1;
+        padding: map-get($spacers, 2) map-get($spacers, 3);
+    }
+    &-header {
+        border-bottom-style: solid;
+        border-bottom-width: $modal--inner--border-width;
+        border-bottom-color: $modal--inner--border-color;
+        background-color: $modal--header--background-color;
+    }
+    &-body {
+        flex-grow: 1;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        background-color: $modal--body--background-color;
+    }
+    &-footer {
+        border-top-style: solid;
+        border-top-width: $modal--inner--border-width;
+        border-top-color: $modal--inner--border-color;
+        background-color: $modal--footer--background-color;
+    }
+
+    & .#{$prefix}button-close {
+        z-index: 2;
+        @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+        @include sizes.set(6px,6px);
+    }
+
+    &.open {
+        opacity: 1;
+        z-index: 2;
+        .#{$_classname}-content {
+            top: 0;
+        }
+    }
+}

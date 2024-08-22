@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/searchBar/base.twig')]
+#[AsTwigComponent(template: '@UxComponents/search-bar/base.twig')]
 final class SearchBar extends AbstractComponent
 {
     public const NAME = "searchBar";

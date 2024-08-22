@@ -10,7 +10,7 @@ import ButtonComponent from "./ButtonComponent";
 
 
 /** @var string Component classname */
-const NAME = 'dialog';
+const NAME = 'modal';
 
 /** @var string Components prefix */
 const PREFIX = getPrefix();
@@ -25,7 +25,7 @@ const ACTIONS = ['open','close'];
 const CLASS_OPEN = 'open';
 
 
-export default class DialogComponent
+export default class ModalComponent 
 {
     #node;
     #document;
@@ -46,19 +46,33 @@ export default class DialogComponent
                 }
             }
         })
+        
+        // this.#node.onclick = this.close.bind(this);
+        document.addEventListener('click', (event) => {
+            if (event.target == this.#node) {
+                event.stopImmediatePropagation();
+                this.close();
+            }
+        });
+
+        if (this.#node.classList.contains('open')) {
+            this.open();
+        }
     }
 
     open()
     {
         this.#node.style.display = 'flex';
+        this.#document.classList.add(`${PREFIX}no-scroll`);
         setTimeout(() => this.#node.classList.add(CLASS_OPEN),1);
     }
 
     close()
     {
-        this.#node.style.display = 'none';
-        this.#node.classList.remove(CLASS_OPEN);
+        this.#document.classList.remove(`${PREFIX}no-scroll`);
+        this.#node.classList.remove(CLASS_OPEN)
+        setTimeout(() => this.#node.style.display = 'none', 300);
     }
 }
 
-document.querySelectorAll(SELECTOR).forEach(node => new DialogComponent(node));
+document.querySelectorAll(SELECTOR).forEach(node => new ModalComponent(node));

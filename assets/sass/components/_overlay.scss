@@ -66,11 +66,8 @@ $offcanvas--container--background-color: $white;
     $overlay-opacity: 0.5;
     $overlay-color: $black;
 
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+
+    @include position.fixed(0,0,0,0);
     overflow: hidden;
     z-index: $z-index--overlay;
 
@@ -82,11 +79,15 @@ $offcanvas--container--background-color: $white;
 
     &::after {
         content: "";
-        position: absolute;
-        top: $overlay-blur * -2;
-        right: $overlay-blur * -2;
-        bottom: $overlay-blur * -2;
-        left: $overlay-blur * -2;
+
+
+        $position: $overlay-blur * -2;
+        @include position.absolute($position,$position,$position,$position);
+        // position: absolute;
+        // top: $overlay-blur * -2;
+        // right: $overlay-blur * -2;
+        // bottom: $overlay-blur * -2;
+        // left: $overlay-blur * -2;
         background-color:  #{rgba($overlay-color, $overlay-opacity)};
         opacity: 0;
         backdrop-filter: blur($overlay-blur);

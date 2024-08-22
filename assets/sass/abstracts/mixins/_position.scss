@@ -21,14 +21,17 @@
 {
   position: $position;
   @include top($top);
-  @if ($right not null) {right : $right;}
-  @if ($bottom not null) {bottom : $bottom;}
-  @if ($left not null) {left : $left;}
+  @include right($right);
+  @include bottom($bottom);
+  @include left($left);
+  // @if ($right not null) {right : $right;}
+  // @if ($bottom not null) {bottom : $bottom;}
+  // @if ($left not null) {left : $left;}
 }
-@mixin top($position: null){@if ($position not null) {top : $position;}}
-@mixin right($position: null){@if ($position not null) {right : $position;}}
-@mixin bottom($position: null){@if ($position not null) {bottom : $position;}}
-@mixin left($position: null){@if ($position not null) {left : $position;}}
+@mixin top($position: null){@if $position != null {top : $position;}}
+@mixin right($position: null){@if $position != null {right : $position;}}
+@mixin bottom($position: null){@if $position != null {bottom : $position;}}
+@mixin left($position: null){@if $position != null {left : $position;}}
 
 
 /// Shorthand mixin for static positioning

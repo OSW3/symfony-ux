@@ -8,6 +8,7 @@ import DatePickerComponent from './components/DatePickerComponent';
 import DialogComponent from './components/DialogComponent';
 import DropdownComponent from './components/DropdownComponent';
 import LoadingComponent from './components/LoadingComponent';
+import ModalComponent from './components/ModalComponent';
 import NavigationComponent from './components/NavigationComponent';
 import OffcanvasComponent from './components/OffcanvasComponent';
 import PopoverComponent from './components/PopoverComponent';
