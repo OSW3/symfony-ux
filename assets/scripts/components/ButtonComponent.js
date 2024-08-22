@@ -82,7 +82,7 @@ export default class ButtonComponent // extends AbstractComponent
 
                 // Do custom action
                 if (typeof this[subEventName] === 'function') {
-                    (this[subEventName])(this, event)
+                    (this[subEventName])(event, this)
                 }
                 // or do default action
                 // else if (typeof this[subEventName] !== 'function' && typeof this[`_${subEventName}Default`] === 'function') {

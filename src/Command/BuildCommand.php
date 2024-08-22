@@ -82,6 +82,7 @@ class BuildCommand extends Command
         foreach ($this->options['components'] as $name => $value) match ($name) {
             'accordions'    => $this->accordions($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
+            'offcanvas'     => $this->offcanvas($sassVariables, $value),
             'scroll_to_top' => $this->scrollToTop($sassVariables, $value),
             default => null,
         };
@@ -272,6 +273,11 @@ class BuildCommand extends Command
             $brandBreakpoint = array_keys($options['logo']);
         }
         $vars[] = "\$brand-breakpoints: ('".implode("','", $brandBreakpoint)."');";
+    }
+
+    private function offcanvas(array &$vars, $options)
+    {
+        // $vars[] = "\$offcanvas--has-backdrop: ".($options['backdrop'] ? 'true' : 'false').";";
     }
 
     private function scrollToTop(array &$vars, $options)

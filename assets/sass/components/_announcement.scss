@@ -46,15 +46,15 @@ $announcement--background-color: $gray-600 !default;
 // * Palette
 // * =========================
 
-.#{$_classname} {
-    @each $key, $value in $palette {
-        &-#{$key} {
-            --#{$_classname}--color           : var(--#{$key});
-            --#{$_classname}--background-color: var(--#{$key}--tint-70);
-            --#{$_classname}--border-color    : var(--#{$key});
-        }
-    }
-}
+// .#{$_classname} {
+//     @each $key, $value in $palette {
+//         &-#{$key} {
+//             --#{$_classname}--color           : var(--#{$key});
+//             --#{$_classname}--background-color: var(--#{$key}--tint-70);
+//             --#{$_classname}--border-color    : var(--#{$key});
+//         }
+//     }
+// }
 
 
 // * Structure

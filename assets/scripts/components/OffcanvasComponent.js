@@ -3,45 +3,66 @@
 // *    Components: Offcanvas
 // *
 // ************************************************************************** //
-// *
-// *    Import
-// *        import OffcanvasComponent from './../../../bundle/assets/scripts/components/OffcanvasComponent';
-// *
-// *
-// ************************************************************************** //
+"use strict";
 
-import AbstractComponent from "../abstracts/AbstractComponent";
+import { getPrefix } from "../utils/prefix";
 import ButtonComponent from "./ButtonComponent";
+import OverlayComponent from "./OverlayComponent";
 
-const SELECTOR          = '.offcanvas';
-const ACTIONS_HANDLER   = ['show','hide','toggle'];
-const CLASS_NAME_ACTIVE = 'show';
 
-export default class OffcanvasComponent extends AbstractComponent
+/** @var string Component classname */
+const NAME = 'offcanvas';
+
+/** @var string Components prefix */
+const PREFIX = getPrefix();
+
+/** @var string Component selector */
+const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
+
+
+/** @var array Allowed actions */
+const ACTIONS = ['show','hide','toggle'];
+
+const CLASS_OFFCANVAS_SHOW = 'show';
+
+
+export default class OffcanvasComponent
 {
-    _onInit() 
+    #node;
+    #hasBackdrop = true;
+    #overlay;
+    
+    constructor(node)
     {
-        document.querySelectorAll('[data-action]').forEach(btn => {
-            const target = btn.dataset.target;
-            const action = btn.dataset.action;
+        this.#node = node;
+        this.#hasBackdrop = !this.#node.classList.contains(`${PREFIX}${NAME}-no-backdrop`);
+        
+        if (this.#hasBackdrop) {
+            this.#overlay = new OverlayComponent(this.#node);
+            this.#overlay.onClick(() => this.hide());
+        }
 
-            console.log(target, action, this.node.id);
-
-            if (target == this.node.id && ACTIONS_HANDLER.includes(action))
-            {
-                switch (action)
-                {
-                    case 'show': new ButtonComponent(btn).onClick = (event, element) => this.#show(); break;
-                    case 'hide': new ButtonComponent(btn).onClick = (event, element) => this.#hide(); break;
-                    case 'toggle': new ButtonComponent(btn).onClick = (event, element) => this.#toggle(); break;
+        document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
+            new ButtonComponent(trigger).onClick = (event, element) => {
+                if (ACTIONS.includes(event.target.dataset.action)) {
+                    this[event.target.dataset.action]();
                 }
             }
-        });
+        })
     }
 
-    #show() {this.node.classList.add(CLASS_NAME_ACTIVE)}
-    #hide() {this.node.classList.remove(CLASS_NAME_ACTIVE)}
-    #toggle() {this.node.classList.toggle(CLASS_NAME_ACTIVE)}
+    show() {
+        this.#node.classList.add(CLASS_OFFCANVAS_SHOW);
+        if (this.#hasBackdrop) this.#overlay.show();
+    }
+    hide() {
+        this.#node.classList.remove(CLASS_OFFCANVAS_SHOW);
+        if (this.#hasBackdrop) this.#overlay.hide();
+    }
+    toggle() {
+        this.#node.classList.toggle(CLASS_OFFCANVAS_SHOW);
+        if (this.#hasBackdrop) this.#overlay.toggle();
+    }
 }
 
 document.querySelectorAll(SELECTOR).forEach(node => new OffcanvasComponent(node));

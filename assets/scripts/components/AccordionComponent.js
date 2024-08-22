@@ -38,7 +38,7 @@ export default class AccordionComponent
     
     constructor(node)
     {
-        this.#node = node;        
+        this.#node = node;
         this.#items = this.#node.querySelectorAll(`.${CLASS_ACCORDION_ITEM}`);
         
         for(let i=0; i < this.#items.length; i++) {

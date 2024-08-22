@@ -75,6 +75,7 @@
 
 
 
+@import './variables/zindex';
 @import './variables/utilities';
 
 
@@ -170,6 +171,7 @@
 @import './components/menu';
 @import './components/navigation';
 @import './components/offcanvas';
+@import './components/overlay';
 @import './components/pagination';
 @import './components/popover';
 @import './components/quiz';

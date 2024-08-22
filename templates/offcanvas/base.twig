@@ -1,8 +1,8 @@
 {# ---------------------------------------------- #}
-{# - Component : Button                         - #}
+{# - Component : Offcanvas                      - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends '@UxComponents/button/base.html' %}
+{% extends '@UxComponents/offcanvas/base.html' %}
 
 
 {# ---------------------------------------------- #}
@@ -13,11 +13,9 @@
 {# -- Render component attributes --------------- #}
 {# ---------------------------------------------- #}
 
-{% set _attr = _add_attribute(_attr, 'type', type) %}
 {% set _attr = _add_attribute(_attr, 'id', id) %}
 {% set _attr = _add_attribute(_attr, 'class', class) %}
-{% set _attr = _add_attribute(_attr, 'disabled', disabled) %}
-{% set _attr = _add_attribute(_attr, 'role', role|default()) %}
+{% set _attr = _add_attribute(_attr, 'rel', rel) %}
 {% for _property, _value in dataset %}
     {% set _attr = _add_attribute(_attr, _property, _value) %}
 {% endfor %}

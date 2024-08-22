@@ -1,0 +1,6 @@
+<div {{ _get_attributes(_attr) }}>
+    <twig:Button:Close :dataset="{target: id, action: 'hide'}"/>        
+    {% if header is not empty %}<twig:Offcanvas:Section section="header" :content="header" />{% endif %}
+    {% if body is not empty %}<twig:Offcanvas:Section section="body" :content="body" />{% endif %}
+    {% if footer is not empty %}<twig:Offcanvas:Section section="footer" :content="footer" />{% endif %}
+</div>

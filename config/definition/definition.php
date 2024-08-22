@@ -2,6 +2,7 @@
 
 use OSW3\UX\Enum\Announcement\Animation\Strategy as AnimationStrategy;
 use OSW3\UX\Enum\Announcement\Animation\Type as AnimationType;
+use OSW3\UX\Enum\PlacementX;
 use OSW3\UX\Enum\Size;
 
 return static function($definition)
@@ -577,7 +578,7 @@ return static function($definition)
     
             ->end()->end()
 
-            // Copyright
+            // Links
             // -- 
             ->arrayNode('links')
                 ->info("Parameters settings of the Links component.")
@@ -586,6 +587,42 @@ return static function($definition)
                 ->scalarNode('target')
                     ->info("Specifies the window target of links")
                     ->defaultValue('_self')
+                ->end()
+    
+            ->end()->end()
+
+            // Offcanvas
+            // -- 
+            ->arrayNode('offcanvas')
+                ->info("Parameters settings of the Offcanvas component.")
+                ->addDefaultsIfNotSet()->children()
+    
+                ->enumNode('placement')
+                    ->info("Specifies the default position of Offcanvas")
+                    ->values(PlacementX::toArray())
+                    ->defaultValue(PlacementX::LEFT->value)
+                ->end()
+    
+                ->enumNode('animation')
+                    ->info("Specifies the animation type")
+                    ->values(['none', 'slide'])
+                    ->defaultValue('slide')
+                ->end()
+    
+                ->enumNode('speed')
+                    ->info("Specifies the animation speed")
+                    ->values(['slow','normal','fast','none'])
+                    ->defaultValue('normal')
+                ->end()
+    
+                ->booleanNode('backdrop')
+                    ->info("Specifies wether the offcanvas has a backdrop")
+                    ->defaultTrue()
+                ->end()
+    
+                ->booleanNode('is_showed')
+                    ->info("Specifies wether the offcanvas is showed by default")
+                    ->defaultFalse()
                 ->end()
     
             ->end()->end()

@@ -61,7 +61,6 @@ final class Ticker extends AbstractComponent
         $resolver->setAllowedTypes('delay', ['integer']);
 
         $resolver->setDefault('direction', $options['direction']);
-        // $resolver->setDefault('direction', 'rtl');
         $resolver->setAllowedValues('direction', ['ltr', 'rtl']);
         $resolver->setAllowedTypes('direction', ['string']);
 

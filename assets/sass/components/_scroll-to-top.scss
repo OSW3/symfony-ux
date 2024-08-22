@@ -54,14 +54,13 @@ $scroll-to-top--position: if(meta.global-variable-exists('scroll-to-top--positio
 $scroll-to-top--transition: if(meta.global-variable-exists('scroll-to-top--transition', $module: generated), generated.$scroll-to-top--transition, 'natural') !default;
 $scroll-to-top--symbol: if(meta.global-variable-exists('scroll-to-top--symbol', $module: generated), generated.$scroll-to-top--symbol, 'arrow-up') !default;
 
-
 $scroll-to-top--size     : 40px !default;
 $scroll-to-top--position-x : $spacer *2 !default;
 $scroll-to-top--position-y : $spacer *2 !default;
 $scroll-to-top--offset-x : 0px !default;
 $scroll-to-top--offset-y : 0px !default;
 $scroll-to-top--font-size: 2 !default;
-$scroll-to-top--z-index   : zindex.$button-to-top !default;
+$scroll-to-top--z-index   : $z-index--scroll-to-top !default;
 
 
 
