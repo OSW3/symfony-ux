@@ -13,7 +13,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent(template: '@UxComponents/search/base.twig')]
-final class Search extends AbstractComponent
+final class SearchOld extends AbstractComponent
 {
     public const NAME = "search";
     

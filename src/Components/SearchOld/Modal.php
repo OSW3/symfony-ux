@@ -1,19 +1,19 @@
 <?php 
-namespace OSW3\UX\Components\Search;
+namespace OSW3\UX\Components\SearchOld;
 
-use OSW3\UX\Trait\DoNotExposeTrait;
+use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Components\AbstractComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/search/form.twig')]
-final class Form extends AbstractComponent
+#[AsTwigComponent(template: '@UxComponents/search/modal.twig')]
+final class Modal extends AbstractComponent
 {
     public const NAME = "search";
-    
-    use DoNotExposeTrait;
+
+    use AttributeIdTrait;
 
     #[ExposeInTemplate(name: 'method')]
     public string $method;
@@ -37,11 +37,11 @@ final class Form extends AbstractComponent
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
-        // $this
-        //     ->idResolver($resolver)
-        //     ->classResolver($resolver)
-        //     ->datasetResolver($resolver)
-        // ;
+        $this
+            ->idResolver($resolver)
+            // ->classResolver($resolver)
+            // ->datasetResolver($resolver)
+        ;
 
         $resolver->setDefault('method', $options['method']);
         $resolver->setAllowedValues('method', ['get', 'post']);
@@ -60,5 +60,10 @@ final class Form extends AbstractComponent
         $resolver->setAllowedTypes('label', ['string']);
 
         return $resolver->resolve($data) + $data;
+    }
+
+    public function fetchId()
+    {
+        return "{$this->id}-modal";
     }
 }

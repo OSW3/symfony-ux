@@ -40,7 +40,7 @@
     
     {#
     {% if type == 'modal' %}
-        <twig:Search:Modal 
+        <twig:SearchOld:Modal 
             :id="id" 
             :method="method" 
             :param="param" 
@@ -49,7 +49,7 @@
             :label="label"
         />
     {% elseif type == 'list' %}
-    <twig:Search:Suggestions 
+    <twig:SearchOld:Suggestions 
         :id="id" 
     />
     {% endif %} #}
