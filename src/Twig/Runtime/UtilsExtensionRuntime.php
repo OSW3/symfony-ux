@@ -27,7 +27,6 @@ class UtilsExtensionRuntime implements RuntimeExtensionInterface
             $l[] = "{$p}{$c}";
         }
         
-        dump(implode($s, $l));
         return implode($s, $l);
     }
 
