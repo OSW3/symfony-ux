@@ -2,81 +2,24 @@
 /// =============================================
 
 
-
-
 /// Abstracts Variables
 /// -------------------------
 
-// Prefix
-// --
-@import './variables/prefix';
-
-
-// Breakpoints & Containers
-// --
-// Add default Breakpoints & Containers variables
-// required for containers and responsive breakpoints
 @import './variables/breakpoints';
-
-// Grid
-// --
-// Add default Grid variables
-// required for grid and columns system
-@import './variables/grid';
-
-// Transition
-// --
-// Add default Transition variables
-// required for transition delays
-@import './variables/transitions';
-
-// Spacers
-// --
-// Add default Transition variables
-// required for transition delays
-@import './variables/spacers';
-
-
-// Colors
-// --
-// Add default colors variables
-// required for palette
 @import './variables/colors';
-
-// palette
-// --
-// Add default palette variables
-// required for palette
-@import './variables/palette';
-
-
-// Icons
-// --
-// Add default colors variables
-// required for palette
-@import './variables/icons';
-
-// Themes
-// --
-// Add default themes variables
-// required to add themes
-@import './variables/themes';
-
-
-// Fonts
-// --
-// Add default Fonts variables
 @import './variables/fonts';
-
-// Typography
-// --
-// Add default Typography variables
+@import './variables/grid';
+@import './variables/icons';
+@import './variables/palette';
+@import './variables/prefix';
+@import './variables/radius';
+@import './variables/spacers';
+@import './variables/themes';
+@import './variables/transitions';
 @import './variables/typography';
-
-
-
-@import './variables/zindex';
 @import './variables/utilities';
+@import './variables/var';
+@import './variables/zindex';
 
 
 
