@@ -114,6 +114,8 @@ $accordion--item-open--header--background-color: $gray-400 !default;
         font-size: $accordion--item--header--font-size;
         justify-content: space-between;
         cursor: pointer;
+        border: none;
+        width: 100%;
 
         @if $accordion--item--gap > 0 {
             @include corner.top(map-get($radius, $accordion--border-radius));
@@ -128,7 +130,6 @@ $accordion--item-open--header--background-color: $gray-400 !default;
             $accordion--item--header--padding-x
         );
         @include transition.set((color, background-color), map-get($delays, $accordion--item--transition-speed));
-
     }
     &-item.open &-header {
         @include var.set('color', 'accordion--item-open--header--text-color', $accordion--item-open--header--text-color);
