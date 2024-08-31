@@ -17,14 +17,18 @@ class UtilsExtensionRuntime implements RuntimeExtensionInterface
     
     public function getUxClassName(string $classname): string
     {
-        $prefix = $this->options['prefix'];
+        $l = [];
+        $s = ' ';
+        $x = explode($s, $classname);
+        $p = $this->options['prefix'];
+        $p = !empty($p) ? "{$p}-" : null;
 
-        if (!empty($prefix))
-        {
-            $prefix.= "-";
+        foreach ($x as $c) {
+            $l[] = "{$p}{$c}";
         }
-
-       return "{$prefix}{$classname}";
+        
+        dump(implode($s, $l));
+        return implode($s, $l);
     }
 
     public function addAttribute(array $attributes=[], ?string $name=null, mixed $value=null): array
