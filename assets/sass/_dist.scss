@@ -135,6 +135,7 @@
 
 
 @import './utilities/close';
+@import './utilities/form';
 // @import './utilities/effects';
 @import './utilities/position';
 @import './utilities/spacing';
@@ -160,7 +161,7 @@
 @import './components/copyright';
 @import './components/cover';
 @import './components/date-picker';
-@import './components/dialog';
+// @import './components/dialog';
 @import './components/dropdown';
 @import './components/gallery';
 @import './components/hero';
@@ -172,14 +173,15 @@
 @import './components/modal';
 @import './components/navigation';
 @import './components/offcanvas';
-@import './components/overlay';
+// @import './components/overlay';
 @import './components/pagination';
 @import './components/popover';
 @import './components/quiz';
 @import './components/rating';
 @import './components/rotator';
 @import './components/scroll-to-top';
-@import './components/search-bar';
+@import './components/search';
+@import './components/search-box';
 @import './components/segment';
 @import './components/stepper';
 @import './components/switch';

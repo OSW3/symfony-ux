@@ -1,0 +1,13 @@
+{# ---------------------------------------------- #}
+{# - Component : Form Control                   - #}
+{# - Part : Option                               - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/form-widget/tag/select/option.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+{% set _attr = _add_attribute(_attr, 'value', value) %}
+{% set _attr = _add_attribute(_attr, 'selected', selected) %}

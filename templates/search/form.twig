@@ -1,0 +1,24 @@
+{# ---------------------------------------------- #}
+{# - Component : Search                      - #}
+{# - Part : Form                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/search/form.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'method', method) %}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{# {% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %} #}

@@ -1,0 +1,29 @@
+{# ---------------------------------------------- #}
+{# - Component : Form Control                   - #}
+{# - Part : Select                               - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/form-widget/tag/select/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'name', name) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'autofocus', autofocus) %}
+{% set _attr = _add_attribute(_attr, 'disabled', disabled) %}
+{% set _attr = _add_attribute(_attr, 'form', form) %}
+{# {% set _attr = _add_attribute(_attr, 'size', size) %} #}
+{% set _attr = _add_attribute(_attr, 'required', required) %}
+{% set _attr = _add_attribute(_attr, 'tabindex', tabindex) %}
+{% set _attr = _add_attribute(_attr, 'title', title) %}
+
+{% if noInteraction != true %}
+    {% set _attr = _add_attribute(_attr, 'data-has-interaction', true) %}
+{% endif %}
+
+{% if descriptionId|default() is not empty %}
+    {% set _attr = _add_attribute(_attr, 'aria-describedby', descriptionId) %}
+{% endif %}

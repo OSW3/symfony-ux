@@ -1,0 +1,33 @@
+{# ---------------------------------------------- #}
+{# - Component : Search                         - #}
+{# - Part : Input                               - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/search/input.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'type', 'search') %}
+{# {% set _attr = _add_attribute(_attr, 'class', class) %} #}
+{% set _attr = _add_attribute(_attr, 'name', param) %}
+{% set _attr = _add_attribute(_attr, 'placeholder', placeholder) %}
+{% set _attr = _add_attribute(_attr, 'aria-label', placeholder) %}
+
+
+{# {% for _property, _value in dataset %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %} #}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{# {% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %} #}

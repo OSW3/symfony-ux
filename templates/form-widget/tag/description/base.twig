@@ -1,0 +1,17 @@
+{# ---------------------------------------------- #}
+{# - Component : Form Control                   - #}
+{# - Part : Description                         - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/form-widget/tag/description/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}

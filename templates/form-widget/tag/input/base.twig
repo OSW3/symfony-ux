@@ -1,0 +1,84 @@
+{# ---------------------------------------------- #}
+{# - Component : Form Control                   - #}
+{# - Part : Input                               - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/form-widget/tag/input/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+{% set _attr = _add_attribute(_attr, 'type', type) %}
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'name', name) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'value', value) %}
+
+{% if type == 'text' or type == 'search' or type == 'url' or type == 'number' or type == 'tel' or type == 'email' or type == 'password' %}
+    {% set _attr = _add_attribute(_attr, 'placeholder', placeholder) %}
+{% endif %}
+
+{% if type == 'file' %}
+    {% set _attr = _add_attribute(_attr, 'accept', accept|default()) %}
+{% endif %}
+
+{% set _attr = _add_attribute(_attr, 'autocomplete', autocomplete) %}
+
+{% set _attr = _add_attribute(_attr, 'autofocus', autofocus) %}
+
+{% if type == 'checkbox' or type == 'radio' %}
+    {% set _attr = _add_attribute(_attr, 'checked', checked|default(false)) %}
+{% endif %}
+
+{% if dirname == true and dirnameValue is not empty and (type == 'text' or type == 'search' or type == 'email') %}
+{% set _attr = _add_attribute(_attr, 'dirname', dirnameValue) %}
+{% endif %}
+
+{% set _attr = _add_attribute(_attr, 'disabled', disabled) %}
+
+{% set _attr = _add_attribute(_attr, 'form', form) %}
+
+{% if type == 'number' or type == 'range' or type == 'date' or type == 'month' or type == 'time' or type == 'week' %}
+    {% set _attr = _add_attribute(_attr, 'min', min|default()) %}
+    {% set _attr = _add_attribute(_attr, 'max', max|default()) %}
+    {% set _attr = _add_attribute(_attr, 'step', step|default()) %}
+{% endif %}
+
+{% if type == 'text' or type == 'search' or type == 'url' or type == 'tel' or type == 'email' or type == 'password' %}
+    {% set _attr = _add_attribute(_attr, 'minlength', minlength) %}
+    {% set _attr = _add_attribute(_attr, 'maxlength', maxlength) %}
+    {# {% set _attr = _add_attribute(_attr, 'size', size) %} #}
+{% endif %}
+
+{% if type == 'email' or type == 'file' %}
+    {% set _attr = _add_attribute(_attr, 'multiple', multiple|default(false)) %}
+{% endif %}
+
+{% if type == 'text' or type == 'date' or type == 'search' or type == 'url' or type == 'tel' or type == 'email' or type == 'password' %}
+    {% set _attr = _add_attribute(_attr, 'pattern', pattern) %}
+{% endif %}
+
+{% set _attr = _add_attribute(_attr, 'readonly', readonly) %}
+
+{% if type == 'text' or type == 'search' or type == 'url' or type == 'tel' or type == 'email' or type == 'password' or type == 'date' or type == 'number' or type == 'checkbox' or type == 'radio' or type == 'file' %}
+    {% set _attr = _add_attribute(_attr, 'required', required) %}
+{% endif %}
+
+
+{# {% set _attr = _add_attribute(_attr, 'tabindex', tabindex) %} #}
+{% set _attr = _add_attribute(_attr, 'title', title) %}
+
+{% if spellcheck == false %}
+{% set _attr = _add_attribute(_attr, 'spellcheck', "false") %}
+{% endif %}
+
+
+{% if noInteraction != true %}
+    {% set _attr = _add_attribute(_attr, 'data-has-interaction', true) %}
+{% endif %}
+
+
+{% if descriptionId|default() is not empty %}
+    {% set _attr = _add_attribute(_attr, 'aria-describedby', descriptionId) %}
+{% endif %}

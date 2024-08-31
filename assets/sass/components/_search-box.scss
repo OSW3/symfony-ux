@@ -1,0 +1,201 @@
+// ************************************************************************** //
+// *
+// *    Components: Search bar
+// *
+// ************************************************************************** //
+
+
+@use './../abstracts/mixins/var';
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/corner';
+@use './../abstracts/mixins/spaces';
+@use './../abstracts/functions/icon';
+@use './../abstracts/mixins/transition';
+
+$_component: 'search-box';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+$search-box--submit--hidden: true !default;
+
+
+// * Default layout variables
+// * =========================
+
+$search-box--width: 480px !default;
+$search-box--transition-speed: map-get($delays, 'normal') !default;
+$search-box--border-width: 1px !default;
+$search-box--border-radius: map-get($radius, 'small') !default;
+
+
+// * Default theme variables
+// * =========================
+
+$search-box--text-color: $black !default;
+$search-box--border-color: $gray-300 !default;
+$search-box--border-color--focus: $gray-500 !default;
+
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+    --search-box--text-color: $search-box--text-color;
+
+    // --icon : #{icon.get('search', var(--search-box--text-color))};
+
+
+    // border: 3px solid red;
+
+    position: relative;
+    width: $search-box--width;
+    // border-radius: $search-box--border-radius;
+    // border-style: solid;
+    // @include var.set('border-width', 'search-box--border-width', $search-box--border-width);
+    // @include var.set('border-color', 'search-box--border-color', $search-box--border-color);
+    // @include transition.set((border), $search-box--transition-speed);
+
+    &-icon {
+        // border: 3px solid red;
+        background: transparent var(--icon) center no-repeat;
+        height: 20px;
+        width: 20px;
+        display: inline-block;
+        margin-left: $spacer * 1.4;
+    }
+
+    & form {
+        min-width: 100%;
+        border-radius: $search-box--border-radius;
+        border-style: solid;
+        @include var.set('border-width', 'search-box--border-width', $search-box--border-width);
+        @include var.set('border-color', 'search-box--border-color', $search-box--border-color);
+        @include transition.set((border-color), $search-box--transition-speed);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        & input {
+            flex-grow: 1;
+            border: none;
+            background: none;
+            // padding: .4rem .6rem;
+            @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
+            @include spaces.margin( .25rem, .125rem, .25rem, .125rem );        
+
+            &:focus {
+                outline: none !important;
+                border: none;
+            }
+        }
+
+    //     // button {
+    //     //     display: none;
+    //     // }
+    }
+
+    &.focus {
+        & form {
+            @include var.set('border-color', 'search-box--border-color--focus', $search-box--border-color--focus);
+        }
+    }
+
+    // /// Component definition
+    // /// --
+
+    // // @include flex.row;
+    // // @include spaces.padding(6px, 6px, 6px, 6px);
+    // // @include corner.rounded(6px);
+    // // @include theme.property(background-color, searchbar--background-color);
+    
+    // &-control {
+    //     // @include theme.property(color, searchbar--color);
+    //     background: none;
+    //     border: none;
+    //     outline: none;
+    
+    //     &::placeholder {
+    //         // @include theme.property(color, searchbar--placeholder-color);
+    //         opacity: 1;
+    //     }
+    //     &::-ms-input-placeholder {
+    //         // @include theme.property(color, searchbar--placeholder-color);
+    //     }
+    //     // &::-webkit-search-cancel-button{
+    //     //     @include theme.property(color, searchbar--placeholder-color);
+    //     //     @include theme.property(background-color, searchbar--placeholder-color);
+    //     //     position:relative;
+    //     //     right:20px;    
+    //     // }
+    //     // &::-webkit-search-cancel-button {
+    //     //     // -webkit-appearance: none;
+    //     //     content: URL();
+    //     //     cursor: pointer;
+    //     // }
+    // }
+    
+    // &-submit {
+    //     @include flex.middle;
+    //     // @include theme.property(color, searchbar--color);
+    //     background: none;
+    //     border: none;
+    // }
+
+
+
+    // &-suggestions {
+    //     position: absolute;
+    //     // top: 38px;
+    //     left: 0;
+    //     right: 0;
+    //     z-index: 1;
+    //     border: 1px solid #ccc;
+    //     border-top: none;
+    //     background-color: white;
+    //     max-height: 150px;
+    //     overflow-y: auto;
+    //     margin: 0;
+    //     display: none;
+    // }
+    
+    // // & > .#{$prefix}modal-header {
+    // //     display: flex;
+    // // }
+
+    // & > .#{$prefix}modal {
+    //     // display: flex;
+
+    //     .#{$_classname}-suggestions {
+    //         display: block;
+
+    //         position: relative;
+    //         // height: 100%;
+    //         border: none;
+
+    //         max-height: none;
+    //     }
+    // }
+    
+}

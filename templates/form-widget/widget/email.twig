@@ -1,0 +1,51 @@
+{% extends '@UxComponents/form-widget/container.twig' %}
+
+{# 
+TODO : Add attributes:
+- `list`
+- `size`
+#}
+
+{% block widget %}
+{% include "@UxComponents/form-widget/tag/label/tag.twig" with {
+    id      : id,
+    label   : label,
+    hidden  : labelHidden,
+    icon    : labelIcon,
+    required: required,
+} only %}
+{% embed "@UxComponents/form-widget/group.twig" with {
+    isGroup     : isGroup,
+    icon        : icon,
+    iconPosition: iconPosition
+} %}{% block controls %}
+    {% include "@UxComponents/form-widget/tag/input/tag.twig" with {
+        autocomplete: autocomplete,
+        autofocus   : autofocus,
+        class       : class,
+        dirname     : dirname,
+        disabled    : disabled,
+        form        : form,
+        id          : id,
+        maxlength   : maxlength,
+        minlength   : minlength,
+        multiple    : multiple,
+        name        : name,
+        pattern     : pattern,
+        placeholder : placeholder,
+        readonly    : readonly,
+        required    : required,
+        tabindex    : tabindex,
+        title       : title,
+        spellcheck  : spellcheck,
+        type        : type,
+        value       : value,
+    } only %}
+{% endblock controls %}{% endembed %}
+{% include "@UxComponents/form-widget/tag/description/tag.twig" with {
+    tag    : descriptionTag,
+    icon   : descriptionIcon,
+    id     : descriptionId,
+    message: description,
+} only %}
+{% endblock widget %}

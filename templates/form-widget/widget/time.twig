@@ -1,0 +1,29 @@
+{% extends '@UxComponents/form-widget/container.twig' %}
+
+
+{% block widget %}
+{% include "@UxComponents/form-widget/tag/label/tag.twig" with {
+    id      : id,
+    label   : label,
+    hidden  : labelHidden,
+    icon    : labelIcon,
+    required: required,
+} only %}
+{% embed "@UxComponents/form-widget/group.twig" with {
+    isGroup     : true,
+    icon        : icon,
+    iconPosition: iconPosition
+} %}{% block controls %}
+
+    {% for part in formatInput %}{% if _times[part] is defined %}
+    {% include "@UxComponents/form-widget/tag/select/tag.twig" with _times[part] only %}
+    {% endif %}{% endfor %}
+
+{% endblock controls %}{% endembed %}
+{% include "@UxComponents/form-widget/tag/description/tag.twig" with {
+    tag    : descriptionTag,
+    icon   : descriptionIcon,
+    id     : descriptionId,
+    message: description,
+} only %}
+{% endblock widget %}

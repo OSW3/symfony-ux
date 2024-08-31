@@ -1,0 +1,24 @@
+<div {{ _get_attributes(_attr) }}>
+    <twig:Search:Form 
+        :method="method" 
+        :param="param" 
+        :placeholder="placeholder"
+        :autocomplete="autocomplete"
+        :label="label"
+    />
+
+    {% if type == 'modal' %}
+        <twig:Search:Modal 
+            :id="id" 
+            :method="method" 
+            :param="param" 
+            :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :label="label"
+        />
+    {% elseif type == 'list' %}
+    <twig:Search:Suggestions 
+        :id="id" 
+    />
+    {% endif %}
+</div>

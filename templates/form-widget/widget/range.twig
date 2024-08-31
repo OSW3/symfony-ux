@@ -1,0 +1,45 @@
+{% extends '@UxComponents/form-widget/container.twig' %}
+
+{% block widget %}
+{% include "@UxComponents/form-widget/tag/label/tag.twig" with {
+    id      : id,
+    label   : label,
+    hidden  : labelHidden,
+    icon    : labelIcon,
+    required: required,
+} only %}
+{% embed "@UxComponents/form-widget/group.twig" with {
+    isGroup     : isGroup,
+    icon        : icon,
+    iconPosition: iconPosition
+} %}{% block controls %}
+
+    {% include "@UxComponents/form-widget/tag/input/tag.twig" with {
+        autofocus : autofocus,
+        class     : class,
+        disabled  : disabled,
+        form      : form,
+        id        : id,
+        max       : max,
+        min       : min,
+        name      : name,
+        readonly  : readonly,
+        required  : required,
+        step      : step,
+        tabindex  : tabindex,
+        title     : title,
+        type      : type,
+        value     : value,
+        spellcheck: true,
+    } only %}
+
+    - output
+    
+{% endblock controls %}{% endembed %}
+{% include "@UxComponents/form-widget/tag/description/tag.twig" with {
+    tag    : descriptionTag,
+    icon   : descriptionIcon,
+    id     : descriptionId,
+    message: description,
+} only %}
+{% endblock widget %}

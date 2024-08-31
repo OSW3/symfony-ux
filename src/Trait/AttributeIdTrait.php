@@ -5,14 +5,19 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 trait AttributeIdTrait
 {
-    #[ExposeInTemplate(name: 'id')]
-    public string $id;
+    #[ExposeInTemplate(name: 'id', getter: 'fetchId')]
+    public string|null $id;
 
     private function idResolver(&$resolver): static
     {
-        $resolver->setDefault('id', "");
-        $resolver->setAllowedTypes('id', ['string']);
+        $resolver->setDefault('id', null);
+        $resolver->setAllowedTypes('id', ['string','null']);
 
         return $this;
+    }
+
+    public function fetchId(): ?string
+    {
+        return $this->id;
     }
 }

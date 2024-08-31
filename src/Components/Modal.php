@@ -39,7 +39,7 @@ final class Modal extends AbstractComponent
     public string $header;
     
     #[ExposeInTemplate(name: 'headerTemplate', getter: 'doNotExpose')]
-    public string $headerTemplate;
+    public ?string $headerTemplate;
     
     #[ExposeInTemplate(name: 'headerOptions', getter: 'doNotExpose')]
     public array $headerOptions;
@@ -51,7 +51,7 @@ final class Modal extends AbstractComponent
     public string $body;
     
     #[ExposeInTemplate(name: 'bodyTemplate', getter: 'doNotExpose')]
-    public string $bodyTemplate;
+    public ?string $bodyTemplate;
     
     #[ExposeInTemplate(name: 'bodyOptions', getter: 'doNotExpose')]
     public array $bodyOptions;
@@ -63,7 +63,7 @@ final class Modal extends AbstractComponent
     public string $footer;
     
     #[ExposeInTemplate(name: 'footerTemplate', getter: 'doNotExpose')]
-    public string $footerTemplate;
+    public ?string $footerTemplate;
     
     #[ExposeInTemplate(name: 'footerOptions', getter: 'doNotExpose')]
     public array $footerOptions;
@@ -99,7 +99,7 @@ final class Modal extends AbstractComponent
 
         $resolver->setDefault('headerTemplate', "");
         // $resolver->setDefault('headerTemplate', $options['header_template']);
-        $resolver->setAllowedTypes('headerTemplate', ['string']);
+        $resolver->setAllowedTypes('headerTemplate', ['null','string']);
 
         $resolver->setDefault('headerOptions', []);
         $resolver->setAllowedTypes('headerOptions', ['array']);
@@ -110,7 +110,7 @@ final class Modal extends AbstractComponent
 
         $resolver->setDefault('bodyTemplate', "");
         // $resolver->setDefault('headerTemplate', $options['body_template']);
-        $resolver->setAllowedTypes('bodyTemplate', ['string']);
+        $resolver->setAllowedTypes('bodyTemplate', ['null','string']);
 
         $resolver->setDefault('bodyOptions', []);
         $resolver->setAllowedTypes('bodyOptions', ['array']);
@@ -121,7 +121,7 @@ final class Modal extends AbstractComponent
 
         $resolver->setDefault('footerTemplate', "");
         // $resolver->setDefault('headerTemplate', $options['footer_template']);
-        $resolver->setAllowedTypes('footerTemplate', ['string']);
+        $resolver->setAllowedTypes('footerTemplate', ['null','string']);
 
         $resolver->setDefault('footerOptions', []);
         $resolver->setAllowedTypes('footerOptions', ['array']);
@@ -155,6 +155,8 @@ final class Modal extends AbstractComponent
     {
         $content = $this->header;
 
+        $this->headerOptions['id'] = $this->id;
+
         if (!empty($this->headerTemplate)) $content = $this->environment->render(
             $this->headerTemplate, 
             $this->headerOptions
@@ -167,6 +169,8 @@ final class Modal extends AbstractComponent
     {
         $content = $this->body;
 
+        $this->bodyOptions['id'] = $this->id;
+
         if (!empty($this->bodyTemplate)) $content = $this->environment->render(
             $this->bodyTemplate, 
             $this->bodyOptions
@@ -178,6 +182,8 @@ final class Modal extends AbstractComponent
     public function fetchFooter(): string
     {
         $content = $this->footer;
+
+        $this->footerOptions['id'] = $this->id;
 
         if (!empty($this->footerTemplate)) $content = $this->environment->render(
             $this->footerTemplate, 

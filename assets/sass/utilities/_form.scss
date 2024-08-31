@@ -1,0 +1,274 @@
+// ************************************************************************** //
+// *
+// *    Components: Search bar
+// *
+// ************************************************************************** //
+
+// @use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/corner';
+// @use './../abstracts/mixins/spaces';
+
+$_component: 'form-widget';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component functions
+// *
+// * =============================================
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default layout variables
+// * =========================
+
+$form-widget--space: $spacer * 2 !default;
+$form-widget--required-symbol: '*' !default;
+
+$form-widget--control--border-width: 1px !default;
+$form-widget--control--radius: map-get($radius, 'small') !default;
+$form-widget--control--padding-x: .75rem !default;
+$form-widget--control--padding-y: .375rem !default;
+
+$form-widget--control-file--selector-width: 130px !default;
+
+
+
+// * Default theme variables
+// * =========================
+
+$form-widget--label--text-color: $black !default;
+$form-widget--required-symbol--text-color: $red !default;
+
+$form-widget--group--text-color: $black !default;
+$form-widget--group--background-color: $gray-100 !default;
+
+$form-widget--control--text-color: $black !default;
+$form-widget--control--text-color--disabled: $gray-600 !default;
+$form-widget--control--background-color: $white !default;
+$form-widget--control--background-color--disabled: $gray-200 !default;
+$form-widget--control--border-color: $gray-300 !default;
+$form-widget--control--border-color--disabled: $gray-300 !default;
+
+$form-widget--description--text-color: $gray-600 !default;
+
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+    // border: 3px solid red;
+    // padding: 1rem;
+
+    // Space between form-widget
+    & + &,
+    &-control[type=hidden] + & {
+        margin-top: $spacer;
+    }
+
+    // Label
+    &-label {
+        display: inline-block;
+        margin-bottom: .5rem;
+        color: $form-widget--label--text-color;
+        
+        &[hidden] {
+            display: none !important;
+        }
+
+        &.required::after {
+            content: $form-widget--required-symbol;
+            color: $form-widget--required-symbol--text-color;
+            padding-left: 4px;
+        }
+    }
+
+    // Control 
+    &-control {
+        $font-size: 1rem;
+
+        display: block;
+        width: 100%;
+
+        padding: $form-widget--control--padding-y $form-widget--control--padding-x;
+        margin: 0;
+
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+
+        color: $form-widget--control--text-color;
+        background-color: $form-widget--control--background-color;
+        border-width: $form-widget--control--border-width;
+        border-style: solid;
+        border-color: $form-widget--control--border-color;
+        border-radius: $form-widget--control--radius;
+
+        &-small {
+            padding: .25rem .5rem;
+            font-size: $font-size * 0.875;
+        }
+        &-large {
+            padding: .5rem 1rem;
+            font-size: $font-size * 1.25;
+        }
+
+        &-plaintext {
+            padding: $form-widget--control--padding-y 0;
+            background-color: transparent;
+            border-color: transparent;
+
+            &:focus {
+                outline: 0;
+            }
+        }
+
+        &:disabled {
+            background-color: $form-widget--control--background-color--disabled;
+            border-color: $form-widget--control--border-color--disabled;
+            &:not([readonly]) {
+                color: $form-widget--control--text-color--disabled;
+            }
+        }
+
+
+        // Input File
+
+        &[type=file] {
+            position: relative;
+            // display: flex;
+            padding-left: calc($form-widget--control-file--selector-width + $form-widget--control--padding-x);
+        }
+        &[type=file]:not(:disabled):not([readonly]) {
+            cursor: pointer;
+        }
+        &[type=file]:not(:disabled):not([readonly]):hover::file-selector-button {
+            background-color: $gray-400;
+        }
+        &[type=file]::file-selector-button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: $form-widget--control-file--selector-width;
+            height: 100%;
+
+            cursor: inherit;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: start;
+            
+            color: $form-widget--control--text-color;
+            background-color: $gray-200;
+            border: none;
+
+            // margin-top: -.375rem;
+            // margin-left: -.75rem;
+            padding: $form-widget--control--padding-y $form-widget--control--padding-x;
+            margin: 0;
+            transition: .3s;
+        }
+        &[type=file]:disabled::file-selector-button {
+            color: $form-widget--control--text-color--disabled;
+        }
+
+
+        // Input Color
+
+        &[type=color] {
+            width: 3rem;
+            height: 2.5rem;
+            padding: .375rem;
+        }
+
+
+        &[type=checkbox],
+        &[type=radio] {
+            display: inline-block;
+            width: auto;
+        }
+    }
+
+    &-group {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: stretch;
+        width: 100%;
+
+        &-text {
+            display: flex;
+            align-items: center;
+            padding: $form-widget--control--padding-y $form-widget--control--padding-x;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: $form-widget--group--text-color;
+            text-align: center;
+            white-space: nowrap;
+            background-color: $form-widget--group--background-color;
+            border-width: $form-widget--control--border-width;
+            border-style: solid;
+            border-color: $form-widget--control--border-color;
+            border-radius: 0;
+            // border-radius: $form-widget--control--radius;
+        }
+    }
+    &-group &-control {
+        position: relative;
+        // display: flex;
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+        border-radius: 0;
+    }
+    &-group * {
+        margin-left: $form-widget--control--border-width * -1;
+    }
+    &-group :first-child {
+        @include corner.start($form-widget--control--radius);
+        margin-left: 0;
+        // border-right-width: 0;
+    }
+    &-group :last-child {
+        @include corner.end($form-widget--control--radius);
+        // border-left-width: 0;
+    }
+
+    // Description
+    &-description {
+        margin: .25rem 0 0 0 ;
+        font-size: .875em;
+        color: $form-widget--description--text-color;
+    }
+}
+
+.#{$_classname} {
+    &-tel &-group {
+        & select {
+            flex: 120px 0 0;
+            text-align: end;
+        }
+        & input {
+            // flex: 1 1 auto;
+            flex-grow: 1;
+        }
+    }
+}

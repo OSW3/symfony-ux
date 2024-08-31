@@ -1,0 +1,44 @@
+{% extends '@UxComponents/form-widget/container.twig' %}
+
+{% block widget %}
+{% include "@UxComponents/form-widget/tag/label/tag.twig" with {
+    id      : id,
+    label   : label,
+    hidden  : labelHidden,
+    icon    : labelIcon,
+    required: required,
+} only %}
+{% embed "@UxComponents/form-widget/group.twig" with {
+    isGroup     : isGroup,
+    icon        : icon,
+    iconPosition: iconPosition
+} %}{% block controls %}
+
+    <div>- SELECT Month {{ type }}</div>
+    {# {% include "@UxComponents/form-widget/tag/select/tag.twig" with {
+        id          : id,
+        type        : type,
+        name        : name,
+        class       : class,
+        value       : value,
+        placeholder : placeholder,
+        autocomplete: autocomplete,
+        autofocus   : autofocus,
+        dirname     : dirname,
+        disabled    : disabled,
+        form        : form,
+        maxlength   : maxlength,
+        minlength   : minlength,
+        pattern     : pattern,
+        required    : required,
+        readonly    : readonly,
+    } only %} #}
+     
+{% endblock controls %}{% endembed %}
+{% include "@UxComponents/form-widget/tag/description/tag.twig" with {
+    tag    : descriptionTag,
+    icon   : descriptionIcon,
+    id     : descriptionId,
+    message: description,
+} only %}
+{% endblock widget %}

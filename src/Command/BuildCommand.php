@@ -4,6 +4,7 @@ namespace OSW3\UX\Command;
 
 use Symfony\Component\Filesystem\Path;
 use OSW3\UX\DependencyInjection\Configuration;
+use OSW3\UX\Enum\SearchBox\Type;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -83,6 +84,7 @@ class BuildCommand extends Command
             'accordions'    => $this->accordions($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
             'offcanvas'     => $this->offcanvas($sassVariables, $value),
+            'search_box'    => $this->searchBox($scriptVariables, $value),
             'scroll_to_top' => $this->scrollToTop($sassVariables, $value),
             default => null,
         };
@@ -278,6 +280,12 @@ class BuildCommand extends Command
     private function offcanvas(array &$vars, $options)
     {
         // $vars[] = "\$offcanvas--has-backdrop: ".($options['backdrop'] ? 'true' : 'false').";";
+    }
+    
+    private function searchBox(array &$vars, $options)
+    {
+        $vars[] = "export const SEARCH_BOX_TYPES = ['". implode("','", Type::toArray()) ."'];";
+        $vars[] = "export const SEARCH_BOX_SHORTCUT = '{$options['shortcut']}';";
     }
 
     private function scrollToTop(array &$vars, $options)

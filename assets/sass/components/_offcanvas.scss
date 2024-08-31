@@ -39,7 +39,12 @@ $offcanvas--has-backdrop: if(meta.global-variable-exists('offcanvas--has-backdro
 // * Default layout variables
 // * =========================
 
-$offcanvas--width: 280px !default;
+$overlay-blur : 10px;
+$overlay-opacity: 0.5;
+$overlay-color: $black;
+
+// Todo: make it resonsive
+$offcanvas--content--width: 280px !default;
 
 
 // * Default theme variables
@@ -62,58 +67,151 @@ $offcanvas--footer--background-color: $gray-200 !default;
 }
 
 .#{$_classname} {
-    @include flex.column;
-    @include position.fixed(0, null, 0, null);
-    @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
-    @include transition.set((opacity, left, right, box-shadow), map-get($delays, normal));
 
     opacity: 0;
-    width: $offcanvas--width;
-    max-width: 100%;
-    max-height: 100%;
-    z-index: $z-index--offcanvas;
-    
+    display: none;
+    // overflow: auto;
+    flex-direction: row;
+    justify-content: start;
+
+    @include position.fixed(0,0,0,0);
+    @include transition.set((opacity), map-get($delays, normal));
+
+    &:not(&-no-backdrop) {
+        background-color: #{rgba($overlay-color, $overlay-opacity)};
+        backdrop-filter: blur($overlay-blur);
+    }
+
+    &-content {
+        width: $offcanvas--content--width;
+
+        @include flex.column;
+        @include position.fixed(0, null, 0, null);
+        @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
+        @include transition.set((opacity, left, right, box-shadow), map-get($delays, normal));
+    }
+
     &-left {
-        @include position.left( -$offcanvas--width );
-        &.show {
-            @include position.left(0);
+        justify-content: start;
+        .#{$_classname}-content {
+            @include position.left( $offcanvas--content--width * -1 );
+        }
+        &.open {
+            .#{$_classname}-content {
+                @include position.left(0);
+            }
         }
     }
     &-right {
-        @include position.right( -$offcanvas--width );
-        &.show {
-            @include position.right(0);
+        justify-content: end;
+        .#{$_classname}-content {
+            @include position.right( $offcanvas--content--width * -1 );
+        }
+        &.open {
+            .#{$_classname}-content {
+                @include position.right(0);
+            }
         }
     }
+
 
     &-inner {
         display: block;
         width: 100%;
         padding: map-get($spacers, 2) map-get($spacers, 3);
     }
-    &-header {
+
+    &-header, &-body, &-footer {
         z-index: 1;
+        padding: map-get($spacers, 2) map-get($spacers, 3);
+    }
+    &-header {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        // z-index: 1;
         @include var.set('background-color', 'offcanvas--header--background-color', $offcanvas--header--background-color);
     }
     &-body {
-        z-index: 1;
+        // z-index: 1;
         flex-grow: 1;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
     }
     &-footer {
-        z-index: 1;
+        // z-index: 1;
         @include var.set('background-color', 'offcanvas--footer--background-color', $offcanvas--footer--background-color);
     }
 
     & .#{$prefix}button-close {
         z-index: 2;
-        @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+        // @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
         @include sizes.set(6px,6px);
     }
 
-    &.show {
+    &.open {
         opacity: 1;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        z-index: 2;
+        .#{$_classname}-content {
+            box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        }
     }
 }
+
+// .#{$_classname} {
+//     @include flex.column;
+//     @include position.fixed(0, null, 0, null);
+//     @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
+//     @include transition.set((opacity, left, right, box-shadow), map-get($delays, normal));
+
+//     opacity: 0;
+//     width: $offcanvas--width;
+//     max-width: 100%;
+//     max-height: 100%;
+//     z-index: $z-index--offcanvas;
+    
+//     &-left {
+//         @include position.left( -$offcanvas--width );
+//         &.show {
+//             @include position.left(0);
+//         }
+//     }
+//     &-right {
+//         @include position.right( -$offcanvas--width );
+//         &.show {
+//             @include position.right(0);
+//         }
+//     }
+
+//     &-inner {
+//         display: block;
+//         width: 100%;
+//         padding: map-get($spacers, 2) map-get($spacers, 3);
+//     }
+//     &-header {
+//         z-index: 1;
+//         @include var.set('background-color', 'offcanvas--header--background-color', $offcanvas--header--background-color);
+//     }
+//     &-body {
+//         z-index: 1;
+//         flex-grow: 1;
+//         overflow-y: scroll;
+//         -webkit-overflow-scrolling: touch;
+//     }
+//     &-footer {
+//         z-index: 1;
+//         @include var.set('background-color', 'offcanvas--footer--background-color', $offcanvas--footer--background-color);
+//     }
+
+//     & .#{$prefix}button-close {
+//         z-index: 2;
+//         @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+//         @include sizes.set(6px,6px);
+//     }
+
+//     &.show {
+//         opacity: 1;
+//         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+//     }
+// }

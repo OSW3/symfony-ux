@@ -1,0 +1,110 @@
+{# ---------------------------------------------- #}
+{# - Component : Form Control                   - #}
+{# - Part : Base                               - #}
+{# ---------------------------------------------- #}
+{# {{ dump(type) }} #}
+{% extends '@UxComponents/form-widget/widget/'~ type ~'.twig' %}
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+
+
+{# -- Shared data ------------------------------- #}
+{# ---------------------------------------------- #}
+
+{% set _dates = {
+    day: {
+        autofocus: autofocus,
+        choices  : days,
+        class    : null,
+        disabled : disabled,
+        form     : form,
+        id       : id ~'_day',
+        multiple : false,
+        name     : name ~'[day]',
+        required : required,
+        selected : selectedDay,
+        tabindex : tabindex,
+        title    : title,
+    }, 
+    month: {
+        autofocus: false,
+        choices  : months,
+        class    : null,
+        disabled : disabled,
+        form     : form,
+        id       : id ~'_month',
+        multiple : false,
+        name     : name ~'[month]',
+        required : required,
+        selected : selectedMonth,
+        tabindex : tabindex,
+        title    : title,
+    }, 
+    year: {
+        autofocus: false,
+        choices  : years,
+        class    : null,
+        disabled : disabled,
+        form     : form,
+        id       : id ~'_year',
+        multiple : false,
+        name     : name ~'[year]',
+        required : required,
+        selected : selectedYear,
+        tabindex : tabindex,
+        title    : title,
+    }
+} %}
+
+{% set _times = {
+    hour: {
+        autofocus: autofocus,
+        choices  : hours,
+        class    : null,
+        disabled : disabled,
+        form     : form,
+        id       : id ~'_hour',
+        multiple : false,
+        name     : name ~'[hour]',
+        required : required,
+        selected : selectedHour,
+        tabindex : tabindex,
+        title    : title,
+    }, 
+    minute: {
+        autofocus: false,
+        choices  : minutes,
+        class    : null,
+        disabled : disabled,
+        form     : form,
+        id       : id ~'_minute',
+        multiple : false,
+        name     : name ~'[minute]',
+        required : required,
+        selected : selectedMinute,
+        tabindex : tabindex,
+        title    : title,
+    }, 
+    second: {
+        autofocus: false,
+        choices  : seconds,
+        class    : null,
+        disabled : disabled,
+        form     : form,
+        id       : id ~'_second',
+        multiple : false,
+        name     : name ~'[second]',
+        required : required,
+        selected : selectedSecond,
+        tabindex : tabindex,
+        title    : title,
+    }
+} %}

@@ -1,6 +1,7 @@
 <?php 
 namespace OSW3\UX\Components\Modal;
 
+use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\DoNotExposeTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Components\AbstractComponent;
@@ -15,6 +16,7 @@ final class Section extends AbstractComponent
     public const NAME = "modal";
     
     use DoNotExposeTrait;
+    use AttributeIdTrait;
     use AttributeClassTrait;
     
     #[ExposeInTemplate(name: 'section', getter: 'doNotExpose')]
@@ -29,6 +31,9 @@ final class Section extends AbstractComponent
     {
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
+
+        $resolver->setRequired('id');
+        $resolver->setAllowedTypes('id', ['string']);
 
         $resolver->setDefaults(['section' => "body"]);
         $resolver->setAllowedTypes('section', ['string']);

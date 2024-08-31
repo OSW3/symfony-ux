@@ -1,0 +1,36 @@
+{# ---------------------------------------------- #}
+{# - Component : Search Box                     - #}
+{# - Part : Symbol                              - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/search-box/symbol.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{% if type == 'webfont' %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% endif %}
+
+{# {% set _attr = _add_attribute(_attr, 'name', name) %}
+{% set _attr = _add_attribute(_attr, 'method', method) %}
+{% set _attr = _add_attribute(_attr, 'action', action) %}
+{% set _attr = _add_attribute(_attr, 'autocomplete', 'off') %} #}
+
+{# {% for _property, _value in dataset %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %} #}
+
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{# {% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %} #}

@@ -87,9 +87,12 @@ class Button extends AbstractComponent
         $resolver->setDefaults(['target' => "_self"]);
         $resolver->setAllowedTypes('target', ['string']);
 
-        $resolver->setDefaults(['is' => Palette::PRIMARY->value]);
+        $defaultIsValue = 'none';
+        $allowedIsValues = Palette::toArray();
+        $allowedIsValues = array_merge([$defaultIsValue => $defaultIsValue], $allowedIsValues);
+        $resolver->setDefaults(['is' => $defaultIsValue]);
         $resolver->setAllowedTypes('is', ['string']);
-        $resolver->setAllowedValues('is', Palette::toArray());
+        $resolver->setAllowedValues('is', $allowedIsValues);
 
         $resolver->setDefaults(['outline' => false]);
         $resolver->setAllowedTypes('outline', ['boolean']);

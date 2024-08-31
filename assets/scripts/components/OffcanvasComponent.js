@@ -7,7 +7,7 @@
 
 import { getPrefix } from "../utils/prefix";
 import ButtonComponent from "./ButtonComponent";
-import OverlayComponent from "./OverlayComponent";
+// import OverlayComponent from "./OverlayComponent";
 
 
 /** @var string Component classname */
@@ -20,30 +20,24 @@ const PREFIX = getPrefix();
 const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
 
 /** @var array Allowed actions */
-const ACTIONS = ['show','hide','toggle'];
+const ACTIONS = ['open','close','toggle'];
 
 /** @var string State classname */
-const CLASS_OPEN = 'show';
+const CLASS_OPEN = 'open';
 
 
 export default class OffcanvasComponent
 {
     #node;
-    #hasBackdrop = true;
-    #overlay;
+    #document;
     
     constructor(node)
     {
         this.#node = node;
-        this.#hasBackdrop = !this.#node.classList.contains(`${PREFIX}${NAME}-no-backdrop`);
+        this.#document = document.querySelector('body');
         
         if (!this.#node.id) {
             return;
-        }
-
-        if (this.#hasBackdrop) {
-            this.#overlay = new OverlayComponent(this.#node);
-            this.#overlay.onClick(() => this.hide());
         }
 
         document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
@@ -53,20 +47,75 @@ export default class OffcanvasComponent
                 }
             }
         })
+
+        // this.#node.onclick = this.close.bind(this);
+        document.addEventListener('click', (event) => {
+            if (event.target == this.#node) {
+                event.stopImmediatePropagation();
+                this.close();
+            }
+        });
+
+        if (this.#node.classList.contains(CLASS_OPEN)) {
+            this.open();
+        }
     }
 
-    show() {
-        this.#node.classList.add(CLASS_OPEN);
-        if (this.#hasBackdrop) this.#overlay.show();
+    open() {
+        this.#node.style.display = 'flex';
+        this.#document.classList.add(`${PREFIX}no-scroll`);
+        setTimeout(() => this.#node.classList.add(CLASS_OPEN),1);
     }
-    hide() {
-        this.#node.classList.remove(CLASS_OPEN);
-        if (this.#hasBackdrop) this.#overlay.hide();
+    close() {
+        this.#document.classList.remove(`${PREFIX}no-scroll`);
+        this.#node.classList.remove(CLASS_OPEN)
+        setTimeout(() => this.#node.style.display = 'none', 300);
     }
     toggle() {
-        this.#node.classList.toggle(CLASS_OPEN);
-        if (this.#hasBackdrop) this.#overlay.toggle();
+        !this.#node.classList.contains(CLASS_OPEN) ? this.open() : this.close();
     }
 }
+// export default class OffcanvasComponent
+// {
+//     #node;
+//     #hasBackdrop = true;
+//     #overlay;
+    
+//     constructor(node)
+//     {
+//         this.#node = node;
+//         this.#hasBackdrop = !this.#node.classList.contains(`${PREFIX}${NAME}-no-backdrop`);
+        
+//         if (!this.#node.id) {
+//             return;
+//         }
+
+//         if (this.#hasBackdrop) {
+//             this.#overlay = new OverlayComponent(this.#node);
+//             this.#overlay.onClick(() => this.hide());
+//         }
+
+//         document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
+//             new ButtonComponent(trigger).onClick = (event, element) => {
+//                 if (ACTIONS.includes(event.target.dataset.action)) {
+//                     this[event.target.dataset.action]();
+//                 }
+//             }
+//         })
+//     }
+
+//     show() {
+//         this.#node.classList.add(CLASS_OPEN);
+//         if (this.#hasBackdrop) this.#overlay.show();
+//     }
+//     hide() {
+//         this.#node.classList.remove(CLASS_OPEN);
+//         if (this.#hasBackdrop) this.#overlay.hide();
+//     }
+//     toggle() {
+//         this.#node.classList.toggle(CLASS_OPEN);
+//         if (this.#hasBackdrop) this.#overlay.toggle();
+//     }
+// }
 
 document.querySelectorAll(SELECTOR).forEach(node => new OffcanvasComponent(node));

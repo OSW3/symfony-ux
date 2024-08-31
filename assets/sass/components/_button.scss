@@ -47,6 +47,21 @@ $_classname: '#{$prefix}#{$_component}';
 // * =========================
 
 .#{$_classname} {
+
+    --#{$_classname}--text: #{$black};
+    --#{$_classname}--text-hover: #{$black};
+    --#{$_classname}--text-active: #{$black};
+    --#{$_classname}--text-disabled: #{$black};
+    --#{$_classname}--background: transparent;
+    --#{$_classname}--background-hover: transparent;
+    --#{$_classname}--background-active: transparent;
+    --#{$_classname}--background-disabled: transparent;
+    --#{$_classname}--border: transparent;
+    --#{$_classname}--border-hover: transparent;
+    --#{$_classname}--border-active: transparent;
+    --#{$_classname}--border-disabled: transparent;
+    --#{$_classname}--focus: transparent;
+
     @each $key, $value in $palette {
 
         $base-color: map-get($palette, $key);
@@ -103,6 +118,8 @@ $_classname: '#{$prefix}#{$_component}';
     @include corner.rounded(6px);
     @include transition.set((background-color, border-color, color), .3s);
     @include spaces.padding( $spacer * .6, $spacer * 1.4, $spacer * .6, $spacer * 1.4 );
+    @include spaces.margin( .25rem, .125rem, .25rem, .125rem );
+    
 
     @include var.set('color', '#{$_classname}--text');
     @include var.set('background-color', '#{$_classname}--background');

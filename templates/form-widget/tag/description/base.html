@@ -1,0 +1,6 @@
+{% if render %}
+<{{ tag }} {{ _get_attributes(_attr) }}>
+    {% if icon is not empty %}<i class="{{ icon }}"></i>{% endif %}
+    {{ message|raw }}
+</{{ tag }}>
+{% endif %}

@@ -158,6 +158,8 @@ final class Offcanvas extends AbstractComponent
     {
         $content = $this->header;
 
+        $this->headerOptions['id'] = $this->id;
+
         if (!empty($this->headerTemplate)) $content = $this->environment->render(
             $this->headerTemplate, 
             $this->headerOptions
@@ -170,6 +172,8 @@ final class Offcanvas extends AbstractComponent
     {
         $content = $this->body;
 
+        $this->bodyOptions['id'] = $this->id;
+
         if (!empty($this->bodyTemplate)) $content = $this->environment->render(
             $this->bodyTemplate, 
             $this->bodyOptions
@@ -181,6 +185,8 @@ final class Offcanvas extends AbstractComponent
     public function fetchFooter(): string
     {
         $content = $this->footer;
+
+        $this->footerOptions['id'] = $this->id;
 
         if (!empty($this->footerTemplate)) $content = $this->environment->render(
             $this->footerTemplate, 

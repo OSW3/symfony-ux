@@ -1,0 +1,24 @@
+{# ---------------------------------------------- #}
+{# - Component : Search                         - #}
+{# - Part : Modal                               - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/search/modal.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+
+{% set headerTemplate = "@UxComponents/search/form.twig" %}
+{% set headerOptions = {
+    method      : method,
+    param       : param,
+    placeholder : placeholder,
+    autocomplete: autocomplete,
+    label       : label
+} %}
+
+{% set bodyTemplate = "@UxComponents/search/suggestions.twig" %}
+{% set bodyOptions = {} %}
+
+{% set footerTemplate = null %}
+{% set footerOptions = {} %}

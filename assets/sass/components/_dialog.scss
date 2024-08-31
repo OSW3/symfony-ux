@@ -49,17 +49,39 @@ $overlay-color: $black;
 
 .#{$_classname} {
 
-    display: none;
-    opacity: 0;
+    // display: block;
+    // opacity: 0;
 
-    background-color:  #{rgba($overlay-color, $overlay-opacity)};
-    backdrop-filter: blur($overlay-blur);
+    // background-color:  #{rgba($overlay-color, $overlay-opacity)};
+    // backdrop-filter: blur($overlay-blur);
 
-    @include position.fixed(0,0,0,0);
-    @include transition.set((opacity), map-get($delays, normal));
+    // @include position.fixed(0,0,0,0);
+    // @include transition.set((opacity), map-get($delays, normal));
 
-    &.open {
-        opacity: 1;
-    }
+    // &.open {
+    //     opacity: 1;
+    // }
     
 }
+
+dialog {
+    background-color: red;
+}
+
+dialog::backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    background-image: linear-gradient(
+      45deg,
+      magenta,
+      rebeccapurple,
+      dodgerblue,
+      green
+    );
+    opacity: 0.75;
+  }
+  

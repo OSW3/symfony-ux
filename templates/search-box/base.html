@@ -1,0 +1,56 @@
+{# {{ dump({
+    id: id,
+    type: type,
+    shortcut: shortcut,
+    request: request,
+    field: field,
+    symbol: symbol,
+    param: param,
+    placeholder: placeholder,
+    submit: submit,
+}) }} #}
+
+<div {{ _get_attributes(_attr) }}>
+
+    <twig:SearchBox:Form 
+        _form
+        :id="id"
+        :isMain="true"
+        :method="method" 
+        :action="action" 
+
+        _symbol
+        :symbol="symbol"
+
+        _input
+        :param="param"
+        :placeholder="placeholder"
+
+        _button
+        :button="submit"
+    />
+        
+        {#
+    {% if type == 'modal' %}
+    <div>Modal Form</div>
+    {% elseif type == 'full-page' %}
+    <div>Full Page Form</div>
+    {% endif %}
+     #}
+    
+    {#
+    {% if type == 'modal' %}
+        <twig:Search:Modal 
+            :id="id" 
+            :method="method" 
+            :param="param" 
+            :placeholder="placeholder"
+            :autocomplete="autocomplete"
+            :label="label"
+        />
+    {% elseif type == 'list' %}
+    <twig:Search:Suggestions 
+        :id="id" 
+    />
+    {% endif %} #}
+</div>

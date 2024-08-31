@@ -6,12 +6,12 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 trait AttributeClassTrait
 {    
     #[ExposeInTemplate(name: 'class', getter: 'fetchClass')]
-    public string $class;
+    public string|null $class;
 
     private function classResolver(&$resolver): static
     {
-        $resolver->setDefault('class', "");
-        $resolver->setAllowedTypes('class', ['string']);
+        $resolver->setDefault('class', null);
+        $resolver->setAllowedTypes('class', ['string', 'null']);
 
         return $this;
     }
@@ -21,12 +21,12 @@ trait AttributeClassTrait
         return implode(" ", $this->classList());
     }
 
-    private function classList(): array
+    public function classList(): array
     {
         $classList = [];
 
         if (method_exists($this, 'getComponentClassname')) {
-            $classList = [$this->getComponentClassname()];
+            $classList[] = $this->getComponentClassname();
         }
         
         if(!empty($this->class)) {

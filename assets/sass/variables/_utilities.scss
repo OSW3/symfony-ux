@@ -19,5 +19,10 @@ $sides: (
 );
 
 
+.#{$prefix}no-scroll {
+    overflow: hidden;
+    height: 100%;
+}
+
 $border-radius: 6px !default;
 

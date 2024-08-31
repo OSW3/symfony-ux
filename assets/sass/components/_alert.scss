@@ -29,6 +29,7 @@ $_classname: '#{$prefix}#{$_component}';
 // * =========================
 
 $alert--margin-y: $spacer !default;
+$alert--border-radius: map-get($radius, 'small') !default;
 
 
 // * Default theme variables
@@ -67,7 +68,7 @@ $alert--margin-y: $spacer !default;
     border-width: 1px;
     border-style: solid;
     @include position.relative;
-    @include corner.rounded(6px);
+    @include corner.rounded($alert--border-radius);
     @include sizes.width(100%);
 
     @include spaces.padding(

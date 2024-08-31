@@ -1,0 +1,34 @@
+<twig:FormWidget:Tag:Input
+    :type="type"
+    :id="id"
+    :name="name"
+    :class="class | default(null)"
+    :value="value"
+    :placeholder="placeholder | default(null)"
+    :accept="accept | default()"
+    :autocomplete="autocomplete | default(null)"
+    :autofocus="autofocus | default(false)"
+    :checked="checked | default(false)"
+    :dirname="dirname | default(false)"
+    :disabled="disabled | default(false)"
+    :form="form"
+    :maxlength="maxlength | default(null)"
+    :max="max | default(null)"
+    :minlength="minlength | default(null)"
+    :min="min | default(null)"
+    :multiple="multiple | default(false)"
+    :phoneCode="phoneCode | default(true)"
+    :phoneCodeChoice="phoneCodeChoice | default([])"
+    :pattern="pattern | default(null)"
+    :required="required | default(false)"
+    :readonly="readonly | default(false)"
+    :spellcheck="spellcheck | default(null)"
+    :step="step | default(null)"
+    :title="title | default(null)"
+/>{#:tab-index="tabindex | default(null)"  :size="size" #}
+
+{# 
+
+{% if noInteraction != true %}
+    {% set _attr = _add_attribute(_attr, 'data-has-interaction', true) %}
+{% endif %} #}

@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/banner';
@@ -49,6 +50,7 @@ $modal--content--border-radius: 8px !default;
 $modal--content--border-width: 1px !default;
 $modal--content--height: 100% !default;
 $modal--content--width: 500px !default;
+$modal--content-large--width: 800px !default;
 $modal--inner--border-width: 1px !default;
 
 
@@ -57,9 +59,9 @@ $modal--inner--border-width: 1px !default;
 
 $modal--content--border-color: $gray-500 !default;
 $modal--content--background-color: $white !default;
-$modal--header--background-color: $white !default;
+$modal--header--background-color: $gray-400 !default;
 $modal--body--background-color: $white !default;
-$modal--footer--background-color: $white !default;
+$modal--footer--background-color: $gray-200 !default;
 $modal--inner--border-color: $gray-200 !default;
 
 
@@ -71,14 +73,17 @@ $modal--inner--border-color: $gray-200 !default;
 
 .#{$_classname} {
 
-    display: none;
-
-    flex-direction: column;
     opacity: 0;
+    display: none;
     overflow: auto;
+    flex-direction: column;
+    z-index: $z-index--modal;
 
     @include position.fixed(0,0,0,0);
     @include transition.set((opacity), map-get($delays, normal));
+
+    $padding: #{$spacer-6}rem;
+    @include spaces.padding($padding,$padding,$padding,$padding);
 
     &:not(&-no-backdrop) {
         background-color: #{rgba($overlay-color, $overlay-opacity)};
@@ -90,8 +95,8 @@ $modal--inner--border-color: $gray-200 !default;
         width: $modal--content--width;
         max-width: $modal--content--width;
         max-height: 100vh !important;
-        $padding: #{$spacer-6}rem;
-        @include spaces.padding($padding,$padding,$padding,$padding);
+        // $padding: #{$spacer-6}rem;
+        // @include spaces.padding($padding,$padding,$padding,$padding);
     }
 
 
@@ -146,6 +151,7 @@ $modal--inner--border-color: $gray-200 !default;
         border-radius: $modal--content--border-radius;
         @include flex.column;
         height: $modal--content--height;
+        min-height: 280px !important;
         max-height: 100vh !important;
 
         @include transition.set((top), map-get($delays, normal));
@@ -173,27 +179,51 @@ $modal--inner--border-color: $gray-200 !default;
         padding: map-get($spacers, 2) map-get($spacers, 3);
     }
     &-header {
-        border-bottom-style: solid;
-        border-bottom-width: $modal--inner--border-width;
-        border-bottom-color: $modal--inner--border-color;
-        background-color: $modal--header--background-color;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+        @if $modal--inner--border-width > 0 {
+            border-bottom-style: solid;
+            border-bottom-width: $modal--inner--border-width;
+            border-bottom-color: $modal--inner--border-color;
+        }
+        // background-color: $modal--header--background-color;
+        @if $modal--header--background-color != false {
+            @include var.set('background-color', 'modal--header--background-color', $modal--header--background-color);
+        }
+
     }
     &-body {
         flex-grow: 1;
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
-        background-color: $modal--body--background-color;
+        // background-color: $modal--body--background-color;
+        @if $modal--body--background-color != false {
+            @include var.set('background-color', 'modal--body--background-color', $modal--body--background-color);
+        }
     }
     &-footer {
-        border-top-style: solid;
-        border-top-width: $modal--inner--border-width;
-        border-top-color: $modal--inner--border-color;
-        background-color: $modal--footer--background-color;
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: space-between;
+
+        @if $modal--inner--border-width > 0 {
+            border-top-style: solid;
+            border-top-width: $modal--inner--border-width;
+            border-top-color: $modal--inner--border-color;
+        }
+
+        // background-color: $modal--footer--background-color;
+        @if $modal--footer--background-color != false {
+            @include var.set('background-color', 'modal--footer--background-color', $modal--footer--background-color);
+        }
     }
 
     & .#{$prefix}button-close {
         z-index: 2;
-        @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+        // @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
         @include sizes.set(6px,6px);
     }
 

@@ -1,0 +1,53 @@
+{# ---------------------------------------------- #}
+{# - Component : Form Control                   - #}
+{# - Part : Textarea                            - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/form-widget/tag/textarea/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'name', name) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'value', value) %}
+{% set _attr = _add_attribute(_attr, 'placeholder', placeholder) %}
+{% set _attr = _add_attribute(_attr, 'cols', cols) %}
+{% set _attr = _add_attribute(_attr, 'rows', rows) %}
+
+{% if wrap != "soft" %}
+{% set _attr = _add_attribute(_attr, 'wrap', wrap) %}
+{% endif %}
+
+{% set _attr = _add_attribute(_attr, 'autocomplete', autocomplete) %}
+{% set _attr = _add_attribute(_attr, 'autofocus', autofocus) %}
+
+{% if dirname == true and dirnameValue is not empty %}
+{% set _attr = _add_attribute(_attr, 'dirname', dirnameValue) %}
+{% endif %}
+
+{% set _attr = _add_attribute(_attr, 'disabled', disabled) %}
+{% set _attr = _add_attribute(_attr, 'form', form) %}
+{% set _attr = _add_attribute(_attr, 'minlength', minlength) %}
+{% set _attr = _add_attribute(_attr, 'maxlength', maxlength) %}
+{# {% set _attr = _add_attribute(_attr, 'size', size) %} #}
+{% set _attr = _add_attribute(_attr, 'pattern', pattern) %}
+{% set _attr = _add_attribute(_attr, 'readonly', readonly) %}
+{% set _attr = _add_attribute(_attr, 'required', required) %}
+{# {% set _attr = _add_attribute(_attr, 'tabindex', tabindex) %} #}
+{% set _attr = _add_attribute(_attr, 'title', title) %}
+
+{% if spellcheck == false %}
+{% set _attr = _add_attribute(_attr, 'spellcheck', "false") %}
+{% endif %}
+
+
+{% if noInteraction != true %}
+    {% set _attr = _add_attribute(_attr, 'data-has-interaction', true) %}
+{% endif %}
+
+{% if descriptionId|default() is not empty %}
+    {% set _attr = _add_attribute(_attr, 'aria-describedby', descriptionId) %}
+{% endif %}

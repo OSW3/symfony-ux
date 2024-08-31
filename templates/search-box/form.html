@@ -1,0 +1,29 @@
+{# {{ dump({
+    name: name,
+    method: method,
+    action: action,
+    
+    symbol: symbol,
+
+    param: param,
+    placeholder: placeholder,
+
+    button: button
+}) }} #}
+<form {{ _get_attributes(_attr) }}>
+    {% if symbol.enable is same as true %}
+        <twig:SearchBox:Symbol 
+            :type="symbol.type"
+            :icon="symbol.icon"
+        />
+    {% endif %}
+    <twig:SearchBox:Input 
+        :param="param" 
+        :placeholder="placeholder"
+    />
+    <twig:Button:Submit 
+        :hidden="button.hidden"
+        :icon="button.symbol.icon" 
+        :label="button.label.text" 
+    />
+</form>

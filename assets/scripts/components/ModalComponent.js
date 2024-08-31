@@ -5,6 +5,8 @@
 // ************************************************************************** //
 "use strict";
 
+// todo: make it draggable
+
 import { getPrefix } from "../utils/prefix";
 import ButtonComponent from "./ButtonComponent";
 
@@ -38,7 +40,7 @@ export default class ModalComponent
         if (!this.#node.id) {
             return;
         }
-
+        
         document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
             new ButtonComponent(trigger).onClick = (event, element) => {
                 if (ACTIONS.includes(event.target.dataset.action)) {
@@ -55,23 +57,27 @@ export default class ModalComponent
             }
         });
 
-        if (this.#node.classList.contains('open')) {
+        if (this.#node.classList.contains(CLASS_OPEN)) {
             this.open();
         }
     }
 
-    open()
+    open(fn)
     {
         this.#node.style.display = 'flex';
         this.#document.classList.add(`${PREFIX}no-scroll`);
         setTimeout(() => this.#node.classList.add(CLASS_OPEN),1);
+
+        if (typeof fn === 'function') (fn)(this.#node);
     }
 
-    close()
+    close(fn)
     {
         this.#document.classList.remove(`${PREFIX}no-scroll`);
         this.#node.classList.remove(CLASS_OPEN)
         setTimeout(() => this.#node.style.display = 'none', 300);
+
+        if (typeof fn === 'function') (fn)(this.#node);
     }
 }
 

@@ -1,3 +1,4 @@
 <{{tag}} {{ _get_attributes(_attr) }}>
-    <twig:Modal:Inner :content="content" />
+    {{ content|raw }}
+    {# <twig:Modal:Inner :content="content" /> #}
 </{{tag}}>

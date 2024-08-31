@@ -1,3 +1,4 @@
 <{{tag}} {{ _get_attributes(_attr) }}>
-    <twig:Offcanvas:Inner :content="content" />
+    {# <twig:Offcanvas:Inner :content="content" /> #}
+    {{ content|raw }}
 </{{tag}}>
