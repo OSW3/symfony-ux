@@ -52,7 +52,7 @@ export default class SearchBoxComponent
         this.#component = component;
         this.#id = this.#component.id;
         this.#type = this.#component.dataset.type;
-        this.#form = this.#component.querySelector('[name=main-search-box]');
+        this.#form = this.#component.querySelector(`[name="${this.#id}[primary]"]`);
         this.#input = this.#form.querySelector('input[type=search]');
         
         if (!SEARCH_BOX_TYPES.includes(this.#type)) {
@@ -75,7 +75,7 @@ export default class SearchBoxComponent
         // console.log( this.#type );
         // console.log( this.#form );
         // console.log( this.#input );
-        console.log( '-----' );
+        // console.log( '-----' );
         
 
 
