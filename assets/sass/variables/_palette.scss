@@ -91,10 +91,10 @@ $additional-palette          : map-merge(
 
 /// Remove from palette
 /// -----
-/// $remove-palette: ('success');
+/// $useless-palette: (success);
 $generated-useless-palette: if(meta.global-variable-exists('generated-useless-palette', $module: generated), generated.$generated-useless-palette, ()) !default;
 $useless-palette          : () !default;
-$useless-palette          : append($generated-useless-palette, $useless-palette, 'comma');
+$useless-palette          : join($generated-useless-palette, $useless-palette, 'comma');
 
 @if collection.notEmpty($useless-palette) {
     @each $key, $value in $palette {

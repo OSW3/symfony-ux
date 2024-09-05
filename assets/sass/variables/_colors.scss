@@ -148,10 +148,10 @@ $colors-tints          : map-merge(
 
 /// Remove from colors
 /// -----
-/// $useless-colors: ('success');
+/// $useless-colors: (success);
 $generated-useless-colors: if(meta.global-variable-exists('generated-useless-colors', $module: generated), generated.$generated-useless-colors, ()) !default;
 $useless-colors          : () !default;
-$useless-colors          : append($generated-useless-colors, $useless-colors, 'comma');
+$useless-colors          : join($generated-useless-colors, $useless-colors, 'comma');
 
 @if collection.notEmpty($useless-colors) {
     @each $key, $value in $colors {

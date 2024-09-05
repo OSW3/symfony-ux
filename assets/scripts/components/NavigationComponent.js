@@ -43,7 +43,6 @@ export default class NavigationComponent
                 }
             }
         })
-        // this.element = this.#node; //.querySelector(`.${PREFIX}${NAME}-content`);
     }
 
     show() 
@@ -60,27 +59,6 @@ export default class NavigationComponent
     {
         this.#node.classList.toggle(CLASS_OPEN)
     }
-
-    
-    // _onInit() 
-    // {
-    //     // Retrouve les actions liées au composant
-    //     document.querySelectorAll('[data-action]').forEach(btn => {
-    //         const target = btn.dataset.target;
-    //         const action = btn.dataset.action;
-
-    //         if (target == this.node.id && ACTIONS_HANDLER.includes(action))
-    //         {
-    //             console.log(btn);
-    //             switch (action)
-    //             {
-    //                 case 'show': new ButtonComponent(btn).onClick = (event, element) => this.show(); break;
-    //                 case 'hide': new ButtonComponent(btn).onClick = (event, element) => this.hide(); break;
-    //                 case 'toggle': new ButtonComponent(btn).onClick = (event, element) => this.toggle(); break;
-    //             }
-    //         }
-    //     });
-    // }
 }
 
 document.querySelectorAll(SELECTOR).forEach(node => new NavigationComponent(node));
