@@ -47,7 +47,7 @@
 
 // @each $theme in $additional-themes {
 //     $_name: map-get($theme, 'name');
-//     $_components: map-get($theme, 'components');
+//     $COMPONENTs: map-get($theme, 'components');
 //     $_palette: map-get($theme, 'palette');
 
 //     @include dumper.dump( $_name );

@@ -13,10 +13,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'switch';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'switch';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -71,12 +71,12 @@ $default--switch-disabled--indicator-color : $gray-500;
 // * Palette
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     @each $key, $value in $palette {
         &-#{$key} {
-            // --#{$_classname}--color           : var(--#{$key});
-            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
-            // --#{$_classname}--border-color    : var(--#{$key});
+            // --#{$CLASSNAME}--color           : var(--#{$key});
+            // --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
+            // --#{$CLASSNAME}--border-color    : var(--#{$key});
         }
     }
 }
@@ -85,7 +85,7 @@ $default--switch-disabled--indicator-color : $gray-500;
 // * Structure
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Component definition
     /// --

@@ -8,10 +8,10 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$_component: 'cookie-box';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'cookie-box';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -46,7 +46,7 @@ $default--cookie-consent--background-color: $white;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// CookieBox container inner
     /// --
@@ -122,7 +122,7 @@ $default--cookie-consent--background-color: $white;
 
 // Cookie Box Banner
 // --
-.#{$_classname} {
+.#{$CLASSNAME} {
     &-banner {
         @include transition.set((top, bottom), map-get($delays, normal));
         position: fixed;

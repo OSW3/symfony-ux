@@ -13,10 +13,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'offcanvas';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'offcanvas';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -62,11 +62,11 @@ $offcanvas--footer--background-color: $gray-200 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
-    --#{$_classname}--container--background-color: #{$offcanvas--container--background-color};
+.#{$CLASSNAME} {
+    --#{$CLASSNAME}--container--background-color: #{$offcanvas--container--background-color};
 }
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     opacity: 0;
     display: none;
@@ -93,22 +93,22 @@ $offcanvas--footer--background-color: $gray-200 !default;
 
     &-left {
         justify-content: start;
-        .#{$_classname}-content {
+        .#{$CLASSNAME}-content {
             @include position.left( $offcanvas--content--width * -1 );
         }
         &.open {
-            .#{$_classname}-content {
+            .#{$CLASSNAME}-content {
                 @include position.left(0);
             }
         }
     }
     &-right {
         justify-content: end;
-        .#{$_classname}-content {
+        .#{$CLASSNAME}-content {
             @include position.right( $offcanvas--content--width * -1 );
         }
         &.open {
-            .#{$_classname}-content {
+            .#{$CLASSNAME}-content {
                 @include position.right(0);
             }
         }
@@ -153,13 +153,13 @@ $offcanvas--footer--background-color: $gray-200 !default;
     &.open {
         opacity: 1;
         z-index: 2;
-        .#{$_classname}-content {
+        .#{$CLASSNAME}-content {
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
     }
 }
 
-// .#{$_classname} {
+// .#{$CLASSNAME} {
 //     @include flex.column;
 //     @include position.fixed(0, null, 0, null);
 //     @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);

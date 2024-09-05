@@ -8,10 +8,10 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_component: 'link';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'link';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -49,12 +49,12 @@ $link--text-color--disabled: $gray-600 !default;
 // * Palette
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     @each $key, $value in $palette {
         &-#{$key} {
-            // --#{$_classname}--color           : var(--#{$key});
-            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
-            // --#{$_classname}--border-color    : var(--#{$key});
+            // --#{$CLASSNAME}--color           : var(--#{$key});
+            // --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
+            // --#{$CLASSNAME}--border-color    : var(--#{$key});
         }
     }
 }
@@ -63,7 +63,7 @@ $link--text-color--disabled: $gray-600 !default;
 // * Structure
 // * =========================
 
-.#{$_classname} {    
+.#{$CLASSNAME} {    
     --icon         : #{icon.get('external-link', var(--link--text-color))};
     // --icon-active  : #{icon.get('external-link', var(--link--text-color--active))};
     // --icon-disabled: #{icon.get('external-link', var(--link--text-color--disabled))};

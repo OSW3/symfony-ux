@@ -7,10 +7,10 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_component: 'breadcrumb';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'breadcrumb';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -49,7 +49,7 @@ $breadcrumb--active-color    : $gray-900;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Breadcrumb container
     /// --

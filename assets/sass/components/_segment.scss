@@ -6,10 +6,10 @@
 
 @use './../abstracts/mixins/banner';
 
-$_component: 'segment';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'segment';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -41,7 +41,7 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Component definition
     /// --

@@ -7,10 +7,10 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_component: 'copyright';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'copyright';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 // * =============================================
@@ -37,7 +37,7 @@ $copyright--text-color: $gray-600 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     @include var.set('color', 'copyright--text-color', $copyright--text-color);
     font-size: $copyright--font-size;
 }

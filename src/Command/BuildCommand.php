@@ -57,7 +57,7 @@ class BuildCommand extends Command
         // --
 
         if (isset($this->options['var_default'])) {
-            $sassVariables[] = "\$varWithDefault: '". ($this->options['var_default'] ? 'true' : 'false') ."';";
+            $sassVariables[] = "\$varWithDefault: ". ($this->options['var_default'] ? 'true' : 'false') .";";
             // $scriptVariables[] = "export const PREFIX = '{$this->options['prefix']}';";
         }
 

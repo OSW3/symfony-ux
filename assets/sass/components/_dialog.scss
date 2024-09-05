@@ -8,10 +8,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'dialog';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'dialog';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -47,7 +47,7 @@ $overlay-color: $black;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     // display: block;
     // opacity: 0;

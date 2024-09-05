@@ -10,10 +10,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'reading-progress';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'reading-progress';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -37,5 +37,5 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 }

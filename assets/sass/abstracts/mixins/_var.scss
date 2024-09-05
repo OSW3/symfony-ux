@@ -20,3 +20,14 @@
         #{$property}: var(--#{$name})#{if($important, ' !important', '')};
     }
 }
+
+
+
+@mixin define($prefix, $component, $section, $default)
+{
+    @if var.$varWithDefault {
+        --#{$prefix}#{$component}--#{$section} : var(--#{$component}--#{$section}, #{$default});
+    } @else {
+        --#{$prefix}#{$component}--#{$section} : var(--#{$component}--#{$section});
+    }
+}

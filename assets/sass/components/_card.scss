@@ -8,10 +8,10 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$_component: 'card';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'card';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -105,7 +105,7 @@ $default--card-footer--background-color: $gray-200;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Card container
     /// --

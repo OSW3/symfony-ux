@@ -12,10 +12,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'modal';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'modal';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -71,7 +71,7 @@ $modal--inner--border-color: $gray-200 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     opacity: 0;
     display: none;
@@ -230,7 +230,7 @@ $modal--inner--border-color: $gray-200 !default;
     &.open {
         opacity: 1;
         z-index: 2;
-        .#{$_classname}-content {
+        .#{$CLASSNAME}-content {
             top: 0;
         }
     }

@@ -12,10 +12,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'overlay';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'overlay';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -60,7 +60,7 @@ $offcanvas--container--background-color: $white;
     height: 100%;
 }
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     $overlay-blur : 20px;
     $overlay-opacity: 0.5;

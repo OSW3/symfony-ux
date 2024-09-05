@@ -6,10 +6,10 @@
 
 @use './../abstracts/mixins/banner';
 
-$_component: 'media';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'media';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -43,7 +43,7 @@ $media--caption--font-size: $spacer * .9 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Component definition
     /// --

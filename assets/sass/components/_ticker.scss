@@ -8,10 +8,10 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$_component: 'ticker';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'ticker';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -37,7 +37,7 @@ $ticker--min-height: 100% !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     @include flex.row;
     overflow: hidden;
     min-height: $ticker--min-height;

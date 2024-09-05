@@ -6,10 +6,10 @@
 
 @use './../abstracts/mixins/banner';
 
-$_component: 'avatar';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'avatar';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 // * =============================================
@@ -40,7 +40,7 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /**/
     

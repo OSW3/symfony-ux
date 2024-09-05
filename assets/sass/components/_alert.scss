@@ -12,10 +12,10 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/functions/color';
 
-$_component: 'alert';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'alert';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -46,12 +46,12 @@ $alert--border-radius: map-get($radius, 'small') !default;
 // * Palette
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     @each $key, $value in $palette {
         &-#{$key} {
-            --#{$_classname}--text      : var(--#{$key}--text);
-            --#{$_classname}--background: var(--#{$key}--background);
-            --#{$_classname}--border    : var(--#{$key}--border);
+            --#{$CLASSNAME}--text      : var(--#{$key}--text);
+            --#{$CLASSNAME}--background: var(--#{$key}--background);
+            --#{$CLASSNAME}--border    : var(--#{$key}--border);
         }
     }
 }
@@ -60,7 +60,7 @@ $alert--border-radius: map-get($radius, 'small') !default;
 // * Structure
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Alert container
     /// --
@@ -85,9 +85,9 @@ $alert--border-radius: map-get($radius, 'small') !default;
         null
     );
 
-    @include var.set('color', '#{$_classname}--text');
-    @include var.set('background-color', '#{$_classname}--background');
-    @include var.set('border-color', '#{$_classname}--border');
+    @include var.set('color', '#{$CLASSNAME}--text');
+    @include var.set('background-color', '#{$CLASSNAME}--background');
+    @include var.set('border-color', '#{$CLASSNAME}--border');
 
 
     & + & {

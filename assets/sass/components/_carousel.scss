@@ -6,10 +6,10 @@
 
 @use './../abstracts/mixins/banner';
 
-$_component: 'carousel';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'carousel';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -43,7 +43,7 @@ $carousel--slides--height: 300px !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /**/
     

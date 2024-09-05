@@ -7,10 +7,10 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_component: 'hero';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'hero';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -45,7 +45,7 @@ $default--hero--background-color    : $gray-200;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Component definition
     /// --

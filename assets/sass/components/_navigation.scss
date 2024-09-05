@@ -10,12 +10,12 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_component: 'navigation';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'navigation';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
 $_open: 'open';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -63,7 +63,7 @@ $default--navigation--background-color : $white;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     // Navigation container
     // --

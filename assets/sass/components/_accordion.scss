@@ -13,10 +13,10 @@
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/transition';
 
-$_component: 'accordion';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'accordion';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -73,7 +73,7 @@ $accordion--item-open--header--background-color: $gray-400 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Accordion Item
     /// --

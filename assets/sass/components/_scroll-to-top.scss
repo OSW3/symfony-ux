@@ -20,10 +20,10 @@
 @use './../abstracts/mixins/transition';
 
 
-$_component: 'scroll-to-top';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'scroll-to-top';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -81,7 +81,7 @@ $scroll-to-top--text-color--hover      : $white;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     --icon : #{icon.get(#{$scroll-to-top--symbol}, var(--scroll-to-top--text-color, color.encode($scroll-to-top--text-color)))};
     $transition-list: (opacity, background-color, border-color, color);
     $background-position: center;

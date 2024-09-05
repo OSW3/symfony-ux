@@ -9,10 +9,10 @@
 @use './../abstracts/mixins/corner';
 // @use './../abstracts/mixins/spaces';
 
-$_component: 'form-widget';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'form-widget';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -71,7 +71,7 @@ $form-widget--description--text-color: $gray-600 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     // border: 3px solid red;
     // padding: 1rem;
 
@@ -260,7 +260,7 @@ $form-widget--description--text-color: $gray-600 !default;
     }
 }
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     &-tel &-group {
         & select {
             flex: 120px 0 0;

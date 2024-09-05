@@ -6,10 +6,10 @@
 
 @use './../abstracts/mixins/banner';
 
-$_component: 'dropdown';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'dropdown';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -45,12 +45,12 @@ $_classname: '#{$prefix}#{$_component}';
 // * Palette
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     @each $key, $value in $palette {
         &-#{$key} {
-            // --#{$_classname}--color           : var(--#{$key});
-            // --#{$_classname}--background-color: var(--#{$key}--tint-70);
-            // --#{$_classname}--border-color    : var(--#{$key});
+            // --#{$CLASSNAME}--color           : var(--#{$key});
+            // --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
+            // --#{$CLASSNAME}--border-color    : var(--#{$key});
         }
     }
 }
@@ -59,7 +59,7 @@ $_classname: '#{$prefix}#{$_component}';
 // * Structure
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
     /// Component definition
     /// --

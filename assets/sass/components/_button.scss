@@ -14,10 +14,10 @@
 @use './../abstracts/mixins/transition';
 @use './../abstracts/functions/color';
 
-$_component: 'button';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'button';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -46,21 +46,21 @@ $_classname: '#{$prefix}#{$_component}';
 // * Palette
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
 
-    --#{$_classname}--text: #{$black};
-    --#{$_classname}--text-hover: #{$black};
-    --#{$_classname}--text-active: #{$black};
-    --#{$_classname}--text-disabled: #{$black};
-    --#{$_classname}--background: transparent;
-    --#{$_classname}--background-hover: transparent;
-    --#{$_classname}--background-active: transparent;
-    --#{$_classname}--background-disabled: transparent;
-    --#{$_classname}--border: transparent;
-    --#{$_classname}--border-hover: transparent;
-    --#{$_classname}--border-active: transparent;
-    --#{$_classname}--border-disabled: transparent;
-    --#{$_classname}--focus: transparent;
+    --#{$CLASSNAME}--text: #{$black};
+    --#{$CLASSNAME}--text-hover: #{$black};
+    --#{$CLASSNAME}--text-active: #{$black};
+    --#{$CLASSNAME}--text-disabled: #{$black};
+    --#{$CLASSNAME}--background: transparent;
+    --#{$CLASSNAME}--background-hover: transparent;
+    --#{$CLASSNAME}--background-active: transparent;
+    --#{$CLASSNAME}--background-disabled: transparent;
+    --#{$CLASSNAME}--border: transparent;
+    --#{$CLASSNAME}--border-hover: transparent;
+    --#{$CLASSNAME}--border-active: transparent;
+    --#{$CLASSNAME}--border-disabled: transparent;
+    --#{$CLASSNAME}--focus: transparent;
 
     @each $key, $value in $palette {
 
@@ -69,34 +69,34 @@ $_classname: '#{$prefix}#{$_component}';
         $text-color: map-get($colors, #{$contrast});
 
         &-#{$key} {
-            --#{$_classname}--text: #{$text-color};
-            --#{$_classname}--text-hover: #{$text-color};
-            --#{$_classname}--text-active: #{$text-color};
-            --#{$_classname}--text-disabled: #{$text-color};
-            --#{$_classname}--background: #{$base-color};
-            --#{$_classname}--background-hover: #{color.shade($base-color, 15%)};
-            --#{$_classname}--background-active: #{color.shade($base-color, 20%)};
-            --#{$_classname}--background-disabled: #{$base-color};
-            --#{$_classname}--border: #{$base-color};
-            --#{$_classname}--border-hover: #{color.shade($base-color, 20%)};
-            --#{$_classname}--border-active: #{color.shade($base-color, 25%)};
-            --#{$_classname}--border-disabled: #{$base-color};
-            --#{$_classname}--focus: #{color.tint($base-color, 15%)};
+            --#{$CLASSNAME}--text: #{$text-color};
+            --#{$CLASSNAME}--text-hover: #{$text-color};
+            --#{$CLASSNAME}--text-active: #{$text-color};
+            --#{$CLASSNAME}--text-disabled: #{$text-color};
+            --#{$CLASSNAME}--background: #{$base-color};
+            --#{$CLASSNAME}--background-hover: #{color.shade($base-color, 15%)};
+            --#{$CLASSNAME}--background-active: #{color.shade($base-color, 20%)};
+            --#{$CLASSNAME}--background-disabled: #{$base-color};
+            --#{$CLASSNAME}--border: #{$base-color};
+            --#{$CLASSNAME}--border-hover: #{color.shade($base-color, 20%)};
+            --#{$CLASSNAME}--border-active: #{color.shade($base-color, 25%)};
+            --#{$CLASSNAME}--border-disabled: #{$base-color};
+            --#{$CLASSNAME}--focus: #{color.tint($base-color, 15%)};
         }
         &-#{$key}-outline {
-            --#{$_classname}--text: #{$base-color};
-            --#{$_classname}--text-hover: #{$text-color};
-            --#{$_classname}--text-active: #{$text-color};
-            --#{$_classname}--text-disabled: #{$base-color};
-            --#{$_classname}--background: transparent;
-            --#{$_classname}--background-hover: #{$base-color};
-            --#{$_classname}--background-active: #{$base-color};
-            --#{$_classname}--background-disabled: transparent;
-            --#{$_classname}--border: #{$base-color};
-            --#{$_classname}--border-hover: #{$base-color};
-            --#{$_classname}--border-active: #{$base-color};
-            --#{$_classname}--border-disabled: #{$base-color};
-            --#{$_classname}--focus: #{$base-color};
+            --#{$CLASSNAME}--text: #{$base-color};
+            --#{$CLASSNAME}--text-hover: #{$text-color};
+            --#{$CLASSNAME}--text-active: #{$text-color};
+            --#{$CLASSNAME}--text-disabled: #{$base-color};
+            --#{$CLASSNAME}--background: transparent;
+            --#{$CLASSNAME}--background-hover: #{$base-color};
+            --#{$CLASSNAME}--background-active: #{$base-color};
+            --#{$CLASSNAME}--background-disabled: transparent;
+            --#{$CLASSNAME}--border: #{$base-color};
+            --#{$CLASSNAME}--border-hover: #{$base-color};
+            --#{$CLASSNAME}--border-active: #{$base-color};
+            --#{$CLASSNAME}--border-disabled: #{$base-color};
+            --#{$CLASSNAME}--focus: #{$base-color};
         }
     }
 }
@@ -104,7 +104,7 @@ $_classname: '#{$prefix}#{$_component}';
 // * Structure
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     
     cursor: pointer;
 
@@ -121,23 +121,23 @@ $_classname: '#{$prefix}#{$_component}';
     @include spaces.margin( .25rem, .125rem, .25rem, .125rem );
     
 
-    @include var.set('color', '#{$_classname}--text');
-    @include var.set('background-color', '#{$_classname}--background');
-    @include var.set('border-color', '#{$_classname}--border');
+    @include var.set('color', '#{$CLASSNAME}--text');
+    @include var.set('background-color', '#{$CLASSNAME}--background');
+    @include var.set('border-color', '#{$CLASSNAME}--border');
 
     &:hover {
-        @include var.set('color', '#{$_classname}--text-hover');
-        @include var.set('background-color', '#{$_classname}--background-hover');
-        @include var.set('border-color', '#{$_classname}--border-hover');
+        @include var.set('color', '#{$CLASSNAME}--text-hover');
+        @include var.set('background-color', '#{$CLASSNAME}--background-hover');
+        @include var.set('border-color', '#{$CLASSNAME}--border-hover');
     }
 
     &.active, &:active {
-        @include var.set('color', '#{$_classname}--text-active');
-        @include var.set('background-color', '#{$_classname}--background-active');
-        @include var.set('border-color', '#{$_classname}--border-active');
+        @include var.set('color', '#{$CLASSNAME}--text-active');
+        @include var.set('background-color', '#{$CLASSNAME}--background-active');
+        @include var.set('border-color', '#{$CLASSNAME}--border-active');
     }
     &.focus, &:focus, &:focus-visible {
-        @include var.set('outline-color', '#{$_classname}--focus');
+        @include var.set('outline-color', '#{$CLASSNAME}--focus');
         outline-style: solid;
         outline-width: 4px;
     }
@@ -145,9 +145,9 @@ $_classname: '#{$prefix}#{$_component}';
     &[disabled] {
         cursor: default;
         opacity: .65;
-        @include var.set('color', '#{$_classname}--text-disabled');
-        @include var.set('background-color', '#{$_classname}--background-disabled');
-        @include var.set('border-color', '#{$_classname}--border-disabled');
+        @include var.set('color', '#{$CLASSNAME}--text-disabled');
+        @include var.set('background-color', '#{$CLASSNAME}--background-disabled');
+        @include var.set('border-color', '#{$CLASSNAME}--border-disabled');
     }
 
     & .no-border {
@@ -158,7 +158,7 @@ $_classname: '#{$prefix}#{$_component}';
 // * Sizes
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     &-small {
         font-size: $spacer * .8;
         @include spaces.padding( $spacer * .4, $spacer * 1, $spacer * .4, $spacer * 1 );

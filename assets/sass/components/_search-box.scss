@@ -13,10 +13,10 @@
 @use './../abstracts/functions/icon';
 @use './../abstracts/mixins/transition';
 
-$_component: 'search-box';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'search-box';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -61,7 +61,7 @@ $search-box--border-color--focus: $gray-500 !default;
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     --search-box--text-color: $search-box--text-color;
 
     // --icon : #{icon.get('search', var(--search-box--text-color))};
@@ -187,7 +187,7 @@ $search-box--border-color--focus: $gray-500 !default;
     // & > .#{$prefix}modal {
     //     // display: flex;
 
-    //     .#{$_classname}-suggestions {
+    //     .#{$CLASSNAME}-suggestions {
     //         display: block;
 
     //         position: relative;

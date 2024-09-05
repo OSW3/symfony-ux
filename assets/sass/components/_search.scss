@@ -9,10 +9,10 @@
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 
-$_component: 'search';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'search';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 
@@ -44,7 +44,7 @@ $_classname: '#{$prefix}#{$_component}';
 // *
 // * =============================================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
     
     border: 1px solid $gray-300;
     border-radius: 6px;
@@ -139,7 +139,7 @@ $_classname: '#{$prefix}#{$_component}';
     & > .#{$prefix}modal {
         // display: flex;
 
-        .#{$_classname}-suggestions {
+        .#{$CLASSNAME}-suggestions {
             display: block;
 
             position: relative;

@@ -10,10 +10,10 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$_component: 'announcement';
-$_classname: '#{$prefix}#{$_component}';
+$COMPONENT: 'announcement';
+$CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
-@include banner.header('Component #{$_component}');
+@include banner.header('Component #{$COMPONENT}');
 
 
 // * =============================================
@@ -32,8 +32,10 @@ $announcement--height: 40px !default;
 // * =========================
 
 $announcement--text-color: $white !default;
-$announcement--link-color: $white !default;
+$announcement--text-color--hover: $white !default;
+// $announcement--link-color: $white !default;
 $announcement--background-color: $gray-600 !default;
+$announcement--background-color--hover: $gray-600 !default;
 
 
 // * =============================================
@@ -46,12 +48,13 @@ $announcement--background-color: $gray-600 !default;
 // * Palette
 // * =========================
 
-// .#{$_classname} {
+// .#{$CLASSNAME} {
+
 //     @each $key, $value in $palette {
 //         &-#{$key} {
-//             --#{$_classname}--color           : var(--#{$key});
-//             --#{$_classname}--background-color: var(--#{$key}--tint-70);
-//             --#{$_classname}--border-color    : var(--#{$key});
+//             --#{$CLASSNAME}--color           : var(--#{$key});
+//             --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
+//             --#{$CLASSNAME}--border-color    : var(--#{$key});
 //         }
 //     }
 // }
@@ -60,18 +63,33 @@ $announcement--background-color: $gray-600 !default;
 // * Structure
 // * =========================
 
-.#{$_classname} {
+.#{$CLASSNAME} {
+
+    /// Component variable
+    /// --
+    
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $announcement--text-color);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $announcement--text-color--hover);
+    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR,         $announcement--background-color);
+    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR_HOVER,   $announcement--background-color--hover);
+
 
     /// Announcement container
     /// --
 
-    @include var.set('color', 'announcement--text-color', $announcement--text-color);
-    @include var.set('background-color', 'announcement--background-color', $announcement--background-color);
+    color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
+    background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR});
+
     @include flex.centered;
     @include sizes.set(null, $announcement--height);
     @include transition.set((color, background-color), map-get($delays, normal));
 
     & a {
-        @include var.set('color', 'announcement--link-color', $announcement--link-color);
+        color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
+    }
+
+    &:hover {
+        color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR_HOVER});
+        background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR_HOVER});
     }
 }
