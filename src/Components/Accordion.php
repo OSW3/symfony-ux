@@ -63,15 +63,9 @@ final class Accordion extends AbstractComponent
         return $this->config['components']['accordions'];
     }
 
-    // public function fetchClass(): string
-    // {
-    //     return implode(" ", $this->classList());
-    // }
-
     public function fetchMultiple()
     {
         $this->dataset['multiple'] = $this->multiple;
-        // return implode(" ", $this->classList());
     }
 
     public function fetchItems()

@@ -3,12 +3,12 @@
 ## What is it about ?
 
 Create advanced buttons.
-<br>
+
+<!-- {"file": "00-default.html", "language": "twig"} -->
 
 ## Component configuration
 
-*no configuration*
-<br>
+*no configuration available in the ux.yaml*
 
 ## Twig integration
 
@@ -18,7 +18,6 @@ Create advanced buttons.
 <twig:Button:Submit label="My button" />
 <twig:Button:Link label="My button" url="https://example.com" />
 ``` 
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -34,7 +33,6 @@ Create advanced buttons.
 | `outline` | `bool` | If true, apply the outline style of the palette. | no | `false` |
 | `size` | `string` | Set the size of the button. | no | `medium` |
 | `block` | `bool` | If true the button will displayed as a block. | no | `false` |
-<br>
 
 ## `type` values
 
@@ -46,7 +44,6 @@ Create advanced buttons.
 | `link` | Set a button as a link |
 <!-- | `close` | Set a predefined button Close | -->
 <!-- | `dropdown` | Set a predefined dropdown button | -->
-<br>
 
 ## `target` values
 
@@ -56,7 +53,6 @@ Create advanced buttons.
 | `_parent` | Set a link with target _parent |
 | `_blank` | Set a link with target _blank |
 | `custom` | Set a link with a custom target |
-<br>
 
 ## `is` values
 
@@ -72,7 +68,6 @@ Create advanced buttons.
 | `light` | Set the style `light` |
 | `dark` | Set the style `dark` |
 | `custom` | Set the style of the custom palette |
-<br>
 
 ## `size` values
 
@@ -82,15 +77,21 @@ Create advanced buttons.
 | `normal` | Set the style `normal` |
 | `medium` | Set the style `medium` |
 | `large` | Set the style `large` |
-<br>
 
 ## JavaScript functions
 
-```javascript
-import ButtonComponent from './<path-to-bundle>/assets/scripts/components/ButtonComponent';
+<!-- {"file": "event.html", "language": "twig"} -->
 
-let ButtonHandler = new ButtonComponent( document.querySelector('[rel="js-button"]') );
-    ButtonHandler.onClick = (event, element) => console.log("This is click function");
-    ButtonHandler.onBeforeClick = (event, element) => console.log("This is before click function");
-    ButtonHandler.onAfterClick = (event, element) => console.log("This is after click function");
+
+```javascript
+import ButtonComponent from './../../../bundle/assets/scripts/components/ButtonComponent';
+
+const jsButton = document.querySelector('[rel="js-button"]');
+
+if (jsButton) {
+    let ButtonHandler = new ButtonComponent( jsButton );
+        ButtonHandler.onClick = (event, element) => console.log(event.target.dataset.message);
+        ButtonHandler.onBeforeClick = (event, element) => console.log("This is before click function");
+        ButtonHandler.onAfterClick = (event, element) => console.log("This is after click function");
+}
 ```

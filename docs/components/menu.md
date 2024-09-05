@@ -3,7 +3,8 @@
 ## What is it about ?
 
 Create a menu.
-<br>
+
+<!-- {"file": "00-default.html", "language": "twig"} -->
 
 ## Twig integration
 
@@ -20,7 +21,6 @@ Create a menu.
 ] %}
 <twig:Menu :item="items" />
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -30,7 +30,6 @@ Create a menu.
 | `items` | `array` | Set list menu items; | no | [] |
 | `orientation` | `string` | Set list menu items; | no | `horizontal` |
 | `justify` | `string` | Set list menu items; | no | `start` |
-<br>
 
 ### Item parameters
 
@@ -41,7 +40,6 @@ Create a menu.
 | `active` | `bool` | If true the class `active` will be added to the link. | no | `false` |
 | `disabled` | `bool` | If true, the link is disabled. | no | `false` |
 | `target` | `string` | Set the name of the window target. | no | `_self` |
-<br>
 
 ## SASS variables
 
@@ -52,7 +50,6 @@ $menu--border-radius: 'small';
 $menu--border-width: 1px;
 $menu--link--text-decoration: none;
 ```
-<br>
 
 ### Theme variables
 
@@ -74,7 +71,6 @@ $menu-link--background-color--hover: #e9ecef;
 $menu-link--background-color--active: #dee2e6;
 $menu-link--background-color--disabled: transparent;
 ```
-<br>
 
 #### Multiple themes
 
@@ -97,4 +93,3 @@ $properties: map-merge($properties, (
     menu-link--background-color--disabled: transparent,
 ));
 ```
-

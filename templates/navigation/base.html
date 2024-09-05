@@ -1,0 +1,43 @@
+<nav {{ _get_attributes(_attr) }}>
+    <div class="{{ classname('container-'~ wrapper) }}">
+
+        {% if _brand is not empty %}
+        <twig:Brand 
+            :name="_brand.name"
+            :tagline="_brand.tagline"
+            :logo="_brand.logo"
+            :url="_brand.url"
+            :route="_brand.route"
+        />
+        {% endif %}
+
+        {# Expand button - if menu is not showed on small devices #}
+        <twig:Button
+            label="Expand"
+            :class="navigation_toggler_classname"
+            :dataset="navigation_toggler_dataset"
+        />
+
+        <div class="{{ classname('navigation-content') }}">
+
+            {# Close button - if menu is showed on small device #}
+            <twig:Button
+                label="Close"
+                :class="navigation_close_classname"
+                :dataset="navigation_close_dataset"
+            />
+
+            {# Menu Schema #}
+            {% for node in schema %}
+                {% if node.type == 'menu' %}
+                <twig:Navigation:Menu :options="node.options" />
+                {% elseif node.type == 'searchbar' %}
+                <twig:Navigation:Searchbar :options="node.options" />
+                {% elseif node.type == 'template' %}
+                <twig:Navigation:Template :template="node.template" :options="node.options" />
+                {% endif %}
+            {% endfor %}
+
+        </div>
+    </div>
+</nav>

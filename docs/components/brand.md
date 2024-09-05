@@ -3,7 +3,8 @@
 ## What is it about ?
 
 Create a responsive brand component.
-<br>
+
+<!-- {"file": "00-default.html", "language": "twig"} -->
 
 ## Component configuration
 
@@ -12,8 +13,8 @@ ux:
     components:
         brand:
             size: medium
-            name: NetLab
-            tagline: The Net Lab by OSW3
+            name: My Company
+            tagline: My tagline
             logo:
                 phone: images/logo-small.png
                 tablet: images/logo-medium.png
@@ -21,7 +22,6 @@ ux:
             # route: app_homepage
             url: https://netlab.osw3.net
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -31,14 +31,12 @@ ux:
 | `logo` | `array` | Define a set of images ([`breakpoint`](./../layout/breakpoints.md): `image.png`)| no |  |
 | `url` | `string` | Set the URL of the link | no |  |
 | `route` | `string` | Set the route of the link (generate url), overload the URL | no |  |
-<br>
 
 ## Twig integration
 
 ```twig
 <twig:Brand />
 ``` 
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -47,7 +45,6 @@ ux:
 | `logo` | `array` | Define a set of images ([`breakpoint`](./../layout/breakpoints.md): `image.png`)| no |  |
 | `url` | `string` | Set the URL of the link | no |  |
 | `route` | `string` | Set the route of the link (generate url), overload the URL | no |  |
-<br>
 
 ## SASS variables
 
@@ -72,7 +69,6 @@ $brand--large--tagline-offset: 0px;
 $brand--large--font-weight: 900;
 $brand--large--img-height: 56px;
 ```
-<br>
 
 ### Theme variables
 
@@ -85,7 +81,6 @@ These variables will also be used to set default values ​​if your applicatio
 $brand--text-color: #6c757d;
 $brand--text-color--hover: #111111;
 ```
-<br>
 
 #### Multiple themes
 

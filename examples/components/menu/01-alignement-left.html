@@ -1,0 +1,21 @@
+<!-- {"title": "Justify start menu"} -->
+
+{% set items = [
+    {
+        label : "Nav item 1",
+        url   : "https://netlab.osw3.net",
+        active: true,
+    },
+    {
+        label : "Nav item 2",
+        url   : "https://netlab.osw3.net",
+        target: "_blank"
+    },
+    {
+        label : "Nav item 4",
+        url   : "https://netlab.osw3.net",
+        disabled: true
+    }
+] %}
+
+<twig:Menu justify="start" label="my menu" :items="items"/>

@@ -3,7 +3,8 @@
 ## What is it about ?
 
 Create an horizontal text scroll.
-<br>
+
+<!-- {"file": "00-default.html", "language": "twig"} -->
 
 ## Component configuration
 
@@ -16,7 +17,6 @@ ux:
             loop: true
             pause_hover: true
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -25,7 +25,6 @@ ux:
 | `direction` | `string` | Set the scroll direction. | no | `rtl` |
 | `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
 | `pause_hover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |
-<br>
 
 ## Twig integration
 
@@ -38,7 +37,6 @@ ux:
 <twig:Ticker :items="[messages[0]]"/>
 <twig:Ticker :items="messages" />
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|

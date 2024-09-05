@@ -1,0 +1,18 @@
+<!-- {"title": "Use palette and context"} -->
+
+{% set palette = ['success','warning','danger','info','primary','secondary','muted','light','dark'] %}
+{% set sizes = ['small','normal','medium','large'] %}
+
+{% for item in palette %}
+<twig:Button :label="item" :is="item" />
+<twig:Button label="outline" :is="item" outline />
+<twig:Button label="disable" :is="item" disabled />
+
+{% for size in sizes %}
+<twig:Button :label="size" :is="item" :size="size" />
+{% endfor %}
+
+<twig:Button label="block" :is="item" block />
+
+<br>
+{% endfor %}

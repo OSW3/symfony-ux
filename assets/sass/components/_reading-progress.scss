@@ -1,0 +1,41 @@
+// ************************************************************************** //
+// *
+// *    Components: Navigation
+// *
+// ************************************************************************** //
+
+@use './../abstracts/mixins/var';
+@use './../abstracts/mixins/flex';
+@use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/position';
+@use './../abstracts/mixins/transition';
+
+$_component: 'reading-progress';
+$_classname: '#{$prefix}#{$_component}';
+
+@include banner.header('Component #{$_component}');
+
+
+
+// * =============================================
+// *
+// *    Component Properties
+// *
+// * =============================================
+
+// * Default layout variables
+// * =========================
+
+
+// * Default theme variables
+// * =========================
+
+
+// * =============================================
+// *
+// *    Component Definition
+// *
+// * =============================================
+
+.#{$_classname} {
+}

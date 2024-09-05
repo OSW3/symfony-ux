@@ -1,0 +1,35 @@
+<!-- {"title": "Menu with sub-level"} -->
+
+{% set items = [
+    {
+        label : "Nav item 1",
+        url   : "https://netlab.osw3.net",
+        active: true,
+    },
+    {
+        label : "Nav item 2",
+        url   : "https://netlab.osw3.net"
+    },
+    {
+        label : "Nav item 3",
+        url   : "https://netlab.osw3.net",
+        target: "_blank"
+    },
+    {
+        label : "Nav item 4",
+        url   : "https://netlab.osw3.net",
+        disabled: true
+    },
+    {
+        label : "Nav item 4",
+        children: [
+            {
+                label : "Nav item 2",
+                url   : "https://netlab.osw3.net"
+            },
+        ]
+    },
+] %}
+
+<twig:Menu label="my menu" :items="items"/>
+<twig:Menu orientation="vertical" label="my menu" :items="items"/>

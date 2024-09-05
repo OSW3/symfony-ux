@@ -1,0 +1,56 @@
+{# ---------------------------------------------- #}
+{# - Component : Navigation                     - #}
+{# - Part : Base                                - #}
+{# ---------------------------------------------- #}
+{% extends '@UxComponents/navigation/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -------------------------------- #}
+{# SubComponent Brand definition    #}
+{# -------------------------------- #}
+{% if brand is not defined or brand is null %}
+    {% set _brand = null %}
+{% else %}
+    {% set _brand = {
+        name   : "",
+        tagline: "",
+        logo   : [],
+        url    : "",
+        route  : "",
+    }|merge(brand) %}
+{% endif %}
+
+{% set navigation_toggler_classname = classname('navigation-toggler') %}
+{% set navigation_toggler_dataset = {
+    action: 'toggle',
+    target: id
+} %}
+{% set navigation_close_classname = classname('navigation-close') %}
+{% set navigation_close_dataset = {
+    action: 'hide',
+    target: id
+} %}
+
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% for _property, _value in dataset %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %}

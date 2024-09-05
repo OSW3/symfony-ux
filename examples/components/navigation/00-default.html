@@ -1,0 +1,52 @@
+<!-- {"title": "default integration"} -->
+
+{% set brand = {
+    name: 'My Brand',
+    link: url('app_homepage'),
+} %}
+
+
+{% set nav_left = [
+    {
+        label : "Item 1",
+        url   : "#",
+        active: true,
+    },
+    {
+        label : "Item 2",
+        children : [
+            {
+                label : "Sub Item 1",
+                url   : "#",
+            }
+        ]
+    }
+]%}
+
+{% set nav_right = [
+    {
+        label : "Sign Up",
+        url   : "#",
+    },
+    {
+        label : "Sign In",
+        url   : "#",
+    },
+]%}
+
+{% set schema = [
+    {
+        type   : 'menu',
+        options: {
+            items: nav_left
+        }
+    },
+    {
+        type   : 'menu',
+        options: {
+            items: nav_right
+        }
+    },
+] %}
+
+<twig:Navigation :brand="brand" :schema="schema" type="right" />

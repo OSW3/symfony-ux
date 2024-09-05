@@ -4,7 +4,7 @@
 
 Create vertically collapsing accordions.
 
-<!-- {"file": "main.html", "language": "twig", "code": true} -->
+<!-- {"file": "00-main.html", "language": "twig"} -->
 
 ## Component configuration
 
@@ -103,15 +103,15 @@ ux:
 ### Layout variables
 
 ```scss
-$accordion--border-radius: 'small';
-$accordion--item--gap: -1px;
-$accordion--item--transition-speed: 'normal';
-$accordion--item--header--font-size: 1.2rem;
-$accordion--item--header--padding-x: 1rem;
-$accordion--item--header--padding-y: 1rem;
+$accordion--border-radius            : 'small';
+$accordion--item--gap                : -1px;
+$accordion--item--transition-speed   : 'normal';
+$accordion--item--header--font-size  : 1.2rem;
+$accordion--item--header--padding-x  : 1rem;
+$accordion--item--header--padding-y  : 1rem;
 $accordion--item--content--max-height: null;
-$accordion--item--content--padding-x: 1rem;
-$accordion--item--content--padding-y: 1rem;
+$accordion--item--content--padding-x : 1rem;
+$accordion--item--content--padding-y : 1rem;
 ```
 
 ### Theme variables
@@ -122,10 +122,10 @@ If your application has only one theme, you can set the values ​​of it in th
 These variables will also be used to set default values ​​if your application has multiple themes.
 
 ```scss
-$accordion--item--border-color: #adb5bd;
-$accordion--item--header--text-color: #495057;
-$accordion--item--header--background-color: #e9ecef;
-$accordion--item-open--header--text-color: #212529;
+$accordion--item--border-color                 : #adb5bd;
+$accordion--item--header--text-color           : #495057;
+$accordion--item--header--background-color     : #e9ecef;
+$accordion--item-open--header--text-color      : #212529;
 $accordion--item-open--header--background-color: #ced4da;
 ```
 
@@ -137,10 +137,10 @@ Learn more about [creating a theme](./../layout/themes.md).
 
 ```scss
 $properties: map-merge($properties, (
-    accordion--item--border-color: #adb5bd,
-    accordion--item--header--text-color: #495057,
-    accordion--item--header--background-color: #e9ecef,
-    accordion--item-open--header--text-color: #212529,
+    accordion--item--border-color                 : #adb5bd,
+    accordion--item--header--text-color           : #495057,
+    accordion--item--header--background-color     : #e9ecef,
+    accordion--item-open--header--text-color      : #212529,
     accordion--item-open--header--background-color: #ced4da,
 ));
 ```

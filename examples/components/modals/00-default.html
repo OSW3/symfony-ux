@@ -1,0 +1,17 @@
+<!-- {"title": "default integration", "Description":"The default modal is centered"} -->
+
+<!-- Trigger button -->
+<twig:Button is="primary" label="Open the modal" :dataset="{
+    target: 'my-modal',
+    action: 'open'
+}"/>
+
+<!-- Modal component -->
+<twig:Modal id="my-modal" placement="centered" :open="false" 
+    headerTemplate="components/modal/header.html.twig"
+    bodyTemplate="components/modal/body.html.twig"
+    footerTemplate="components/modal/footer.html.twig"
+    :headerOptions="{title: 'Modal header'}"
+    :bodyOptions="{sample: 'my-centered-modal'}"
+    :footerOptions="{}"
+/>

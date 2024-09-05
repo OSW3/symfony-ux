@@ -1,0 +1,10 @@
+<!-- {"title": "Default Integration", "Description":""} -->
+
+{% set messages = [
+    "This is a message <a href=\"#\">with a link</a>",
+    "This is a message without link",
+    "This is a message ... just a message",
+] %}
+
+
+<twig:Rotator :items="messages" :pauseHover="false" />

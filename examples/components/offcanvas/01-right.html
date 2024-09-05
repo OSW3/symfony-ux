@@ -1,0 +1,26 @@
+{% set options = {
+    tagline: "",
+    sample: "This is a sample data"
+} %}
+
+<twig:Button is="primary" label="Open right OffCanvas" :dataset="{
+    target: 'my-offcanvas-right',
+    action: 'open'
+}"/>
+
+<twig:Offcanvas 
+    id="my-offcanvas-right" 
+    placement="right"
+    
+    header="Header content offcanvas default"
+    body="Body content offcanvas default"
+    footer="Footer content offcanvas default"
+    
+    headerTemplate="components/offcanvas/header.html.twig"
+    bodyTemplate="components/offcanvas/body.html.twig"
+    footerTemplate="components/offcanvas/footer.html.twig"
+    
+    :headerOptions="options"
+    :bodyOptions="options"
+    :footerOptions="options"
+/>

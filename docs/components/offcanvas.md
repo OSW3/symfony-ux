@@ -3,7 +3,9 @@
 ## What is it about ?
 
 Create hidden side container
-<br>
+
+<!-- {"file": "00-left.html", "language": "twig"} -->
+
 
 ## Component configuration
 
@@ -15,7 +17,7 @@ ux:
             animation: slide
             speed: normal
 ```
-<br>
+
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -23,7 +25,6 @@ ux:
 | `animation` | `string` | Specifies the animation type. | no | `slide` |
 | `speed` | `string` | Specifies the animation speed. | no | `normal` |
 | `has_backdrop` | `string` | Specifies wether the offcanvas has a backdrop. | no | `true` |
-<br>
 
 ## Twig integration
 
@@ -36,5 +37,4 @@ ux:
     footer="Footer content offcanvas default"
 />
 ``` 
-<br>
 

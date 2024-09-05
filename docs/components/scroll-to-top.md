@@ -3,7 +3,9 @@
 ## What is it about ?
 
 Add a Scroll to top button.
-<br>
+
+<!-- {"file": "00-default.html", "language": "twig"} -->
+
 
 ## Component configuration
 
@@ -13,9 +15,8 @@ ux:
         top_at: 0
         toggle_at: 200
         symbol: "arrow-up"
-        title: "Go to to"
+        title: "Go to top"
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -23,14 +24,12 @@ ux:
 | `toggle_at` | `integer` | Specifies the position of the button's display or hiding point on the page. | no | `200` |
 | `symbol` | `string` | Specifies the symbol of the button. | no | `arrow-up` |
 | `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
-<br>
 
 ## Twig integration
 
 ```twig 
 <twig:ScrollToTop />
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -41,7 +40,6 @@ ux:
 | `toggle_at` | `integer` | Specifies the position of the button's display or hiding point on the page. | no | `200` |
 | `symbol` | `string` | Specifies the symbol of the button. | no | `arrow-up` |
 | `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
-<br>
 
 ## SASS variables
 
@@ -60,7 +58,6 @@ $scroll-to-top--symbol: "\23F6";
 $scroll-to-top--font-size: 2;
 $scroll-to-top--z-index: 1040;
 ```
-<br>
 
 ### Theme variables
 
@@ -77,7 +74,6 @@ $scroll-to-top--background-color--hover: #198754;
 $scroll-to-top--border-color: #20c997;
 $scroll-to-top--border-color--hover: #198754;
 ```
-<br>
 
 #### Multiple themes
 

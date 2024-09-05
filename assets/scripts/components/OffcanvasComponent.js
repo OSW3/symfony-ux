@@ -49,12 +49,21 @@ export default class OffcanvasComponent
         })
 
         // this.#node.onclick = this.close.bind(this);
-        document.addEventListener('click', (event) => {
+        document.addEventListener('click', event => {
             if (event.target == this.#node) {
                 event.stopImmediatePropagation();
                 this.close();
             }
         });
+
+        document.addEventListener('keydown', event => {
+            if (event.key === "Escape" || event.key === "Esc") {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                this.close();
+            }
+        });
+        
 
         if (this.#node.classList.contains(CLASS_OPEN)) {
             this.open();

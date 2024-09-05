@@ -3,7 +3,8 @@
 ## What is it about ?
 
 Create a announcement banner. Usually at the top of the website.
-<br>
+
+<!-- {"file": "00-default.html", "language": "twig"} -->
 
 ## Component configuration
 
@@ -12,30 +13,27 @@ ux:
     components:
         announcement:
             animated: always
-            animation: scroll
+            animation: ticker
             speed: 500
 ```
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
 | `animated` | `enum` | Set whether animation state. `always`, `none` | no | `always` |
 | `animation` | `enum` | Set the animation type.  `ticker`,  `rotator`, `none` | no | `ticker` |
 | `speed` | `integer` | Set the speed of the animation. | no | 6 |
-<br>
 
 ## Twig integration
 
 ```twig
 
 {% set messages = [
-    "My Announcement <a href=\"#\">message</a> 1",
-    "My Announcement message 2",
-    "My Announcement message 3",
+    "Announcement simple message",
+    "Announcement with a <a href=\"#\">message as link</a>",
+    "Another Announcement message",
 ] %}
 <twig:Announcement :messages="messages" />
 ``` 
-<br>
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -46,7 +44,6 @@ ux:
 | `animated` | `enum` | Set whether animation state. `always`, `none` | no | `always` |
 | `animation` | `enum` | Set the animation type.  `ticker`,  `rotator`, `none` | no | `ticker` |
 | `speed` | `integer` | Set the speed of the animation. | no | 6 |
-<br>
 
 ## SASS variables
 
@@ -55,7 +52,6 @@ ux:
 ```scss
 $announcement--height: 40px;
 ```
-<br>
 
 ### Theme variables
 
@@ -69,7 +65,6 @@ $announcement--text-color: #ffffff;
 $announcement--link-color: #ffffff;
 $announcement--background-color: #6c757d;
 ```
-<br>
 
 #### Multiple themes
 
