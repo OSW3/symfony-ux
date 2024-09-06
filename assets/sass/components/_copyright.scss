@@ -6,6 +6,7 @@
 
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
+@use './../abstracts/mixins/transition';
 
 $COMPONENT: 'copyright';
 $CLASSNAME: '#{$prefix}#{$COMPONENT}';
@@ -23,12 +24,14 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * =========================
 
 $copyright--font-size: $spacer * .8 !default;
+$copyright--transition: 'normal' !default;
 
 
 // * Default theme variables
 // * =========================
 
 $copyright--text-color: $gray-600 !default;
+$copyright--text-color--hover: $gray-600 !default;
 
 
 // * =============================================
@@ -38,6 +41,14 @@ $copyright--text-color: $gray-600 !default;
 // * =============================================
 
 .#{$CLASSNAME} {
-    @include var.set('color', 'copyright--text-color', $copyright--text-color);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $copyright--text-color);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $copyright--text-color--hover);
+    
     font-size: $copyright--font-size;
+    color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
+    @include transition.set((color), map-get($delays, $copyright--transition));
+
+    &:hover {
+        color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR_HOVER});
+    }
 }
