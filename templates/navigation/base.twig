@@ -16,13 +16,7 @@
 {% if brand is not defined or brand is null %}
     {% set _brand = null %}
 {% else %}
-    {% set _brand = {
-        name   : "",
-        tagline: "",
-        logo   : [],
-        url    : "",
-        route  : "",
-    }|merge(brand) %}
+{% set _brand = brand %}
 {% endif %}
 
 {% set navigation_toggler_classname = classname('navigation-toggler') %}

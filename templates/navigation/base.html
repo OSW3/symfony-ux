@@ -3,11 +3,11 @@
 
         {% if _brand is not empty %}
         <twig:Brand 
-            :name="_brand.name"
-            :tagline="_brand.tagline"
-            :logo="_brand.logo"
-            :url="_brand.url"
-            :route="_brand.route"
+            :name="_brand.name|default()"
+            :tagline="_brand.tagline|default()"
+            :logo="_brand.logo|default(null)"
+            :url="_brand.url|default()"
+            :route="_brand.route|default()"
         />
         {% endif %}
 

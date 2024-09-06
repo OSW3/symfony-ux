@@ -30,7 +30,7 @@ final class Navigation extends AbstractComponent
     #[ExposeInTemplate(name: 'type', getter: 'doNotExpose')]
     public string $type = "left";
 
-    #[ExposeInTemplate(name: 'brand')]
+    #[ExposeInTemplate(name: 'brand', getter: 'fetchBrand')]
     public array|null $brand;
 
     #[ExposeInTemplate(name: 'schema')]
@@ -89,5 +89,14 @@ final class Navigation extends AbstractComponent
     public function fetchContainer(): string
     {
         return trim($this->container);
+    }
+
+    public function fetchBrand()
+    {
+        $brand = $this->brand;
+
+        // dd($brand);
+
+        return $brand;
     }
 }
