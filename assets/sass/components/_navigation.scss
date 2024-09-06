@@ -68,6 +68,8 @@ $default--navigation--background-color : $white;
     // Navigation container
     // --
 
+    padding: $spacer 0;
+
     #{$_str_container} {
         align-items: center;
         justify-content: space-between;
