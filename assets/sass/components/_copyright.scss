@@ -30,8 +30,8 @@ $copyright--transition: 'normal' !default;
 // * Default theme variables
 // * =========================
 
-$copyright--text-color: $gray-600 !default;
-$copyright--text-color--hover: $gray-600 !default;
+$copyright--color: $gray-600 !default;
+$copyright--color--hover: $gray-600 !default;
 
 
 // * =============================================
@@ -41,9 +41,10 @@ $copyright--text-color--hover: $gray-600 !default;
 // * =============================================
 
 .#{$CLASSNAME} {
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $copyright--text-color);
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $copyright--text-color--hover);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $copyright--color);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $copyright--color--hover);
     
+    display: inline-block;
     font-size: $copyright--font-size;
     color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
     @include transition.set((color), map-get($delays, $copyright--transition));

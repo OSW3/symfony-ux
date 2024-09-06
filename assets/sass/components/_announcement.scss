@@ -32,11 +32,10 @@ $announcement--transition: 'normal' !default;
 // * Default theme variables
 // * =========================
 
-$announcement--text-color: $white !default;
-$announcement--text-color--hover: $white !default;
-// $announcement--link-color: $white !default;
-$announcement--background-color: $gray-600 !default;
-$announcement--background-color--hover: $gray-600 !default;
+$announcement--color: $white !default;
+$announcement--color--hover: $white !default;
+$announcement--bg-color: $gray-600 !default;
+$announcement--bg-color--hover: $gray-600 !default;
 
 
 // * =============================================
@@ -69,10 +68,10 @@ $announcement--background-color--hover: $gray-600 !default;
     /// CSS variables
     /// --
     
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $announcement--text-color);
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $announcement--text-color--hover);
-    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR,         $announcement--background-color);
-    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR_HOVER,   $announcement--background-color--hover);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $announcement--color);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $announcement--color--hover);
+    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR,         $announcement--bg-color);
+    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR_HOVER,   $announcement--bg-color--hover);
 
 
     /// Announcement container

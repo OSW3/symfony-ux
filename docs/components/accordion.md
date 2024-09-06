@@ -4,6 +4,7 @@
 
 Create vertically collapsing accordions.
 
+<!-- Example -->
 <!-- {"file": "00-main.html", "language": "twig"} -->
 
 ## Component configuration
