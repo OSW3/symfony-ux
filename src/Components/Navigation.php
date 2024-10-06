@@ -95,8 +95,6 @@ final class Navigation extends AbstractComponent
     {
         $brand = $this->brand;
 
-        // dd($brand);
-
         return $brand;
     }
 }

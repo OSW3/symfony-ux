@@ -30,6 +30,8 @@ ux:
 | `dates_separator` | `string` | Set the separator to use between dates in the display. | no | - |
 | `separator` | `string` | Set the separator to use between elements in the display. | no | • |
 
+> Remember to execute `bin/console ux:build` to apply the configuration changes.
+
 ## Twig integration
 
 ```twig 

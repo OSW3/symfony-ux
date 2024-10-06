@@ -1,0 +1,7 @@
+# !!! Important
+# !!! Don't forget to run the xxx command for the configuration changes to take effect.
+ux:
+
+    ## Components Prefix
+    ## --
+    prefix: ux

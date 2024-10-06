@@ -6,7 +6,6 @@ Create a announcement banner. Usually at the top of the website.
 
 <!-- Example -->
 <!-- {"file": "00-default.html", "language": "twig"} -->
-
 <!-- {"file": "01-skeleton.html", "language": "html", "render": false} -->
 
 ## Component configuration
@@ -30,6 +29,8 @@ ux:
 | `animation` | `enum` | Set the animation type.  [`ticker`](./ticker.md),  [`rotator`](./rotator.md), `none` | no | `ticker` |
 | `speed` | `integer` | Set the speed of the animation. | no | 6 |
 
+> Remember to execute `bin/console ux:build` to apply the configuration changes.
+
 ## Twig integration
 
 ```twig
@@ -52,7 +53,7 @@ ux:
 | * `animation` | `enum` | Set the animation type.  `ticker`,  `rotator`, `none` | no | `ticker` |
 | * `speed` | `integer` | Set the speed of the animation. | no | 6 |
 
-Parameters marked with * override the configuration in the `config/package/ux.yaml` file.
+> Parameters marked with * override the configuration in the `config/package/ux.yaml` file.
 
 ## SASS variables
 

@@ -23,7 +23,12 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 
 
 /// ==============================================
-$TEXT_COLOR: 'color';
-$TEXT_COLOR_HOVER: 'color--hover';
-$BACKGROUND_COLOR: 'bg-color';
+
+$TEXT_COLOR            : 'color';
+$TEXT_COLOR_HOVER      : 'color--hover';
+
+$BACKGROUND_COLOR      : 'bg-color';
 $BACKGROUND_COLOR_HOVER: 'bg-color--hover';
+
+$BORDER_COLOR          : 'border-color';
+$BORDER_COLOR_HOVER    : 'border-color--hover';

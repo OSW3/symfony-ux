@@ -49,17 +49,17 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * Default layout variables
 // * =========================
 
-$scroll-to-top--shape: if(meta.global-variable-exists('scroll-to-top--shape', $module: generated), generated.$scroll-to-top--shape, 'square') !default;
-$scroll-to-top--position: if(meta.global-variable-exists('scroll-to-top--position', $module: generated), generated.$scroll-to-top--position, 'bottom-right') !default;
+$scroll-to-top--shape     : if(meta.global-variable-exists('scroll-to-top--shape', $module: generated), generated.$scroll-to-top--shape, 'square') !default;
+$scroll-to-top--position  : if(meta.global-variable-exists('scroll-to-top--position', $module: generated), generated.$scroll-to-top--position, 'bottom-right') !default;
 $scroll-to-top--transition: if(meta.global-variable-exists('scroll-to-top--transition', $module: generated), generated.$scroll-to-top--transition, 'natural') !default;
-$scroll-to-top--symbol: if(meta.global-variable-exists('scroll-to-top--symbol', $module: generated), generated.$scroll-to-top--symbol, 'arrow-up') !default;
+$scroll-to-top--symbol    : if(meta.global-variable-exists('scroll-to-top--symbol', $module: generated), generated.$scroll-to-top--symbol, 'arrow-up') !default;
 
-$scroll-to-top--size     : 40px !default;
-$scroll-to-top--position-x : $spacer *2 !default;
-$scroll-to-top--position-y : $spacer *2 !default;
-$scroll-to-top--offset-x : 0px !default;
-$scroll-to-top--offset-y : 0px !default;
-$scroll-to-top--font-size: 2 !default;
+$scroll-to-top--size      : 40px !default;
+$scroll-to-top--position-x: $spacer *2 !default;
+$scroll-to-top--position-y: $spacer *2 !default;
+$scroll-to-top--offset-x  : 0px !default;
+$scroll-to-top--offset-y  : 0px !default;
+$scroll-to-top--font-size : 2 !default;
 $scroll-to-top--z-index   : $z-index--scroll-to-top !default;
 
 
@@ -67,12 +67,12 @@ $scroll-to-top--z-index   : $z-index--scroll-to-top !default;
 // * Default theme variables
 // * =========================
 
-$scroll-to-top--background-color      : $teal;
-$scroll-to-top--border-color          : $teal;
-$scroll-to-top--text-color            : $white;
-$scroll-to-top--background-color--hover: $green;
-$scroll-to-top--border-color--hover    : $green;
-$scroll-to-top--text-color--hover      : $white;
+$scroll-to-top--color              : $white;
+$scroll-to-top--color--hover       : $white;
+$scroll-to-top--bg-color           : $teal;
+$scroll-to-top--bg-color--hover    : $green;
+$scroll-to-top--border-color       : $teal;
+$scroll-to-top--border-color--hover: $green;
 
 
 // * =============================================
@@ -82,7 +82,20 @@ $scroll-to-top--text-color--hover      : $white;
 // * =============================================
 
 .#{$CLASSNAME} {
-    --icon : #{icon.get(#{$scroll-to-top--symbol}, var(--scroll-to-top--text-color, color.encode($scroll-to-top--text-color)))};
+
+    /// CSS variables
+    /// --
+    
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $scroll-to-top--color);
+    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
+    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR,         $scroll-to-top--bg-color);
+    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
+    @include var.define($prefix, $COMPONENT, $BORDER_COLOR,             $scroll-to-top--border-color);
+    @include var.define($prefix, $COMPONENT, $BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
+
+
+
+    --icon : #{icon.get(#{$scroll-to-top--symbol}, var(--scroll-to-top--color, color.encode($scroll-to-top--color)))};
     $transition-list: (opacity, background-color, border-color, color);
     $background-position: center;
 
@@ -532,9 +545,15 @@ $scroll-to-top--text-color--hover      : $white;
     /* #{$scroll-to-top--size} */
     @include sizes.set($scroll-to-top--size, $scroll-to-top--size);
     @include flex.centered;
-    background: var(--button-to-top--background-color, $scroll-to-top--background-color) var(--icon) $background-position no-repeat;
-    border: 1px solid var(--button-to-top--border-color, $scroll-to-top--border-color);
-    color: var(--button-to-top--text-color, $scroll-to-top--text-color);
+
+    // background: var(--button-to-top--background-color, $scroll-to-top--bg-color) var(--icon) $background-position no-repeat;
+    // border: 1px solid var(--button-to-top--border-color, $scroll-to-top--border-color);
+    // color: var(--button-to-top--text-color, $scroll-to-top--color);
+
+    color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
+    background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR});
+    border-color: var(--#{$prefix}#{$COMPONENT}--#{$BORDER_COLOR});
+
     cursor: pointer;
     opacity: 0;
 
@@ -782,8 +801,8 @@ $scroll-to-top--text-color--hover      : $white;
     }
 
     &:hover {
-        background-color: var(--button-to-top--background-hover-color, $scroll-to-top--background-color--hover);
-        border-color: var(--button-to-top--border-hover-color, $scroll-to-top--border-color--hover);
-        color: var(--button-to-top--text-hover-color, $scroll-to-top--text-color--hover);
+        color           : var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR_HOVER});
+        background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR_HOVER});
+        border-color    : var(--#{$prefix}#{$COMPONENT}--#{$BORDER_COLOR_HOVER});
     }
 }
