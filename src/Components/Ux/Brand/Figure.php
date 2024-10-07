@@ -1,5 +1,5 @@
 <?php 
-namespace OSW3\UX\Components\Brand;
+namespace OSW3\UX\Components\Ux\Brand;
 
 use OSW3\UX\Components\Ux\Brand;
 use OSW3\UX\Trait\AttributeClassTrait;
