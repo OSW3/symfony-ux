@@ -13,10 +13,10 @@ Create advanced buttons.
 ## Twig integration
 
 ```twig
-<twig:Button label="My button" />
-<twig:Button:Reset label="My button" />
-<twig:Button:Submit label="My button" />
-<twig:Button:Link label="My button" url="https://example.com" />
+<twig:Ux:Button label="My button" />
+<twig:Ux:Button:Reset label="My button" />
+<twig:Ux:Button:Submit label="My button" />
+<twig:Ux:Button:Link label="My button" url="https://example.com" />
 ``` 
 
 | Parameter | Type | Description | Required | Default |

@@ -12,16 +12,16 @@
 }) }} #}
 <form {{ _get_attributes(_attr) }}>
     {% if symbol.enable is same as true %}
-        <twig:SearchBox:Symbol 
+        <twig:Ux:SearchBox:Symbol 
             :type="symbol.type"
             :icon="symbol.icon"
         />
     {% endif %}
-    <twig:SearchBox:Input 
+    <twig:Ux:SearchBox:Input 
         :param="param" 
         :placeholder="placeholder"
     />
-    <twig:Button:Submit 
+    <twig:Ux:Button:Submit 
         :hidden="button.hidden"
         :icon="button.symbol.icon" 
         :label="button.label.text" 

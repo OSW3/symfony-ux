@@ -35,7 +35,7 @@ ux:
 ## Twig integration
 
 ```twig
-<twig:Brand />
+<twig:Ux:Brand />
 ``` 
 
 | Parameter | Type | Description | Required | Default |

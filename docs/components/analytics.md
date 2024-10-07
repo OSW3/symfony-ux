@@ -58,7 +58,7 @@ ux:
 This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 
 ```twig 
-<twig:Analytics:Google />
+<twig:Ux:Analytics:Google />
 ```
 
 ### Method 2 
@@ -66,7 +66,7 @@ This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 
 ```twig 
-<twig:Analytics provider="google" />
+<twig:Ux:Analytics provider="google" />
 ```
 
 ### Method 3
@@ -74,7 +74,7 @@ This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 This method passe the tracking ID
 
 ```twig 
-<twig:Analytics provider="google" trackingId="1234" />
+<twig:Ux:Analytics provider="google" trackingId="1234" />
 ```
 
 ### Twig component attributes

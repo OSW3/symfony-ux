@@ -35,7 +35,7 @@ ux:
 ## Twig integration
 
 ```twig 
-<twig:Copyright />
+<twig:Ux:Copyright />
 ```
 
 | Parameter | Type | Description | Required | Default |

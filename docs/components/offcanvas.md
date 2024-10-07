@@ -30,7 +30,7 @@ ux:
 
 ```twig
 
-<twig:Offcanvas 
+<twig:Ux:Offcanvas 
     id="my-offcanvas" 
     header="Header content offcanvas default"
     body="Body content offcanvas default"

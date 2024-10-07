@@ -4,15 +4,15 @@
 {% set sizes = ['small','normal','medium','large'] %}
 
 {% for item in palette %}
-<twig:Button :label="item" :is="item" />
-<twig:Button label="outline" :is="item" outline />
-<twig:Button label="disable" :is="item" disabled />
+<twig:Ux:Button :label="item" :is="item" />
+<twig:Ux:Button label="outline" :is="item" outline />
+<twig:Ux:Button label="disable" :is="item" disabled />
 
 {% for size in sizes %}
-<twig:Button :label="size" :is="item" :size="size" />
+<twig:Ux:Button :label="size" :is="item" :size="size" />
 {% endfor %}
 
-<twig:Button label="block" :is="item" block />
+<twig:Ux:Button label="block" :is="item" block />
 
 <br>
 {% endfor %}

@@ -40,7 +40,7 @@ ux:
     "Announcement with a <a href=\"#\">message as link</a>",
     "Another Announcement message",
 ] %}
-<twig:Announcement :messages="messages" />
+<twig:Ux:Announcement :messages="messages" />
 ``` 
 
 | Parameter | Type | Description | Required | Default |

@@ -19,7 +19,7 @@ Create a menu.
         url   : "https://netlab.osw3.net"
     },
 ] %}
-<twig:Menu :item="items" />
+<twig:Ux:Menu :item="items" />
 ```
 
 | Parameter | Type | Description | Required | Default |

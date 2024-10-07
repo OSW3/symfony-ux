@@ -31,7 +31,7 @@ ux:
 ## Twig integration
 
 ```twig 
-<twig:ScrollToTop />
+<twig:Ux:ScrollToTop />
 ```
 
 | Parameter | Type | Description | Required | Default |

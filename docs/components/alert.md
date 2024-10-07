@@ -10,15 +10,15 @@ Provide contextual feedback messages for typical user actions.
 
 | Name | Component | ClassName |
 |-|-|-|
-| Success | `<twig:Alert:Success />` | `.alert-success` |
-| Warning | `<twig:Alert:Warning />` | `.alert-warning` |
-| Danger | `<twig:Alert:Danger />` | `.alert-danger` |
-| Info | `<twig:Alert:Info />` | `.alert-info` |
-| Primary | `<twig:Alert:Primary />` | `.alert-primary` |
-| Secondary | `<twig:Alert:Secondary />` | `.alert-secondary` |
-| Dark | `<twig:Alert:Dark />` | `.alert-dark` |
-| Light | `<twig:Alert:Light />` | `.alert-light` |
-| Muted | `<twig:Alert:Muted />` | `.alert-muted` |
+| Success | `<twig:Ux:Alert:Success />` | `.alert-success` |
+| Warning | `<twig:Ux:Alert:Warning />` | `.alert-warning` |
+| Danger | `<twig:Ux:Alert:Danger />` | `.alert-danger` |
+| Info | `<twig:Ux:Alert:Info />` | `.alert-info` |
+| Primary | `<twig:Ux:Alert:Primary />` | `.alert-primary` |
+| Secondary | `<twig:Ux:Alert:Secondary />` | `.alert-secondary` |
+| Dark | `<twig:Ux:Alert:Dark />` | `.alert-dark` |
+| Light | `<twig:Ux:Alert:Light />` | `.alert-light` |
+| Muted | `<twig:Ux:Alert:Muted />` | `.alert-muted` |
 
 ## Component configuration
 
@@ -41,13 +41,13 @@ ux:
 
 **Method 1**
 ```twig 
-<twig:Alert:Success message="This is a success message" />
+<twig:Ux:Alert:Success message="This is a success message" />
 ``` 
 
 **Method 2**
 ```twig 
-<twig:Alert is="success" message="This is a success message" />
-<twig:Alert is="custom-ui-color" message="My custom-ui-color alert message" />
+<twig:Ux:Alert is="success" message="This is a success message" />
+<twig:Ux:Alert is="custom-ui-color" message="My custom-ui-color alert message" />
 ``` 
 
 | Parameter | Type | Description | Required | Default |

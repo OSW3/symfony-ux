@@ -2,10 +2,10 @@
     <div class="{{ classname('modal-wrapper') }}">
         <div class="{{ classname('modal-content') }}">
 
-            {# <twig:Button:Close :dataset="{target: id, action: 'close'}"/>         #}
-            {% if header is not empty %}<twig:Modal:Section :id="id" section="header" :content="header" />{% endif %}
-            {% if body is not empty %}<twig:Modal:Section :id="id" section="body" :content="body" />{% endif %}
-            {% if footer is not empty %}<twig:Modal:Section :id="id" section="footer" :content="footer" />{% endif %}
+            {# <twig:Ux:Button:Close :dataset="{target: id, action: 'close'}"/>         #}
+            {% if header is not empty %}<twig:Ux:Modal:Section :id="id" section="header" :content="header" />{% endif %}
+            {% if body is not empty %}<twig:Ux:Modal:Section :id="id" section="body" :content="body" />{% endif %}
+            {% if footer is not empty %}<twig:Ux:Modal:Section :id="id" section="footer" :content="footer" />{% endif %}
 
         </div>
     </div>

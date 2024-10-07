@@ -65,11 +65,11 @@ ux:
 ``` 
 
 ```twig
-<twig:Accordion :items="items" />
+<twig:Ux:Ux:Accordion :items="items" />
 ``` 
 
 ```twig
-<twig:Accordion 
+<twig:Ux:Ux:Accordion 
     id="my-custom-id"
     class="my-custom-class"
     :items="[...]" 

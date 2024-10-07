@@ -34,8 +34,8 @@ ux:
     "My ticker message 2",
     "My ticker message 3",
 ] %}
-<twig:Ticker :items="[messages[0]]"/>
-<twig:Ticker :items="messages" />
+<twig:Ux:Ticker :items="[messages[0]]"/>
+<twig:Ux:Ticker :items="messages" />
 ```
 
 | Parameter | Type | Description | Required | Default |

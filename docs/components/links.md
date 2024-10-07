@@ -22,7 +22,7 @@ ux:
 ## Twig integration
 
 ```twig
-<twig:Link label="My link" url="https://github.com/osw3/symfony-ux" target="_blank" />
+<twig:Ux:Link label="My link" url="https://github.com/osw3/symfony-ux" target="_blank" />
 ``` 
 
 | Parameter | Type | Description | Required | Default |

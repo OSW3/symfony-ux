@@ -12,7 +12,7 @@
 
 <div {{ _get_attributes(_attr) }}>
 
-    <twig:SearchBox:Form 
+    <twig:Ux:SearchBox:Form 
         _form
         :id="id"
         :isMain="true"
@@ -40,7 +40,7 @@
     
     {#
     {% if type == 'modal' %}
-        <twig:SearchOld:Modal 
+        <twig:Ux:SearchOld:Modal 
             :id="id" 
             :method="method" 
             :param="param" 
@@ -49,7 +49,7 @@
             :label="label"
         />
     {% elseif type == 'list' %}
-    <twig:SearchOld:Suggestions 
+    <twig:Ux:SearchOld:Suggestions 
         :id="id" 
     />
     {% endif %} #}

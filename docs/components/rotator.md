@@ -32,8 +32,8 @@ ux:
     "My rotator message 2",
     "My rotator message 3",
 ] %}
-<twig:Rotator :items="[messages[0]]"/>
-<twig:Rotator :items="messages" />
+<twig:Ux:Rotator :items="[messages[0]]"/>
+<twig:Ux:Rotator :items="messages" />
 ```
 
 | Parameter | Type | Description | Required | Default |

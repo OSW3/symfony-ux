@@ -1,8 +1,8 @@
 {% for breakpoint, figure in logo %}
-    <twig:Brand:Figure :src="figure" :alt="name" :breakpoint="breakpoint" />
+    <twig:Ux:Brand:Figure :src="figure" :alt="name" :breakpoint="breakpoint" />
 {% else %}
-<twig:Brand:Name :name="name" />
+<twig:Ux:Brand:Name :name="name" />
 {% endfor %}
 {% if tagline is not empty %}
-<twig:Brand:Tagline :tagline="tagline" />
+<twig:Ux:Brand:Tagline :tagline="tagline" />
 {% endif %}
