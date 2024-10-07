@@ -23,6 +23,9 @@ final class Link extends AbstractComponent
     #[ExposeInTemplate(name: 'label')]
     public string $label;
 
+    #[ExposeInTemplate(name: 'icon')]
+    public string $icon;
+
     #[ExposeInTemplate(name: 'href')]
     public string $url;
 
@@ -50,6 +53,9 @@ final class Link extends AbstractComponent
 
         $resolver->setRequired('label');
         $resolver->setAllowedTypes('label', 'string');
+
+        $resolver->setDefault('icon', "");
+        $resolver->setAllowedTypes('icon', 'string');
 
         $resolver->setRequired('url');
         $resolver->setAllowedTypes('url', 'string');

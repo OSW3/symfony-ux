@@ -17,10 +17,11 @@ final class Item extends AbstractComponent
     use AttributeClassTrait;
     use AttributeDatasetTrait;
     
-    
-    
     #[ExposeInTemplate(name: 'label')]
     public string $label;
+    
+    #[ExposeInTemplate(name: 'icon')]
+    public string $icon;
     
     #[ExposeInTemplate(name: 'url')]
     public string $url;
@@ -37,8 +38,6 @@ final class Item extends AbstractComponent
     #[ExposeInTemplate(name: 'children')]
     public array $children;
 
-
-
     #[PreMount]
     public function preMount(array $data): array
     {
@@ -53,6 +52,9 @@ final class Item extends AbstractComponent
 
         $resolver->setDefault('label', "");
         $resolver->setAllowedTypes('label', ['string']);
+
+        $resolver->setDefault('icon', "");
+        $resolver->setAllowedTypes('icon', ['string']);
 
         $resolver->setDefault('url', "");
         $resolver->setAllowedTypes('url', ['string']);
@@ -76,8 +78,6 @@ final class Item extends AbstractComponent
     {
         return "{$this->prefix}menu-item";
     }
-
-
 
     public function fetchClass(): string
     {
