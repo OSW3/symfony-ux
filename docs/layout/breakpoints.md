@@ -141,7 +141,7 @@ Once adding the reference of a breakpoint added to the 'breakpoints->useless' de
 ### From the `symfony_ux.yaml`configuration file
 
 ```yaml
-ux:
+symfony_ux:
     layout:
         breakpoints:
             useless:

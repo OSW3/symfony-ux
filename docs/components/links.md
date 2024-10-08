@@ -9,7 +9,7 @@ A advanced link.
 ## Component configuration
 
 ```yaml
-ux:
+symfony_ux:
     components:
         links:
             target: _self

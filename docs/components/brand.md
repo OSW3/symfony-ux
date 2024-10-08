@@ -9,7 +9,7 @@ Create a responsive brand component.
 ## Component configuration
 
 ```yaml
-ux:
+symfony_ux:
     components:
         brand:
             size: medium

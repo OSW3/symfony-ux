@@ -124,6 +124,9 @@ class BuildCommand extends Command
             $sassString = '$additional-breakpoints: (';
 
             foreach ($additional as $name => $values) {
+
+                $name = str_replace("_", "-", $name);
+                dump($name);
                 $sassString .= "'$name': (breakpoint: {$values['breakpoint']}px, container: {$values['container']}px), ";
             }
         
@@ -155,6 +158,7 @@ class BuildCommand extends Command
         $additional_collection = [];
         foreach ($additional as $name => $value)
         {
+            $name = str_replace("_", "-", $name);
             $vars[] = "\${$name}: {$value};";
             $additional_collection[] = "'{$name}': \${$name}";
         }

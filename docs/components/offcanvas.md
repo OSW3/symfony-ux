@@ -10,7 +10,7 @@ Create hidden side container
 ## Component configuration
 
 ```yaml
-ux:
+symfony_ux:
     components:
         offcanvas:
             placement: left

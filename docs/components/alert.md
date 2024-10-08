@@ -25,7 +25,7 @@ Provide contextual feedback messages for typical user actions.
 The YAML configuration defines the parameters for all Alert components. Each component can then redefine one or more parameters when it is integrated.
 
 ```yaml
-ux:
+symfony_ux:
     components:
         alerts:
             dismissible: true

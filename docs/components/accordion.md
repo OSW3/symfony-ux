@@ -12,7 +12,7 @@ Create vertically collapsing accordions.
 The YAML configuration defines the parameters for all Accordion components. Each component can then redefine one or more parameters when it is integrated.
 
 ```yaml
-ux:
+symfony_ux:
     components:
         accordions:
             multiple: false

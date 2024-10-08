@@ -15,7 +15,7 @@ Set the configuration in the `config/package/symfony_ux.yaml`.
 This configuration is applied by default by all Announcement components and can be overridden when integrating twig.
 
 ```yaml
-ux:
+symfony_ux:
     components:
         announcement:
             animated: always

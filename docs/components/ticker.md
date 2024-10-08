@@ -9,7 +9,7 @@ Create an horizontal text scroll.
 ## Component configuration
 
 ```yaml
-ux:
+symfony_ux:
     components:
         tickers:
             speed: 15

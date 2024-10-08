@@ -51,7 +51,7 @@ Change the values of colors.
 
 ```yaml 
 # config/packages/symfony_ux.yaml
-ux:
+symfony_ux:
     layout:
         colors:
             defaults:
@@ -124,7 +124,7 @@ Add your additional colors in the `colors->additional` section.
 
 ```yaml 
 # config/packages/symfony_ux.yaml
-ux:
+symfony_ux:
     layout:
         colors:
             additional:
@@ -169,7 +169,7 @@ Once adding the reference of a breakpoint added to the 'colors->useless' definit
 
 ```yaml 
 # config/packages/symfony_ux.yaml
-ux:
+symfony_ux:
     layout:
         colors:
             useless:
@@ -201,7 +201,7 @@ Reference the color name to the shades or tints list and add percents of  shades
 
 ```yaml 
 # config/packages/symfony_ux.yaml
-ux:
+symfony_ux:
     layout:
         colors:
             shades:

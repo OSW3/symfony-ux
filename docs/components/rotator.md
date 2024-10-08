@@ -10,7 +10,7 @@ Create an horizontal text scroll.
 ## Component configuration
 
 ```yaml
-ux:
+symfony_ux:
     components:
         rotators:
             delay: 5000
