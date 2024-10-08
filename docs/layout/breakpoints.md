@@ -13,6 +13,15 @@ Breakpoints are customizable widths that define how your responsive layout behav
 | wide | 1400px | 1440px |
 | ultra | 1600px | 1520px |
 
+## Integration
+
+Create your custom scss file  (like `app.scss`) and add:
+
+```scss 
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/breakpoints';
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/factories/containers';
+```
+
 ## Customize names and values
 
 ### Method 1 : From the `symfony_ux.yaml`configuration file
@@ -81,15 +90,16 @@ $container-desktop       : '1140px';
 $container-wide          : '1440px';
 $container-ultra         : '1520px';
 
-// Import Symfony UX bundle
-@import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-bundle';
+// Import breakpoints variables
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/breakpoints';
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/factories/containers';
 ```
 
 ## Add additional breakpoints and containers
 
 ### From the `symfony_ux.yaml`configuration file
 
-Add your custom breakpoint and container in the `breakpoint->additional` section.
+Add your additional breakpoint and container in the `breakpoint->additional` section.
 
 ```yaml 
 ux:
@@ -117,12 +127,16 @@ $additional-breakpoints: (
 );
 
 // Import Symfony UX bundle
-@import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-bundle';
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/breakpoints';
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/factories/containers';
 ```
 
 > SCSS configuration will always override the yaml configuration.
 
 ## Exclude useless breakpoints and containers
+
+you can remove the breakpoints definition you don't use in your project.  
+Once adding the reference of a breakpoint added to the 'breakpoints->useless' definition, it will not be compiled into the final css.
 
 ### From the `symfony_ux.yaml`configuration file
 
@@ -139,30 +153,7 @@ ux:
 
 ```scss 
 $useless-breakpoints: ('wide', 'ultra');
-```
-
-## SCSS integration example
-
-Create your custom scss file `app.scss`
-
-```scss 
-/// 1. Customize your variables
-/// --
-
-/// Customize breakpoints names
-$breakpoint-name-phone  : 'phone';
-// ...
-
-/// Customize breakpoints values
-$breakpoint-phone  : 576px;
-// ...
-
-/// Customize containers values
-$container-phone  : 540px;
-// ...
-
-/// 2. Import  UX Components base
-/// --
 
 @import './<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/breakpoints';
+@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/factories/containers';
 ```

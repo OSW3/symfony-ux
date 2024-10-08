@@ -1,6 +1,6 @@
-// Last gen: 2024-10-08 00:28:05
+// Last gen: 2024-10-08 06:54:00
 $prefix: 'ux';
-$varWithDefault: false;
+$varWithDefault: true;
 $breakpoint-name-phone: 'phone';
 $breakpoint-phone: 576px;
 $container-phone: 540px;
@@ -19,7 +19,7 @@ $container-wide: 1440px;
 $breakpoint-name-ultra: 'ultra';
 $breakpoint-ultra: 1600px;
 $container-ultra: 1520px;
-$additional-breakpoints: ('big_screen': (breakpoint: 576px, container: 540px));
+$additional-breakpoints: ('big_screen': (breakpoint: 2000px, container: 1900px));
 $transition-base: 1;
 $transition-slow: 0.8;
 $transition-normal: 0.3;
