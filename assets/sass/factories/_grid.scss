@@ -73,16 +73,20 @@
     @if $i != 'auto' {
 
         // Padding gap for the Grid
-        .#{$prefix}grid.#{$prefix}gap-#{$i}
-        {
-            @include spaces.margin(null, $margin, null, $margin);
-        }
+        // .#{$prefix}grid.#{$prefix}gap-#{$i}
+        // {
+        //     @include spaces.margin(null, $margin, null, $margin);
+        // }
 
         // (All) Padding gap for thr grid Columns
         .#{$prefix}gap-#{$i} [class^="#{$prefix}column"]
         {
-            @include spaces.padding($padding, $padding, $padding, $padding);
-        }
+            @if $i == 0 {
+                @include spaces.padding($padding !important, $padding !important, $padding !important, $padding !important);
+            } @else {
+                @include spaces.padding($padding, $padding, $padding, $padding);
+            }
+                }
         // (Left & right) Padding gap for thr grid Columns
         .#{$prefix}gap-x-#{$i} [class^="#{$prefix}column"]{
             @include spaces.padding-x($padding);

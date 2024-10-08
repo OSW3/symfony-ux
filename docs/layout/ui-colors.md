@@ -80,7 +80,7 @@ $ui-color-name-muted    : 'muted';
 Add your additional UI color in the `ui_colors->additional` section.
 
 ```yaml 
-ux:
+symfony_ux:
     layout:
         ui_colors:
             additional:

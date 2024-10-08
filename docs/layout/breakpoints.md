@@ -27,7 +27,7 @@ Create your custom scss file  (like `app.scss`) and add:
 ### Method 1 : From the `symfony_ux.yaml`configuration file
 
 ```yaml 
-ux:
+symfony_ux:
     layout:
         breakpoints:
             base:
@@ -102,7 +102,7 @@ $container-ultra         : '1520px';
 Add your additional breakpoint and container in the `breakpoint->additional` section.
 
 ```yaml 
-ux:
+symfony_ux:
     layout:
         breakpoints:
             additional:
