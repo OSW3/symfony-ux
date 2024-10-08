@@ -7,18 +7,25 @@
 @use './../abstracts/functions/collection';
 
 
-/// Defaults Fonts
-/// =============================================
-    
+
+// * =============================================
+// *
+// *    Defaults Fonts
+// *
+// * =============================================
+
 /// Fonts names
-/// -------------------------
+/// =============================================
+
 $font-name-primary  : 'primary' !default;
 $font-name-secondary: 'secondary' !default;
 $font-name-headings : 'headings' !default;
 $font-name-code     : 'code' !default;
     
+
 /// Fonts definition
-/// -------------------------
+/// =============================================
+
 $_monospace: (
     'family': "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
 );
@@ -34,9 +41,11 @@ $_code: (
     // 'family': "var(--#{$prefix}font-secondary)"
     'family': "var(--font-secondary)"
 );
-    
-/// Fonts collection
-/// -------------------------
+
+
+/// Containers collection
+/// ==============================================
+
 $fonts: (
     $font-name-primary  : $_open_sans,
     $font-name-secondary: $_monospace,
@@ -46,12 +55,17 @@ $fonts: (
 
 
 
-/// Additional Fonts
-/// =============================================
+// * =============================================
+// *
+// *    Additional Fonts
+// *
+// * =============================================
+
 
 /// Add customs fonts to the fonts
-/// -----
+/// =============================================
 /// $additional-fonts: ( 'my-color': purple );
+
 $additional-fonts: () !default;
 
 @if collection.notEmpty($additional-fonts) {
@@ -62,12 +76,16 @@ $additional-fonts: () !default;
 
 
 
-/// Useless Fonts
-/// =============================================
+// * =============================================
+// *
+// *    Useless Fonts
+// *
+// * =============================================
 
-/// Remove from fonts
-/// -----
-/// $useless-fonts: ('success');
+/// Remove the not needed fonts
+/// =============================================
+/// $useless-fonts: ('headings');
+
 $useless-fonts: () !default;
 
 @if collection.notEmpty($useless-fonts) {
