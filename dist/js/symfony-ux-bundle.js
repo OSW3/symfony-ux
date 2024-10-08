@@ -1,4 +1,5 @@
-import AccordionComponent from '../../assets/scripts/components/AccordionComponent';
+// import AccordionComponent from '../../assets/scripts/components/AccordionComponent';
+require('../../assets/scripts/components/AccordionComponent');
 import AlertComponent from '../../assets/scripts/components/AlertComponent';
 // import ButtonComponent from './../../assets/scripts/components/ButtonComponent';
 import CalendarComponent from '../../assets/scripts/components/CalendarComponent';

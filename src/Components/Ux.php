@@ -9,7 +9,7 @@ final class Ux
     public function __construct()
     {
         // Todo: send an explicit message
-        // Cannot call directly <twig:Ux:Ux />
+        // Cannot call directly <twig:Ux />
         throw new \Exception('Ux cannot be called');
     }
 }

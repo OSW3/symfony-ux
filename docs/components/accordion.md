@@ -2,14 +2,62 @@
 
 ## What is it about ?
 
-Create vertically collapsing accordions.
+Accordions are vertically collapsing components that allow you to toggle between showing and hiding content in a compact layout.
 
 <!-- Example -->
 <!-- {"file": "00-main.html", "language": "twig"} -->
 
-## Component configuration
 
-The YAML configuration defines the parameters for all Accordion components. Each component can then redefine one or more parameters when it is integrated.
+## Integration (SASS & JS)
+
+### SASS Integration
+
+To integrate the accordion styles into your project, import the necessary SCSS dependencies.
+
+```scss 
+// app.scss
+
+// Component dependencies 
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/prefix';
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/colors';
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/spacers';
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/radius';
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/transitions';
+
+// Component integration 
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/components/accordion';
+```
+
+### JavaScript Integration
+
+To enable the accordion's JavaScript functionality, import the component in your JS file.  
+The javascript component is instantiated automatically
+
+```javascript 
+// app.js
+
+// Component integration 
+require('<path-to-vendor>/osw3/symfony-ux/assets/scripts/components/AccordionComponent');
+// or
+import AccordionComponent from '<path-to-vendor>/osw3/symfony-ux/assets/scripts/components/AccordionComponent';
+```
+
+### Twig integration
+
+In your Twig templates, you can integrate the accordion component using the following syntax:
+
+```twig
+<twig:Ux:Accordion :items="items" />
+``` 
+
+<hr>
+
+## Configuration
+
+### Configuration YAML
+
+The YAML configuration allows you to define default parameters for all accordion components.  
+These can be overridden on a per-component basis when using the Twig integration.
 
 ```yaml
 symfony_ux:
@@ -22,25 +70,55 @@ symfony_ux:
                 max_height: 200
 ```
 
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `multiple` | `bool` | Set whether Accordions can open multiple items in same time. | no | `false` |
-| `header` | `array` | Set options for items header. | no |  |
-| `content` | `array` | Set options for items content. | no |  |
-
-### `header` properties
+#### `accordions` properties
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
-| `tag` | `string` | Set the tag type of items header. | no | `h2` |
+| `multiple` | `bool` | Allows multiple accordion items to be open simultaneously. | no | `false` |
+| `header` | `array` | Configuration options for the accordion item headers. | no |  |
+| `content` | `array` | Configuration options for the accordion item content. | no |  |
 
-### `content` properties
+#### `header` properties
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
-| `max_height` | `null|int` | Set the max height of items content. | no | `null` |
+| `tag` | `string` | Defines the HTML tag for accordion headers. | no | `h2` |
 
-## Twig integration
+#### `content` properties
+
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `max_height` | `null|int` | Defines the maximum height for content. | no | `null` |
+
+### Configuration Twig
+
+#### `Accordion` attributes
+
+Here’s an example of how to customize an accordion using Twig:
+
+```twig
+<twig:Ux:Accordion 
+    id="my-custom-id"
+    class="my-custom-class"
+    :items="[...]" 
+    :dataset="{...}"
+    multiple {# it same as :multiple="true" #} 
+    headerTag="h3"
+/>
+```
+
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `id` | `string` | Set the accordion's `id` attribute. | no |  |
+| `class` | `string` | Adds a custom CSS class. | no |  |
+| `dataset` | `array` | Specifies data-* attributes for the accordion. | no |  |
+| `items` | `array` | The list of items to be displayed in the accordion. | yes |  |
+| `multiple` | `bool` | Allows multiple accordion items to be opened at once. | no | `false` |
+| `headerTag` | `string` | Defines the tag type for the accordion headers. | no | `h2` |
+
+#### `Accordion.items` properties
+
+You can pass an array of items to the accordion in your Twig template as follows:
 
 ```twig
 {% set items = [
@@ -50,60 +128,27 @@ symfony_ux:
     },
     {
         title : "Accordion item 2",
-        template : "components/accordion/demo/item.html.twig",
-        content : "This is an item content"
-    },
-    {
-        title : "Accordion item 3",
-        content : "This is an item content<br>This is an item content<br>This is an item"
-    },
-    {
-        title : "Accordion item 4",
-        content : "This is an item content"
+        template : "components/accordion/demo/item.html.twig"
     },
 ] %}
 ``` 
 
-```twig
-<twig:Ux:Ux:Accordion :items="items" />
-``` 
-
-```twig
-<twig:Ux:Ux:Accordion 
-    id="my-custom-id"
-    class="my-custom-class"
-    :items="[...]" 
-    :dataset="{...}"
-    multiple {# it same as :multiple="true" #} 
-    headerTag="h3"
-/>
-``` 
-
-### Accordion attributes
-
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
-| `id` | `string` | Set the accordion `id` attribute. | no |  |
-| `class` | `string` | Set custom classname. | no |  |
-| `dataset` | `array` | Set list of `data` attributes; | no |  |
-| `items` | `array` | Set accordion items list. | yes |  |
-| `multiple` | `bool` | Set whether Accordion can open multiple items in same time. | no | `false` |
-| `headerTag` | `string` | Set the tag type for items header. | no | `h2` |
+| `title` | `string` | The title for the accordion item. | yes |  |
+| `content` | `string` | The content to be displayed within the item. | no |  |
+| `template` | `string` | Specifies a template for the accordion content. | no |  |
+| `open` | `bool` | Sets whether the item is open by default. | no | `false` |
 
-### Accordion items properties
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `title` | `string` | Set the title of the item. | yes |  |
-| `content` | `string` | Set the content of the item. | no |  |
-| `template` | `string` | Set the template of the content of the item. | no |  |
-| `open` | `bool` | Set whether the item is open or not. | no | `false` |
 
 ## SASS variables
 
-### Layout variables
+### Layout and structure variables
 
 ```scss
+// customs/accordion.scss
+
+// Layout and structure
 $accordion--border-radius            : 'small';
 $accordion--item--gap                : -1px;
 $accordion--item--transition-speed   : 'normal';
@@ -113,6 +158,12 @@ $accordion--item--header--padding-y  : 1rem;
 $accordion--item--content--max-height: null;
 $accordion--item--content--padding-x : 1rem;
 $accordion--item--content--padding-y : 1rem;
+
+// Theme
+// ...
+
+// Component integration 
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/components/accordion';
 ```
 
 ### Theme variables
@@ -123,20 +174,28 @@ If your application has only one theme, you can set the values ​​of it in th
 These variables will also be used to set default values ​​if your application has multiple themes.
 
 ```scss
+// customs/accordion.scss
+
+// Layout and structure
+// ...
+
+// Theme
 $accordion--item--border-color                 : #adb5bd;
 $accordion--item--header--text-color           : #495057;
 $accordion--item--header--background-color     : #e9ecef;
 $accordion--item-open--header--text-color      : #212529;
 $accordion--item-open--header--background-color: #ced4da;
+
+// Component integration 
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/components/accordion';
 ```
 
 #### Multiple themes
 
 If your application has multiple themes, you need to set the component's theme properties in the theme property list.
 
-Learn more about [creating a theme](./../layout/themes.md).
-
 ```scss
+// theme/might/components/accordion.scss
 $properties: map-merge($properties, (
     accordion--item--border-color                 : #adb5bd,
     accordion--item--header--text-color           : #495057,
@@ -145,3 +204,5 @@ $properties: map-merge($properties, (
     accordion--item-open--header--background-color: #ced4da,
 ));
 ```
+
+*See the themes documentation page*
