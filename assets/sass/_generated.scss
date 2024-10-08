@@ -1,4 +1,4 @@
-// Last gen: 2024-10-08 11:45:51
+// Last gen: 2024-10-08 12:13:25
 $prefix: 'ux';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -48,17 +48,17 @@ $generated-additional-colors: ('pumpkin': $pumpkin,'pink-flamingo': $pink-flamin
 $generated-useless-colors: ('teal','pumpkin');
 $generated-colors-shades: ('pink-flamingo' : (20,30));
 $generated-colors-tints: ('pink-flamingo' : (20,30));
-$palette-name-success: 'success';
-$palette-name-danger: 'danger';
-$palette-name-warning: 'warning';
-$palette-name-info: 'info';
-$palette-name-primary: 'primary';
-$palette-name-secondary: 'secondary';
-$palette-name-light: 'light';
-$palette-name-dark: 'dark';
-$palette-name-muted: 'muted';
-$custom-ui-color-2: #00FF99;
-$generated-additional-palette: ('custom-ui-color-2': #00FF99);
+$ui-colors-name-success: 'success';
+$ui-colors-name-danger: 'danger';
+$ui-colors-name-warning: 'warning';
+$ui-colors-name-info: 'info';
+$ui-colors-name-primary: 'primary';
+$ui-colors-name-secondary: 'secondary';
+$ui-colors-name-light: 'light';
+$ui-colors-name-dark: 'dark';
+$ui-colors-name-muted: 'muted';
+$highlight: #00FF99;
+$generated-additional-ui-colors: ('highlight': #00FF99);
 $generated-useless-palette: ('light','dark','muted');
 $transition-base: 1;
 $transition-slow: 0.8;

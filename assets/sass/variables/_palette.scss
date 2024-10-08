@@ -19,31 +19,31 @@
 /// UI Colors names
 /// =============================================
 
-$palette-name-success  : if(meta.global-variable-exists('palette-name-success', $module: generated), generated.$palette-name-success, 'success') !default;
-$palette-name-danger   : if(meta.global-variable-exists('palette-name-danger', $module: generated), generated.$palette-name-danger, 'danger') !default;
-$palette-name-warning  : if(meta.global-variable-exists('palette-name-warning', $module: generated), generated.$palette-name-warning, 'warning') !default;
-$palette-name-info     : if(meta.global-variable-exists('palette-name-info', $module: generated), generated.$palette-name-info, 'info') !default;
-$palette-name-primary  : if(meta.global-variable-exists('palette-name-primary', $module: generated), generated.$palette-name-primary, 'primary') !default;
-$palette-name-secondary: if(meta.global-variable-exists('palette-name-secondary', $module: generated), generated.$palette-name-secondary, 'secondary') !default;
-$palette-name-light    : if(meta.global-variable-exists('palette-name-light', $module: generated), generated.$palette-name-light, 'light') !default;
-$palette-name-dark     : if(meta.global-variable-exists('palette-name-dark', $module: generated), generated.$palette-name-dark, 'dark') !default;
-$palette-name-muted    : if(meta.global-variable-exists('palette-name-muted', $module: generated), generated.$palette-name-muted, 'muted') !default;
+$ui-color-name-success  : if(meta.global-variable-exists('palette-name-success', $module: generated), generated.$ui-color-name-success, 'success') !default;
+$ui-color-name-danger   : if(meta.global-variable-exists('palette-name-danger', $module: generated), generated.$ui-color-name-danger, 'danger') !default;
+$ui-color-name-warning  : if(meta.global-variable-exists('palette-name-warning', $module: generated), generated.$ui-color-name-warning, 'warning') !default;
+$ui-color-name-info     : if(meta.global-variable-exists('palette-name-info', $module: generated), generated.$ui-color-name-info, 'info') !default;
+$ui-color-name-primary  : if(meta.global-variable-exists('palette-name-primary', $module: generated), generated.$ui-color-name-primary, 'primary') !default;
+$ui-color-name-secondary: if(meta.global-variable-exists('palette-name-secondary', $module: generated), generated.$ui-color-name-secondary, 'secondary') !default;
+$ui-color-name-light    : if(meta.global-variable-exists('palette-name-light', $module: generated), generated.$ui-color-name-light, 'light') !default;
+$ui-color-name-dark     : if(meta.global-variable-exists('palette-name-dark', $module: generated), generated.$ui-color-name-dark, 'dark') !default;
+$ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted', $module: generated), generated.$ui-color-name-muted, 'muted') !default;
 
 
 /// UI Colors collection
 /// =============================================
 /// Default names and colors assignment
 
-$palette: (
-    $palette-name-success  : $green,
-    $palette-name-danger   : $red,
-    $palette-name-warning  : $orange,
-    $palette-name-info     : $cyan,
-    $palette-name-primary  : $blue,
-    $palette-name-secondary: $gray-600,
-    $palette-name-light    : $white,
-    $palette-name-dark     : $black,
-    $palette-name-muted    : $gray-500,
+$ui-colors: (
+    $ui-color-name-success  : $green,
+    $ui-color-name-danger   : $red,
+    $ui-color-name-warning  : $orange,
+    $ui-color-name-info     : $cyan,
+    $ui-color-name-primary  : $blue,
+    $ui-color-name-secondary: $gray-600,
+    $ui-color-name-light    : $white,
+    $ui-color-name-dark     : $black,
+    $ui-color-name-muted    : $gray-500,
 );
 
 
@@ -54,8 +54,8 @@ $palette: (
 // *
 // * =============================================
 
-$palette-shades: () !default;
-$palette-tints: () !default;
+$ui-colors-shades: () !default;
+$ui-colors-tints: () !default;
 
 
 
@@ -67,17 +67,17 @@ $palette-tints: () !default;
 
 /// Add customs colors to the palette
 /// -----
-/// $additional-palette: ( 'my-color': purple );
-$generated-additional-palette: if(meta.global-variable-exists('generated-additional-palette', $module: generated), generated.$generated-additional-palette, ()) !default;
-$additional-palette          : () !default;
-$additional-palette          : map-merge(
-    $generated-additional-palette, 
-    $additional-palette
+/// $additional-ui-colors: ( 'my-color': purple );
+$generated-additional-ui-colors: if(meta.global-variable-exists('generated-additional-ui-colors', $module: generated), generated.$generated-additional-ui-colors, ()) !default;
+$additional-ui-colors          : () !default;
+$additional-ui-colors          : map-merge(
+    $generated-additional-ui-colors, 
+    $additional-ui-colors
 );
 
-@if collection.notEmpty($additional-palette) {
-    @each $key, $value in $additional-palette {
-        $palette: map-merge($palette, ($key: $value));
+@if collection.notEmpty($additional-ui-colors) {
+    @each $key, $value in $additional-ui-colors {
+        $ui-colors: map-merge($ui-colors, ($key: $value));
     }
 }
 
@@ -91,15 +91,15 @@ $additional-palette          : map-merge(
 
 /// Remove from palette
 /// -----
-/// $useless-palette: (success);
+/// $useless-ui-colors: (success);
 $generated-useless-palette: if(meta.global-variable-exists('generated-useless-palette', $module: generated), generated.$generated-useless-palette, ()) !default;
-$useless-palette          : () !default;
-$useless-palette          : join($generated-useless-palette, $useless-palette, 'comma');
+$useless-ui-colors          : () !default;
+$useless-ui-colors          : join($generated-useless-palette, $useless-ui-colors, 'comma');
 
-@if collection.notEmpty($useless-palette) {
-    @each $key, $value in $palette {
-        @if collection.keyExists($useless-palette, $key) {
-            $palette: collection.unset($palette, $key);
+@if collection.notEmpty($useless-ui-colors) {
+    @each $key, $value in $ui-colors {
+        @if collection.keyExists($useless-ui-colors, $key) {
+            $ui-colors: collection.unset($ui-colors, $key);
         }
     }
 }

@@ -126,7 +126,6 @@ class BuildCommand extends Command
             foreach ($additional as $name => $values) {
 
                 $name = str_replace("_", "-", $name);
-                dump($name);
                 $sassString .= "'$name': (breakpoint: {$values['breakpoint']}px, container: {$values['container']}px), ";
             }
         
@@ -208,7 +207,7 @@ class BuildCommand extends Command
 
         foreach ($defaults as $name => $value)
         {
-            $vars[] = "\$palette-name-{$name}: '{$value}';";
+            $vars[] = "\$ui-color-name-{$name}: '{$value}';";
         }
 
         $additional_collection = [];
@@ -220,7 +219,7 @@ class BuildCommand extends Command
         }
         if (!empty($additional_collection))
         {
-            $vars[] = "\$generated-additional-palette: (". implode(",", $additional_collection) .");";
+            $vars[] = "\$generated-additional-ui-colors: (". implode(",", $additional_collection) .");";
         }
 
         $useless_collection = [];

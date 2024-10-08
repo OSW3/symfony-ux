@@ -93,7 +93,7 @@ hr {
 
 /// Build text colors from palette
 /// =============================================
-@each $key, $value in $palette {
+@each $key, $value in $ui-colors {
     .text-#{$key} {
         color: var(--#{$key});
         

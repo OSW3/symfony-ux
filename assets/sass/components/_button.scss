@@ -62,9 +62,9 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
     --#{$CLASSNAME}--border-disabled: transparent;
     --#{$CLASSNAME}--focus: transparent;
 
-    @each $key, $value in $palette {
+    @each $key, $value in $ui-colors {
 
-        $base-color: map-get($palette, $key);
+        $base-color: map-get($ui-colors, $key);
         $contrast  : color.contrastText($base-color);
         $text-color: map-get($colors, #{$contrast});
 

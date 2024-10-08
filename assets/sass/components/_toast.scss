@@ -49,7 +49,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * =========================
 
 .#{$CLASSNAME} {
-    @each $key, $value in $palette {
+    @each $key, $value in $ui-colors {
         &-#{$key} {
             --#{$CLASSNAME}--color           : var(--#{$key});
             --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
@@ -84,7 +84,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
     /// --
 }
 
-// @each $key, $value in $palette {
+// @each $key, $value in $ui-colors {
 //     .#{$CLASSNAME}-#{$key} {
 //         color: $value;
 //         background-color: color.tint($value, 70%);

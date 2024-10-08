@@ -50,7 +50,7 @@ $announcement--bg-color--hover: $gray-600 !default;
 
 // .#{$CLASSNAME} {
 
-//     @each $key, $value in $palette {
+//     @each $key, $value in $ui-colors {
 //         &-#{$key} {
 //             --#{$CLASSNAME}--color           : var(--#{$key});
 //             --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);

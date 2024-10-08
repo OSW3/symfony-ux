@@ -47,7 +47,7 @@ $alert--border-radius: map-get($radius, 'small') !default;
 // * =========================
 
 .#{$CLASSNAME} {
-    @each $key, $value in $palette {
+    @each $key, $value in $ui-colors {
         &-#{$key} {
             --#{$CLASSNAME}--text      : var(--#{$key}--text);
             --#{$CLASSNAME}--background: var(--#{$key}--background);

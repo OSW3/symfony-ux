@@ -1,8 +1,8 @@
-# UI Palette
+# UI Colors
 
 An extensive color system that themes certain components.
 
-## Defaults UI Palette definitions
+## Defaults UI Colors definitions
 
 | Names | SASS Variable | Color |
 |-|-|-|
@@ -59,15 +59,15 @@ symfony_ux:
 Add your custom SASS variables before Symfony UX integration
 
 ```scss
-$palette-name-success  : 'success';
-$palette-name-danger   : 'danger';
-$palette-name-warning  : 'warning';
-$palette-name-info     : 'info';
-$palette-name-primary  : 'primary';
-$palette-name-secondary: 'secondary';
-$palette-name-light    : 'light';
-$palette-name-dark     : 'dark';
-$palette-name-muted    : 'muted';
+$ui-color-name-success  : 'success';
+$ui-color-name-danger   : 'danger';
+$ui-color-name-warning  : 'warning';
+$ui-color-name-info     : 'info';
+$ui-color-name-primary  : 'primary';
+$ui-color-name-secondary: 'secondary';
+$ui-color-name-light    : 'light';
+$ui-color-name-dark     : 'dark';
+$ui-color-name-muted    : 'muted';
 
 @import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/variables/palette';
 @import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/factories/palette';
@@ -95,7 +95,7 @@ Add your additional breakpoints before the Symfony UX integration
 
 ```scss
 // Your additional UI Color
-$additional-palette: (
+$additional-ui-colors: (
     highlight : $pumpkin,
 );
 
@@ -124,7 +124,7 @@ symfony_ux:
 ### From `SCSS` variables
 
 ```scss 
-$useless-palette: ('light', 'dark', 'muted');
+$useless-ui-colors: ('light', 'dark', 'muted');
 
 @import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/variables/palette';
 @import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/factories/palette';

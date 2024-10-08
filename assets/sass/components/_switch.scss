@@ -72,7 +72,7 @@ $default--switch-disabled--indicator-color : $gray-500;
 // * =========================
 
 .#{$CLASSNAME} {
-    @each $key, $value in $palette {
+    @each $key, $value in $ui-colors {
         &-#{$key} {
             // --#{$CLASSNAME}--color           : var(--#{$key});
             // --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
