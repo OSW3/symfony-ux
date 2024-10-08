@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/modal/section.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/modal/section.twig')]
 final class Section extends AbstractComponent
 {
     public const NAME = "modal";

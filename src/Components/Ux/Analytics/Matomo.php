@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/matomo/matomo.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/matomo/matomo.twig')]
 final class Matomo extends AbstractComponent
 {
     public const NAME = 'analytics';

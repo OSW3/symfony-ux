@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/accordion/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/accordion/base.twig')]
 final class Accordion extends AbstractComponent
 {
     public const NAME = "accordion";

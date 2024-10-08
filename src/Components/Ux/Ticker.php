@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/ticker/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/ticker/base.twig')]
 final class Ticker extends AbstractComponent
 {
     public const NAME = "ticker";

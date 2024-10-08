@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/announcement/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/announcement/base.twig')]
 final class Announcement extends AbstractComponent
 {
     public const NAME = "announcement";

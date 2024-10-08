@@ -8,7 +8,7 @@ Create advanced buttons.
 
 ## Component configuration
 
-*no configuration available in the ux.yaml*
+*no configuration available in the symfony_ux.yaml*
 
 ## Twig integration
 

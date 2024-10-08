@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/heap/heap.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/heap/heap.twig')]
 final class Heap extends AbstractComponent
 {
     public const NAME = 'analytics';

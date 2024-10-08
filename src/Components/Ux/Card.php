@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/card/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/card/base.twig')]
 final class Card extends AbstractComponent
 {
     public const NAME = "card";

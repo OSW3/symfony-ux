@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/rotator/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/rotator/base.twig')]
 final class Rotator extends AbstractComponent
 {
     public const NAME = "rotator";

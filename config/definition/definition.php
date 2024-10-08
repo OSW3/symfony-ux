@@ -10,6 +10,9 @@ return static function($definition)
 {
     $definition->rootNode()->children()
 
+        /**
+         * Prefix
+         */
         ->scalarNode('prefix')
             ->info("Specifies the prefix")
             ->defaultValue('ux')

@@ -1,12 +1,12 @@
-{% extends '@UxComponents/form-widget/container.twig' %}
+{% extends '@SymfonyUx/form-widget/container.twig' %}
 
 {% block widget %}
-{% embed "@UxComponents/form-widget/group.twig" with {
+{% embed "@SymfonyUx/form-widget/group.twig" with {
     isGroup     : isGroup,
     icon        : icon,
     iconPosition: iconPosition
 } %}{% block controls %}
-    {% include "@UxComponents/form-widget/tag/input/tag.twig" with {
+    {% include "@SymfonyUx/form-widget/tag/input/tag.twig" with {
         autofocus : autofocus,
         checked   : checked,
         class     : class,
@@ -21,7 +21,7 @@
         type      : type,
         value     : value,
     } only %}
-    {% include "@UxComponents/form-widget/tag/label/tag.twig" with {
+    {% include "@SymfonyUx/form-widget/tag/label/tag.twig" with {
         id      : id,
         label   : label,
         hidden  : labelHidden,
@@ -29,7 +29,7 @@
         required: required,
     } only %}
 {% endblock controls %}{% endembed %}
-{% include "@UxComponents/form-widget/tag/description/tag.twig" with {
+{% include "@SymfonyUx/form-widget/tag/description/tag.twig" with {
     tag    : descriptionTag,
     icon   : descriptionIcon,
     id     : descriptionId,

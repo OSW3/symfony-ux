@@ -5,7 +5,7 @@ use OSW3\UX\Components\Ux\Button;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/button/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/button/base.twig')]
 final class Close extends Button 
 {
     // role="close"

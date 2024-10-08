@@ -1,21 +1,17 @@
-# Install (process explained)
+# Install
 
-<br>
 
-## Step 1 - Download with composer
+## Install the Bundle
 
-### Step 1.a - Download the Bundle
-
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
+Open a command console, enter your project directory and execute the following command to download the latest stable version of this bundle
 
 ```console
 composer require osw3/symfony-ux
 ```
-<br>
 
-### Step 1.b - Edit the line `"osw3/symfony-search"` of `composer.json` (optional)
+## Prepare for update
 
+Optional but recommend  
 Edit the line `"osw3/symfony-ux"` on your `composer.json`
 
 ```json 
@@ -26,12 +22,9 @@ Edit the line `"osw3/symfony-ux"` on your `composer.json`
 }
 ```
 
-<br>
+## Enable the Bundle
 
-## Step 2 - Enable the Bundle
-
-Then, enable the bundle by adding it to the list of registered bundles
-in the `config/bundles.php` file of your project:
+Then, enable the bundle by adding it to the list of registered bundles in the `config/bundles.php` file of your project:
 
 ```php 
 // config/bundles.php
@@ -42,4 +35,12 @@ return [
 ];
 ```
 
-<br>
+## Enable Twig components
+
+Make sure to make Twig components accessible to Symfony in the `config/packages/twig_component.yaml` file of your project:
+
+```yaml
+twig_component:
+    defaults:
+        OSW3\UX\Components\: '@SymfonyUx/'
+```

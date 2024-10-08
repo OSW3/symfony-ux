@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/brand/link.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/brand/link.twig')]
 final class Link extends AbstractComponent
 {
     use AttributeClassTrait;

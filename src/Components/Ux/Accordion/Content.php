@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/accordion/content.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/accordion/content.twig')]
 final class Content extends AbstractComponent
 {
     use AttributeClassTrait;

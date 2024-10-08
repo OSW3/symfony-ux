@@ -1,6 +1,6 @@
 <select {{ _get_attributes(_attr) }}>
 {% for value, label in choices %}
-{% include "@UxComponents/form-widget/tag/select/option.twig" with {
+{% include "@SymfonyUx/form-widget/tag/select/option.twig" with {
     label: label,
     value: value,
     selected: value == selected,

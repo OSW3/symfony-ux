@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/offcanvas/inner.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/offcanvas/inner.twig')]
 final class Inner extends AbstractComponent
 {
     public const NAME = "offcanvas";

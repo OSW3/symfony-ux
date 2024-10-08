@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/badge/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/badge/base.twig')]
 final class Badge extends AbstractComponent
 {
     public const NAME = "badge";

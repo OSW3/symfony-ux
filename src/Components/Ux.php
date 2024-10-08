@@ -3,7 +3,7 @@ namespace OSW3\UX\Components;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/void.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/void.twig')]
 final class Ux 
 {
     public function __construct()

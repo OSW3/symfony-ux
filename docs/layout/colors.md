@@ -58,7 +58,7 @@ Or add only the color definition files.
 *see variable names*
 
 ```yaml 
-# config/packages/ux.yaml
+# config/packages/symfony_ux.yaml
 ux:
     layout:
         colors:
@@ -70,7 +70,7 @@ ux:
 
 ### From `SCSS` variables
 
-> SCSS variables will always override the `ux.yaml` definition.
+> SCSS variables will always override the `symfony_ux.yaml` definition.
 
 Add your custom variables before the `dist` or `colors` SASS files *[see integration](#integration)*.
 
@@ -102,7 +102,7 @@ You can add additional colors.
 ### From `YAML` configuration
 
 ```yaml 
-# config/packages/ux.yaml
+# config/packages/symfony_ux.yaml
 ux:
     layout:
         colors:
@@ -138,7 +138,7 @@ Useless colors are remove from CSS variables.
 ### From `YAML` configuration
 
 ```yaml 
-# config/packages/ux.yaml
+# config/packages/symfony_ux.yaml
 ux:
     layout:
         colors:
@@ -164,7 +164,7 @@ $useless-colors: (
 ### From `YAML` configuration
 
 ```yaml 
-# config/packages/ux.yaml
+# config/packages/symfony_ux.yaml
 ux:
     layout:
         colors:

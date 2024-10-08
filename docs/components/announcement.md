@@ -10,7 +10,7 @@ Create a announcement banner. Usually at the top of the website.
 
 ## Component configuration
 
-Set the configuration in the `config/package/ux.yaml`.
+Set the configuration in the `config/package/symfony_ux.yaml`.
 
 This configuration is applied by default by all Announcement components and can be overridden when integrating twig.
 
@@ -53,7 +53,7 @@ ux:
 | * `animation` | `enum` | Set the animation type.  `ticker`,  `rotator`, `none` | no | `ticker` |
 | * `speed` | `integer` | Set the speed of the animation. | no | 6 |
 
-> Parameters marked with * override the configuration in the `config/package/ux.yaml` file.
+> Parameters marked with * override the configuration in the `config/package/symfony_ux.yaml` file.
 
 ## SASS variables
 

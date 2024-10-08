@@ -11,7 +11,8 @@
 /// Prefix definition
 /// ==============================================
 
-$prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux') !default;
+// $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux') !default;
+$prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux');
 
 
 /// Add prefix separator

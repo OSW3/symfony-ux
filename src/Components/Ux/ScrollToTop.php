@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/scroll-to-top/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/scroll-to-top/base.twig')]
 final class ScrollToTop extends AbstractComponent
 {    
     use DoNotExposeTrait;

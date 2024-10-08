@@ -1,11 +1,11 @@
 <?php 
-namespace OSW3\UX\Components\FormWidget;
+namespace OSW3\UX\Components\Ux\FormWidget;
 
 use OSW3\UX\Enum\FormWidget\Type;
 use OSW3\UX\Components\Ux\FormWidget;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/bridge.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/bridge.twig')]
 final class Uuid extends FormWidget
 {
     public function fetchType(): string 

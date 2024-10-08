@@ -55,7 +55,7 @@ ux:
 
 ### Method 1 
 
-This method suppose the Tracking ID is defined in the `ux.yaml` configuration
+This method suppose the Tracking ID is defined in the `symfony_ux.yaml` configuration
 
 ```twig 
 <twig:Ux:Analytics:Google />
@@ -63,7 +63,7 @@ This method suppose the Tracking ID is defined in the `ux.yaml` configuration
 
 ### Method 2 
 
-This method suppose the Tracking ID is defined in the `ux.yaml` configuration
+This method suppose the Tracking ID is defined in the `symfony_ux.yaml` configuration
 
 ```twig 
 <twig:Ux:Analytics provider="google" />

@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/calendar/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/calendar/base.twig')]
 final class Calendar extends AbstractComponent
 {
     public const NAME = "calendar";

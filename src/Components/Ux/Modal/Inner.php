@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/modal/inner.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/modal/inner.twig')]
 final class Inner extends AbstractComponent
 {
     public const NAME = "modal";

@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/goSquared/goSquared.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/goSquared/goSquared.twig')]
 final class GoSquared extends AbstractComponent
 {
     public const NAME = 'analytics';

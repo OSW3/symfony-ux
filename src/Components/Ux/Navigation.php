@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/navigation/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/navigation/base.twig')]
 final class Navigation extends AbstractComponent
 {
     public const NAME = "navigation";

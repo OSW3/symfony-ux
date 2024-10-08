@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/search/suggestions.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/search/suggestions.twig')]
 final class Suggestions extends AbstractComponent
 {
     public const NAME = "search";

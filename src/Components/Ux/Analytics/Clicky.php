@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/clicky/clicky.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/clicky/clicky.twig')]
 final class Clicky extends AbstractComponent
 {
     public const NAME = 'analytics';

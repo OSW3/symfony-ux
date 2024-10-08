@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/brand/figure.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/brand/figure.twig')]
 final class Figure extends AbstractComponent
 {
     use AttributeClassTrait;

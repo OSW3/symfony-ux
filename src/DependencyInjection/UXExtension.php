@@ -54,8 +54,8 @@ class UXExtension extends Extension implements PrependExtensionInterface
         // --
 
         $twigConfig = [];
-		$this->extendsTwigConfig($twigConfig, Path::join(__DIR__, "/../../", "templates"), "UxComponents");
-		$this->extendsTwigConfig($twigConfig, Path::join(__DIR__, "/../../", "examples"), "UxComponentsExamples");
+		$this->extendsTwigConfig($twigConfig, Path::join(__DIR__, "/../../", "templates"), "SymfonyUx");
+		$this->extendsTwigConfig($twigConfig, Path::join(__DIR__, "/../../", "examples"), "SymfonyUxExamples");
 
         $container->prependExtensionConfig('twig', $twigConfig);
     }
@@ -75,4 +75,9 @@ class UXExtension extends Extension implements PrependExtensionInterface
 			$twigConfig['paths'][$directory] = $alias;
 		}
 	}
+	
+    public function getAlias(): string
+    {
+        return Configuration::NAME;
+    }
 }

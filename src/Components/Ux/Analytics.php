@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/base.twig')]
 final class Analytics extends AbstractComponent
 {
     public const NAME = "analytics";

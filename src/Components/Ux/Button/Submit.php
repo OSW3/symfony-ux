@@ -4,7 +4,7 @@ namespace OSW3\UX\Components\Ux\Button;
 use OSW3\UX\Components\Ux\Button;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/button/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/button/base.twig')]
 final class Submit extends Button 
 {
     public function fetchType(): string 

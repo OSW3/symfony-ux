@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/search/modal.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/search/modal.twig')]
 final class Modal extends AbstractComponent
 {
     public const NAME = "search";

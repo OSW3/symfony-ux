@@ -35,7 +35,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/tag/input/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/tag/input/base.twig')]
 class Input extends AbstractComponent
 {
     public const NAME = "form-widget";

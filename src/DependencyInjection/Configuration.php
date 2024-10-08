@@ -14,18 +14,18 @@ class Configuration implements ConfigurationInterface
 {
 	/**
 	 * define the name of the configuration tree.
-	 * > /config/packages/ux.yaml
+	 * > /config/packages/symfony_ux.yaml
 	 *
 	 * @var string
 	 */
-	public const string NAME = "ux";
+	public const string NAME = "symfony_ux";
 
 	/**
 	 * Define the translation domain
 	 *
 	 * @var string
 	 */
-	public const string DOMAIN = 'ux';
+	public const string DOMAIN = 'symfony_ux';
 
 	/**
 	 * Update and return the Configuration Builder

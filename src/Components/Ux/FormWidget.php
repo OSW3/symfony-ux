@@ -48,7 +48,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/widget.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/widget.twig')]
 class FormWidget extends AbstractComponent
 {
     // Container

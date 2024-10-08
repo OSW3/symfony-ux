@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/media/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/media/base.twig')]
 final class Media extends AbstractComponent
 {
     public const NAME = "media";

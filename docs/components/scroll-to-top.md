@@ -44,7 +44,7 @@ ux:
 | * `symbol` | `string` | Specifies the symbol of the button. | no | `arrow-up` |
 | * `title` | `string` | Specifies the title attribute value. | no | `Go to top` |
 
-> Parameters marked with * override the configuration in the `config/package/ux.yaml` file.
+> Parameters marked with * override the configuration in the `config/package/symfony_ux.yaml` file.
 
 ## SASS variables
 

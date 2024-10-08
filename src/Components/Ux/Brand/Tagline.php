@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/brand/tagline.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/brand/tagline.twig')]
 final class Tagline extends AbstractComponent
 {
     use AttributeClassTrait;

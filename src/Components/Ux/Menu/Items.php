@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/menu/items.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/menu/items.twig')]
 final class Items extends AbstractComponent
 {
     use DoNotExposeTrait;

@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/segment/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/segment/base.twig')]
 final class Segment extends AbstractComponent
 {
     public const NAME = "segment";

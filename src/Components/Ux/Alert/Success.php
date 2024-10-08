@@ -4,7 +4,7 @@ namespace OSW3\UX\Components\Ux\Alert;
 use OSW3\UX\Components\Ux\Alert;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/alert/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/alert/base.twig')]
 final class Success extends Alert
 {
     public function fetchType(): string 

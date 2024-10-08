@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/popover/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/popover/base.twig')]
 final class Popover extends AbstractComponent
 {
     public const NAME = "popover";

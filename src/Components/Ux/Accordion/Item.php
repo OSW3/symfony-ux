@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/accordion/item.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/accordion/item.twig')]
 final class Item extends AbstractComponent
 {
     use AttributeIdTrait;

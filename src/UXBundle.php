@@ -3,9 +3,11 @@ namespace OSW3\UX;
 
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Path;
+use OSW3\UX\DependencyInjection\UXExtension;
 use OSW3\UX\DependencyInjection\Configuration;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 class UXBundle extends Bundle
 {
@@ -30,14 +32,23 @@ class UXBundle extends Bundle
 
             if (!isset( $twig_component_ArrayContent['twig_component']['defaults'][$newClassPath] ))
             {
-                file_put_contents($twig_component_Filepath, Yaml::dump(array_merge_recursive($twig_component_ArrayContent, ['twig_component' => ['defaults' => [$newClassPath => "@UxComponents/"]]]), 4));
+                file_put_contents($twig_component_Filepath, Yaml::dump(array_merge_recursive($twig_component_ArrayContent, ['twig_component' => ['defaults' => [$newClassPath => "@SymfonyUx/"]]]), 4));
             }
         }
 
 
-        // Create Search.yaml config
+        // Create yaml config
         // --
         
         (new Configuration)->generateProjectConfig($projectDir);
+    }
+
+    public function getContainerExtension(): ?ExtensionInterface
+    {
+        if (null === $this->extension) {
+            $this->extension = new UXExtension();
+        }
+
+        return $this->extension;
     }
 }

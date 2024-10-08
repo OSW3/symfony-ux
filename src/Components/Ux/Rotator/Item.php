@@ -9,7 +9,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 
-#[AsTwigComponent(template: '@UxComponents/rotator/item.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/rotator/item.twig')]
 final class Item extends AbstractComponent
 {
     public const NAME = "rotator-item";

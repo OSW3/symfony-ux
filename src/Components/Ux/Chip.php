@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/chip/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/chip/base.twig')]
 final class Chip extends AbstractComponent
 {
     public const NAME = "chip";

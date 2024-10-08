@@ -32,9 +32,9 @@ Add many UX Components to your app.
 The UX Components bundle contains many default settings for layout and components.
 
 Each of the parameters can be overloaded in 2 ways:
-- overloaded by the ux.yaml configuration file
+- overloaded by the symfony_ux.yaml configuration file
 - overloaded by SCSS variable definition
 
 > **!!! Higher priority is given to SCSS variables !!!**
 
-This means that UX component bundle variables can be overridden by parameter definition in ux.yaml file and parameter definition in ux.yaml file can be overridden by SCSS variables.
+This means that UX component bundle variables can be overridden by parameter definition in symfony_ux.yaml file and parameter definition in symfony_ux.yaml file can be overridden by SCSS variables.

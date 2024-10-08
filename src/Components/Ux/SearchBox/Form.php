@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/search-box/form.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/search-box/form.twig')]
 final class Form extends AbstractComponent
 {
     public const NAME = "search-box";

@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/tooltip/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/tooltip/base.twig')]
 final class Tooltip extends AbstractComponent
 {
     public const NAME = "tooltip";

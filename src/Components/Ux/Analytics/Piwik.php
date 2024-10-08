@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/piwik/piwik.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/piwik/piwik.twig')]
 final class Piwik extends AbstractComponent
 {
     public const NAME = 'analytics';

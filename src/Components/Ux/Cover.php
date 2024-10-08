@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/cover/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/cover/base.twig')]
 final class Cover extends AbstractComponent
 {
     public const NAME = "cover";

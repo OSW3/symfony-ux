@@ -5,7 +5,7 @@ use OSW3\UX\Components\Ux\FormWidget;
 use OSW3\UX\Enum\FormWidget\WidgetType;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/bridge.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/bridge.twig')]
 class Choice extends FormWidget
 {
     public function fetchType(): string 

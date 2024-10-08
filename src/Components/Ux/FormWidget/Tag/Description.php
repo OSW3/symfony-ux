@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/tag/description/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/tag/description/base.twig')]
 class Description extends AbstractComponent
 {
     public const NAME = "form-widget";

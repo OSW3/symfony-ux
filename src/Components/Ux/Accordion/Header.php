@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/accordion/header.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/accordion/header.twig')]
 final class Header extends AbstractComponent
 {
     use AttributeIdTrait;

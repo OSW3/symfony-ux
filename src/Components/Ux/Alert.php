@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/alert/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/alert/base.twig')]
 class Alert extends AbstractComponent
 {
     public const NAME = "alert";

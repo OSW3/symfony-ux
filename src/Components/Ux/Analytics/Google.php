@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/google/google.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/google/google.twig')]
 final class Google extends AbstractComponent
 {
     public const NAME = 'analytics';

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/brand/inner.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/brand/inner.twig')]
 final class Inner extends AbstractComponent
 {
     #[ExposeInTemplate(name: 'name', getter: 'fetchName')]

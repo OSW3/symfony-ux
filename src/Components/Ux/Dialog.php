@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/dialog/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/dialog/base.twig')]
 final class Dialog extends AbstractComponent
 {
     public const NAME = "dialog";

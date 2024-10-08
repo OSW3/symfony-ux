@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/link/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/link/base.twig')]
 final class Link extends AbstractComponent
 {    
     public const NAME = "link";

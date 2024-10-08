@@ -2,13 +2,13 @@
 {# - Component : Search                         - #}
 {# - Part : Modal                               - #}
 {# ---------------------------------------------- #}
-{% extends '@UxComponents/search/modal.html' %}
+{% extends '@SymfonyUx/search/modal.html' %}
 
 
 {# ---------------------------------------------- #}
 {# ---------------------------------------------- #}
 
-{% set headerTemplate = "@UxComponents/search/form.twig" %}
+{% set headerTemplate = "@SymfonyUx/search/form.twig" %}
 {% set headerOptions = {
     method      : method,
     param       : param,
@@ -17,7 +17,7 @@
     label       : label
 } %}
 
-{% set bodyTemplate = "@UxComponents/search/suggestions.twig" %}
+{% set bodyTemplate = "@SymfonyUx/search/suggestions.twig" %}
 {% set bodyOptions = {} %}
 
 {% set footerTemplate = null %}

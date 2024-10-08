@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/copyright/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/copyright/base.twig')]
 final class Copyright extends AbstractComponent
 {
     public const NAME = "copyright";

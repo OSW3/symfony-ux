@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/map/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/map/base.twig')]
 final class Map extends AbstractComponent
 {
     public const NAME = "map";

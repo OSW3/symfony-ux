@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/menu/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/menu/base.twig')]
 final class Menu extends AbstractComponent
 {
     use DoNotExposeTrait;

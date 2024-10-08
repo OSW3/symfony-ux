@@ -1,23 +1,8 @@
 # Breakpoints & Containers
 
-- [What is it about ?](#what-is-it-about-)
-- [Defaults definitions](#defaults-definitions)
-- [Customize names and values](#customize-names-and-values)
-    - [From the `ux.yaml`configuration file](#from-the-uxyamlconfiguration-file)
-    - [From `SCSS` variables](#from-scss-variables)
-- [Add additional breakpoints and containers](#add-additional-breakpoints-and-containers)
-    - [From the `ux.yaml`configuration file](#from-the-uxyamlconfiguration-file-1)
-    - [From `SCSS` variables](#from-scss-variables-1)
-- [Exclude useless breakpoints and containers](#exclude-useless-breakpoints-and-containers)
-    - [From the `ux.yaml`configuration file](#from-the-uxyamlconfiguration-file-2)
-    - [From `SCSS` variables](#from-scss-variables-2)
-- [SCSS integration example](#scss-integration-example)
+Breakpoints are customizable widths that define how your responsive layout behaves across screen or viewport sizes.
 
-## What is it about ? 
-
-Breakpoints are the building blocks of responsive design.
-
-## Defaults definitions
+## Defaults breakpoints and containers definitions
 
 | Breakpoint names | Breakpoint values | Container values |
 |-|-|-|
@@ -30,17 +15,17 @@ Breakpoints are the building blocks of responsive design.
 
 ## Customize names and values
 
-### From the `ux.yaml`configuration file
+### Method 1 : From the `symfony_ux.yaml`configuration file
 
 ```yaml 
 ux:
     layout:
         breakpoints:
             base:
-                phone: # This is the base name
-                    name: phone # The name to customize
+                phone:              # This is the reference name, it cannot be changed
+                    name: phone     # The name to customize
                     breakpoint: 576 # The breakpoint value to customize
-                    container: 540 # The container value to customize
+                    container: 540  # The container value to customize
                 tablet:
                     name: tablet
                     breakpoint: 768
@@ -63,61 +48,83 @@ ux:
                     container: 1520
 ```
 
-### From `SCSS` variables
+> Don't forget to run the command `php bin/console ux:build` to apply changes.
 
-> SCSS variables will always override the `ux.yaml` definition.
+### Method 2 : From `SCSS` variables
+
+> SCSS variables will always override the `symfony_ux.yaml` definition.
+
+Add your custom SASS variables before Symfony UX integration
 
 ```scss
-$breakpoint-name-phone  : 'phone';
-$breakpoint-name-tablet : 'tablet';
-$breakpoint-name-laptop : 'laptop';
-$breakpoint-name-desktop: 'desktop';
-$breakpoint-name-wide   : 'wide';
-$breakpoint-name-ultra  : 'ultra';
+// Customize Breakpoints & Containers names
+$breakpoint-name-phone   : 'phone';
+$breakpoint-name-tablet  : 'tablet';
+$breakpoint-name-laptop  : 'laptop';
+$breakpoint-name-desktop : 'desktop';
+$breakpoint-name-wide    : 'wide';
+$breakpoint-name-ultra   : 'ultra';
 
-$breakpoint-phone  : '576px';
-$breakpoint-tablet : '768px';
-$breakpoint-laptop : '992px';
-$breakpoint-desktop: '1200px';
-$breakpoint-wide   : '1400px';
-$breakpoint-ultra  : '1600px';
+// Customize Breakpoints values
+$breakpoint-phone        : '576px';
+$breakpoint-tablet       : '768px';
+$breakpoint-laptop       : '992px';
+$breakpoint-desktop      : '1200px';
+$breakpoint-wide         : '1400px';
+$breakpoint-ultra        : '1600px';
 
-$container-phone  : '540px';
-$container-tablet : '720px';
-$container-laptop : '960px';
-$container-desktop: '1140px';
-$container-wide   : '1440px';
-$container-ultra  : '1520px';
+// Customize Containers values
+$container-phone         : '540px';
+$container-tablet        : '720px';
+$container-laptop        : '960px';
+$container-desktop       : '1140px';
+$container-wide          : '1440px';
+$container-ultra         : '1520px';
+
+// Import Symfony UX bundle
+@import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-bundle';
 ```
 
 ## Add additional breakpoints and containers
 
-### From the `ux.yaml`configuration file
+### From the `symfony_ux.yaml`configuration file
+
+Add your custom breakpoint and container in the `breakpoint->additional` section.
 
 ```yaml 
 ux:
     layout:
         breakpoints:
             additional:
-                extra: # Add new breakpoint named 'extra'
-                    breakpoint: 1800 # Set the breakpoint value
-                    container: 1740 # Set the container value
+                big-screen:             # Add new breakpoint named 'extra'
+                    breakpoint: 2000    # Set the breakpoint value
+                    container: 1900     # Set the container value
 ```
+
+> Don't forget to run the command `php bin/console ux:build` to apply changes.
 
 ### From `SCSS` variables
 
+Add your additional breakpoints before the Symfony UX integration
+
 ```scss
+// Your additional breakpoints & containers
 $additional-breakpoints: (
     'extra': (
         breakpoint: 1800px, 
         container: 1740px
     )
 );
+
+// Import Symfony UX bundle
+@import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-bundle';
 ```
+
+> SCSS configuration will always override the yaml configuration.
 
 ## Exclude useless breakpoints and containers
 
-### From the `ux.yaml`configuration file
+### From the `symfony_ux.yaml`configuration file
 
 ```yaml
 ux:

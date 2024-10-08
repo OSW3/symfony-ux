@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/plausible/plausible.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/plausible/plausible.twig')]
 final class Plausible extends AbstractComponent
 {
     public const NAME = 'analytics';

@@ -8,7 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/analytics/woopra/woopra.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/analytics/woopra/woopra.twig')]
 final class Woopra extends AbstractComponent
 {
     public const NAME = 'analytics';

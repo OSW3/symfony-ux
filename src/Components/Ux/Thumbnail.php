@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/thumbnail/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/thumbnail/base.twig')]
 final class Thumbnail extends AbstractComponent
 {
     public const NAME = "thumbnail";

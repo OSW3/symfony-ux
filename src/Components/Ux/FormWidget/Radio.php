@@ -6,7 +6,7 @@ use OSW3\UX\Components\Ux\FormWidget;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/bridge.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/bridge.twig')]
 final class Radio extends FormWidget 
 {
     public function fetchType(): string 

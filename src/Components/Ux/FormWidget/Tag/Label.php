@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/form-widget/tag/label/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/form-widget/tag/label/base.twig')]
 class Label extends AbstractComponent
 {
     public const NAME = "form-widget";

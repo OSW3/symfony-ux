@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/stepper/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/stepper/base.twig')]
 final class Stepper extends AbstractComponent
 {
     public const NAME = "stepper";

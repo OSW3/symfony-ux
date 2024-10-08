@@ -1,19 +1,10 @@
 # Prefix
 
-- [What is it about ?](#what-is-it-about-)
-- [Defaults definitions](#defaults-definitions)
-- [Customize the prefix](#customize-the-prefix)
-    - [From the `ux.yaml`configuration file](#from-the-uxyamlconfiguration-file)
-    - [From `SCSS` variables](#from-scss-variables)
-- [Remove the prefix](#remove-the-prefix)
-    - [From the `ux.yaml`configuration file](#from-the-uxyamlconfiguration-file-1)
-    - [From `SCSS` variables](#from-scss-variables-1)
+We use a prefix to avoid naming conflicts and clarify the origin of elements in the code.
 
-## What is it about ? 
+## Default prefix
 
-The prefix is used to identify the component of this Bundle.
-
-<small>in `scss`</small>
+<!-- <small>in `scss`</small>
 ```scss 
 .ux-copyright {...}
 .ux-link {...}
@@ -25,46 +16,38 @@ The prefix is used to identify the component of this Bundle.
 <a class="ux-link"> ... </a>
 ```
 
-## Defaults definitions
+## Defaults definitions -->
 
-The default prefix is `ux`.
-the prefix will be applied to components such as `ux-`.  
-
-## Customize the prefix
-
-### From the `ux.yaml`configuration file
+The default prefix is `ux`.  
+The prefix will be applied to components such as `ux-component`.  
 
 ```yaml 
 ux:
-    prefix: my-prefix
+    prefix: "ux"
 ```
 
-If your custom prefix is `my-prefix`.
-the prefix will be applied to components such as `my-prefix-`.  
+## Customize the prefix
 
-### From `SCSS` variables
+The prefix can be customized from the `symfony_ux.yaml`configuration file only.
 
-> SCSS variables will always override the `ux.yaml` definition.
-
-Add the `$prefix` variable in your SCSS.
-
-```scss 
-$prefix: 'my-custom-prefix';
+```yaml 
+ux:
+    prefix: "my-custom-prefix"
 ```
+
+If your custom prefix is `my-custom-prefix`.  
+the prefix will be applied to components such as `.my-custom-prefix-accordion{}`.  
+
+> Don't forget to run the command `php bin/console ux:build` to apply changes.
+
 
 ## Remove the prefix
 
-To remove the prefix, just set an empty string.
-
-### From the `ux.yaml`configuration file
+Just set an empty string to remove the prefix.
 
 ```yaml 
 ux:
     prefix: ''
 ```
 
-### From `SCSS` variables
-
-```scss 
-$prefix: '';
-```
+> Don't forget to run the command `php bin/console ux:build` to apply changes.

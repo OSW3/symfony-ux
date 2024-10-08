@@ -10,7 +10,7 @@ Display a copyright, generally on the website footer.
 
 ## Component configuration
 
-Set the configuration in the `config/package/ux.yaml`.
+Set the configuration in the `config/package/symfony_ux.yaml`.
 
 ```yaml
 ux: 
@@ -49,7 +49,7 @@ ux:
 | * `dates_separator` | `string` | Set the separator to use between dates in the display. | no | - |
 | * `separator` | `string` | Set the separator to use between elements in the display. | no | • |
 
-Parameters marked with * override the configuration in the `config/package/ux.yaml` file.
+Parameters marked with * override the configuration in the `config/package/symfony_ux.yaml` file.
 
 ## SASS variables
 

@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/avatar/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/avatar/base.twig')]
 final class Avatar extends AbstractComponent
 {
     public const NAME = "avatar";

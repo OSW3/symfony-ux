@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/search/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/search/base.twig')]
 final class SearchOld extends AbstractComponent
 {
     public const NAME = "search";

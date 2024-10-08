@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/brand/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/brand/base.twig')]
 final class Brand extends AbstractComponent
 {
     public const NAME = "brand";

@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/dropdown/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/dropdown/base.twig')]
 final class Dropdown extends AbstractComponent
 {
     public const NAME = "dropdown";

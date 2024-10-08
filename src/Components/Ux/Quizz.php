@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent(template: '@UxComponents/quizz/base.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/quizz/base.twig')]
 final class Quizz extends AbstractComponent
 {
     public const NAME = "quizz";

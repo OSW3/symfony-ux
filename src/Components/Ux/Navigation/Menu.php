@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@UxComponents/navigation/bridge-menu.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/navigation/bridge-menu.twig')]
 final class Menu 
 {
     public const NAME = "navigation";
