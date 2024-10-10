@@ -6,6 +6,7 @@
 
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/spacers';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
@@ -16,6 +17,8 @@ $_PREFIX_TEXT_COLOR_HOVER: prefix.$TEXT_COLOR_HOVER;
 
 $_COMPONENT              : 'copyright';
 $_CLASSNAME              : '#{$_PREFIX}#{$_COMPONENT}';
+
+$spacer: spacers.$spacer;
 
 @include banner.header('Component #{$_COMPONENT}');
 
