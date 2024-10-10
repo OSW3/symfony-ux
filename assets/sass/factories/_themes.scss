@@ -15,6 +15,7 @@
 @use './../abstracts/functions/color';
 @use './../abstracts/mixins/dumper';
 
+$themes: themes.$themes;
 $theme-default: themes.$theme-default;
 
 /// Default Theme
