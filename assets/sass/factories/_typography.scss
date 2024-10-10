@@ -84,7 +84,7 @@ hr {
 
 /// Build font weight (.font-w100/900)
 /// =============================================
-@if $add-font-weight {
+@if typography.$add-font-weight {
     @for $i from 1 through 9 {
         .font-w#{$i}00 {
             font-weight: #{$i}00;
