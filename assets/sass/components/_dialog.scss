@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
 @use './../variables/prefix';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/position';
@@ -37,7 +38,7 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
-$overlay-color: $black;
+$overlay-color: colors.$black;
 
 
 // * Default theme variables

@@ -9,7 +9,6 @@
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/transitions';
-
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -35,7 +34,7 @@ $delays: transitions.$delays;
 // * =============================================
 
 // * Default layout variables
-// * =========================
+// * -------------------------
 
 $accordion--border-radius: 'small' !default;
 
@@ -52,7 +51,7 @@ $accordion--item--content--padding-y: $spacer !default;
 
 
 // * Default theme variables
-// * =========================
+// * -------------------------
 
 /// Accordion Items
 /// -------------------------
