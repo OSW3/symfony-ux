@@ -12,7 +12,8 @@
 @use './../abstracts/functions/utils';
 
 $font-name-headings: fonts.$font-name-headings;
-$heading-font-size: typography.$heading-font-size-base;
+$heading-font-size-base: typography.$heading-font-size-base;
+$heading-font-sizes: typography.$heading-font-sizes;
 
 
 @include banner.header('Typography');
@@ -20,15 +21,15 @@ $heading-font-size: typography.$heading-font-size-base;
 
 @function calculate-font-size($index) {
     @if ($index == 1) {
-        @return $heading-font-size;
+        @return $heading-font-size-base;
     }
     @else if ($index == 2)
     {
-        @return $heading-font-size - .5;
+        @return $heading-font-size-base - .5;
     }
     @else
     {
-        @return $heading-font-size - ($index * .25);
+        @return $heading-font-size-base - ($index * .25);
     }
 }
 

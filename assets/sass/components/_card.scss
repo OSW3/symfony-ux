@@ -201,7 +201,7 @@ $default--card-footer--background-color: colors.$gray-200;
     /// --
     
     &-title {
-        font-size: $heading-font-size * .5;
+        font-size: typography.$heading-font-size-base * .5;
         font-weight: 700;
         line-height: 1.33;
 
