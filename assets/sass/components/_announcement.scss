@@ -4,16 +4,24 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'announcement';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
+$_PREFIX_TEXT_COLOR: prefix.$TEXT_COLOR;
+$_PREFIX_TEXT_COLOR_HOVER: prefix.$TEXT_COLOR_HOVER;
+$_PREFIX_BACKGROUND_COLOR: prefix.$BACKGROUND_COLOR;
+$_PREFIX_BACKGROUND_COLOR_HOVER: prefix.$BACKGROUND_COLOR_HOVER;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'announcement';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 // * =============================================
@@ -32,10 +40,10 @@ $announcement--transition: 'normal' !default;
 // * Default theme variables
 // * =========================
 
-$announcement--color: $white !default;
-$announcement--color--hover: $white !default;
-$announcement--bg-color: $gray-600 !default;
-$announcement--bg-color--hover: $gray-600 !default;
+$announcement--color: colors.$white !default;
+$announcement--color--hover: colors.$white !default;
+$announcement--bg-color: colors.$gray-600 !default;
+$announcement--bg-color--hover: colors.$gray-600 !default;
 
 
 // * =============================================
@@ -48,13 +56,13 @@ $announcement--bg-color--hover: $gray-600 !default;
 // * Palette
 // * =========================
 
-// .#{$CLASSNAME} {
+// .#{$_CLASSNAME} {
 
 //     @each $key, $value in $ui-colors {
 //         &-#{$key} {
-//             --#{$CLASSNAME}--color           : var(--#{$key});
-//             --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
-//             --#{$CLASSNAME}--border-color    : var(--#{$key});
+//             --#{$_CLASSNAME}--color           : var(--#{$key});
+//             --#{$_CLASSNAME}--background-color: var(--#{$key}--tint-70);
+//             --#{$_CLASSNAME}--border-color    : var(--#{$key});
 //         }
 //     }
 // }
@@ -63,33 +71,33 @@ $announcement--bg-color--hover: $gray-600 !default;
 // * Structure
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// CSS variables
     /// --
     
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $announcement--color);
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $announcement--color--hover);
-    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR,         $announcement--bg-color);
-    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR_HOVER,   $announcement--bg-color--hover);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR,               $announcement--color);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $announcement--color--hover);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $announcement--bg-color);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $announcement--bg-color--hover);
 
 
     /// Announcement container
     /// --
 
-    color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
-    background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR});
+    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
+    background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR});
 
     @include flex.centered;
     @include sizes.set(null, $announcement--height);
     @include transition.set((color, background-color), map-get($delays, $announcement--transition));
 
     & a {
-        color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
+        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
     }
 
     &:hover {
-        color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR_HOVER});
-        background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR_HOVER});
+        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR_HOVER});
+        background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR_HOVER});
     }
 }

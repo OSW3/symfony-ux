@@ -7,7 +7,6 @@ Accordions are vertically collapsing components that allow you to toggle between
 <!-- Example -->
 <!-- {"file": "00-main.html", "language": "twig"} -->
 
-
 ## Integration (SASS & JS)
 
 ### SASS Integration
@@ -18,7 +17,6 @@ To integrate the accordion styles into your project, import the necessary SCSS d
 // app.scss
 
 // Component dependencies 
-@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/prefix';
 @import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/colors';
 @import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/spacers';
 @import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/radius';

@@ -4,12 +4,15 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/prefix';
 @use './../abstracts/mixins/banner';
 
-$COMPONENT: 'media';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'media';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -43,7 +46,7 @@ $media--caption--font-size: $spacer * .9 !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Component definition
     /// --

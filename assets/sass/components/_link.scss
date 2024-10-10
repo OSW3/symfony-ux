@@ -4,14 +4,18 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/functions/icon';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$COMPONENT: 'link';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'link';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -32,10 +36,10 @@ $link--text-decoration--active: none !default;
 // * Default theme variables
 // * =========================
 
-$link--text-color: $blue !default;
-$link--text-color--hover: $blue !default;
-$link--text-color--active: $blue !default;
-$link--text-color--disabled: $gray-600 !default;
+$link--text-color: colors.$blue !default;
+$link--text-color--hover: colors.$blue !default;
+$link--text-color--active: colors.$blue !default;
+$link--text-color--disabled: colors.$gray-600 !default;
 
 
 
@@ -49,12 +53,12 @@ $link--text-color--disabled: $gray-600 !default;
 // * Palette
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     @each $key, $value in $ui-colors {
         &-#{$key} {
-            // --#{$CLASSNAME}--color           : var(--#{$key});
-            // --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
-            // --#{$CLASSNAME}--border-color    : var(--#{$key});
+            // --#{$_CLASSNAME}--color           : var(--#{$key});
+            // --#{$_CLASSNAME}--background-color: var(--#{$key}--tint-70);
+            // --#{$_CLASSNAME}--border-color    : var(--#{$key});
         }
     }
 }
@@ -63,7 +67,7 @@ $link--text-color--disabled: $gray-600 !default;
 // * Structure
 // * =========================
 
-.#{$CLASSNAME} {    
+.#{$_CLASSNAME} {    
     --icon         : #{icon.get('external-link', var(--link--text-color))};
     // --icon-active  : #{icon.get('external-link', var(--link--text-color--active))};
     // --icon-disabled: #{icon.get('external-link', var(--link--text-color--disabled))};

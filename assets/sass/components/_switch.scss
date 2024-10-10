@@ -5,6 +5,8 @@
 // ************************************************************************** //
 
 @use "sass:math";
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -13,10 +15,12 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'switch';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'switch';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -47,17 +51,17 @@ $_switch-height-px: #{$switch-height}px;
 // * Default theme variables
 // * =========================
 
-$default--switch-off--border-color         : $gray-700;
-$default--switch-off--background-color     : $gray-200;
-$default--switch-off--indicator-color      : $gray-700;
+$default--switch-off--border-color         : colors.$gray-700;
+$default--switch-off--background-color     : colors.$gray-200;
+$default--switch-off--indicator-color      : colors.$gray-700;
 
-$default--switch-on--border-color          : $blue;
-$default--switch-on--background-color      : $blue;
-$default--switch-on--indicator-color       : $white;
+$default--switch-on--border-color          : colors.$blue;
+$default--switch-on--background-color      : colors.$blue;
+$default--switch-on--indicator-color       : colors.$white;
 
-$default--switch-disabled--border-color    : $gray-500;
-$default--switch-background-color--disabled: $gray-200;
-$default--switch-disabled--indicator-color : $gray-500;
+$default--switch-disabled--border-color    : colors.$gray-500;
+$default--switch-background-color--disabled: colors.$gray-200;
+$default--switch-disabled--indicator-color : colors.$gray-500;
 
 
 
@@ -71,12 +75,12 @@ $default--switch-disabled--indicator-color : $gray-500;
 // * Palette
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     @each $key, $value in $ui-colors {
         &-#{$key} {
-            // --#{$CLASSNAME}--color           : var(--#{$key});
-            // --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
-            // --#{$CLASSNAME}--border-color    : var(--#{$key});
+            // --#{$_CLASSNAME}--color           : var(--#{$key});
+            // --#{$_CLASSNAME}--background-color: var(--#{$key}--tint-70);
+            // --#{$_CLASSNAME}--border-color    : var(--#{$key});
         }
     }
 }
@@ -85,12 +89,12 @@ $default--switch-disabled--indicator-color : $gray-500;
 // * Structure
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Component definition
     /// --
     
-    padding-left: math.div($switch-width, 16) + map-get($spacers, 3 );
+    padding-left: math.div($switch-width, 16) + map-get($_SPACERS, 3 );
     
     @include flex.middle;
     @include position.relative;

@@ -4,6 +4,10 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
+@use './../variables/zindex';
+@use './../variables/spacers';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -12,10 +16,14 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'modal';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'modal';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+$spacers: spacers.$spacers;
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -38,7 +46,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
-$overlay-color: $black;
+$overlay-color: colors.$black;
 
 $modal--pos-x: ('left', 'center', 'right') !default;
 $modal--pos-y: ('top', 'middle', 'bottom') !default;
@@ -57,12 +65,12 @@ $modal--inner--border-width: 1px !default;
 // * Default theme variables
 // * =========================
 
-$modal--content--border-color: $gray-500 !default;
-$modal--content--background-color: $white !default;
-$modal--header--background-color: $gray-400 !default;
-$modal--body--background-color: $white !default;
-$modal--footer--background-color: $gray-200 !default;
-$modal--inner--border-color: $gray-200 !default;
+$modal--content--border-color: colors.$gray-500 !default;
+$modal--content--background-color: colors.$white !default;
+$modal--header--background-color: colors.$gray-400 !default;
+$modal--body--background-color: colors.$white !default;
+$modal--footer--background-color: colors.$gray-200 !default;
+$modal--inner--border-color: colors.$gray-200 !default;
 
 
 // * =============================================
@@ -71,18 +79,19 @@ $modal--inner--border-color: $gray-200 !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     opacity: 0;
     display: none;
     overflow: auto;
     flex-direction: column;
-    z-index: $z-index--modal;
+    z-index: zindex.$z-index--modal;
 
     @include position.fixed(0,0,0,0);
     @include transition.set((opacity), map-get($delays, normal));
 
-    $padding: #{$spacer-6}rem;
+    // $padding: #{$spacer-6}rem;
+    $padding: #{map-get($spacers, 6)}rem;
     @include spaces.padding($padding,$padding,$padding,$padding);
 
     &:not(&-no-backdrop) {
@@ -176,7 +185,7 @@ $modal--inner--border-color: $gray-200 !default;
 
     &-header, &-body, &-footer {
         z-index: 1;
-        padding: map-get($spacers, 2) map-get($spacers, 3);
+        padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
     }
     &-header {
         display: flex;
@@ -221,16 +230,16 @@ $modal--inner--border-color: $gray-200 !default;
         }
     }
 
-    & .#{$prefix}button-close {
+    & .#{$_PREFIX}button-close {
         z-index: 2;
-        // @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+        // @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
         @include sizes.set(6px,6px);
     }
 
     &.open {
         opacity: 1;
         z-index: 2;
-        .#{$CLASSNAME}-content {
+        .#{$_CLASSNAME}-content {
             top: 0;
         }
     }

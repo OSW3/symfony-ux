@@ -4,6 +4,8 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -13,10 +15,12 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'menu';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'menu';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -38,19 +42,19 @@ $menu--link--text-decoration: none !default;
 // * Default theme variables
 // * =========================
 
-$menu--background-color: $white !default;
-$menu--border-color: $gray-500 !default;
+$menu--background-color: colors.$white !default;
+$menu--border-color: colors.$gray-500 !default;
 
-$submenu--background-color: $white !default;
+$submenu--background-color: colors.$white !default;
 
-$menu-link--text-color: $blue !default;
-$menu-link--text-color--hover: $blue !default;
-$menu-link--text-color--active: $blue !default;
-$menu-link--text-color--disabled: $gray-600 !default;
+$menu-link--text-color: colors.$blue !default;
+$menu-link--text-color--hover: colors.$blue !default;
+$menu-link--text-color--active: colors.$blue !default;
+$menu-link--text-color--disabled: colors.$gray-600 !default;
 
 $menu-link--background-color: transparent !default;
-$menu-link--background-color--hover: $gray-200 !default;
-$menu-link--background-color--active: $gray-300 !default;
+$menu-link--background-color--hover: colors.$gray-200 !default;
+$menu-link--background-color--active: colors.$gray-300 !default;
 $menu-link--background-color--disabled: transparent !default;
 
 
@@ -60,7 +64,7 @@ $menu-link--background-color--disabled: transparent !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     
     border-width: $menu--border-width;
     border-style: solid;
@@ -116,8 +120,8 @@ $menu-link--background-color--disabled: transparent !default;
         text-decoration: $menu--link--text-decoration;
         // @include corner.rounded(0);
 
-        @include spaces.padding-y(map-get($spacers, 2));
-        @include spaces.padding-x(map-get($spacers, 3));
+        @include spaces.padding-y(map-get($_SPACERS, 2));
+        @include spaces.padding-x(map-get($_SPACERS, 3));
         @include transition.set((color, background-color), map-get($delays, normal));
 
         @include var.set('background-color', 'menu-link--background-color', $menu-link--background-color);
@@ -162,7 +166,7 @@ $menu-link--background-color--disabled: transparent !default;
     // Sub Menu
     & .with-submenu {
     
-        & > .#{$prefix}menu-link {
+        & > .#{$_PREFIX}menu-link {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -176,12 +180,12 @@ $menu-link--background-color--disabled: transparent !default;
                 border-top: 5px solid #2f2f2f;
                 font-size: 0;
                 line-height: 0;
-                margin-left: map-get($spacers, 2);
+                margin-left: map-get($_SPACERS, 2);
             }
         }
     
         // & > ul {
-        & > .#{$prefix}menu-items {
+        & > .#{$_PREFIX}menu-items {
             @include position.absolute(100%, 0, 0, 0);
             display: none;
             height: fit-content;
@@ -191,7 +195,7 @@ $menu-link--background-color--disabled: transparent !default;
             z-index: 1000;
         }
         // & > ul & > ul {
-        & > .#{$prefix}menu-items & > .#{$prefix}menu-items {
+        & > .#{$_PREFIX}menu-items & > .#{$_PREFIX}menu-items {
             @include position.left(100%);
             @include position.top(0);
             @include sizes.width(100%);

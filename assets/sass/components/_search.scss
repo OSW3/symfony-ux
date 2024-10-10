@@ -4,15 +4,19 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 
-$COMPONENT: 'search';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'search';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -44,9 +48,9 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     
-    border: 1px solid $gray-300;
+    border: 1px solid colors.$gray-300;
     border-radius: 6px;
 
     position: relative;
@@ -60,7 +64,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
         display: flex;
         flex-direction: row;
 
-        & .#{$prefix}form-control {
+        & .#{$_PREFIX}form-control {
             flex-grow: 1;
             border: none;
         }
@@ -132,14 +136,14 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
         display: none;
     }
     
-    // & > .#{$prefix}modal-header {
+    // & > .#{$_PREFIX}modal-header {
     //     display: flex;
     // }
 
-    & > .#{$prefix}modal {
+    & > .#{$_PREFIX}modal {
         // display: flex;
 
-        .#{$CLASSNAME}-suggestions {
+        .#{$_CLASSNAME}-suggestions {
             display: block;
 
             position: relative;

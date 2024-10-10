@@ -4,8 +4,11 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/palette';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
+
+$ui-colors: palette.$ui-colors;
 
 @include banner.header('UI Colors');
 

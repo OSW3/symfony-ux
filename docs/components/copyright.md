@@ -8,6 +8,31 @@ Display a copyright, generally on the website footer.
 <!-- {"file": "00-default.html", "language": "twig"} -->
 <!-- {"file": "01-skeleton.html", "language": "html", "render": false} -->
 
+## Integration (SASS & JS)
+
+### SASS Integration
+
+To integrate the copyright styles into your project, import the necessary SCSS dependencies.
+
+```scss 
+// app.scss
+
+// Component dependencies 
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/colors';
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/spacers';
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/transitions';
+
+// Component integration 
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/components/copyright';
+```
+
+
+
+
+
+
+
+
 ## Component configuration
 
 Set the configuration in the `config/package/symfony_ux.yaml`.

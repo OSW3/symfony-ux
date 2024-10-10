@@ -4,13 +4,17 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$COMPONENT: 'breadcrumb';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'breadcrumb';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -38,9 +42,9 @@ $breadcrumb--separator : "/" !default;
 // * =========================
 
 $breadcrumb--background-color: transparent;
-$breadcrumb--link-color      : $gray-700;
-$breadcrumb--link-hover-color: $gray-900;
-$breadcrumb--active-color    : $gray-900;
+$breadcrumb--link-color      : colors.$gray-700;
+$breadcrumb--link-hover-color: colors.$gray-900;
+$breadcrumb--active-color    : colors.$gray-900;
 
 
 // * =============================================
@@ -49,7 +53,7 @@ $breadcrumb--active-color    : $gray-900;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Breadcrumb container
     /// --

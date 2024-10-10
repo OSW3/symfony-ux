@@ -4,8 +4,12 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
+
+$colors: colors.$colors;
+$colors-tints: colors.$colors-tints;
 
 @include banner.header('Base colors');
 

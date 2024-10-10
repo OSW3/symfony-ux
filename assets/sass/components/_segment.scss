@@ -4,12 +4,15 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/prefix';
 @use './../abstracts/mixins/banner';
 
-$COMPONENT: 'segment';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'segment';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -41,7 +44,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Component definition
     /// --

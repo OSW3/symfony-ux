@@ -6,6 +6,7 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './../variables/colors';
 @use './../abstracts/functions/color';
 @use './../abstracts/functions/collection';
 
@@ -35,15 +36,15 @@ $ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted', $
 /// Default names and colors assignment
 
 $ui-colors: (
-    $ui-color-name-success  : $green,
-    $ui-color-name-danger   : $red,
-    $ui-color-name-warning  : $orange,
-    $ui-color-name-info     : $cyan,
-    $ui-color-name-primary  : $blue,
-    $ui-color-name-secondary: $gray-600,
-    $ui-color-name-light    : $white,
-    $ui-color-name-dark     : $black,
-    $ui-color-name-muted    : $gray-500,
+    $ui-color-name-success  : colors.$green,
+    $ui-color-name-danger   : colors.$red,
+    $ui-color-name-warning  : colors.$orange,
+    $ui-color-name-info     : colors.$cyan,
+    $ui-color-name-primary  : colors.$blue,
+    $ui-color-name-secondary: colors.$gray-600,
+    $ui-color-name-light    : colors.$white,
+    $ui-color-name-dark     : colors.$black,
+    $ui-color-name-muted    : colors.$gray-500,
 );
 
 

@@ -4,12 +4,15 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/prefix';
 @use './../abstracts/mixins/banner';
 
-$COMPONENT: 'carousel';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'carousel';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -43,7 +46,7 @@ $carousel--slides--height: 300px !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /**/
     

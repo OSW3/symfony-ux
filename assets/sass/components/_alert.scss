@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/sizes';
@@ -12,10 +13,12 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/functions/color';
 
-$COMPONENT: 'alert';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'alert';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -46,12 +49,12 @@ $alert--border-radius: map-get($radius, 'small') !default;
 // * Palette
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     @each $key, $value in $ui-colors {
         &-#{$key} {
-            --#{$CLASSNAME}--text      : var(--#{$key}--text);
-            --#{$CLASSNAME}--background: var(--#{$key}--background);
-            --#{$CLASSNAME}--border    : var(--#{$key}--border);
+            --#{$_CLASSNAME}--text      : var(--#{$key}--text);
+            --#{$_CLASSNAME}--background: var(--#{$key}--background);
+            --#{$_CLASSNAME}--border    : var(--#{$key}--border);
         }
     }
 }
@@ -60,7 +63,7 @@ $alert--border-radius: map-get($radius, 'small') !default;
 // * Structure
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Alert container
     /// --
@@ -85,9 +88,9 @@ $alert--border-radius: map-get($radius, 'small') !default;
         null
     );
 
-    @include var.set('color', '#{$CLASSNAME}--text');
-    @include var.set('background-color', '#{$CLASSNAME}--background');
-    @include var.set('border-color', '#{$CLASSNAME}--border');
+    @include var.set('color', '#{$_CLASSNAME}--text');
+    @include var.set('background-color', '#{$_CLASSNAME}--background');
+    @include var.set('border-color', '#{$_CLASSNAME}--border');
 
 
     & + & {
@@ -97,7 +100,7 @@ $alert--border-radius: map-get($radius, 'small') !default;
     /// Alert dismiss button
     /// --
     
-    & .#{$prefix}button-close {
+    & .#{$_PREFIX}button-close {
         z-index: 2;
         @include position.absolute(0, 0, null, null);
         @include spaces.padding($spacer * 1.25, $spacer, $spacer * 1.25, $spacer);

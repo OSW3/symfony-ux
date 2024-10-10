@@ -4,14 +4,18 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'cookie-box';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'cookie-box';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -33,7 +37,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * =========================
 
 $cookie-box--backdrop: true !default;
-$default--cookie-consent--background-color: $white;
+$default--cookie-consent--background-color: colors.$white;
 
 
 // * Default theme variables
@@ -46,7 +50,7 @@ $default--cookie-consent--background-color: $white;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// CookieBox container inner
     /// --
@@ -122,7 +126,7 @@ $default--cookie-consent--background-color: $white;
 
 // Cookie Box Banner
 // --
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     &-banner {
         @include transition.set((top, bottom), map-get($delays, normal));
         position: fixed;

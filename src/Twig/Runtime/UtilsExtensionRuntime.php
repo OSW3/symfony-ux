@@ -15,11 +15,11 @@ class UtilsExtensionRuntime implements RuntimeExtensionInterface
         $this->options = $options[Configuration::NAME];
     }
     
-    public function getUxClassName(string $classname): string
+    public function getUxClassName(string $_CLASSNAME): string
     {
         $l = [];
         $s = ' ';
-        $x = explode($s, $classname);
+        $x = explode($s, $_CLASSNAME);
         $p = $this->options['prefix'];
         $p = !empty($p) ? "{$p}-" : null;
 

@@ -5,6 +5,8 @@
 // ************************************************************************** //
 
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -13,10 +15,12 @@
 @use './../abstracts/functions/icon';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'search-box';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'search-box';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -49,9 +53,9 @@ $search-box--border-radius: map-get($radius, 'small') !default;
 // * Default theme variables
 // * =========================
 
-$search-box--text-color: $black !default;
-$search-box--border-color: $gray-300 !default;
-$search-box--border-color--focus: $gray-500 !default;
+$search-box--text-color: colors.$black !default;
+$search-box--border-color: colors.$gray-300 !default;
+$search-box--border-color--focus: colors.$gray-500 !default;
 
 
 
@@ -61,7 +65,7 @@ $search-box--border-color--focus: $gray-500 !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     --search-box--text-color: $search-box--text-color;
 
     // --icon : #{icon.get('search', var(--search-box--text-color))};
@@ -180,14 +184,14 @@ $search-box--border-color--focus: $gray-500 !default;
     //     display: none;
     // }
     
-    // // & > .#{$prefix}modal-header {
+    // // & > .#{$_PREFIX}modal-header {
     // //     display: flex;
     // // }
 
-    // & > .#{$prefix}modal {
+    // & > .#{$_PREFIX}modal {
     //     // display: flex;
 
-    //     .#{$CLASSNAME}-suggestions {
+    //     .#{$_CLASSNAME}-suggestions {
     //         display: block;
 
     //         position: relative;

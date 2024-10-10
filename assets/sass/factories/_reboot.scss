@@ -4,10 +4,13 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/spacers';
+@use './../variables/fonts';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 
-
+$_SPACERS: spacers.$spacers;
+$_FONT_NAME_PRIMARY: fonts.$font-name-primary;
 
 /// Root
 /// =============================================
@@ -30,18 +33,18 @@
 }
 
 html {
-    margin: map-get($spacers , 0);
-    padding: map-get($spacers , 0);
+    margin: map-get($_SPACERS , 0);
+    padding: map-get($_SPACERS , 0);
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
 }
 
 body {
     @include flex.column;
-    margin: map-get($spacers , 0);
-    padding: map-get($spacers , 0);
+    margin: map-get($_SPACERS , 0);
+    padding: map-get($_SPACERS , 0);
     
-    @include var.set('font-family', font-#{$font-name-primary});
+    @include var.set('font-family', font-#{$_FONT_NAME_PRIMARY});
     font-size: $font-size-base;
     line-height: 1.45; 
     -webkit-font-smoothing: antialiased;
@@ -62,8 +65,8 @@ body {
 // tfoot, thead, tr, th, td,article, aside, canvas, details, embed, figure, 
 // figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
 // time, mark, audio, video {
-//     margin: map-get($spacers, 0);
-//     padding: map-get($spacers, 0);
+//     margin: map-get($_SPACERS, 0);
+//     padding: map-get($_SPACERS, 0);
 // 	border: 0;
 // 	// font-size: 100%;
 // 	// font: inherit;

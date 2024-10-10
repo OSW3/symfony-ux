@@ -4,15 +4,18 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/prefix';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/functions/color';
 
-$COMPONENT: 'toast';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'toast';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -48,12 +51,12 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * Palette
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     @each $key, $value in $ui-colors {
         &-#{$key} {
-            --#{$CLASSNAME}--color           : var(--#{$key});
-            --#{$CLASSNAME}--background-color: var(--#{$key}--tint-70);
-            --#{$CLASSNAME}--border-color    : var(--#{$key});
+            --#{$_CLASSNAME}--color           : var(--#{$key});
+            --#{$_CLASSNAME}--background-color: var(--#{$key}--tint-70);
+            --#{$_CLASSNAME}--border-color    : var(--#{$key});
         }
     }
 }
@@ -62,7 +65,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * Structure
 // * =========================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Component definition
     /// --
@@ -85,7 +88,7 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 }
 
 // @each $key, $value in $ui-colors {
-//     .#{$CLASSNAME}-#{$key} {
+//     .#{$_CLASSNAME}-#{$key} {
 //         color: $value;
 //         background-color: color.tint($value, 70%);
 //         border-color: $value;

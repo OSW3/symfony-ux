@@ -6,6 +6,10 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './prefix';
+
+
+$_PREFIX: prefix.$prefix;
 
 /// Sides
 /// =============================================
@@ -18,11 +22,9 @@ $sides: (
     l: left,
 );
 
-
-.#{$prefix}no-scroll {
+.#{$_PREFIX}no-scroll {
     overflow: hidden;
     height: 100%;
 }
 
 $border-radius: 6px !default;
-

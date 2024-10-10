@@ -4,15 +4,23 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
+@use './../variables/radius';
+@use './../variables/spacers';
 // @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/corner';
 // @use './../abstracts/mixins/spaces';
 
-$COMPONENT: 'form-widget';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
+$radius: radius.$radius;
+$spacer: spacers.$spacer;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'form-widget';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -48,20 +56,20 @@ $form-widget--control-file--selector-width: 130px !default;
 // * Default theme variables
 // * =========================
 
-$form-widget--label--text-color: $black !default;
-$form-widget--required-symbol--text-color: $red !default;
+$form-widget--label--text-color: colors.$black !default;
+$form-widget--required-symbol--text-color: colors.$red !default;
 
-$form-widget--group--text-color: $black !default;
-$form-widget--group--background-color: $gray-100 !default;
+$form-widget--group--text-color: colors.$black !default;
+$form-widget--group--background-color: colors.$gray-100 !default;
 
-$form-widget--control--text-color: $black !default;
-$form-widget--control--text-color--disabled: $gray-600 !default;
-$form-widget--control--background-color: $white !default;
-$form-widget--control--background-color--disabled: $gray-200 !default;
-$form-widget--control--border-color: $gray-300 !default;
-$form-widget--control--border-color--disabled: $gray-300 !default;
+$form-widget--control--text-color: colors.$black !default;
+$form-widget--control--text-color--disabled: colors.$gray-600 !default;
+$form-widget--control--background-color: colors.$white !default;
+$form-widget--control--background-color--disabled: colors.$gray-200 !default;
+$form-widget--control--border-color: colors.$gray-300 !default;
+$form-widget--control--border-color--disabled: colors.$gray-300 !default;
 
-$form-widget--description--text-color: $gray-600 !default;
+$form-widget--description--text-color: colors.$gray-600 !default;
 
 
 
@@ -71,7 +79,7 @@ $form-widget--description--text-color: $gray-600 !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     // border: 3px solid red;
     // padding: 1rem;
 
@@ -159,7 +167,7 @@ $form-widget--description--text-color: $gray-600 !default;
             cursor: pointer;
         }
         &[type=file]:not(:disabled):not([readonly]):hover::file-selector-button {
-            background-color: $gray-400;
+            background-color: colors.$gray-400; // TODO: code-review; is customizable ?
         }
         &[type=file]::file-selector-button {
             position: absolute;
@@ -175,7 +183,7 @@ $form-widget--description--text-color: $gray-600 !default;
             text-align: start;
             
             color: $form-widget--control--text-color;
-            background-color: $gray-200;
+            background-color: colors.$gray-200; // TODO: code-review; is customizable ?
             border: none;
 
             // margin-top: -.375rem;
@@ -260,7 +268,7 @@ $form-widget--description--text-color: $gray-600 !default;
     }
 }
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
     &-tel &-group {
         & select {
             flex: 120px 0 0;

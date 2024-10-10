@@ -6,6 +6,10 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './../variables/colors';
+@use './../variables/prefix';
+@use './../variables/transitions';
+
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -13,10 +17,14 @@
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'accordion';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'accordion';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+$delays: transitions.$delays;
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -49,21 +57,21 @@ $accordion--item--content--padding-y: $spacer !default;
 /// Accordion Items
 /// -------------------------
 
-$accordion--item--border-color: $gray-500 !default;
+$accordion--item--border-color: colors.$gray-500 !default;
 
 
 /// Accordion Items Header
 /// -------------------------
 
-$accordion--item--header--text-color: $gray-700 !default;
-$accordion--item--header--background-color: $gray-200 !default;
+$accordion--item--header--text-color: colors.$gray-700 !default;
+$accordion--item--header--background-color: colors.$gray-200 !default;
 
 
 /// Accordion Items Open Header
 /// -------------------------
 
-$accordion--item-open--header--text-color: $gray-900 !default;
-$accordion--item-open--header--background-color: $gray-400 !default;
+$accordion--item-open--header--text-color: colors.$gray-900 !default;
+$accordion--item-open--header--background-color: colors.$gray-400 !default;
 
 
 
@@ -73,7 +81,7 @@ $accordion--item-open--header--background-color: $gray-400 !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Accordion Item
     /// --

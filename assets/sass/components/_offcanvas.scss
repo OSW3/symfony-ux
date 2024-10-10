@@ -6,6 +6,8 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -13,10 +15,12 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'offcanvas';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'offcanvas';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -41,7 +45,7 @@ $offcanvas--has-backdrop: if(meta.global-variable-exists('offcanvas--has-backdro
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
-$overlay-color: $black;
+$overlay-color: colors.$black;
 
 // Todo: make it resonsive
 $offcanvas--content--width: 280px !default;
@@ -50,10 +54,10 @@ $offcanvas--content--width: 280px !default;
 // * Default theme variables
 // * =========================
 
-$offcanvas--container--background-color: $white;
+$offcanvas--container--background-color: colors.$white;
 
-$offcanvas--header--background-color: $gray-400 !default;
-$offcanvas--footer--background-color: $gray-200 !default;
+$offcanvas--header--background-color: colors.$gray-400 !default;
+$offcanvas--footer--background-color: colors.$gray-200 !default;
 
 
 // * =============================================
@@ -62,11 +66,11 @@ $offcanvas--footer--background-color: $gray-200 !default;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
-    --#{$CLASSNAME}--container--background-color: #{$offcanvas--container--background-color};
+.#{$_CLASSNAME} {
+    --#{$_CLASSNAME}--container--background-color: #{$offcanvas--container--background-color};
 }
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     opacity: 0;
     display: none;
@@ -93,22 +97,22 @@ $offcanvas--footer--background-color: $gray-200 !default;
 
     &-left {
         justify-content: start;
-        .#{$CLASSNAME}-content {
+        .#{$_CLASSNAME}-content {
             @include position.left( $offcanvas--content--width * -1 );
         }
         &.open {
-            .#{$CLASSNAME}-content {
+            .#{$_CLASSNAME}-content {
                 @include position.left(0);
             }
         }
     }
     &-right {
         justify-content: end;
-        .#{$CLASSNAME}-content {
+        .#{$_CLASSNAME}-content {
             @include position.right( $offcanvas--content--width * -1 );
         }
         &.open {
-            .#{$CLASSNAME}-content {
+            .#{$_CLASSNAME}-content {
                 @include position.right(0);
             }
         }
@@ -118,12 +122,12 @@ $offcanvas--footer--background-color: $gray-200 !default;
     &-inner {
         display: block;
         width: 100%;
-        padding: map-get($spacers, 2) map-get($spacers, 3);
+        padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
     }
 
     &-header, &-body, &-footer {
         z-index: 1;
-        padding: map-get($spacers, 2) map-get($spacers, 3);
+        padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
     }
     &-header {
         display: flex;
@@ -144,22 +148,22 @@ $offcanvas--footer--background-color: $gray-200 !default;
         @include var.set('background-color', 'offcanvas--footer--background-color', $offcanvas--footer--background-color);
     }
 
-    & .#{$prefix}button-close {
+    & .#{$_PREFIX}button-close {
         z-index: 2;
-        // @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+        // @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
         @include sizes.set(6px,6px);
     }
 
     &.open {
         opacity: 1;
         z-index: 2;
-        .#{$CLASSNAME}-content {
+        .#{$_CLASSNAME}-content {
             box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         }
     }
 }
 
-// .#{$CLASSNAME} {
+// .#{$_CLASSNAME} {
 //     @include flex.column;
 //     @include position.fixed(0, null, 0, null);
 //     @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
@@ -187,7 +191,7 @@ $offcanvas--footer--background-color: $gray-200 !default;
 //     &-inner {
 //         display: block;
 //         width: 100%;
-//         padding: map-get($spacers, 2) map-get($spacers, 3);
+//         padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
 //     }
 //     &-header {
 //         z-index: 1;
@@ -204,9 +208,9 @@ $offcanvas--footer--background-color: $gray-200 !default;
 //         @include var.set('background-color', 'offcanvas--footer--background-color', $offcanvas--footer--background-color);
 //     }
 
-//     & .#{$prefix}button-close {
+//     & .#{$_PREFIX}button-close {
 //         z-index: 2;
-//         @include position.absolute(map-get($spacers, 2), map-get($spacers, 2), null, null);
+//         @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
 //         @include sizes.set(6px,6px);
 //     }
 

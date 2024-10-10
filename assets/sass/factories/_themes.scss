@@ -9,11 +9,13 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/themes';
 @use './../abstracts/functions/utils';
 @use './../abstracts/functions/collection';
 @use './../abstracts/functions/color';
 @use './../abstracts/mixins/dumper';
 
+$theme-default: themes.$theme-default;
 
 /// Default Theme
 /// =============================================
@@ -47,7 +49,7 @@
 
 // @each $theme in $additional-themes {
 //     $_name: map-get($theme, 'name');
-//     $COMPONENTs: map-get($theme, 'components');
+//     $_COMPONENTs: map-get($theme, 'components');
 //     $_palette: map-get($theme, 'palette');
 
 //     @include dumper.dump( $_name );

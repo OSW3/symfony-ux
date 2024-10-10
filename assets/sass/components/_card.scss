@@ -4,14 +4,18 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$COMPONENT: 'card';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'card';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -86,17 +90,17 @@ $card-footer--border-left-style         : $card-footer--border-style !default;
 // * Default theme variables
 // * =========================
 
-$default--card--text-color             : $black;
-$default--card--border-color           : $gray-500;
-$default--card--background-color       : $white;
+$default--card--text-color             : colors.$black;
+$default--card--border-color           : colors.$gray-500;
+$default--card--background-color       : colors.$white;
 
-$default--card-header--text-color      : $black;
-$default--card-header--border-color    : $gray-500;
-$default--card-header--background-color: $gray-200;
+$default--card-header--text-color      : colors.$black;
+$default--card-header--border-color    : colors.$gray-500;
+$default--card-header--background-color: colors.$gray-200;
 
-$default--card-footer--text-color      : $black;
-$default--card-footer--border-color    : $gray-500;
-$default--card-footer--background-color: $gray-200;
+$default--card-footer--text-color      : colors.$black;
+$default--card-footer--border-color    : colors.$gray-500;
+$default--card-footer--background-color: colors.$gray-200;
 
 
 // * =============================================
@@ -105,7 +109,7 @@ $default--card-footer--background-color: $gray-200;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Card container
     /// --

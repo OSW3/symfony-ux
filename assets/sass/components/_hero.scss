@@ -4,13 +4,17 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$COMPONENT: 'hero';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'hero';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -35,8 +39,8 @@ $CLASSNAME: '#{$prefix}#{$COMPONENT}';
 // * Default theme variables
 // * =========================
 
-$default--hero--text-color          : $black;
-$default--hero--background-color    : $gray-200;
+$default--hero--text-color          : colors.$black;
+$default--hero--background-color    : colors.$gray-200;
 
 
 // * =============================================
@@ -45,7 +49,7 @@ $default--hero--background-color    : $gray-200;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Component definition
     /// --

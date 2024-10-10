@@ -5,10 +5,16 @@
 // ************************************************************************** //
 
 @use "sass:math";
+@use './../variables/prefix';
+@use './../variables/grid';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/clear';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
+
+$_PREFIX: prefix.$prefix;
+
+$grid-divisions: grid.$grid-divisions;
 
 @include banner.header('Grid & Columns');
 
@@ -38,7 +44,7 @@
 @include banner.section('The grid');
 
 // Set .grid styles definition
-.#{$prefix}grid {
+.#{$_PREFIX}grid {
     flex-wrap: wrap;
     
     @include flex.row;
@@ -65,7 +71,7 @@
 /// =============================================
 @include banner.section('Grid gaps');
 
-@each $i, $spacer in $spacers 
+@each $i, $spacer in $_SPACERS 
 {
     $margin: calc(-1 * $spacer);
     $padding: $spacer;
@@ -73,13 +79,13 @@
     @if $i != 'auto' {
 
         // Padding gap for the Grid
-        // .#{$prefix}grid.#{$prefix}gap-#{$i}
+        // .#{$_PREFIX}grid.#{$_PREFIX}gap-#{$i}
         // {
         //     @include spaces.margin(null, $margin, null, $margin);
         // }
 
         // (All) Padding gap for thr grid Columns
-        .#{$prefix}gap-#{$i} [class^="#{$prefix}column"]
+        .#{$_PREFIX}gap-#{$i} [class^="#{$_PREFIX}column"]
         {
             @if $i == 0 {
                 @include spaces.padding($padding !important, $padding !important, $padding !important, $padding !important);
@@ -88,11 +94,11 @@
             }
                 }
         // (Left & right) Padding gap for thr grid Columns
-        .#{$prefix}gap-x-#{$i} [class^="#{$prefix}column"]{
+        .#{$_PREFIX}gap-x-#{$i} [class^="#{$_PREFIX}column"]{
             @include spaces.padding-x($padding);
         }
         // (Top & Bottom) Padding gap for thr grid Columns
-        .#{$prefix}gap-y-#{$i} [class^="#{$prefix}column"]{
+        .#{$_PREFIX}gap-y-#{$i} [class^="#{$_PREFIX}column"]{
             @include spaces.padding-y($padding);
         }
     
@@ -106,7 +112,7 @@
 @include banner.section('The grid columns');
 
 // Set .column & .column-x styles definition
-.#{$prefix}column {
+.#{$_PREFIX}column {
     flex: 1 0 0%;
 
     // .column-break
@@ -144,7 +150,7 @@
 /// =============================================
 @include banner.section('The grid offsets');
 
-.#{$prefix}offset {
+.#{$_PREFIX}offset {
 
     // .offset-x
     @for $i from 1 through $grid-divisions {

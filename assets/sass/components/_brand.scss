@@ -6,15 +6,19 @@
 
 @use 'sass:meta';
 @use './../generated';
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$COMPONENT: 'brand';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
 
-@include banner.header('Component #{$COMPONENT}');
+$_COMPONENT: 'brand';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -78,8 +82,8 @@ $brand-breakpoints: if(meta.global-variable-exists('brand-breakpoints', $module:
 // * Default theme variables
 // * =========================
 
-$brand--text-color      : $gray-600;
-$brand--text-color--hover: $black;
+$brand--text-color      : colors.$gray-600;
+$brand--text-color--hover: colors.$black;
 
 
 // * =============================================
@@ -88,7 +92,7 @@ $brand--text-color--hover: $black;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// Brand container
     /// --
@@ -151,12 +155,12 @@ $brand--text-color--hover: $black;
             font-size: map-get($properties, 'font-size');
             font-weight: map-get($properties, 'font-weight');
             
-            .#{$CLASSNAME}-tagline {
+            .#{$_CLASSNAME}-tagline {
                 font-size: map-get($properties, 'tagline-size');
                 font-weight: map-get($properties, 'font-weight');
                 margin-top: map-get($properties, 'tagline-offset');
             }
-            .#{$CLASSNAME}-logo {
+            .#{$_CLASSNAME}-logo {
                 max-height: map-get($properties, 'img-height');
             }
         }
@@ -176,10 +180,10 @@ $brand--text-color--hover: $black;
     @each $breakpoint-name, $breakpoint-value in $breakpoints {
         @if index($brand-breakpoints, $breakpoint-name) {
             @media (min-width: $breakpoint-value) {
-                .#{$CLASSNAME}-logo {
+                .#{$_CLASSNAME}-logo {
                     display: none;
                 }
-                .#{$CLASSNAME}-logo-#{$breakpoint-name} {
+                .#{$_CLASSNAME}-logo-#{$breakpoint-name} {
                     display: block;
                 }
             }

@@ -4,18 +4,22 @@
 // *
 // ************************************************************************** //
 
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$COMPONENT: 'navigation';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_PREFIX: prefix.$prefix;
+
+$_COMPONENT: 'navigation';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 $_open: 'open';
 
-@include banner.header('Component #{$COMPONENT}');
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -25,10 +29,10 @@ $_open: 'open';
 // *
 // * =============================================
 
-$_arr_containers : (#{$prefix}container, #{$prefix}container-fluid);
+$_arr_containers : (#{$_PREFIX}container, #{$_PREFIX}container-fluid);
 @each $size, $breakpoint in $breakpoints {
     @if $breakpoint > 0 {
-        $_arr_containers: append($_arr_containers, #{$prefix}container-#{$size});
+        $_arr_containers: append($_arr_containers, #{$_PREFIX}container-#{$size});
     }
 }
 
@@ -54,7 +58,7 @@ $navigation--side-panel-width: 280px !default;
 // * Default theme variables
 // * =========================
 
-$default--navigation--background-color : $white;
+$default--navigation--background-color : colors.$white;
 
 
 // * =============================================
@@ -63,7 +67,7 @@ $default--navigation--background-color : $white;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     // Navigation container
     // --
@@ -81,7 +85,7 @@ $default--navigation--background-color : $white;
     // Brand
     // --
 
-    & .#{$prefix}brand {
+    & .#{$_PREFIX}brand {
         margin-right: $spacer;
     }
 
@@ -99,12 +103,12 @@ $default--navigation--background-color : $white;
 
         z-index: 1000;
 
-        & .#{$prefix}menu {
+        & .#{$_PREFIX}menu {
             width: 100%;
             border: none;
             border-radius: 0;
         }
-        & .#{$prefix}menu > .#{$prefix}menu-items {
+        & .#{$_PREFIX}menu > .#{$_PREFIX}menu-items {
             @include flex.column;
             border-radius: 0;
         }
@@ -186,19 +190,19 @@ $default--navigation--background-color : $white;
         @if $breakpoint > 0 {
             @media (min-width: $breakpoint) {
 
-                &.#{$prefix}expand-at-#{$size} {
+                &.#{$_PREFIX}expand-at-#{$size} {
     
                     & #{$_str_container} {
                         @include flex.row;
                     }
     
-                    & .#{$prefix}navigation-toggler,
-                    & .#{$prefix}navigation-close {
+                    & .#{$_PREFIX}navigation-toggler,
+                    & .#{$_PREFIX}navigation-close {
                         display: none;
                     }
                 }
     
-                &.#{$prefix}expand-at-#{$size} &-content {
+                &.#{$_PREFIX}expand-at-#{$size} &-content {
                     @include position.relative(auto,auto,auto,auto);
                     @include flex.row;
                     // width: auto;
@@ -211,10 +215,10 @@ $default--navigation--background-color : $white;
                     justify-content: space-between;
 
 
-                    & .#{$prefix}menu {
+                    & .#{$_PREFIX}menu {
                         width: auto;
                     }
-                    & .#{$prefix}menu > .#{$prefix}menu-items {
+                    & .#{$_PREFIX}menu > .#{$_PREFIX}menu-items {
                         @include flex.row;
                     }
                 }

@@ -7,6 +7,8 @@
 @use 'sass:math';
 @use 'sass:meta';
 @use './../generated';
+@use './../variables/colors';
+@use './../variables/prefix';
 @use './../variables/zindex';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
@@ -19,11 +21,18 @@
 @use './../abstracts/functions/utils';
 @use './../abstracts/mixins/transition';
 
+$_PREFIX                       : prefix.$prefix;
+$_PREFIX_TEXT_COLOR            : prefix.$TEXT_COLOR;
+$_PREFIX_TEXT_COLOR_HOVER      : prefix.$TEXT_COLOR_HOVER;
+$_PREFIX_BACKGROUND_COLOR      : prefix.$BACKGROUND_COLOR;
+$_PREFIX_BACKGROUND_COLOR_HOVER: prefix.$BACKGROUND_COLOR_HOVER;
+$_PREFIX_BORDER_COLOR          : prefix.$BORDER_COLOR;
+$_PREFIX_BORDER_COLOR_HOVER    : prefix.$BORDER_COLOR_HOVER;
 
-$COMPONENT: 'scroll-to-top';
-$CLASSNAME: '#{$prefix}#{$COMPONENT}';
+$_COMPONENT: 'scroll-to-top';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
-@include banner.header('Component #{$COMPONENT}');
+@include banner.header('Component #{$_COMPONENT}');
 
 
 
@@ -60,19 +69,19 @@ $scroll-to-top--position-y: $spacer *2 !default;
 $scroll-to-top--offset-x  : 0px !default;
 $scroll-to-top--offset-y  : 0px !default;
 $scroll-to-top--font-size : 2 !default;
-$scroll-to-top--z-index   : $z-index--scroll-to-top !default;
+$scroll-to-top--z-index   : zindex.$z-index--scroll-to-top !default;
 
 
 
 // * Default theme variables
 // * =========================
 
-$scroll-to-top--color              : $white;
-$scroll-to-top--color--hover       : $white;
-$scroll-to-top--bg-color           : $teal;
-$scroll-to-top--bg-color--hover    : $green;
-$scroll-to-top--border-color       : $teal;
-$scroll-to-top--border-color--hover: $green;
+$scroll-to-top--color              : colors.$white;
+$scroll-to-top--color--hover       : colors.$white;
+$scroll-to-top--bg-color           : colors.$teal;
+$scroll-to-top--bg-color--hover    : colors.$green;
+$scroll-to-top--border-color       : colors.$teal;
+$scroll-to-top--border-color--hover: colors.$green;
 
 
 // * =============================================
@@ -81,17 +90,17 @@ $scroll-to-top--border-color--hover: $green;
 // *
 // * =============================================
 
-.#{$CLASSNAME} {
+.#{$_CLASSNAME} {
 
     /// CSS variables
     /// --
     
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR,               $scroll-to-top--color);
-    @include var.define($prefix, $COMPONENT, $TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
-    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR,         $scroll-to-top--bg-color);
-    @include var.define($prefix, $COMPONENT, $BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
-    @include var.define($prefix, $COMPONENT, $BORDER_COLOR,             $scroll-to-top--border-color);
-    @include var.define($prefix, $COMPONENT, $BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR,               $scroll-to-top--color);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $scroll-to-top--bg-color);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BORDER_COLOR,             $scroll-to-top--border-color);
+    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
 
 
 
@@ -550,9 +559,9 @@ $scroll-to-top--border-color--hover: $green;
     // border: 1px solid var(--button-to-top--border-color, $scroll-to-top--border-color);
     // color: var(--button-to-top--text-color, $scroll-to-top--color);
 
-    color: var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR});
-    background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR});
-    border-color: var(--#{$prefix}#{$COMPONENT}--#{$BORDER_COLOR});
+    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
+    background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR});
+    border-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BORDER_COLOR});
 
     cursor: pointer;
     opacity: 0;
@@ -801,8 +810,8 @@ $scroll-to-top--border-color--hover: $green;
     }
 
     &:hover {
-        color           : var(--#{$prefix}#{$COMPONENT}--#{$TEXT_COLOR_HOVER});
-        background-color: var(--#{$prefix}#{$COMPONENT}--#{$BACKGROUND_COLOR_HOVER});
-        border-color    : var(--#{$prefix}#{$COMPONENT}--#{$BORDER_COLOR_HOVER});
+        color           : var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR_HOVER});
+        background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR_HOVER});
+        border-color    : var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BORDER_COLOR_HOVER});
     }
 }

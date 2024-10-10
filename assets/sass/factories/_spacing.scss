@@ -6,6 +6,9 @@
 
 
 @import './../variables/breakpoints';
+@import './../variables/utilities';
+
+// $sides: utilities.$sides;
 
 $properties: (
     m: margin,
@@ -15,7 +18,7 @@ $properties: (
 // top, right, bottom , left
 @each $property_key, $property in $properties {
     @each $side_key, $side in $sides {
-        @each $spacer_key, $spacer in $spacers {
+        @each $spacer_key, $spacer in $_SPACERS {
             .#{$property_key}#{$side_key}-#{$spacer_key} {
                 @if not ($property == padding and $spacer == auto)
                 {
@@ -28,7 +31,7 @@ $properties: (
         @each $size, $breakpoint in $breakpoints {
             @if $breakpoint > 0 {
                 @media (min-width: $breakpoint) {
-                    @each $spacer_key, $spacer in $spacers {
+                    @each $spacer_key, $spacer in $_SPACERS {
                         .#{$property_key}#{$side_key}-#{$size}-#{$spacer_key} {
                             @if not ($property == padding and $spacer == auto)
                             {
@@ -44,7 +47,7 @@ $properties: (
 
 // left and right both 
 @each $property_key, $property in $properties {
-    @each $spacer_key, $spacer in $spacers {
+    @each $spacer_key, $spacer in $_SPACERS {
         @if not ($spacer == auto)
         {
             .#{$property_key}x-#{$spacer_key} {
@@ -57,7 +60,7 @@ $properties: (
 
 // top and bottom both
 @each $property_key, $property in $properties {
-    @each $spacer_key, $spacer in $spacers {
+    @each $spacer_key, $spacer in $_SPACERS {
         @if not ($spacer == auto)
         {
             .#{$property_key}y-#{$spacer_key} {

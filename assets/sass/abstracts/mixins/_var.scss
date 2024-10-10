@@ -23,11 +23,11 @@
 
 
 
-@mixin define($prefix, $component, $section, $default)
+@mixin define($prefix, $_COMPONENT, $section, $default)
 {
     @if var.$varWithDefault {
-        --#{$prefix}#{$component}--#{$section} : var(--#{$component}--#{$section}, #{$default});
+        --#{$prefix}#{$_COMPONENT}--#{$section} : var(--#{$_COMPONENT}--#{$section}, #{$default});
     } @else {
-        --#{$prefix}#{$component}--#{$section} : var(--#{$component}--#{$section});
+        --#{$prefix}#{$_COMPONENT}--#{$section} : var(--#{$_COMPONENT}--#{$section});
     }
 }
