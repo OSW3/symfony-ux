@@ -10,6 +10,7 @@
 
 $colors: colors.$colors;
 $colors-tints: colors.$colors-tints;
+$colors-shades: colors.$colors-shades;
 
 @include banner.header('Base colors');
 
