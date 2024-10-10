@@ -16,13 +16,6 @@ To integrate the copyright styles into your project, import the necessary SCSS d
 
 ```scss 
 // app.scss
-
-// Component dependencies 
-@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/colors';
-@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/spacers';
-@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/transitions';
-
-// Component integration 
 @import '<path-to-vendor>/osw3/symfony-ux/assets/sass/components/copyright';
 ```
 

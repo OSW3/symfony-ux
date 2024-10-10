@@ -6,11 +6,14 @@
 
 @use './../variables/spacers';
 @use './../variables/fonts';
+@use './../variables/typography';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 
 $_SPACERS: spacers.$spacers;
 $_FONT_NAME_PRIMARY: fonts.$font-name-primary;
+
+
 
 /// Root
 /// =============================================
@@ -45,7 +48,7 @@ body {
     padding: map-get($_SPACERS , 0);
     
     @include var.set('font-family', font-#{$_FONT_NAME_PRIMARY});
-    font-size: $font-size-base;
+    font-size: typography.$font-size-base;
     line-height: 1.45; 
     -webkit-font-smoothing: antialiased;
 
