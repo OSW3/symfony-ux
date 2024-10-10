@@ -5,13 +5,14 @@
 // ************************************************************************** //
 
 @use './../variables/fonts';
+@use './../variables/typography';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
 @use './../abstracts/functions/utils';
 
 $font-name-headings: fonts.$font-name-headings;
-$heading-font-size: $heading-font-size-base;
+$heading-font-size: typography.$heading-font-size-base;
 
 
 @include banner.header('Typography');
