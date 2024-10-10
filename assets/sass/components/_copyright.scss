@@ -7,6 +7,7 @@
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/spacers';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
@@ -19,6 +20,7 @@ $_COMPONENT              : 'copyright';
 $_CLASSNAME              : '#{$_PREFIX}#{$_COMPONENT}';
 
 $spacer: spacers.$spacer;
+$delays: transitions.$delays;
 
 @include banner.header('Component #{$_COMPONENT}');
 
