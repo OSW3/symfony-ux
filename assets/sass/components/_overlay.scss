@@ -31,32 +31,30 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 // $offcanvas--has-backdrop: if(meta.global-variable-exists('offcanvas--has-backdrop', $module: generated), generated.$offcanvas--has-backdrop, true) !default;
 $offcanvas--width: 280px !default;
 // $offcanvas--z    : 1000 !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $offcanvas--backdrop--background-color : $black;
 $offcanvas--container--background-color: $white;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_PREFIX}no-scroll {
     overflow: hidden;

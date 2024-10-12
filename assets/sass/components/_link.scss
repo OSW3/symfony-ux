@@ -19,22 +19,21 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $link--text-decoration: underline !default;
 $link--text-decoration--hover: none !default;
 $link--text-decoration--active: none !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $link--text-color: colors.$blue !default;
 $link--text-color--hover: colors.$blue !default;
@@ -43,11 +42,10 @@ $link--text-color--disabled: colors.$gray-600 !default;
 
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 
 // * Palette

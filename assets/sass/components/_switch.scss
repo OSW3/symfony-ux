@@ -7,6 +7,7 @@
 @use "sass:math";
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -15,8 +16,7 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
-
+$_PREFIX   : prefix.$prefix;
 $_COMPONENT: 'switch';
 $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
@@ -32,14 +32,13 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $switch-width: 30 !default;
 $switch-height: 14 !default;
@@ -48,8 +47,8 @@ $_switch-width-px: #{$switch-width}px;
 $_switch-height-px: #{$switch-height}px;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $default--switch-off--border-color         : colors.$gray-700;
 $default--switch-off--background-color     : colors.$gray-200;
@@ -65,11 +64,10 @@ $default--switch-disabled--indicator-color : colors.$gray-500;
 
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 
 // * Palette
@@ -114,7 +112,7 @@ $default--switch-disabled--indicator-color : colors.$gray-500;
     &-slider {
         @include position.absolute(null, null, null, 0);
         @include sizes.set($_switch-width-px, $_switch-height-px);
-        @include transition.set((background-color), map-get($delays, normal));
+        @include transition.set((background-color), map-get(transitions.$delays, normal));
     
         cursor: pointer;
         border-width: 1px;
@@ -128,7 +126,7 @@ $default--switch-disabled--indicator-color : colors.$gray-500;
         &:before {
             @include position.absolute(null, null, 1px, 2px);
             @include sizes.set(calc($_switch-height-px - 4px), calc($_switch-height-px - 4px));
-            @include transition.set((left, background-color), map-get($delays, normal));
+            @include transition.set((left, background-color), map-get(transitions.$delays, normal));
             content: "";
             border-radius: 50%;
             

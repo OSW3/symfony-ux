@@ -24,27 +24,25 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $media--caption--font-size: $spacer * .9 !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 

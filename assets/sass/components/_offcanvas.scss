@@ -8,6 +8,7 @@
 @use './../generated';
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -15,8 +16,7 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
-
+$_PREFIX   : prefix.$prefix;
 $_COMPONENT: 'offcanvas';
 $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
@@ -34,14 +34,13 @@ $offcanvas--has-backdrop: if(meta.global-variable-exists('offcanvas--has-backdro
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
@@ -51,8 +50,8 @@ $overlay-color: colors.$black;
 $offcanvas--content--width: 280px !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $offcanvas--container--background-color: colors.$white;
 
@@ -60,11 +59,10 @@ $offcanvas--header--background-color: colors.$gray-400 !default;
 $offcanvas--footer--background-color: colors.$gray-200 !default;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
     --#{$_CLASSNAME}--container--background-color: #{$offcanvas--container--background-color};
@@ -79,7 +77,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
     justify-content: start;
 
     @include position.fixed(0,0,0,0);
-    @include transition.set((opacity), map-get($delays, normal));
+    @include transition.set((opacity), map-get(transitions.$delays, normal));
 
     &:not(&-no-backdrop) {
         background-color: #{rgba($overlay-color, $overlay-opacity)};
@@ -92,7 +90,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
         @include flex.column;
         @include position.fixed(0, null, 0, null);
         @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
-        @include transition.set((opacity, left, right, box-shadow), map-get($delays, normal));
+        @include transition.set((opacity, left, right, box-shadow), map-get(transitions.$delays, normal));
     }
 
     &-left {
@@ -167,7 +165,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 //     @include flex.column;
 //     @include position.fixed(0, null, 0, null);
 //     @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
-//     @include transition.set((opacity, left, right, box-shadow), map-get($delays, normal));
+//     @include transition.set((opacity, left, right, box-shadow), map-get(transitions.$delays, normal));
 
 //     opacity: 0;
 //     width: $offcanvas--width;

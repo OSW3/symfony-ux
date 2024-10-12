@@ -28,14 +28,13 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $card--inner--padding: ($spacer * .6) $spacer;
 
@@ -88,8 +87,8 @@ $card-footer--border-bottom-style       : $card-footer--border-style !default;
 $card-footer--border-left-style         : $card-footer--border-style !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $default--card--text-color             : colors.$black;
 $default--card--border-color           : colors.$gray-500;
@@ -104,11 +103,10 @@ $default--card-footer--border-color    : colors.$gray-500;
 $default--card-footer--background-color: colors.$gray-200;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 

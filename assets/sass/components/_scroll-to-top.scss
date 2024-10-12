@@ -10,6 +10,7 @@
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/zindex';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -49,14 +50,13 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $scroll-to-top--shape     : if(meta.global-variable-exists('scroll-to-top--shape', $module: generated), generated.$scroll-to-top--shape, 'square') !default;
 $scroll-to-top--position  : if(meta.global-variable-exists('scroll-to-top--position', $module: generated), generated.$scroll-to-top--position, 'bottom-right') !default;
@@ -73,8 +73,8 @@ $scroll-to-top--z-index   : zindex.$z-index--scroll-to-top !default;
 
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $scroll-to-top--color              : colors.$white;
 $scroll-to-top--color--hover       : colors.$white;
@@ -84,23 +84,22 @@ $scroll-to-top--border-color       : colors.$teal;
 $scroll-to-top--border-color--hover: colors.$green;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 
     /// CSS variables
     /// --
     
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR,               $scroll-to-top--color);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $scroll-to-top--bg-color);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BORDER_COLOR,             $scroll-to-top--border-color);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
+    @include var.define( $_COMPONENT, $_PREFIX_TEXT_COLOR,               $scroll-to-top--color);
+    @include var.define( $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
+    @include var.define( $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $scroll-to-top--bg-color);
+    @include var.define( $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
+    @include var.define( $_COMPONENT, $_PREFIX_BORDER_COLOR,             $scroll-to-top--border-color);
+    @include var.define( $_COMPONENT, $_PREFIX_BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
 
 
 
@@ -549,7 +548,7 @@ $scroll-to-top--border-color--hover: colors.$green;
     @if $offset-bottom != null and $offset-bottom != 0 {margin-bottom: $offset-bottom;}
     @if $offset-left != null and $offset-left != 0 {margin-left: $offset-left;}
 
-    @include transition.set($transition-list, map-get($delays, 'normal'));
+    @include transition.set($transition-list, map-get(transitions.$delays, 'normal'));
 
     /* #{$scroll-to-top--size} */
     @include sizes.set($scroll-to-top--size, $scroll-to-top--size);

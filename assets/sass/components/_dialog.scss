@@ -27,29 +27,27 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
 $overlay-color: colors.$black;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 
@@ -60,7 +58,7 @@ $overlay-color: colors.$black;
     // backdrop-filter: blur($overlay-blur);
 
     // @include position.fixed(0,0,0,0);
-    // @include transition.set((opacity), map-get($delays, normal));
+    // @include transition.set((opacity), map-get(transitions.$delays, normal));
 
     // &.open {
     //     opacity: 1;

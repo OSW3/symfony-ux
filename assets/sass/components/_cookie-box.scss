@@ -6,12 +6,12 @@
 
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
 $_PREFIX: prefix.$prefix;
-
 $_COMPONENT: 'cookie-box';
 $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
@@ -27,28 +27,26 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $cookie-box--backdrop: true !default;
 $default--cookie-consent--background-color: colors.$white;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 
@@ -103,7 +101,7 @@ $default--cookie-consent--background-color: colors.$white;
 
     @if $cookie-box--backdrop {
         &::after {
-            @include transition.set((opacity), map-get($delays, normal));
+            @include transition.set((opacity), map-get(transitions.$delays, normal));
             content: "";
             top: 0;
             right: 0;
@@ -128,7 +126,7 @@ $default--cookie-consent--background-color: colors.$white;
 // --
 .#{$_CLASSNAME} {
     &-banner {
-        @include transition.set((top, bottom), map-get($delays, normal));
+        @include transition.set((top, bottom), map-get(transitions.$delays, normal));
         position: fixed;
         z-index: 9000;
         right: 0;

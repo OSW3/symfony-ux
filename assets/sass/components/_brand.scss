@@ -8,6 +8,7 @@
 @use './../generated';
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -22,14 +23,13 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $brand--small--font-size     : 1.2rem !default;
 $brand--small--tagline-size  : .8rem !default;
@@ -79,18 +79,17 @@ $sizes: (
 $brand-breakpoints: if(meta.global-variable-exists('brand-breakpoints', $module: generated), generated.$brand-breakpoints, ()) !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $brand--text-color      : colors.$gray-600;
 $brand--text-color--hover: colors.$black;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 
@@ -112,7 +111,7 @@ $brand--text-color--hover: colors.$black;
         color: inherit;
         display: table;
         text-decoration: none;
-        transition: color map-get($delays, normal);
+        transition: color map-get(transitions.$delays, normal);
 
         &:hover {
             @include var.set('color', 'brand--text-color--hover', $brand--text-color--hover);

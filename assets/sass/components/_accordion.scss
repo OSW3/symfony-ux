@@ -16,70 +16,51 @@
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
-
+$_PREFIX   : prefix.$prefix;
 $_COMPONENT: 'accordion';
 $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
-
-$delays: transitions.$delays;
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * -------------------------
+// * Layout Variables
+// * --
 
-$accordion--border-radius: 'small' !default;
-
-$accordion--item--gap: -1px !default; // gap between items
-$accordion--item--transition-speed: 'normal' !default;
-
-$accordion--item--header--font-size: 1.2rem !default;
-$accordion--item--header--padding-x: $spacer !default;
-$accordion--item--header--padding-y: $spacer !default;
-
-$accordion--item--content--max-height: if(meta.global-variable-exists('accordion--item--content--max-height', $module: generated), generated.$accordion--item--content--max-height, null) !default;
-$accordion--item--content--padding-x: $spacer !default;
-$accordion--item--content--padding-y: $spacer !default;
+$accordion--border-radius                       : 'small' !default;
+$accordion--item--gap                           : -1px !default;
+$accordion--item--transition-speed              : 'normal' !default;
+$accordion--item--header--font-size             : 1.2rem !default;
+$accordion--item--header--padding-x             : $spacer !default;
+$accordion--item--header--padding-y             : $spacer !default;
+$accordion--item--content--max-height           : if(meta.global-variable-exists('accordion--item--content--max-height', $module: generated), generated.$accordion--item--content--max-height, null) !default;
+$accordion--item--content--padding-x            : $spacer !default;
+$accordion--item--content--padding-y            : $spacer !default;
 
 
-// * Default theme variables
-// * -------------------------
+// * Theme Variables
+// * --
 
-/// Accordion Items
-/// -------------------------
-
-$accordion--item--border-color: colors.$gray-500 !default;
-
-
-/// Accordion Items Header
-/// -------------------------
-
-$accordion--item--header--text-color: colors.$gray-700 !default;
-$accordion--item--header--background-color: colors.$gray-200 !default;
-
-
-/// Accordion Items Open Header
-/// -------------------------
-
-$accordion--item-open--header--text-color: colors.$gray-900 !default;
-$accordion--item-open--header--background-color: colors.$gray-400 !default;
+$accordion--item--border-color                  : colors.$gray-500 !default;
+$accordion--item--header--text-color            : colors.$gray-700 !default;
+$accordion--item--header--background-color      : colors.$gray-200 !default;
+$accordion--item-open--header--text-color       : colors.$gray-900 !default;
+$accordion--item-open--header--background-color : colors.$gray-400 !default;
 
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
+.#{$_CLASSNAME} {
+}
 .#{$_CLASSNAME} {
 
     /// Accordion Item
@@ -136,7 +117,7 @@ $accordion--item-open--header--background-color: colors.$gray-400 !default;
             $accordion--item--header--padding-y,
             $accordion--item--header--padding-x
         );
-        @include transition.set((color, background-color), map-get($delays, $accordion--item--transition-speed));
+        @include transition.set((color, background-color), map-get(transitions.$delays, $accordion--item--transition-speed));
     }
     &-item.open &-header {
         @include var.set('color', 'accordion--item-open--header--text-color', $accordion--item-open--header--text-color);
@@ -155,7 +136,7 @@ $accordion--item-open--header--background-color: colors.$gray-400 !default;
     &-content {
         max-height: 0;
         overflow: hidden;
-        @include transition.set((max-height), map-get($delays, $accordion--item--transition-speed));
+        @include transition.set((max-height), map-get(transitions.$delays, $accordion--item--transition-speed));
 
         &-inner {
             @include spaces.padding(

@@ -16,11 +16,10 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 @include banner.header('Component #{$_COMPONENT}');
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME}
 {

@@ -6,39 +6,40 @@
 
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
-$_PREFIX_TEXT_COLOR: prefix.$TEXT_COLOR;
-$_PREFIX_TEXT_COLOR_HOVER: prefix.$TEXT_COLOR_HOVER;
-$_PREFIX_BACKGROUND_COLOR: prefix.$BACKGROUND_COLOR;
-$_PREFIX_BACKGROUND_COLOR_HOVER: prefix.$BACKGROUND_COLOR_HOVER;
-
+$_PREFIX   : prefix.$prefix;
 $_COMPONENT: 'announcement';
 $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
-// * =============================================
+
+$_PREFIX_TEXT_COLOR_HOVER: prefix.$TEXT_COLOR_HOVER;
+$_PREFIX_BACKGROUND_COLOR: prefix.$BACKGROUND_COLOR;
+$_PREFIX_BACKGROUND_COLOR_HOVER: prefix.$BACKGROUND_COLOR_HOVER;
+
+// * *********************************************
 // *
 // *    Component Properties
 // *
-// * =============================================
+// * *********************************************
 
 // * Default layout variables
-// * =========================
+// * --
 
 $announcement--height: 40px !default;
 $announcement--transition: 'normal' !default;
 
 
 // * Default theme variables
-// * =========================
+// * --
 
 $announcement--color: colors.$white !default;
 $announcement--color--hover: colors.$white !default;
@@ -46,15 +47,14 @@ $announcement--bg-color: colors.$gray-600 !default;
 $announcement--bg-color--hover: colors.$gray-600 !default;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 
 // * Palette
-// * =========================
+// * --
 
 // .#{$_CLASSNAME} {
 
@@ -72,31 +72,35 @@ $announcement--bg-color--hover: colors.$gray-600 !default;
 // * =========================
 
 .#{$_CLASSNAME} {
+    @include var.define( $_COMPONENT, prefix.$TEXT_COLOR,               $announcement--color);
+    @include var.define( $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $announcement--color--hover);
+    @include var.define( $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $announcement--bg-color);
+    @include var.define( $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $announcement--bg-color--hover);
+}
+
+.#{$_CLASSNAME} {
 
     /// CSS variables
     /// --
     
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR,               $announcement--color);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $announcement--color--hover);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $announcement--bg-color);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $announcement--bg-color--hover);
-
 
     /// Announcement container
     /// --
 
-    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
+    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
     background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR});
 
     @include flex.centered;
     @include sizes.set(null, $announcement--height);
-    @include transition.set((color, background-color), map-get($delays, $announcement--transition));
+    @include transition.set((color, background-color), map-get(transitions.$delays, $announcement--transition));
 
     & a {
-        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
+        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
     }
 
     &:hover {
+        @include var.set('color', '#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR_HOVER}');
+
         color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR_HOVER});
         background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR_HOVER});
     }

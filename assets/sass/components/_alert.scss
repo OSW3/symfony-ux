@@ -14,7 +14,6 @@
 @use './../abstracts/functions/color';
 
 $_PREFIX: prefix.$prefix;
-
 $_COMPONENT: 'alert';
 $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
@@ -22,28 +21,26 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $alert--margin-y: $spacer !default;
 $alert--border-radius: map-get($radius, 'small') !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 
 // * Palette
@@ -88,9 +85,9 @@ $alert--border-radius: map-get($radius, 'small') !default;
         null
     );
 
-    @include var.set('color', '#{$_CLASSNAME}--text');
-    @include var.set('background-color', '#{$_CLASSNAME}--background');
-    @include var.set('border-color', '#{$_CLASSNAME}--border');
+    @include var.set('color', '#{$_COMPONENT}--text');
+    @include var.set('background-color', '#{$_COMPONENT}--background');
+    @include var.set('border-color', '#{$_COMPONENT}--border');
 
 
     & + & {

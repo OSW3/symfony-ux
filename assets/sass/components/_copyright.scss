@@ -12,55 +12,56 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX                 : prefix.$prefix;
-$_PREFIX_TEXT_COLOR      : prefix.$TEXT_COLOR;
-$_PREFIX_TEXT_COLOR_HOVER: prefix.$TEXT_COLOR_HOVER;
-
-$_COMPONENT              : 'copyright';
-$_CLASSNAME              : '#{$_PREFIX}#{$_COMPONENT}';
-
-$spacer: spacers.$spacer;
-$delays: transitions.$delays;
+$_PREFIX   : prefix.$prefix;
+$_COMPONENT: 'copyright';
+$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
-// * =============================================
+
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
-$copyright--font-size: $spacer * .8 !default;
-$copyright--transition: 'normal' !default;
+$copyright--font-size   : spacers.$spacer * .8 !default;
+$copyright--transition  : 'normal' !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
-$copyright--color: colors.$gray-600 !default;
+$copyright--color       : colors.$gray-600 !default;
 $copyright--color--hover: colors.$gray-600 !default;
 
 
-// * =============================================
+
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR,               $copyright--color);
-    @include var.define($_PREFIX, $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $copyright--color--hover);
+    @include var.define($_COMPONENT, prefix.$TEXT_COLOR, $copyright--color);
+    @include var.define($_COMPONENT, prefix.$TEXT_COLOR_HOVER, $copyright--color--hover);
+}
+
+.#{$_CLASSNAME} {
     
     display: inline-block;
     font-size: $copyright--font-size;
-    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
-    @include transition.set((color), map-get($delays, $copyright--transition));
+    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
+
+    @include transition.set((color), map-get(
+        transitions.$delays, 
+        $copyright--transition
+    ));
 
     &:hover {
-        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR_HOVER});
+        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{prefix.$TEXT_COLOR_HOVER});
     }
 }

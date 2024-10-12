@@ -25,26 +25,24 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
-
-
-// * Default theme variables
-// * =========================
+// * Layout Variables
+// * --
 
 
+// * Theme Variables
+// * --
 
-// * =============================================
+
+
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 
 // * Palette
@@ -125,23 +123,23 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
     @include spaces.margin( .25rem, .125rem, .25rem, .125rem );
     
 
-    @include var.set('color', '#{$_CLASSNAME}--text');
-    @include var.set('background-color', '#{$_CLASSNAME}--background');
-    @include var.set('border-color', '#{$_CLASSNAME}--border');
+    @include var.set('color', '#{$_COMPONENT}--text');
+    @include var.set('background-color', '#{$_COMPONENT}--background');
+    @include var.set('border-color', '#{$_COMPONENT}--border');
 
     &:hover {
-        @include var.set('color', '#{$_CLASSNAME}--text-hover');
-        @include var.set('background-color', '#{$_CLASSNAME}--background-hover');
-        @include var.set('border-color', '#{$_CLASSNAME}--border-hover');
+        @include var.set('color', '#{$_COMPONENT}--text-hover');
+        @include var.set('background-color', '#{$_COMPONENT}--background-hover');
+        @include var.set('border-color', '#{$_COMPONENT}--border-hover');
     }
 
     &.active, &:active {
-        @include var.set('color', '#{$_CLASSNAME}--text-active');
-        @include var.set('background-color', '#{$_CLASSNAME}--background-active');
-        @include var.set('border-color', '#{$_CLASSNAME}--border-active');
+        @include var.set('color', '#{$_COMPONENT}--text-active');
+        @include var.set('background-color', '#{$_COMPONENT}--background-active');
+        @include var.set('border-color', '#{$_COMPONENT}--border-active');
     }
     &.focus, &:focus, &:focus-visible {
-        @include var.set('outline-color', '#{$_CLASSNAME}--focus');
+        @include var.set('outline-color', '#{$_COMPONENT}--focus');
         outline-style: solid;
         outline-width: 4px;
     }
@@ -149,9 +147,9 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
     &[disabled] {
         cursor: default;
         opacity: .65;
-        @include var.set('color', '#{$_CLASSNAME}--text-disabled');
-        @include var.set('background-color', '#{$_CLASSNAME}--background-disabled');
-        @include var.set('border-color', '#{$_CLASSNAME}--border-disabled');
+        @include var.set('color', '#{$_COMPONENT}--text-disabled');
+        @include var.set('background-color', '#{$_COMPONENT}--background-disabled');
+        @include var.set('border-color', '#{$_COMPONENT}--border-disabled');
     }
 
     & .no-border {

@@ -7,6 +7,7 @@
 
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/banner';
@@ -32,26 +33,25 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
 $search-box--submit--hidden: true !default;
 
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $search-box--width: 480px !default;
-$search-box--transition-speed: map-get($delays, 'normal') !default;
+$search-box--transition-speed: map-get(transitions.$delays, 'normal') !default;
 $search-box--border-width: 1px !default;
 $search-box--border-radius: map-get($radius, 'small') !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $search-box--text-color: colors.$black !default;
 $search-box--border-color: colors.$gray-300 !default;
@@ -59,11 +59,10 @@ $search-box--border-color--focus: colors.$gray-500 !default;
 
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
     --search-box--text-color: $search-box--text-color;

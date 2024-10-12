@@ -26,20 +26,19 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $breadcrumb--separator : "/" !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $breadcrumb--background-color: transparent;
 $breadcrumb--link-color      : colors.$gray-700;
@@ -47,11 +46,10 @@ $breadcrumb--link-hover-color: colors.$gray-900;
 $breadcrumb--active-color    : colors.$gray-900;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 

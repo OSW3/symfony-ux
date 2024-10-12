@@ -32,14 +32,13 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $form-widget--space: $spacer * 2 !default;
 $form-widget--required-symbol: '*' !default;
@@ -53,8 +52,8 @@ $form-widget--control-file--selector-width: 130px !default;
 
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $form-widget--label--text-color: colors.$black !default;
 $form-widget--required-symbol--text-color: colors.$red !default;
@@ -73,11 +72,10 @@ $form-widget--description--text-color: colors.$gray-600 !default;
 
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
     // border: 3px solid red;

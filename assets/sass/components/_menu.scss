@@ -6,6 +6,7 @@
 
 @use './../variables/colors';
 @use './../variables/prefix';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -24,14 +25,13 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $menu--border-radius: 'small' !default;
 $menu--border-width: 1px !default;
@@ -39,8 +39,8 @@ $menu--border-width: 1px !default;
 $menu--link--text-decoration: none !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $menu--background-color: colors.$white !default;
 $menu--border-color: colors.$gray-500 !default;
@@ -58,11 +58,10 @@ $menu-link--background-color--active: colors.$gray-300 !default;
 $menu-link--background-color--disabled: transparent !default;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
     
@@ -122,7 +121,7 @@ $menu-link--background-color--disabled: transparent !default;
 
         @include spaces.padding-y(map-get($_SPACERS, 2));
         @include spaces.padding-x(map-get($_SPACERS, 3));
-        @include transition.set((color, background-color), map-get($delays, normal));
+        @include transition.set((color, background-color), map-get(transitions.$delays, normal));
 
         @include var.set('background-color', 'menu-link--background-color', $menu-link--background-color);
         @include var.set('color', 'menu-link--text-color', $menu-link--text-color);

@@ -8,6 +8,7 @@
 @use './../variables/prefix';
 @use './../variables/zindex';
 @use './../variables/spacers';
+@use './../variables/transitions';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/flex';
 @use './../abstracts/mixins/sizes';
@@ -35,14 +36,13 @@ $spacers: spacers.$spacers;
 
 
 
-// * =============================================
 // *
-// *    Component Properties
+// * Component properties
+// * ------------------------
 // *
-// * =============================================
 
-// * Default layout variables
-// * =========================
+// * Layout Variables
+// * --
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
@@ -62,8 +62,8 @@ $modal--content-large--width: 800px !default;
 $modal--inner--border-width: 1px !default;
 
 
-// * Default theme variables
-// * =========================
+// * Theme Variables
+// * --
 
 $modal--content--border-color: colors.$gray-500 !default;
 $modal--content--background-color: colors.$white !default;
@@ -73,11 +73,10 @@ $modal--footer--background-color: colors.$gray-200 !default;
 $modal--inner--border-color: colors.$gray-200 !default;
 
 
-// * =============================================
 // *
-// *    Component Definition
+// * Component definition
+// * ------------------------
 // *
-// * =============================================
 
 .#{$_CLASSNAME} {
 
@@ -88,7 +87,7 @@ $modal--inner--border-color: colors.$gray-200 !default;
     z-index: zindex.$z-index--modal;
 
     @include position.fixed(0,0,0,0);
-    @include transition.set((opacity), map-get($delays, normal));
+    @include transition.set((opacity), map-get(transitions.$delays, normal));
 
     // $padding: #{$spacer-6}rem;
     $padding: #{map-get($spacers, 6)}rem;
@@ -163,7 +162,7 @@ $modal--inner--border-color: colors.$gray-200 !default;
         min-height: 280px !important;
         max-height: 100vh !important;
 
-        @include transition.set((top), map-get($delays, normal));
+        @include transition.set((top), map-get(transitions.$delays, normal));
 
         @if $modal--appear-from == bottom {
             top: $modal--content--width;

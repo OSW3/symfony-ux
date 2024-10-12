@@ -8,26 +8,27 @@
 // ************************************************************************** //
 
 @use './../../variables/var';
+@use './../../variables/prefix';
 
 @mixin set($property, $name, $default: null, $important: false) {
     @if var.$varWithDefault {
         @if $default {
-            #{$property}: var(--#{$name}, #{$default})#{if($important, ' !important', '')};
+            #{$property}: var(--#{prefix.$prefix}#{$name}, #{$default})#{if($important, ' !important', '')};
         } @else {
-            #{$property}: var(--#{$name})#{if($important, ' !important', '')};
+            #{$property}: var(--#{prefix.$prefix}#{$name})#{if($important, ' !important', '')};
         }
     } @else {
-        #{$property}: var(--#{$name})#{if($important, ' !important', '')};
+        #{$property}: var(--#{prefix.$prefix}#{$name})#{if($important, ' !important', '')};
     }
 }
 
 
 
-@mixin define($prefix, $_COMPONENT, $section, $default)
+@mixin define($_COMPONENT, $section, $default)
 {
     @if var.$varWithDefault {
-        --#{$prefix}#{$_COMPONENT}--#{$section} : var(--#{$_COMPONENT}--#{$section}, #{$default});
+        --#{prefix.$prefix}#{$_COMPONENT}--#{$section} : var(--#{$_COMPONENT}--#{$section}, #{$default});
     } @else {
-        --#{$prefix}#{$_COMPONENT}--#{$section} : var(--#{$_COMPONENT}--#{$section});
+        --#{prefix.$prefix}#{$_COMPONENT}--#{$section} : var(--#{$_COMPONENT}--#{$section});
     }
 }
