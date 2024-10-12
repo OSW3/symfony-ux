@@ -12,49 +12,68 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX   : prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
+
+
 $_COMPONENT: 'copyright';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component functions & mixins
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// No function or mixins definition
+
+
+
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
+
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $copyright--font-size   : spacers.$spacer * .8 !default;
 $copyright--transition  : 'normal' !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
 $copyright--color       : colors.$gray-600 !default;
 $copyright--color--hover: colors.$gray-600 !default;
 
 
 
-// *
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
     @include var.define($_COMPONENT, prefix.$TEXT_COLOR, $copyright--color);
     @include var.define($_COMPONENT, prefix.$TEXT_COLOR_HOVER, $copyright--color--hover);
 }
 
+
+// * Structure
+// * ------------------------------------------------------------------------ //
+
 .#{$_CLASSNAME} {
     
     display: inline-block;
     font-size: $copyright--font-size;
-    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
+    color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
 
     @include transition.set((color), map-get(
         transitions.$delays, 
@@ -62,6 +81,12 @@ $copyright--color--hover: colors.$gray-600 !default;
     ));
 
     &:hover {
-        color: var(--#{$_PREFIX}#{$_COMPONENT}--#{prefix.$TEXT_COLOR_HOVER});
+        color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$TEXT_COLOR_HOVER});
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

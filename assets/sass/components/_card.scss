@@ -11,102 +11,99 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'card';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
+$card--border-radius                            : $border-radius !default;
+$card--border-width                             : 1px !default;
+$card--border-style                             : solid !default;
 
-// *
-// * Component properties
-// * ------------------------
-// *
-
-// * Layout Variables
-// * --
-
-$card--inner--padding: ($spacer * .6) $spacer;
-
-$card--border-radius: $border-radius !default;
-$card--border-width : 1px !default;
-$card--border-style : solid !default;
-
+$card--inner--padding                           : 1rem;
 
 // Card Header
 
-$card-header--border-radius             : $card--border-radius !default;
-$card-header--border-width              : $card--border-width !default;
-$card-header--border-style              : $card--border-style !default;
+$card-header--border-radius                     : $card--border-radius !default;
+$card-header--border-width                      : $card--border-width !default;
+$card-header--border-style                      : $card--border-style !default;
 
-$card-header--border-top-left-radius    : $card-header--border-radius !default;
-$card-header--border-top-right-radius   : $card-header--border-radius !default;
-$card-header--border-bottom-left-radius : 0 !default;
-$card-header--border-bottom-right-radius: 0 !default;
+$card-header--border-top-left-radius            : $card-header--border-radius !default;
+$card-header--border-top-right-radius           : $card-header--border-radius !default;
+$card-header--border-bottom-left-radius         : 0 !default;
+$card-header--border-bottom-right-radius        : 0 !default;
 
-$card-header--border-top-width          : $card-header--border-width !default;
-$card-header--border-right-width        : $card-header--border-width !default;
-$card-header--border-bottom-width       : $card-header--border-width !default;
-$card-header--border-left-width         : $card-header--border-width !default;
+$card-header--border-top-width                  : $card-header--border-width !default;
+$card-header--border-right-width                : $card-header--border-width !default;
+$card-header--border-bottom-width               : $card-header--border-width !default;
+$card-header--border-left-width                 : $card-header--border-width !default;
 
-$card-header--border-top-style          : $card-header--border-style !default;
-$card-header--border-right-style        : $card-header--border-style !default;
-$card-header--border-bottom-style       : $card-header--border-style !default;
-$card-header--border-left-style         : $card-header--border-style !default;
+$card-header--border-top-style                  : $card-header--border-style !default;
+$card-header--border-right-style                : $card-header--border-style !default;
+$card-header--border-bottom-style               : $card-header--border-style !default;
+$card-header--border-left-style                 : $card-header--border-style !default;
 
 
 // Card footer
 
-$card-footer--border-radius             : $card--border-radius !default;
-$card-footer--border-width              : $card--border-width !default;
-$card-footer--border-style              : $card--border-style !default;
+$card-footer--border-radius                     : $card--border-radius !default;
+$card-footer--border-width                      : $card--border-width !default;
+$card-footer--border-style                      : $card--border-style !default;
 
-$card-footer--border-top-left-radius    : 0 !default;
-$card-footer--border-top-right-radius   : 0 !default;
-$card-footer--border-bottom-left-radius : $card-footer--border-radius !default;
-$card-footer--border-bottom-right-radius: $card-footer--border-radius !default;
+$card-footer--border-top-left-radius            : 0 !default;
+$card-footer--border-top-right-radius           : 0 !default;
+$card-footer--border-bottom-left-radius         : $card-footer--border-radius !default;
+$card-footer--border-bottom-right-radius        : $card-footer--border-radius !default;
 
-$card-footer--border-top-width          : $card-footer--border-width !default;
-$card-footer--border-right-width        : $card-footer--border-width !default;
-$card-footer--border-bottom-width       : $card-footer--border-width !default;
-$card-footer--border-left-width         : $card-footer--border-width !default;
+$card-footer--border-top-width                  : $card-footer--border-width !default;
+$card-footer--border-right-width                : $card-footer--border-width !default;
+$card-footer--border-bottom-width               : $card-footer--border-width !default;
+$card-footer--border-left-width                 : $card-footer--border-width !default;
 
-$card-footer--border-top-style          : $card-footer--border-style !default;
-$card-footer--border-right-style        : $card-footer--border-style !default;
-$card-footer--border-bottom-style       : $card-footer--border-style !default;
-$card-footer--border-left-style         : $card-footer--border-style !default;
-
-
-// * Theme Variables
-// * --
-
-$default--card--text-color             : colors.$black;
-$default--card--border-color           : colors.$gray-500;
-$default--card--background-color       : colors.$white;
-
-$default--card-header--text-color      : colors.$black;
-$default--card-header--border-color    : colors.$gray-500;
-$default--card-header--background-color: colors.$gray-200;
-
-$default--card-footer--text-color      : colors.$black;
-$default--card-footer--border-color    : colors.$gray-500;
-$default--card-footer--background-color: colors.$gray-200;
+$card-footer--border-top-style                  : $card-footer--border-style !default;
+$card-footer--border-right-style                : $card-footer--border-style !default;
+$card-footer--border-bottom-style               : $card-footer--border-style !default;
+$card-footer--border-left-style                 : $card-footer--border-style !default;
 
 
-// *
+// * Theme variables
+// * ------------------------------------------------------------------------ //
+
+$default--card--text-color                      : colors.$black;
+$default--card--border-color                    : colors.$gray-500;
+$default--card--background-color                : colors.$white;
+
+$default--card-header--text-color               : colors.$black;
+$default--card-header--border-color             : colors.$gray-500;
+$default--card-header--background-color         : colors.$gray-200;
+
+$default--card-footer--text-color               : colors.$black;
+$default--card-footer--border-color             : colors.$gray-500;
+$default--card-footer--background-color         : colors.$gray-200;
+
+
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -224,3 +221,9 @@ $default--card-footer--background-color: colors.$gray-200;
         padding: $card--inner--padding;
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

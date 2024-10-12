@@ -12,7 +12,7 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$_PREFIX: prefix.$prefix;
+prefix.$prefix: prefix.$prefix;
 
 $grid-divisions: grid.$grid-divisions;
 
@@ -44,7 +44,7 @@ $grid-divisions: grid.$grid-divisions;
 @include banner.section('The grid');
 
 // Set .grid styles definition
-.#{$_PREFIX}grid {
+.#{prefix.$prefix}grid {
     flex-wrap: wrap;
     
     @include flex.row;
@@ -79,13 +79,13 @@ $grid-divisions: grid.$grid-divisions;
     @if $i != 'auto' {
 
         // Padding gap for the Grid
-        // .#{$_PREFIX}grid.#{$_PREFIX}gap-#{$i}
+        // .#{prefix.$prefix}grid.#{prefix.$prefix}gap-#{$i}
         // {
         //     @include spaces.margin(null, $margin, null, $margin);
         // }
 
         // (All) Padding gap for thr grid Columns
-        .#{$_PREFIX}gap-#{$i} [class^="#{$_PREFIX}column"]
+        .#{prefix.$prefix}gap-#{$i} [class^="#{prefix.$prefix}column"]
         {
             @if $i == 0 {
                 @include spaces.padding($padding !important, $padding !important, $padding !important, $padding !important);
@@ -94,11 +94,11 @@ $grid-divisions: grid.$grid-divisions;
             }
                 }
         // (Left & right) Padding gap for thr grid Columns
-        .#{$_PREFIX}gap-x-#{$i} [class^="#{$_PREFIX}column"]{
+        .#{prefix.$prefix}gap-x-#{$i} [class^="#{prefix.$prefix}column"]{
             @include spaces.padding-x($padding);
         }
         // (Top & Bottom) Padding gap for thr grid Columns
-        .#{$_PREFIX}gap-y-#{$i} [class^="#{$_PREFIX}column"]{
+        .#{prefix.$prefix}gap-y-#{$i} [class^="#{prefix.$prefix}column"]{
             @include spaces.padding-y($padding);
         }
     
@@ -112,7 +112,7 @@ $grid-divisions: grid.$grid-divisions;
 @include banner.section('The grid columns');
 
 // Set .column & .column-x styles definition
-.#{$_PREFIX}column {
+.#{prefix.$prefix}column {
     flex: 1 0 0%;
 
     // .column-break
@@ -150,7 +150,7 @@ $grid-divisions: grid.$grid-divisions;
 /// =============================================
 @include banner.section('The grid offsets');
 
-.#{$_PREFIX}offset {
+.#{prefix.$prefix}offset {
 
     // .offset-x
     @for $i from 1 through $grid-divisions {

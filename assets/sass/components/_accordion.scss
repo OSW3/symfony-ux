@@ -1,7 +1,5 @@
 // ************************************************************************** //
-// *
 // *    Components: Accordion
-// *
 // ************************************************************************** //
 
 @use 'sass:meta';
@@ -16,21 +14,25 @@
 @use './../abstracts/mixins/spaces';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX   : prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
+
 $_COMPONENT: 'accordion';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $accordion--border-radius                       : 'small' !default;
 $accordion--item--gap                           : -1px !default;
@@ -43,8 +45,8 @@ $accordion--item--content--padding-x            : $spacer !default;
 $accordion--item--content--padding-y            : $spacer !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
 $accordion--item--border-color                  : colors.$gray-500 !default;
 $accordion--item--header--text-color            : colors.$gray-700 !default;
@@ -54,13 +56,20 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
 
 
 
-// *
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 }
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
+
 .#{$_CLASSNAME} {
 
     /// Accordion Item
@@ -154,3 +163,9 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
         }
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

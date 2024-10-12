@@ -9,47 +9,52 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'breadcrumb';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
+
+// * Layout variables
+// * ------------------------------------------------------------------------ //
+
+$breadcrumb--separator                          : "/" !default;
+
+
+// * Theme variables
+// * ------------------------------------------------------------------------ //
+
+$breadcrumb--background-color                   : transparent;
+$breadcrumb--link-color                         : colors.$gray-700;
+$breadcrumb--link-hover-color                   : colors.$gray-900;
+$breadcrumb--active-color                       : colors.$gray-900;
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
-
-// * Layout Variables
-// * --
-
-$breadcrumb--separator : "/" !default;
-
-
-// * Theme Variables
-// * --
-
-$breadcrumb--background-color: transparent;
-$breadcrumb--link-color      : colors.$gray-700;
-$breadcrumb--link-hover-color: colors.$gray-900;
-$breadcrumb--active-color    : colors.$gray-900;
-
-
-// *
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
+
+
+// No palette definition
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -104,3 +109,9 @@ $breadcrumb--active-color    : colors.$gray-900;
         }
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

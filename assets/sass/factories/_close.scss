@@ -8,10 +8,10 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_PREFIX: prefix.$prefix;
+prefix.$prefix: prefix.$prefix;
 
 $_COMPONENT: 'button-close';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 

@@ -8,7 +8,7 @@
 @use './../variables/fonts';
 @use './../abstracts/mixins/banner';
 
-$_PREFIX: prefix.$prefix;
+prefix.$prefix: prefix.$prefix;
 
 $fonts: fonts.$fonts;
 
@@ -44,7 +44,7 @@ $fonts: fonts.$fonts;
 :root {
     @each $_name, $_data in $fonts {
         $_family: map-get($_data, 'family');
-        // --#{$_PREFIX}font-#{$_name}: #{map-get($_data, 'family')};
+        // --#{prefix.$prefix}font-#{$_name}: #{map-get($_data, 'family')};
         --font-#{$_name}: #{map-get($_data, 'family')};
     }
 }

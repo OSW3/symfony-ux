@@ -11,9 +11,13 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 $_COMPONENT: 'cookie-box';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
@@ -27,26 +31,44 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component functions & mixins
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// No function or mixins definition
+
+
+
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
+
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $cookie-box--backdrop: true !default;
 $default--cookie-consent--background-color: colors.$white;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
+
+// No theme variable definition
 
 
-// *
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
+
+// No palette definition
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -151,3 +173,9 @@ $default--cookie-consent--background-color: colors.$white;
         }
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

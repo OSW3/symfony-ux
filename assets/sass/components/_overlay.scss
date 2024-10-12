@@ -13,31 +13,25 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'overlay';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-
-
-
-// *
-// * Component properties
-// * ------------------------
-// *
-
-// * Layout Variables
-// * --
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 // $offcanvas--has-backdrop: if(meta.global-variable-exists('offcanvas--has-backdrop', $module: generated), generated.$offcanvas--has-backdrop, true) !default;
 $offcanvas--width: 280px !default;
@@ -56,7 +50,7 @@ $offcanvas--container--background-color: $white;
 // * ------------------------
 // *
 
-.#{$_PREFIX}no-scroll {
+.#{prefix.$prefix}no-scroll {
     overflow: hidden;
     height: 100%;
 }

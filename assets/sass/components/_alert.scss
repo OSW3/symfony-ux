@@ -13,38 +13,43 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/functions/color';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
+
 $_COMPONENT: 'alert';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
-$alert--margin-y: $spacer !default;
-$alert--border-radius: map-get($radius, 'small') !default;
-
-
-// * Theme Variables
-// * --
+$alert--margin-y                                : $spacer !default;
+$alert--border-radius                           : map-get($radius, 'small') !default;
 
 
-// *
+// * Theme variables
+// * ------------------------------------------------------------------------ //
+
+// No theme variable definition
+
+
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
-
+// * ======================================================================== //
 
 // * Palette
-// * =========================
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
     @each $key, $value in $ui-colors {
@@ -58,7 +63,7 @@ $alert--border-radius: map-get($radius, 'small') !default;
 
 
 // * Structure
-// * =========================
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -97,9 +102,15 @@ $alert--border-radius: map-get($radius, 'small') !default;
     /// Alert dismiss button
     /// --
     
-    & .#{$_PREFIX}button-close {
+    & .#{prefix.$prefix}button-close {
         z-index: 2;
         @include position.absolute(0, 0, null, null);
         @include spaces.padding($spacer * 1.25, $spacer, $spacer * 1.25, $spacer);
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

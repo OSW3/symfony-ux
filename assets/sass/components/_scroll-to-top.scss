@@ -22,26 +22,22 @@
 @use './../abstracts/functions/utils';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX                       : prefix.$prefix;
-$_PREFIX_TEXT_COLOR            : prefix.$TEXT_COLOR;
-$_PREFIX_TEXT_COLOR_HOVER      : prefix.$TEXT_COLOR_HOVER;
-$_PREFIX_BACKGROUND_COLOR      : prefix.$BACKGROUND_COLOR;
-$_PREFIX_BACKGROUND_COLOR_HOVER: prefix.$BACKGROUND_COLOR_HOVER;
-$_PREFIX_BORDER_COLOR          : prefix.$BORDER_COLOR;
-$_PREFIX_BORDER_COLOR_HOVER    : prefix.$BORDER_COLOR_HOVER;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'scroll-to-top';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component functions & mixins
+// * ======================================================================== //
 
 @function calculate-font-size($element-height, $base-rem, $base-height, $multiplier) {
     $ratio: $base-rem * math.div($multiplier, $base-height);
@@ -50,60 +46,67 @@ $_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
-$scroll-to-top--shape     : if(meta.global-variable-exists('scroll-to-top--shape', $module: generated), generated.$scroll-to-top--shape, 'square') !default;
-$scroll-to-top--position  : if(meta.global-variable-exists('scroll-to-top--position', $module: generated), generated.$scroll-to-top--position, 'bottom-right') !default;
-$scroll-to-top--transition: if(meta.global-variable-exists('scroll-to-top--transition', $module: generated), generated.$scroll-to-top--transition, 'natural') !default;
-$scroll-to-top--symbol    : if(meta.global-variable-exists('scroll-to-top--symbol', $module: generated), generated.$scroll-to-top--symbol, 'arrow-up') !default;
+$scroll-to-top--shape               : if(meta.global-variable-exists('scroll-to-top--shape', $module: generated), generated.$scroll-to-top--shape, 'square') !default;
+$scroll-to-top--position            : if(meta.global-variable-exists('scroll-to-top--position', $module: generated), generated.$scroll-to-top--position, 'bottom-right') !default;
+$scroll-to-top--transition          : if(meta.global-variable-exists('scroll-to-top--transition', $module: generated), generated.$scroll-to-top--transition, 'natural') !default;
+$scroll-to-top--symbol              : if(meta.global-variable-exists('scroll-to-top--symbol', $module: generated), generated.$scroll-to-top--symbol, 'arrow-up') !default;
 
-$scroll-to-top--size      : 40px !default;
-$scroll-to-top--position-x: $spacer *2 !default;
-$scroll-to-top--position-y: $spacer *2 !default;
-$scroll-to-top--offset-x  : 0px !default;
-$scroll-to-top--offset-y  : 0px !default;
-$scroll-to-top--font-size : 2 !default;
-$scroll-to-top--z-index   : zindex.$z-index--scroll-to-top !default;
-
+$scroll-to-top--size                : 40px !default;
+$scroll-to-top--position-x          : $spacer *2 !default;
+$scroll-to-top--position-y          : $spacer *2 !default;
+$scroll-to-top--offset-x            : 0px !default;
+$scroll-to-top--offset-y            : 0px !default;
+$scroll-to-top--font-size           : 2 !default;
+$scroll-to-top--z-index             : zindex.$z-index--scroll-to-top !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
-$scroll-to-top--color              : colors.$white;
-$scroll-to-top--color--hover       : colors.$white;
-$scroll-to-top--bg-color           : colors.$teal;
-$scroll-to-top--bg-color--hover    : colors.$green;
-$scroll-to-top--border-color       : colors.$teal;
-$scroll-to-top--border-color--hover: colors.$green;
+$scroll-to-top--color               : colors.$white;
+$scroll-to-top--color--hover        : colors.$white;
+$scroll-to-top--bg-color            : colors.$teal;
+$scroll-to-top--bg-color--hover     : colors.$green;
+$scroll-to-top--border-color        : colors.$teal;
+$scroll-to-top--border-color--hover : colors.$green;
 
 
-// *
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
     /// CSS variables
     /// --
     
-    @include var.define( $_COMPONENT, $_PREFIX_TEXT_COLOR,               $scroll-to-top--color);
-    @include var.define( $_COMPONENT, $_PREFIX_TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
-    @include var.define( $_COMPONENT, $_PREFIX_BACKGROUND_COLOR,         $scroll-to-top--bg-color);
-    @include var.define( $_COMPONENT, $_PREFIX_BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
-    @include var.define( $_COMPONENT, $_PREFIX_BORDER_COLOR,             $scroll-to-top--border-color);
-    @include var.define( $_COMPONENT, $_PREFIX_BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
-
-
+    @include var.define( $_COMPONENT, prefix.$TEXT_COLOR,               $scroll-to-top--color);
+    @include var.define( $_COMPONENT, prefix.$TEXT_COLOR_HOVER,         $scroll-to-top--color--hover);
+    @include var.define( $_COMPONENT, prefix.$BACKGROUND_COLOR,         $scroll-to-top--bg-color);
+    @include var.define( $_COMPONENT, prefix.$BACKGROUND_COLOR_HOVER,   $scroll-to-top--bg-color--hover);
+    @include var.define( $_COMPONENT, prefix.$BORDER_COLOR,             $scroll-to-top--border-color);
+    @include var.define( $_COMPONENT, prefix.$BORDER_COLOR_HOVER,       $scroll-to-top--border-color--hover);
 
     --icon : #{icon.get(#{$scroll-to-top--symbol}, var(--scroll-to-top--color, color.encode($scroll-to-top--color)))};
+}
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
+
+.#{$_CLASSNAME} {
+
     $transition-list: (opacity, background-color, border-color, color);
     $background-position: center;
 
@@ -558,9 +561,9 @@ $scroll-to-top--border-color--hover: colors.$green;
     // border: 1px solid var(--button-to-top--border-color, $scroll-to-top--border-color);
     // color: var(--button-to-top--text-color, $scroll-to-top--color);
 
-    color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR});
-    background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR});
-    border-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BORDER_COLOR});
+    color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
+    background-color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$BACKGROUND_COLOR});
+    border-color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$BORDER_COLOR});
 
     cursor: pointer;
     opacity: 0;
@@ -809,8 +812,14 @@ $scroll-to-top--border-color--hover: colors.$green;
     }
 
     &:hover {
-        color           : var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_TEXT_COLOR_HOVER});
-        background-color: var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BACKGROUND_COLOR_HOVER});
-        border-color    : var(--#{$_PREFIX}#{$_COMPONENT}--#{$_PREFIX_BORDER_COLOR_HOVER});
+        color           : var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$TEXT_COLOR_HOVER});
+        background-color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$BACKGROUND_COLOR_HOVER});
+        border-color    : var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$BORDER_COLOR_HOVER});
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

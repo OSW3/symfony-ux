@@ -10,30 +10,41 @@
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'link';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component functions & mixins
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// No function or mixins definition
+
+
+
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
+
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $link--text-decoration: underline !default;
 $link--text-decoration--hover: none !default;
 $link--text-decoration--active: none !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
 $link--text-color: colors.$blue !default;
 $link--text-color--hover: colors.$blue !default;
@@ -42,14 +53,12 @@ $link--text-color--disabled: colors.$gray-600 !default;
 
 
 
-// *
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
-
+// * ======================================================================== //
 
 // * Palette
-// * =========================
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
     @each $key, $value in $ui-colors {
@@ -63,7 +72,7 @@ $link--text-color--disabled: colors.$gray-600 !default;
 
 
 // * Structure
-// * =========================
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {    
     --icon         : #{icon.get('external-link', var(--link--text-color))};
@@ -110,3 +119,9 @@ $link--text-color--disabled: colors.$gray-600 !default;
         }
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

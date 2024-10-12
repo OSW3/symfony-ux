@@ -17,10 +17,14 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'modal';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 $spacers: spacers.$spacers;
 
@@ -28,21 +32,20 @@ $spacers: spacers.$spacers;
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component functions & mixins
+// * ======================================================================== //
+
+// No function or mixins definition
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
@@ -62,8 +65,8 @@ $modal--content-large--width: 800px !default;
 $modal--inner--border-width: 1px !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
 $modal--content--border-color: colors.$gray-500 !default;
 $modal--content--background-color: colors.$white !default;
@@ -73,10 +76,19 @@ $modal--footer--background-color: colors.$gray-200 !default;
 $modal--inner--border-color: colors.$gray-200 !default;
 
 
-// *
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
+
+// No palette definition
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -229,7 +241,7 @@ $modal--inner--border-color: colors.$gray-200 !default;
         }
     }
 
-    & .#{$_PREFIX}button-close {
+    & .#{prefix.$prefix}button-close {
         z-index: 2;
         // @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
         @include sizes.set(6px,6px);
@@ -243,3 +255,9 @@ $modal--inner--border-color: colors.$gray-200 !default;
         }
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

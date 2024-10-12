@@ -4,7 +4,6 @@
 // *
 // ************************************************************************** //
 
-
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/transitions';
@@ -16,27 +15,25 @@
 @use './../abstracts/functions/icon';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'search-box';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-
-
-// *
-// * Component properties
-// * ------------------------
-// *
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $search-box--submit--hidden: true !default;
 
@@ -50,8 +47,8 @@ $search-box--border-width: 1px !default;
 $search-box--border-radius: map-get($radius, 'small') !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
 $search-box--text-color: colors.$black !default;
 $search-box--border-color: colors.$gray-300 !default;
@@ -59,10 +56,18 @@ $search-box--border-color--focus: colors.$gray-500 !default;
 
 
 
-// *
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
+
+// No palette definition
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
     --search-box--text-color: $search-box--text-color;
@@ -183,11 +188,11 @@ $search-box--border-color--focus: colors.$gray-500 !default;
     //     display: none;
     // }
     
-    // // & > .#{$_PREFIX}modal-header {
+    // // & > .#{prefix.$prefix}modal-header {
     // //     display: flex;
     // // }
 
-    // & > .#{$_PREFIX}modal {
+    // & > .#{prefix.$prefix}modal {
     //     // display: flex;
 
     //     .#{$_CLASSNAME}-suggestions {
@@ -200,5 +205,10 @@ $search-box--border-color--focus: colors.$gray-500 !default;
     //         max-height: none;
     //     }
     // }
-    
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

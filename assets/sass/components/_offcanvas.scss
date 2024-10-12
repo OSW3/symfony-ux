@@ -16,31 +16,28 @@
 @use './../abstracts/mixins/position';
 @use './../abstracts/mixins/transition';
 
-$_PREFIX   : prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
+
+
 $_COMPONENT: 'offcanvas';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// * =============================================
-// *
-// *    Component functions
-// *
-// * =============================================
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
+
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
 $offcanvas--has-backdrop: if(meta.global-variable-exists('offcanvas--has-backdrop', $module: generated), generated.$offcanvas--has-backdrop, true) !default;
-
-
-
-// *
-// * Component properties
-// * ------------------------
-// *
-
-// * Layout Variables
-// * --
 
 $overlay-blur : 10px;
 $overlay-opacity: 0.5;
@@ -50,8 +47,8 @@ $overlay-color: colors.$black;
 $offcanvas--content--width: 280px !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
 $offcanvas--container--background-color: colors.$white;
 
@@ -59,14 +56,21 @@ $offcanvas--header--background-color: colors.$gray-400 !default;
 $offcanvas--footer--background-color: colors.$gray-200 !default;
 
 
-// *
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
     --#{$_CLASSNAME}--container--background-color: #{$offcanvas--container--background-color};
 }
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -146,7 +150,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
         @include var.set('background-color', 'offcanvas--footer--background-color', $offcanvas--footer--background-color);
     }
 
-    & .#{$_PREFIX}button-close {
+    & .#{prefix.$prefix}button-close {
         z-index: 2;
         // @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
         @include sizes.set(6px,6px);
@@ -206,7 +210,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 //         @include var.set('background-color', 'offcanvas--footer--background-color', $offcanvas--footer--background-color);
 //     }
 
-//     & .#{$_PREFIX}button-close {
+//     & .#{prefix.$prefix}button-close {
 //         z-index: 2;
 //         @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
 //         @include sizes.set(6px,6px);
@@ -217,3 +221,9 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 //         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 //     }
 // }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

@@ -9,7 +9,7 @@
 @use './prefix';
 
 
-$_PREFIX: prefix.$prefix;
+prefix.$prefix: prefix.$prefix;
 
 /// Sides
 /// =============================================
@@ -22,7 +22,7 @@ $sides: (
     l: left,
 );
 
-.#{$_PREFIX}no-scroll {
+.#{prefix.$prefix}no-scroll {
     overflow: hidden;
     height: 100%;
 }

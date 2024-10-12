@@ -14,40 +14,43 @@
 @use './../abstracts/mixins/banner';
 @use './../abstracts/mixins/spaces';
 
-$_PREFIX: prefix.$prefix;
+
+
+// * ======================================================================== //
+// * Component constants
+// * ======================================================================== //
 
 $_COMPONENT: 'brand';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
 
 
-// *
-// * Component properties
-// * ------------------------
-// *
+// * ======================================================================== //
+// * Component variables
+// * ======================================================================== //
 
-// * Layout Variables
-// * --
+// * Layout variables
+// * ------------------------------------------------------------------------ //
 
-$brand--small--font-size     : 1.2rem !default;
-$brand--small--tagline-size  : .8rem !default;
-$brand--small--tagline-offset: 0px !default;
-$brand--small--font-weight   : 600 !default;
-$brand--small--img-height    : 32px !default;
+$brand--small--font-size                        : 1.2rem !default;
+$brand--small--tagline-size                     : .8rem !default;
+$brand--small--tagline-offset                   : 0px !default;
+$brand--small--font-weight                      : 600 !default;
+$brand--small--img-height                       : 32px !default;
 
-$brand--medium--font-size     : 1.5rem !default;
-$brand--medium--tagline-size  : 1rem !default;
-$brand--medium--tagline-offset: 0px !default;
-$brand--medium--font-weight   : 700 !default;
-$brand--medium--img-height    : 42px !default;
+$brand--medium--font-size                       : 1.5rem !default;
+$brand--medium--tagline-size                    : 1rem !default;
+$brand--medium--tagline-offset                  : 0px !default;
+$brand--medium--font-weight                     : 700 !default;
+$brand--medium--img-height                      : 42px !default;
 
-$brand--large--font-size     : 2rem !default;
-$brand--large--tagline-size  : 1.2rem !default;
-$brand--large--tagline-offset: 0px !default;
-$brand--large--font-weight   : 900 !default;
-$brand--large--img-height    : 56px !default;
+$brand--large--font-size                        : 2rem !default;
+$brand--large--tagline-size                     : 1.2rem !default;
+$brand--large--tagline-offset                   : 0px !default;
+$brand--large--font-weight                      : 900 !default;
+$brand--large--img-height                       : 56px !default;
 
 $sizes: (
     small: (
@@ -79,17 +82,27 @@ $sizes: (
 $brand-breakpoints: if(meta.global-variable-exists('brand-breakpoints', $module: generated), generated.$brand-breakpoints, ()) !default;
 
 
-// * Theme Variables
-// * --
+// * Theme variables
+// * ------------------------------------------------------------------------ //
 
-$brand--text-color      : colors.$gray-600;
-$brand--text-color--hover: colors.$black;
+$brand--text-color                              : colors.$gray-600;
+$brand--text-color--hover                       : colors.$black;
 
 
-// *
+
+// * ======================================================================== //
 // * Component definition
-// * ------------------------
-// *
+// * ======================================================================== //
+
+// * Palette
+// * ------------------------------------------------------------------------ //
+
+
+// No palette definition
+
+
+// * Structure
+// * ------------------------------------------------------------------------ //
 
 .#{$_CLASSNAME} {
 
@@ -189,3 +202,9 @@ $brand--text-color--hover: colors.$black;
         }
     }
 }
+
+
+// * Responsive
+// * ------------------------------------------------------------------------ //
+
+// No responsive definition

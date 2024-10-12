@@ -13,12 +13,12 @@
 @use './../abstracts/mixins/corner';
 // @use './../abstracts/mixins/spaces';
 
-$_PREFIX: prefix.$prefix;
+prefix.$prefix: prefix.$prefix;
 $radius: radius.$radius;
 $spacer: spacers.$spacer;
 
 $_COMPONENT: 'form-widget';
-$_CLASSNAME: '#{$_PREFIX}#{$_COMPONENT}';
+$_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
 @include banner.header('Component #{$_COMPONENT}');
 
