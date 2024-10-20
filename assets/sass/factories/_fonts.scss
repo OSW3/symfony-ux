@@ -8,17 +8,13 @@
 @use './../variables/fonts';
 @use './../abstracts/mixins/banner';
 
-prefix.$prefix: prefix.$prefix;
-
-$fonts: fonts.$fonts;
-
 @include banner.header('Fonts');
 
 
 /// Font @import & @font-face
 /// =============================================
 /// Add @import url( ... )
-@each $_name, $_data in $fonts {
+@each $_name, $_data in fonts.$fonts {
     $_family: map-get($_data, 'family');
     $_url   : map-get($_data, 'url');
     $_source: map-get($_data, 'source');
@@ -42,9 +38,9 @@ $fonts: fonts.$fonts;
 /// Generate CSS Variable
 /// =============================================
 :root {
-    @each $_name, $_data in $fonts {
+    @each $_name, $_data in fonts.$fonts {
         $_family: map-get($_data, 'family');
-        // --#{prefix.$prefix}font-#{$_name}: #{map-get($_data, 'family')};
+        --#{prefix.$prefix}font-#{$_name}: #{map-get($_data, 'family')};
         --font-#{$_name}: #{map-get($_data, 'family')};
     }
 }

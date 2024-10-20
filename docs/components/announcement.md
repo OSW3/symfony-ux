@@ -2,11 +2,28 @@
 
 ## What is it about ?
 
-Create a announcement banner. Usually at the top of the website.
+The Announcement component allows you to create a banner, typically displayed at the top of a website, to share important messages or updates with users. It supports features like message rotation, animation, and customizable display speed, providing a flexible solution for conveying key announcements in a visually engaging manner.
 
 <!-- Example -->
 <!-- {"file": "00-default.html", "language": "twig"} -->
-<!-- {"file": "01-skeleton.html", "language": "html", "render": false} -->
+<!-- {"file": "01-skeleton.html", "language": "html", "render": true} -->
+
+## Integration
+
+### SASS Integration
+
+To integrate the **announcement** styles into your project, import the necessary SCSS dependencies.
+
+```scss 
+// app.scss
+@import '<path-to-vendor>/osw3/symfony-ux/assets/sass/components/announcement';
+```
+
+
+
+
+
+
 
 ## Component configuration
 

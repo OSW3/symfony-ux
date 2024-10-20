@@ -7,11 +7,11 @@ Accordions are vertically collapsing components that allow you to toggle between
 <!-- Example -->
 <!-- {"file": "00-main.html", "language": "twig"} -->
 
-## Integration (SASS & JS)
+## Integration
 
 ### SASS Integration
 
-To integrate the accordion styles into your project, import the necessary SCSS dependencies.
+To integrate the **accordion** styles into your project, import the necessary SCSS dependencies.
 
 ```scss 
 // app.scss

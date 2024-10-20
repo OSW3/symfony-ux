@@ -1,4 +1,4 @@
-// Last gen: 2024-10-08 12:13:25
+// Last gen: 2024-10-12 13:09:22
 $prefix: 'ux';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -21,6 +21,7 @@ $breakpoint-ultra: 1600px;
 $container-ultra: 1520px;
 $additional-breakpoints: ('big-screen': (breakpoint: 2000px, container: 1900px));
 $useless-breakpoints: ('ultra','big-screen');
+$grid-divisions: 12;
 $blue: #018490;
 $indigo: #6610f2;
 $purple: #6f42c1;
@@ -48,15 +49,15 @@ $generated-additional-colors: ('pumpkin': $pumpkin,'pink-flamingo': $pink-flamin
 $generated-useless-colors: ('teal','pumpkin');
 $generated-colors-shades: ('pink-flamingo' : (20,30));
 $generated-colors-tints: ('pink-flamingo' : (20,30));
-$ui-colors-name-success: 'success';
-$ui-colors-name-danger: 'danger';
-$ui-colors-name-warning: 'warning';
-$ui-colors-name-info: 'info';
-$ui-colors-name-primary: 'primary';
-$ui-colors-name-secondary: 'secondary';
-$ui-colors-name-light: 'light';
-$ui-colors-name-dark: 'dark';
-$ui-colors-name-muted: 'muted';
+$ui-color-name-success: 'success';
+$ui-color-name-danger: 'danger';
+$ui-color-name-warning: 'warning';
+$ui-color-name-info: 'info';
+$ui-color-name-primary: 'primary';
+$ui-color-name-secondary: 'secondary';
+$ui-color-name-light: 'light';
+$ui-color-name-dark: 'dark';
+$ui-color-name-muted: 'muted';
 $highlight: #00FF99;
 $generated-additional-ui-colors: ('highlight': #00FF99);
 $generated-useless-palette: ('light','dark','muted');
@@ -71,7 +72,6 @@ $spacer-3: 1;
 $spacer-4: 1.5;
 $spacer-5: 2;
 $spacer-6: 3;
-$grid-divisions: 12;
 $theme-default: 'light';
 $brand-breakpoints: ('phone','tablet');
 $scroll-to-top--shape: 'square';
