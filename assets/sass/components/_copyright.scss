@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/spacers';
@@ -75,7 +76,7 @@ $copyright--color--hover: colors.$gray-600 !default;
     font-size: $copyright--font-size;
     color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});
 
-    @include transition.set((color), map-get(
+    @include transition.set((color), map.get(
         transitions.$delays, 
         $copyright--transition
     ));

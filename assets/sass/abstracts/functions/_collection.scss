@@ -7,6 +7,8 @@
 // *                                                                        * //
 // ************************************************************************** //
 
+@use 'sass:map';
+@use 'sass:list';
 /// Merge list
 /// =============================================
 /// 
@@ -23,7 +25,7 @@
   $result: ();
 
   @each $collection in $collections {
-    $result: map-merge($result, $collection);
+    $result: map.merge($result, $collection);
   }
 
   @return $result;
@@ -33,13 +35,13 @@
 @function reverse($list, $recursive: false) {
   $result: ();
 
-  @for $i from length($list)*-1 through -1 {
-    @if type-of(nth($list, abs($i))) == list and $recursive {
-      $result: append($result, reverse(nth($list, abs($i)), $recursive));      
+  @for $i from list.length($list)*-1 through -1 {
+    @if type-of(list.nth($list, abs($i))) == list and $recursive {
+      $result: append($result, reverse(list.nth($list, abs($i)), $recursive));      
     }
 
     @else {
-      $result: append($result, nth($list, abs($i)));
+      $result: append($result, list.nth($list, abs($i)));
     }
   }
 
@@ -48,10 +50,10 @@
 
 
 @function empty($collection) {
-  @return length($collection) == 0;
+  @return list.length($collection) == 0;
 }
 @function notEmpty($collection) {
-  @return length($collection) != 0;
+  @return list.length($collection) != 0;
 }
 
 
@@ -65,10 +67,10 @@
 /// @return {Boolean}
 ///  
 @function keyExists($collection, $key) {
-  $length: length($collection);
+  $length: list.length($collection);
 
   @for $i from 1 through $length {
-    @if nth($collection, $i) == $key {
+    @if list.nth($collection, $i) == $key {
       @return true;
     }
   }
@@ -91,7 +93,7 @@
 
   @each $map-key, $value in $collection {
     @if $map-key != $key {
-      $output: map-merge($output, ($map-key: $value));
+      $output: map.merge($output, ($map-key: $value));
     }
   }
 

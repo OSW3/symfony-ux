@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use "sass:math";
 @use './../variables/colors';
 @use './../variables/prefix';
@@ -87,7 +88,7 @@ $default--switch-disabled--indicator-color : colors.$gray-500;
     /// Component definition
     /// --
     
-    padding-left: math.div($switch-width, 16) + map-get($_SPACERS, 3 );
+    padding-left: math.div($switch-width, 16) + map.get($_SPACERS, 3 );
     
     @include flex.middle;
     @include position.relative;
@@ -107,7 +108,7 @@ $default--switch-disabled--indicator-color : colors.$gray-500;
     &-slider {
         @include position.absolute(null, null, null, 0);
         @include sizes.set($_switch-width-px, $_switch-height-px);
-        @include transition.set((background-color), map-get(transitions.$delays, normal));
+        @include transition.set((background-color), map.get(transitions.$delays, normal));
     
         cursor: pointer;
         border-width: 1px;
@@ -121,7 +122,7 @@ $default--switch-disabled--indicator-color : colors.$gray-500;
         &:before {
             @include position.absolute(null, null, 1px, 2px);
             @include sizes.set(calc($_switch-height-px - 4px), calc($_switch-height-px - 4px));
-            @include transition.set((left, background-color), map-get(transitions.$delays, normal));
+            @include transition.set((left, background-color), map.get(transitions.$delays, normal));
             content: "";
             border-radius: 50%;
             

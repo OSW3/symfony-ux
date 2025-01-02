@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/prefix';
 @use './../variables/breakpoints';
 @use './../abstracts/mixins/sizes';
@@ -40,7 +41,7 @@ $_selectors_str: unquote(str-slice($_selectors_str, 1, -3));
 
 // Set styles definition
 #{$_selectors_str} {
-  $padding: map-get($_SPACERS, 3);
+  $padding: map.get($_SPACERS, 3);
   
   display: block;
   z-index: 1;
@@ -60,7 +61,7 @@ $_selectors_str: unquote(str-slice($_selectors_str, 1, -3));
 
 @each $key, $value in $containers {
   .#{prefix.$prefix}container-#{$key} {
-    max-width: map-get($containers, $key);
+    max-width: map.get($containers, $key);
   }
 }
 
@@ -85,7 +86,7 @@ $_selectors_str: unquote(str-slice($_selectors_str, 1, -3));
       $selectors: unquote(str-slice($selectors, 1, -3));
 
       #{$selectors} { 
-        max-width: map-get($containers, $size);
+        max-width: map.get($containers, $size);
       }
 
     }

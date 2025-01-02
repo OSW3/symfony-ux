@@ -1,6 +1,7 @@
 // ************************************************************************** //
 // *    Components: Accordion
 // ************************************************************************** //
+@use "sass:map";
 
 @use 'sass:meta';
 @use './../generated';
@@ -89,14 +90,14 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
         }
 
         @if $accordion--item--gap > 0 {
-            @include corner.rounded(map-get($radius, $accordion--border-radius));
+            @include corner.rounded(map.get($radius, $accordion--border-radius));
         }
         @else {
             &:first-child {
-                @include corner.top(map-get($radius, $accordion--border-radius));
+                @include corner.top(map.get($radius, $accordion--border-radius));
             }
             &:last-child {
-                @include corner.bottom(map-get($radius, $accordion--border-radius));
+                @include corner.bottom(map.get($radius, $accordion--border-radius));
             }
         }
     }
@@ -115,7 +116,7 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
         width: 100%;
 
         @if $accordion--item--gap > 0 {
-            @include corner.top(map-get($radius, $accordion--border-radius));
+            @include corner.top(map.get($radius, $accordion--border-radius));
         }
 
         @include flex.row;
@@ -126,7 +127,7 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
             $accordion--item--header--padding-y,
             $accordion--item--header--padding-x
         );
-        @include transition.set((color, background-color), map-get(transitions.$delays, $accordion--item--transition-speed));
+        @include transition.set((color, background-color), map.get(transitions.$delays, $accordion--item--transition-speed));
     }
     &-item.open &-header {
         @include var.set('color', 'accordion--item-open--header--text-color', $accordion--item-open--header--text-color);
@@ -134,7 +135,7 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
     }
     @if $accordion--item--gap < 0 {
         &-item:first-child.open &-header {
-            @include corner.top(map-get($radius, $accordion--border-radius));
+            @include corner.top(map.get($radius, $accordion--border-radius));
         }
     }
 
@@ -145,7 +146,7 @@ $accordion--item-open--header--background-color : colors.$gray-400 !default;
     &-content {
         max-height: 0;
         overflow: hidden;
-        @include transition.set((max-height), map-get(transitions.$delays, $accordion--item--transition-speed));
+        @include transition.set((max-height), map.get(transitions.$delays, $accordion--item--transition-speed));
 
         &-inner {
             @include spaces.padding(

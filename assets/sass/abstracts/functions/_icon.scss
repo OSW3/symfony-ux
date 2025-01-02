@@ -1,4 +1,5 @@
 
+@use "sass:map";
 @use './color';
 @use './utils';
 @use './../../variables/icons';
@@ -10,7 +11,7 @@
     }
 
     $fill-color: color.encode($fill-color);
-    $icon: map-get(icons.$icons, $icon-name);;
+    $icon: map.get(icons.$icons, $icon-name);;
     $icon: utils.str-replace($icon, '#fill-color', $fill-color);
 
     @return $icon;

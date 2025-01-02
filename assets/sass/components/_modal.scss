@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/zindex';
@@ -99,10 +100,10 @@ $modal--inner--border-color: colors.$gray-200 !default;
     z-index: zindex.$z-index--modal;
 
     @include position.fixed(0,0,0,0);
-    @include transition.set((opacity), map-get(transitions.$delays, normal));
+    @include transition.set((opacity), map.get(transitions.$delays, normal));
 
     // $padding: #{$spacer-6}rem;
-    $padding: #{map-get($spacers, 6)}rem;
+    $padding: #{map.get($spacers, 6)}rem;
     @include spaces.padding($padding,$padding,$padding,$padding);
 
     &:not(&-no-backdrop) {
@@ -174,7 +175,7 @@ $modal--inner--border-color: colors.$gray-200 !default;
         min-height: 280px !important;
         max-height: 100vh !important;
 
-        @include transition.set((top), map-get(transitions.$delays, normal));
+        @include transition.set((top), map.get(transitions.$delays, normal));
 
         @if $modal--appear-from == bottom {
             top: $modal--content--width;
@@ -196,7 +197,7 @@ $modal--inner--border-color: colors.$gray-200 !default;
 
     &-header, &-body, &-footer {
         z-index: 1;
-        padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
+        padding: map.get($_SPACERS, 2) map.get($_SPACERS, 3);
     }
     &-header {
         display: flex;
@@ -243,7 +244,7 @@ $modal--inner--border-color: colors.$gray-200 !default;
 
     & .#{prefix.$prefix}button-close {
         z-index: 2;
-        // @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
+        // @include position.absolute(map.get($_SPACERS, 2), map.get($_SPACERS, 2), null, null);
         @include sizes.set(6px,6px);
     }
 

@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use 'sass:map';
 @use './../abstracts/functions/collection';
 
 
@@ -70,7 +71,7 @@ $additional-fonts: () !default;
 
 @if collection.notEmpty($additional-fonts) {
     @each $key, $value in $additional-fonts {
-        $fonts: map-merge($fonts, ($key: $value));
+        $fonts: map.merge($fonts, ($key: $value));
     }
 }
 

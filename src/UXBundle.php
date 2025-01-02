@@ -37,7 +37,7 @@ class UXBundle extends Bundle
         }
 
 
-        // Create yaml config
+        // Generate the YAML bundle configuration file in the project
         // --
         
         (new Configuration)->generateProjectConfig($projectDir);

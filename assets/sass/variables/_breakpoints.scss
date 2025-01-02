@@ -9,6 +9,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use 'sass:meta';
 @use './../generated';
 @use './../abstracts/functions/collection';
@@ -103,14 +104,14 @@ $additional-breakpoints: if(meta.global-variable-exists('additional-breakpoints'
 @if collection.notEmpty($additional-breakpoints) {
     @each $key, $value in $additional-breakpoints {
 
-        $additional-breakpoint-value: map-get($value, 'breakpoint');
-        $additional-container-value: map-get($value, 'container');
+        $additional-breakpoint-value: map.get($value, 'breakpoint');
+        $additional-container-value: map.get($value, 'container');
 
         @if $additional-breakpoint-value {
-            $breakpoints: map-merge($breakpoints, ($key: $additional-breakpoint-value));
+            $breakpoints: map.merge($breakpoints, ($key: $additional-breakpoint-value));
         }
         @if $additional-container-value {
-            $containers: map-merge($containers, ($key: $additional-container-value));
+            $containers: map.merge($containers, ($key: $additional-container-value));
         }
     }
 }

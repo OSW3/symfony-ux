@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use 'sass:map';
 @use 'sass:meta';
 @use './../generated';
 @use './../variables/colors';
@@ -71,14 +72,14 @@ $ui-colors-tints: () !default;
 /// $additional-ui-colors: ( 'my-color': purple );
 $generated-additional-ui-colors: if(meta.global-variable-exists('generated-additional-ui-colors', $module: generated), generated.$generated-additional-ui-colors, ()) !default;
 $additional-ui-colors          : () !default;
-$additional-ui-colors          : map-merge(
+$additional-ui-colors          : map.merge(
     $generated-additional-ui-colors, 
     $additional-ui-colors
 );
 
 @if collection.notEmpty($additional-ui-colors) {
     @each $key, $value in $additional-ui-colors {
-        $ui-colors: map-merge($ui-colors, ($key: $value));
+        $ui-colors: map.merge($ui-colors, ($key: $value));
     }
 }
 

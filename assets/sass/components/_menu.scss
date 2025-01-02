@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/transitions';
@@ -85,7 +86,7 @@ $menu-link--background-color--disabled  : transparent !default;
     
     border-width: $menu--border-width;
     border-style: solid;
-    @include corner.rounded(map-get($radius, $menu--border-radius));
+    @include corner.rounded(map.get($radius, $menu--border-radius));
     @include var.set('border-color', 'menu--border-color', $menu--border-color);
     @include var.set('background-color', 'menu--background-color', $menu--background-color);
 
@@ -137,9 +138,9 @@ $menu-link--background-color--disabled  : transparent !default;
         text-decoration: $menu--link--text-decoration;
         // @include corner.rounded(0);
 
-        @include spaces.padding-y(map-get($_SPACERS, 2));
-        @include spaces.padding-x(map-get($_SPACERS, 3));
-        @include transition.set((color, background-color), map-get(transitions.$delays, normal));
+        @include spaces.padding-y(map.get($_SPACERS, 2));
+        @include spaces.padding-x(map.get($_SPACERS, 3));
+        @include transition.set((color, background-color), map.get(transitions.$delays, normal));
 
         @include var.set('background-color', 'menu-link--background-color', $menu-link--background-color);
         @include var.set('color', 'menu-link--text-color', $menu-link--text-color);
@@ -166,17 +167,17 @@ $menu-link--background-color--disabled  : transparent !default;
     }
 
     &:not(&-vertical):not(&-center):not(&-end) &-item:first-child &-link {
-        @include corner.start(map-get($radius, $menu--border-radius));
+        @include corner.start(map.get($radius, $menu--border-radius));
     }
     &-end:not(&-vertical) &-item:last-child &-link,
     &-fill:not(&-vertical) &-item:last-child &-link {
-        @include corner.end(map-get($radius, $menu--border-radius));
+        @include corner.end(map.get($radius, $menu--border-radius));
     }
     &-vertical &-item:first-child &-link {
-        @include corner.top(map-get($radius, $menu--border-radius));
+        @include corner.top(map.get($radius, $menu--border-radius));
     }
     &-vertical &-item:last-child &-link {
-        @include corner.bottom(map-get($radius, $menu--border-radius));
+        @include corner.bottom(map.get($radius, $menu--border-radius));
     }
 
     
@@ -197,7 +198,7 @@ $menu-link--background-color--disabled  : transparent !default;
                 border-top: 5px solid #2f2f2f;
                 font-size: 0;
                 line-height: 0;
-                margin-left: map-get($_SPACERS, 2);
+                margin-left: map.get($_SPACERS, 2);
             }
         }
     

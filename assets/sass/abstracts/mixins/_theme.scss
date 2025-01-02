@@ -7,6 +7,7 @@
 // *                                                                        * //
 // ************************************************************************** //
 
+@use "sass:map";
 // @use '/assets/sass/themes/' as themes;
 // @use '/assets/sass/themes/_directory' as themes;
 
@@ -59,12 +60,12 @@
 @mixin _map($property, $key) 
 {
   @include _output() {
-    #{$property}: map-get($theme-map, $key);
+    #{$property}: map.get($theme-map, $key);
   }
 }
 @mixin _default($property, $key)
 {
-  #{$property}: map-get(themes.$default-map, $key);
+  #{$property}: map.get(themes.$default-map, $key);
 }
 @mixin _output() 
 {
@@ -73,8 +74,8 @@
     .theme-#{$theme} & {
       $theme-map: () !global;
       @each $key, $submap in $map {
-        $value: map-get(map-get(themes.$themes, $theme), '#{$key}');
-        $theme-map: map-merge($theme-map, ($key: $value)) !global;
+        $value: map.get(map.get(themes.$themes, $theme), '#{$key}');
+        $theme-map: map.merge($theme-map, ($key: $value)) !global;
       }
       @content;
       $theme-map: null !global;

@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/transitions';
@@ -42,9 +43,9 @@ $search-box--submit--hidden: true !default;
 // * --
 
 $search-box--width: 480px !default;
-$search-box--transition-speed: map-get(transitions.$delays, 'normal') !default;
+$search-box--transition-speed: map.get(transitions.$delays, 'normal') !default;
 $search-box--border-width: 1px !default;
-$search-box--border-radius: map-get($radius, 'small') !default;
+$search-box--border-radius: map.get($radius, 'small') !default;
 
 
 // * Theme variables

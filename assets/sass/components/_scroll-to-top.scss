@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use 'sass:math';
 @use 'sass:meta';
 @use './../generated';
@@ -551,7 +552,7 @@ $scroll-to-top--border-color--hover : colors.$green;
     @if $offset-bottom != null and $offset-bottom != 0 {margin-bottom: $offset-bottom;}
     @if $offset-left != null and $offset-left != 0 {margin-left: $offset-left;}
 
-    @include transition.set($transition-list, map-get(transitions.$delays, 'normal'));
+    @include transition.set($transition-list, map.get(transitions.$delays, 'normal'));
 
     /* #{$scroll-to-top--size} */
     @include sizes.set($scroll-to-top--size, $scroll-to-top--size);

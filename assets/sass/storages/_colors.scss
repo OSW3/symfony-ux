@@ -1,0 +1,36 @@
+// * ----------- @osw3/symfony-ux/assets/sass/storages/colors.scss ---------- //
+// *
+// *    Colors Storage
+// *
+// * ------------------------------------------------------------------------ //
+
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use './../variables/colors' as default;
+
+
+// Storage variables
+$colors : default.$colors !default;
+$tints  : () !default;
+$shades : () !default;
+$useless: () !default;
+
+
+
+
+@mixin add($list) {
+    $colors: map.merge($colors, $list) !global;
+}
+
+@mixin tints($list) {
+    $tints: map.merge($tints, $list) !global;
+}
+
+@mixin shades($list) {
+    $shades: map.merge($shades, $list) !global;
+}
+
+@mixin remove($list) {
+    $useless: list.join($useless, $list, 'comma') !global;
+}

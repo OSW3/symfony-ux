@@ -8,6 +8,7 @@
 // *    :root[data-theme=xxx] {}
 // *
 // ************************************************************************** //
+@use "sass:map";
 
 @use './../variables/themes';
 @use './../abstracts/functions/utils';
@@ -20,9 +21,9 @@ $theme-default: themes.$theme-default;
 
 /// Default Theme
 /// =============================================
-@if utils.not-empty(map-get($themes , $theme-default)) {
+@if utils.not-empty(map.get($themes , $theme-default)) {
     :root {
-        @each $property, $value in map-get($themes , $theme-default) {
+        @each $property, $value in map.get($themes , $theme-default) {
             // --#{$prefix}#{$property}: #{$value};
             --#{$property}: #{$value};
         }
@@ -49,9 +50,9 @@ $theme-default: themes.$theme-default;
 // $additional-themes: () !default;
 
 // @each $theme in $additional-themes {
-//     $_name: map-get($theme, 'name');
-//     $_COMPONENTs: map-get($theme, 'components');
-//     $_palette: map-get($theme, 'palette');
+//     $_name: map.get($theme, 'name');
+//     $_COMPONENTs: map.get($theme, 'components');
+//     $_palette: map.get($theme, 'palette');
 
 //     @include dumper.dump( $_name );
 

@@ -7,6 +7,7 @@
 // *                                                                        * //
 // ************************************************************************** //
 
+@use "sass:map";
 
 /// Generate a gradient background
 /// 
@@ -93,7 +94,7 @@
   
     @if map-has-key($conversion-map, $value) 
     {
-        @return map-get($conversion-map, $value);
+        @return map.get($conversion-map, $value);
     }
   
     // @return 90deg - $value;

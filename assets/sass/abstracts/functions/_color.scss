@@ -7,7 +7,31 @@
 // *                                                                        * //
 // ************************************************************************** //
 
+@use "sass:color";
+@use "sass:string";
 @use './utils';
+
+
+@function tint($color, $percentage) {
+  @return color.mix(white, $color, $percentage * 1%);
+}
+
+@function shade($color, $percentage) {
+  @return color.mix(black, $color, $percentage * 1%);
+}
+
+@function rgb-to-hex($color) {
+  $r: color.channel($color, "red", $space: rgb);
+  $g: color.channel($color, "green", $space: rgb);
+  $b: color.channel($color, "blue", $space: rgb);
+
+  @return "#" + string.slice("00#{$r}", -2) + string.slice("00#{$g}", -2) + string.slice("00#{$b}", -2);
+}
+
+
+
+
+
 
 /// Slightly lighten a color
 /// =============================================
@@ -18,10 +42,10 @@
 /// @param {Number} $percentagePercentage level of tint
 /// @return {Color}The new tinted color
 /// 
-@function tint($color, $percentage) 
-{
-  @return mix(white, $color, $percentage);
-}
+// @function tint($color, $percentage) 
+// {
+//   @return color.mix(white, $color, $percentage);
+// }
 
 
 /// Slightly darken a color
@@ -33,10 +57,10 @@
 /// @param {Number} $percentage Percentage level of shade
 /// @return {Color}The new shaded color
 /// 
-@function shade($color, $percentage) 
-{
-  @return mix(black, $color, $percentage);
-}
+// @function shade($color, $percentage) 
+// {
+//   @return color.mix(black, $color, $percentage);
+// }
 
 @function contrastText($color) {
   $result: invert($color);

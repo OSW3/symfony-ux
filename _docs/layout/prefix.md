@@ -8,7 +8,6 @@ The default prefix is `ux`.
 The prefix will be applied to components such as `ux-component`.  
 
 ```yaml 
-# config/packages/symfony_ux.yaml
 symfony_ux:
     prefix: "ux"
 ```
@@ -18,7 +17,6 @@ symfony_ux:
 The prefix can be customized from the `symfony_ux.yaml`configuration file only.
 
 ```yaml 
-# config/packages/symfony_ux.yaml
 symfony_ux:
     prefix: "my-custom-prefix"
 ```

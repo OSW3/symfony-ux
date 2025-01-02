@@ -3,7 +3,7 @@
 // *    Components: Alert
 // *
 // ************************************************************************** //
-
+@use "sass:map";
 @use './../variables/prefix';
 @use './../abstracts/mixins/var';
 @use './../abstracts/mixins/banner';
@@ -34,7 +34,7 @@ $_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 // * ------------------------------------------------------------------------ //
 
 $alert--margin-y                                : $spacer !default;
-$alert--border-radius                           : map-get($radius, 'small') !default;
+$alert--border-radius                           : map.get($radius, 'small') !default;
 
 
 // * Theme variables

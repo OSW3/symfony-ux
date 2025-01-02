@@ -3,6 +3,7 @@
 // *    Components: Brand
 // *
 // ************************************************************************** //
+@use "sass:map";
 
 @use 'sass:meta';
 @use './../generated';
@@ -124,7 +125,7 @@ $brand--text-color--hover                       : colors.$black;
         color: inherit;
         display: table;
         text-decoration: none;
-        transition: color map-get(transitions.$delays, normal);
+        transition: color map.get(transitions.$delays, normal);
 
         &:hover {
             @include var.set('color', 'brand--text-color--hover', $brand--text-color--hover);
@@ -164,16 +165,16 @@ $brand--text-color--hover                       : colors.$black;
 
     @each $size, $properties in $sizes {
         &-#{$size} {
-            font-size: map-get($properties, 'font-size');
-            font-weight: map-get($properties, 'font-weight');
+            font-size: map.get($properties, 'font-size');
+            font-weight: map.get($properties, 'font-weight');
             
             .#{$_CLASSNAME}-tagline {
-                font-size: map-get($properties, 'tagline-size');
-                font-weight: map-get($properties, 'font-weight');
-                margin-top: map-get($properties, 'tagline-offset');
+                font-size: map.get($properties, 'tagline-size');
+                font-weight: map.get($properties, 'font-weight');
+                margin-top: map.get($properties, 'tagline-offset');
             }
             .#{$_CLASSNAME}-logo {
-                max-height: map-get($properties, 'img-height');
+                max-height: map.get($properties, 'img-height');
             }
         }
     }

@@ -1,14 +1,4 @@
-# Symfony UX Components
-
-## Documentation
-
-```
-cd bundle
-docsify serve docs
-```
-
-
-
+# Symfony UX
 
 Add many UX Components to your app.
 

@@ -186,7 +186,7 @@ If your application has multiple themes, you need to set the component's theme p
 
 ```scss
 // theme/might/components/accordion.scss
-$properties: map-merge($properties, (
+$properties: map.merge($properties, (
     accordion--item--border-color                 : #adb5bd,
     accordion--item--header--text-color           : #495057,
     accordion--item--header--background-color     : #e9ecef,

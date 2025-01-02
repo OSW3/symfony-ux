@@ -3,6 +3,7 @@
 // *    Components: Button
 // *
 // ************************************************************************** //
+@use "sass:map";
 
 // TODO: Revoir le CSS de l'état "disabled" du bouton
 
@@ -71,9 +72,9 @@ $_CLASSNAME: '#{prefix.$prefix}#{$_COMPONENT}';
 
     @each $key, $value in $ui-colors {
 
-        $base-color: map-get($ui-colors, $key);
+        $base-color: map.get($ui-colors, $key);
         $contrast  : color.contrastText($base-color);
-        $text-color: map-get($colors, #{$contrast});
+        $text-color: map.get($colors, #{$contrast});
 
         &-#{$key} {
             --#{$_CLASSNAME}--text: #{$text-color};

@@ -3,6 +3,7 @@
 // *    Components: Announcement
 // *
 // ************************************************************************** //
+@use "sass:map";
 
 @use './../variables/colors';
 @use './../variables/prefix';
@@ -90,7 +91,7 @@ $announcement--bg-color--hover                  : colors.$gray-600 !default;
 
     @include flex.centered;
     @include sizes.set(null, $announcement--height);
-    @include transition.set((color, background-color), map-get(transitions.$delays, $announcement--transition));
+    @include transition.set((color, background-color), map.get(transitions.$delays, $announcement--transition));
 
     & a {
         color: var(--#{prefix.$prefix}#{$_COMPONENT}--#{prefix.$TEXT_COLOR});

@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/colors';
 @use './../variables/prefix';
 @use './../variables/radius';
@@ -44,7 +45,7 @@ $form-widget--space: $spacer * 2 !default;
 $form-widget--required-symbol: '*' !default;
 
 $form-widget--control--border-width: 1px !default;
-$form-widget--control--radius: map-get($radius, 'small') !default;
+$form-widget--control--radius: map.get($radius, 'small') !default;
 $form-widget--control--padding-x: .75rem !default;
 $form-widget--control--padding-y: .375rem !default;
 

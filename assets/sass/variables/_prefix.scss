@@ -18,7 +18,7 @@ $prefix: if(meta.global-variable-exists('prefix', $module: generated), generated
 /// Add prefix separator
 /// ==============================================
 
-@if type-of($prefix) == 'string' and $prefix != '' {
+@if meta.type-of($prefix) == 'string' and $prefix != '' {
     $prefix: '#{$prefix}-';
 }
 

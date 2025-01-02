@@ -67,7 +67,7 @@ If your application has multiple themes, you need to set the component's theme p
 Learn more about [creating a theme](./../layout/themes.md).
 
 ```scss
-$properties: map-merge($properties, (
+$properties: map.merge($properties, (
     link--text-color: #0d6efd,
     link--text-color--hover: #0d6efd,
     link--text-color--active: #0d6efd,

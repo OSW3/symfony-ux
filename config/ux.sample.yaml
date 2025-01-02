@@ -1,7 +1,122 @@
 # !!! Important
-# !!! Don't forget to run the xxx command for the configuration changes to take effect.
+# !!! ---------
+# !!!
+# !!! Don't forget to run 'php bin/console ux:build' for the configuration 
+# !!! changes to take effect.
+# !!!
 ux:
 
     ## Components Prefix
     ## --
     prefix: ux
+
+
+    var_default: true
+    layout:
+        breakpoints:
+            base: { phone: { name: phone, breakpoint: 576, container: 540 }, tablet: { name: tablet, breakpoint: 768, container: 720 }, laptop: { name: laptop, breakpoint: 992, container: 960 }, desktop: { name: desktop, breakpoint: 1200, container: 1140 }, wide: { name: wide, breakpoint: 1400, container: 1440 }, ultra: { name: ultra, breakpoint: 1600, container: 1520 } }
+            additional: {  }
+            useless: {  }
+        colors:
+            defaults: { blue: '#0d6efd', indigo: '#6610f2', purple: '#6f42c1', pink: '#d63384', red: '#dc3545', orange: '#fd7e14', yellow: '#ffc107', green: '#198754', teal: '#20c997', cyan: '#0dcaf0', black: '#111111', white: '#ffffff', gray_100: '#f8f9fa', gray_200: '#e9ecef', gray_300: '#dee2e6', gray_400: '#ced4da', gray_500: '#adb5bd', gray_600: '#6c757d', gray_700: '#495057', gray_800: '#343a40', gray_900: '#212529' }
+            additional: {  }
+            shades: {  }
+            tints: {  }
+            useless: {  }
+        ui_colors:
+            defaults: { success: success, danger: danger, warning: warning, info: info, primary: primary, secondary: secondary, light: light, dark: dark, muted: muted }
+            additional: {  }
+            useless: {  }
+        grid_divisions: 12
+        spacer:
+            base: 1
+            spacer_1: 0.25
+            spacer_2: 0.5
+            spacer_3: 1
+            spacer_4: 1.5
+            spacer_5: 2
+            spacer_6: 3
+        default_theme: light
+        transitions:
+            base: 1
+            slow: 0.8
+            normal: 0.3
+            fast: 0.1
+    components:
+        accordions:
+            multiple: false
+            header: { tag: h2 }
+            content: { max_height: null }
+        alerts:
+            dismissible: true
+            delay: 0
+        analytics:
+            clicky: { tracking_id: null }
+            google: { tracking_id: null }
+            go_squared: { tracking_id: null }
+            heap: { tracking_id: null }
+            matomo: { tracking_url: null, tracking_id: null }
+            piwik: { tracking_url: null, tracking_id: null }
+            plausible: { tracking_domain: null }
+            woopra: { tracking_domain: null }
+        announcement:
+            animated: always
+            animation: ticker
+            speed: 500
+        brand:
+            name: null
+            tagline: null
+            size: medium
+            logo: {  }
+            url: null
+            route: null
+        copyright:
+            company: null
+            since: '2025'
+            symbol: '&copy;'
+            dates_separator: '-'
+            separator: ' • '
+        links:
+            target: _self
+        offcanvas:
+            placement: left
+            animation: slide
+            speed: normal
+            backdrop: true
+            is_showed: false
+        rotators:
+            delay: 3000
+            loop: true
+            pause_hover: true
+        scroll_to_top:
+            shape: square
+            position: bottom-right
+            transition: natural
+            top_at: 0
+            toggle_at: 200
+            symbol: arrow-up
+            title: 'Go to top'
+        search:
+            type: basic
+            shortcut: true
+            method: get
+            param: q
+            placeholder: 'Search for something'
+            autocomplete: true
+            label: Search
+        search_box:
+            type: basic
+            shortcut: K
+            voice: true
+            history: { enable: true, key: sb-history, clearable: true, length: 8, order: { type: date, direction: DESC } }
+            favorites: { enable: true, key: sb-favorites }
+            suggestions: { enable: true, route: null, url: null, format: json }
+            field: { symbol: { enable: true, type: webfont, icon: search }, placeholder: 'Search for something', submit: { symbol: { enable: true, type: webfont, icon: search }, label: { text: Search, toggle_at: null } } }
+            request: { method: get, param: query, route: null, url: null }
+            advanced: { enable: false, template: null }
+        tickers:
+            speed: 15
+            delay: 0
+            direction: rtl
+            loop: true
+            pause_hover: true

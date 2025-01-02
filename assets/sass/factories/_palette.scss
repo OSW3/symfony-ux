@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/palette';
 @use './../abstracts/mixins/banner';
 @use './../abstracts/functions/color';
@@ -27,8 +28,8 @@ $ui-colors: palette.$ui-colors;
         --#{$ui-colors-name}--background: #{color.tint($value, 80%)};
         --#{$ui-colors-name}--border: #{color.tint($value, 60%)};
 
-        // $shades: map-get($ui-colors-shades, $ui-colors-name);
-        // $tints: map-get($ui-colors-tints, $ui-colors-name);
+        // $shades: map.get($ui-colors-shades, $ui-colors-name);
+        // $tints: map.get($ui-colors-tints, $ui-colors-name);
 
         // @if $shades {
         //     @for $i from 1 through length($shades) {

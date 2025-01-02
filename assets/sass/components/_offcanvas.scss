@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use 'sass:meta';
 @use './../generated';
 @use './../variables/colors';
@@ -81,7 +82,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
     justify-content: start;
 
     @include position.fixed(0,0,0,0);
-    @include transition.set((opacity), map-get(transitions.$delays, normal));
+    @include transition.set((opacity), map.get(transitions.$delays, normal));
 
     &:not(&-no-backdrop) {
         background-color: #{rgba($overlay-color, $overlay-opacity)};
@@ -94,7 +95,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
         @include flex.column;
         @include position.fixed(0, null, 0, null);
         @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
-        @include transition.set((opacity, left, right, box-shadow), map-get(transitions.$delays, normal));
+        @include transition.set((opacity, left, right, box-shadow), map.get(transitions.$delays, normal));
     }
 
     &-left {
@@ -124,12 +125,12 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
     &-inner {
         display: block;
         width: 100%;
-        padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
+        padding: map.get($_SPACERS, 2) map.get($_SPACERS, 3);
     }
 
     &-header, &-body, &-footer {
         z-index: 1;
-        padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
+        padding: map.get($_SPACERS, 2) map.get($_SPACERS, 3);
     }
     &-header {
         display: flex;
@@ -152,7 +153,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 
     & .#{prefix.$prefix}button-close {
         z-index: 2;
-        // @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
+        // @include position.absolute(map.get($_SPACERS, 2), map.get($_SPACERS, 2), null, null);
         @include sizes.set(6px,6px);
     }
 
@@ -169,7 +170,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 //     @include flex.column;
 //     @include position.fixed(0, null, 0, null);
 //     @include var.set('background-color', 'offcanvas--container--background-color', $offcanvas--container--background-color);
-//     @include transition.set((opacity, left, right, box-shadow), map-get(transitions.$delays, normal));
+//     @include transition.set((opacity, left, right, box-shadow), map.get(transitions.$delays, normal));
 
 //     opacity: 0;
 //     width: $offcanvas--width;
@@ -193,7 +194,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 //     &-inner {
 //         display: block;
 //         width: 100%;
-//         padding: map-get($_SPACERS, 2) map-get($_SPACERS, 3);
+//         padding: map.get($_SPACERS, 2) map.get($_SPACERS, 3);
 //     }
 //     &-header {
 //         z-index: 1;
@@ -212,7 +213,7 @@ $offcanvas--footer--background-color: colors.$gray-200 !default;
 
 //     & .#{prefix.$prefix}button-close {
 //         z-index: 2;
-//         @include position.absolute(map-get($_SPACERS, 2), map-get($_SPACERS, 2), null, null);
+//         @include position.absolute(map.get($_SPACERS, 2), map.get($_SPACERS, 2), null, null);
 //         @include sizes.set(6px,6px);
 //     }
 

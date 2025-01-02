@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use './../variables/prefix';
 @use './../variables/fonts';
 @use './../abstracts/mixins/banner';
@@ -15,9 +16,9 @@
 /// =============================================
 /// Add @import url( ... )
 @each $_name, $_data in fonts.$fonts {
-    $_family: map-get($_data, 'family');
-    $_url   : map-get($_data, 'url');
-    $_source: map-get($_data, 'source');
+    $_family: map.get($_data, 'family');
+    $_url   : map.get($_data, 'url');
+    $_source: map.get($_data, 'source');
 
     @if not ($_url == null) {
         @import url(#{$_url});
@@ -39,8 +40,8 @@
 /// =============================================
 :root {
     @each $_name, $_data in fonts.$fonts {
-        $_family: map-get($_data, 'family');
-        --#{prefix.$prefix}font-#{$_name}: #{map-get($_data, 'family')};
-        --font-#{$_name}: #{map-get($_data, 'family')};
+        $_family: map.get($_data, 'family');
+        --#{prefix.$prefix}font-#{$_name}: #{map.get($_data, 'family')};
+        --font-#{$_name}: #{map.get($_data, 'family')};
     }
 }

@@ -1,0 +1,79 @@
+// * ------------ @osw3/symfony-ux/assets/sass/factories/colors.scss -----------
+// *
+// *    Colors variable builder
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:color";
+@use "sass:list";
+@use "sass:map";
+@use "sass:meta";
+@use './../storages/colors' as store;
+@use './../abstracts/functions/collection' as f-collection;
+@use './../abstracts/functions/color' as f-color;
+
+
+// * Retrieve stored data
+// * ---------------------------------------------
+
+$colors : store.$colors;
+$useless: store.$useless;
+
+
+// * Unset useless colors
+// * ---------------------------------------------
+
+@if f-collection.notEmpty($useless) {
+    @each $key, $value in $colors {
+        @if f-collection.keyExists($useless, $key) {
+            $colors: f-collection.unset($colors, $key);
+        }
+    }
+}
+
+
+// * Build CSS
+// * ---------------------------------------------
+
+:root {
+    @each $key, $value in $colors {
+
+        --#{$key}: #{$value};
+
+
+        $tints: if(
+            meta.type-of(store.$tints) == 'map' and map.has_key(store.$tints, $key),
+            map.get(store.$tints, $key),
+            ()
+        );
+        @if meta.type-of($tints) == 'number' {
+            $tints: ($tints,); 
+        }
+        @if $tints and meta.type-of($tints) == 'list' and list.length($tints) > 0 {
+            @for $i from 1 through list.length($tints) {
+                $tint_percent: list.nth($tints, $i);
+                $tint_color: f-color.tint($value, $tint_percent);
+                $tint_color_hex: f-color.rgb-to-hex($tint_color);
+                --#{$key}--tint-#{$tint_percent}: #{$tint_color_hex};
+            }
+        }
+
+        $shades: if(
+            meta.type-of(store.$shades) == 'map' and map.has_key(store.$shades, $key),
+            map.get(store.$shades, $key),
+            ()
+        );
+        @if meta.type-of($shades) == 'number' {
+            $shades: ($shades,); 
+        }
+        @if $shades and meta.type-of($shades) == 'list' and list.length($shades) > 0 {
+            @for $i from 1 through list.length($shades) {
+                $shade_percent: list.nth($shades, $i);
+                $shade_color: f-color.shade($value, $shade_percent * 0.01);
+                $shade_color_hex: f-color.rgb-to-hex($shade_color);
+                --#{$key}--shade-#{$shade_percent}: #{$shade_color_hex};
+            }
+        }
+
+    }
+}

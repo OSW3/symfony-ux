@@ -4,6 +4,7 @@
 // *
 // ************************************************************************** //
 
+@use "sass:map";
 @use "sass:math";
 @use './../variables/prefix';
 @use './../variables/grid';
@@ -133,7 +134,7 @@ $grid-divisions: grid.$grid-divisions;
     // Responsive columns
     @each $size, $breakpoint in $breakpoints {
         @if $breakpoint > 0 {
-            @media (min-width: map-get($breakpoints, $size)) {
+            @media (min-width: map.get($breakpoints, $size)) {
                 @for $i from 1 through $grid-divisions {
                     &-#{$size}-#{$i} {
                         @include make-column($i);
@@ -162,7 +163,7 @@ $grid-divisions: grid.$grid-divisions;
     // Responsive offsets
     @each $size, $breakpoint in $breakpoints {
         @if $breakpoint > 0 {
-            @media (min-width: map-get($breakpoints, $size)) {
+            @media (min-width: map.get($breakpoints, $size)) {
                 @for $i from 1 through $grid-divisions {
                     &-#{$size}-#{$i} {
                         @include make-offset($i);
