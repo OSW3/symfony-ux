@@ -1,6 +1,6 @@
-// * ----------- @osw3/symfony-ux/assets/sass/factories/palette.scss -----------
+// * ------------ @osw3/symfony-ux/assets/sass/builders/palette.scss -----------
 // *
-// *    Palette variable builder
+// *    Builder for CSS Palette variables
 // *
 // * ---------------------------------------------------------------------------
 
@@ -31,13 +31,14 @@ $useless: store.$useless;
 // * Build CSS
 // * ---------------------------------------------
 
-:root {
-    @each $key, $value in $palette {
+// todo: really need to create palette CSS Variable ? or just export SCSS variable to components ?
+// :root {
+//     @each $key, $value in $palette {
 
-        --#{$key}: #{$value};
+//         --#{$key}: #{$value};
 
-        // --#{$key}--text: #{f-color.shade($value, 60%)};
-        // --#{$key}--background: #{f-color.tint($value, 80%)};
-        // --#{$key}--border: #{f-color.tint($value, 60%)};
-    }
-}
+//         // --#{$key}--text: #{f-color.shade($value, 60%)};
+//         // --#{$key}--background: #{f-color.tint($value, 80%)};
+//         // --#{$key}--border: #{f-color.tint($value, 60%)};
+//     }
+// }

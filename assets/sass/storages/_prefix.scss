@@ -1,0 +1,20 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/prefix.scss ------------
+// *
+// *    Prefix Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:meta';
+@use './../variables/prefix' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+// * Default prefix storage
+$prefix: '' !default;
+
+// * Add the prefix separator
+@if meta.type-of(default.$prefix) == 'string' and default.$prefix != '' {
+    $prefix: '#{default.$prefix}-';
+}

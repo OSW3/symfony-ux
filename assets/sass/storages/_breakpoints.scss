@@ -1,0 +1,86 @@
+// * ---------- @osw3/symfony-ux/assets/sass/storages/breakpoints.scss ---------
+// *
+// *    Breakpoints Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+@use './../variables/breakpoints' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+// * Breakpoints collection
+$breakpoints: (
+    default.$breakpoint-name-phone  : default.$breakpoint-phone,
+    default.$breakpoint-name-tablet : default.$breakpoint-tablet,
+    default.$breakpoint-name-laptop : default.$breakpoint-laptop,
+    default.$breakpoint-name-desktop: default.$breakpoint-desktop,
+    default.$breakpoint-name-wide   : default.$breakpoint-wide,
+    default.$breakpoint-name-ultra  : default.$breakpoint-ultra,
+) !default;
+
+
+// * Containers width collection
+$containers: (
+    default.$breakpoint-name-phone  : default.$container-phone,
+    default.$breakpoint-name-tablet : default.$container-tablet,
+    default.$breakpoint-name-laptop : default.$container-laptop,
+    default.$breakpoint-name-desktop: default.$container-desktop,
+    default.$breakpoint-name-wide   : default.$container-wide,
+    default.$breakpoint-name-ultra  : default.$container-ultra,
+) !default;
+
+// * Useless breakpoints collection
+$useless: () !default;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin add($new-breakpoints) {
+    @each $key, $value in $new-breakpoints {
+        $additional-breakpoint-value: map.get($value, 'breakpoint');
+        $additional-container-value: map.get($value, 'container');
+
+        @if $additional-breakpoint-value {
+            $breakpoints: map.merge($breakpoints, ($key: $additional-breakpoint-value)) !global;
+        }
+        @if $additional-container-value {
+            $containers: map.merge($containers, ($key: $additional-container-value)) !global;
+        }
+    }
+}
+
+@mixin replace-names($replacements) {
+    $new-breakpoints: ();
+    $new-containers: ();
+  
+    @each $key, $value in $breakpoints {
+        $new-key: if(map.has-key($replacements, $key), map.get($replacements, $key), $key);
+        $new-breakpoints: map.merge($new-breakpoints, ($new-key: $value));
+    }
+  
+    @each $key, $value in $containers {
+        $new-key: if(map.has-key($replacements, $key), map.get($replacements, $key), $key);
+        $new-containers: map.merge($new-containers, ($new-key: $value));
+    }
+  
+    $breakpoints: $new-breakpoints !global;
+    $containers: $new-containers !global;
+}
+
+@mixin replace-breakpoints-values($replacements) {
+
+}
+
+@mixin replace-containers-values($replacements) {
+
+}
+
+@mixin remove($useless-breakpoints) {
+    $useless: list.join($useless, $useless-breakpoints, 'comma') !global;
+}
