@@ -1,107 +1,23 @@
-// ************************************************************************** //
+// * ------------ @osw3/symfony-ux/assets/sass/storages/palette.scss -----------
 // *
 // *    palette definition.
 // *
-// ************************************************************************** //
+// * ---------------------------------------------------------------------------
 
 @use 'sass:map';
 @use 'sass:meta';
 @use './../generated';
-@use './../variables/colors';
-@use './../abstracts/functions/color';
-@use './../abstracts/functions/collection';
 
 
-// * =============================================
-// *
-// *    Base UI Colors
-// *
-// * =============================================
+// * UI Colors defaults names
+// * ---------------------------------------------
 
-/// UI Colors names
-/// =============================================
-
-$ui-color-name-success  : if(meta.global-variable-exists('palette-name-success', $module: generated), generated.$ui-color-name-success, 'success') !default;
-$ui-color-name-danger   : if(meta.global-variable-exists('palette-name-danger', $module: generated), generated.$ui-color-name-danger, 'danger') !default;
-$ui-color-name-warning  : if(meta.global-variable-exists('palette-name-warning', $module: generated), generated.$ui-color-name-warning, 'warning') !default;
-$ui-color-name-info     : if(meta.global-variable-exists('palette-name-info', $module: generated), generated.$ui-color-name-info, 'info') !default;
-$ui-color-name-primary  : if(meta.global-variable-exists('palette-name-primary', $module: generated), generated.$ui-color-name-primary, 'primary') !default;
-$ui-color-name-secondary: if(meta.global-variable-exists('palette-name-secondary', $module: generated), generated.$ui-color-name-secondary, 'secondary') !default;
-$ui-color-name-light    : if(meta.global-variable-exists('palette-name-light', $module: generated), generated.$ui-color-name-light, 'light') !default;
-$ui-color-name-dark     : if(meta.global-variable-exists('palette-name-dark', $module: generated), generated.$ui-color-name-dark, 'dark') !default;
-$ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted', $module: generated), generated.$ui-color-name-muted, 'muted') !default;
-
-
-/// UI Colors collection
-/// =============================================
-/// Default names and colors assignment
-
-$ui-colors: (
-    $ui-color-name-success  : colors.$green,
-    $ui-color-name-danger   : colors.$red,
-    $ui-color-name-warning  : colors.$orange,
-    $ui-color-name-info     : colors.$cyan,
-    $ui-color-name-primary  : colors.$blue,
-    $ui-color-name-secondary: colors.$gray-600,
-    $ui-color-name-light    : colors.$white,
-    $ui-color-name-dark     : colors.$black,
-    $ui-color-name-muted    : colors.$gray-500,
-);
-
-
-
-// * =============================================
-// *
-// *    UI Colors variations
-// *
-// * =============================================
-
-$ui-colors-shades: () !default;
-$ui-colors-tints: () !default;
-
-
-
-// * =============================================
-// *
-// *    Additional UI Colors
-// *
-// * =============================================
-
-/// Add customs colors to the palette
-/// -----
-/// $additional-ui-colors: ( 'my-color': purple );
-$generated-additional-ui-colors: if(meta.global-variable-exists('generated-additional-ui-colors', $module: generated), generated.$generated-additional-ui-colors, ()) !default;
-$additional-ui-colors          : () !default;
-$additional-ui-colors          : map.merge(
-    $generated-additional-ui-colors, 
-    $additional-ui-colors
-);
-
-@if collection.notEmpty($additional-ui-colors) {
-    @each $key, $value in $additional-ui-colors {
-        $ui-colors: map.merge($ui-colors, ($key: $value));
-    }
-}
-
-
-
-// * =============================================
-// *
-// *    Useless UI Colors
-// *
-// * =============================================
-
-/// Remove from palette
-/// -----
-/// $useless-ui-colors: (success);
-$generated-useless-palette: if(meta.global-variable-exists('generated-useless-palette', $module: generated), generated.$generated-useless-palette, ()) !default;
-$useless-ui-colors          : () !default;
-$useless-ui-colors          : join($generated-useless-palette, $useless-ui-colors, 'comma');
-
-@if collection.notEmpty($useless-ui-colors) {
-    @each $key, $value in $ui-colors {
-        @if collection.keyExists($useless-ui-colors, $key) {
-            $ui-colors: collection.unset($ui-colors, $key);
-        }
-    }
-}
+$ui-color-name-success  : if(meta.global-variable-exists('palette-name-success'     , $module: generated), generated.$ui-color-name-success     , 'success') !default;
+$ui-color-name-danger   : if(meta.global-variable-exists('palette-name-danger'      , $module: generated), generated.$ui-color-name-danger      , 'danger') !default;
+$ui-color-name-warning  : if(meta.global-variable-exists('palette-name-warning'     , $module: generated), generated.$ui-color-name-warning     , 'warning') !default;
+$ui-color-name-info     : if(meta.global-variable-exists('palette-name-info'        , $module: generated), generated.$ui-color-name-info        , 'info') !default;
+$ui-color-name-primary  : if(meta.global-variable-exists('palette-name-primary'     , $module: generated), generated.$ui-color-name-primary     , 'primary') !default;
+$ui-color-name-secondary: if(meta.global-variable-exists('palette-name-secondary'   , $module: generated), generated.$ui-color-name-secondary   , 'secondary') !default;
+$ui-color-name-light    : if(meta.global-variable-exists('palette-name-light'       , $module: generated), generated.$ui-color-name-light       , 'light') !default;
+$ui-color-name-dark     : if(meta.global-variable-exists('palette-name-dark'        , $module: generated), generated.$ui-color-name-dark        , 'dark') !default;
+$ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted'       , $module: generated), generated.$ui-color-name-muted       , 'muted') !default;

@@ -1,0 +1,43 @@
+// * ----------- @osw3/symfony-ux/assets/sass/factories/palette.scss -----------
+// *
+// *    Palette variable builder
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/palette' as store;
+@use './../abstracts/functions/color' as f-color;
+@use './../abstracts/functions/collection' as f-collection;
+
+
+// * Retrieve stored data
+// * ---------------------------------------------
+
+$palette: store.$palette;
+$useless: store.$useless;
+
+
+// * Unset useless colors
+// * ---------------------------------------------
+
+@if f-collection.notEmpty($useless) {
+    @each $key, $value in $palette {
+        @if f-collection.keyExists($useless, $key) {
+            $palette: f-collection.unset($palette, $key);
+        }
+    }
+}
+
+
+// * Build CSS
+// * ---------------------------------------------
+
+:root {
+    @each $key, $value in $palette {
+
+        --#{$key}: #{$value};
+
+        // --#{$key}--text: #{f-color.shade($value, 60%)};
+        // --#{$key}--background: #{f-color.tint($value, 80%)};
+        // --#{$key}--border: #{f-color.tint($value, 60%)};
+    }
+}

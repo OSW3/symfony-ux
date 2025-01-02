@@ -4,13 +4,13 @@
 // *
 // * ---------------------------------------------------------------------------
 
-@use "sass:color";
-@use "sass:list";
 @use "sass:map";
+@use "sass:list";
 @use "sass:meta";
+@use "sass:color";
 @use './../storages/colors' as store;
-@use './../abstracts/functions/collection' as f-collection;
 @use './../abstracts/functions/color' as f-color;
+@use './../abstracts/functions/collection' as f-collection;
 
 
 // * Retrieve stored data

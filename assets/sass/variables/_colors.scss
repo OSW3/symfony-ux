@@ -44,32 +44,3 @@ $yellow: if(meta.global-variable-exists('yellow'    , $module: generated), gener
 $green : if(meta.global-variable-exists('green'     , $module: generated), generated.$green     , #198754) !default;
 $teal  : if(meta.global-variable-exists('teal'      , $module: generated), generated.$teal      , #20c997) !default;
 $cyan  : if(meta.global-variable-exists('cyan'      , $module: generated), generated.$cyan      , #0dcaf0) !default;
-
-
-// * Defaults Colors collection
-// * ---------------------------------------------
-
-$colors: (
-    'black'   : $black,
-    'white'   : $white,
-    'gray-100': $gray-100,
-    'gray-200': $gray-200,
-    'gray-300': $gray-300,
-    'gray-400': $gray-400,
-    'gray-500': $gray-500,
-    'gray-600': $gray-600,
-    'gray-700': $gray-700,
-    'gray-800': $gray-800,
-    'gray-900': $gray-900,
-
-    'blue'    : $blue,
-    'indigo'  : $indigo,
-    'purple'  : $purple,
-    'pink'    : $pink,
-    'red'     : $red,
-    'orange'  : $orange,
-    'yellow'  : $yellow,
-    'green'   : $green,
-    'teal'    : $teal,
-    'cyan'    : $cyan,
-);
