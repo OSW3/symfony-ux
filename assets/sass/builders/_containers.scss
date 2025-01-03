@@ -10,8 +10,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../storages/breakpoints' as store;
-@use './../abstracts/functions/collection' as f-collection;
-
+@use './../functions/collection' as f-collection;
 @include banner.header('Containers');
 
 

@@ -4,9 +4,11 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use './../builders/banner';
 @use './../storages/palette' as store;
-@use './../abstracts/functions/color' as f-color;
-@use './../abstracts/functions/collection' as f-collection;
+@use './../functions/color' as f-color;
+@use './../functions/collection' as f-collection;
+@include banner.header('Palette');
 
 
 // * Retrieve stored data
@@ -33,6 +35,7 @@ $useless: store.$useless;
 
 // todo: really need to create palette CSS Variable ? or just export SCSS variable to components ?
 // :root {
+    // /* */
 //     @each $key, $value in $palette {
 
 //         --#{$key}: #{$value};

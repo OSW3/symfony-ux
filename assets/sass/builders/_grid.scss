@@ -1,0 +1,186 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builders/grid.scss -------------
+// *
+// *    Builder for CSS Grid
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:math";
+@use "sass:map";
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../storages/breakpoints' as stored-breakpoints;
+@use './../storages/spaces' as stored-spaces;
+@use './../storages/grid' as store;
+@use './../mixins/clear';
+@use './../mixins/flex';
+@use './../mixins/size';
+@use './../mixins/spacing';
+@include banner.header('Grid & Columns');
+
+
+// * Retrieve stored data
+// * ---------------------------------------------
+
+$divisions: store.$divisions;
+$breakpoints: stored-breakpoints.$breakpoints;
+
+
+// * Grid mixins
+// * ---------------------------------------------
+
+@mixin make-column($columns) 
+{
+    @include flex.grow(0);
+    @include flex.shrink(0);
+    @include flex.basis(math.percentage(math.div($columns, $divisions)));
+    // flex: 0 0 math.percentage(math.div($columns, $divisions));
+    max-width: math.percentage(math.div($columns, $divisions));
+}
+
+@mixin make-break($columns) 
+{
+    // flex: 0 0 percentage(math.div($columns, $grid-divisions));
+    margin-right: 100% - (math.percentage(math.div($columns, $divisions)));
+}
+
+@mixin make-offset($columns) 
+{
+    margin-left: math.percentage(math.div($columns, $divisions));
+}
+
+
+// * Build CSS
+// * ---------------------------------------------
+
+// * Generate the Grid
+// * --
+
+@include banner.section('The grid');
+.#{prefix.$prefix}grid {
+
+    @include flex.display;
+    @include flex.direction(row);
+    @include flex.wrap(wrap);
+    @include clear.both;
+
+    // Make grid direct children as wrapped
+    & > * {
+        @include flex.shrink(0);
+        @include size.width(100%, null, 100%);
+    }
+
+    // Grid alignment
+    @each $alignment in (center, start, end) {
+        &-#{$alignment} {
+            @include flex.justify-content($alignment, true);
+        }
+    }
+}
+
+
+// * Generate Gaps
+// * --
+
+@include banner.section('Grid gaps');
+.#{prefix.$prefix}gap- {
+    @each $key, $value in stored-spaces.$spaces {
+    
+        $margin: calc(-1 * $value);
+        $padding: $value;
+    
+        @if $key != 'auto' {
+            // Padding gap for the Grid
+            // .#{prefix.$prefix}grid.#{prefix.$prefix}gap-#{$i}
+            // {
+            //     @include spaces.margin(null, $margin, null, $margin);
+            // }
+    
+            // (All) Padding gap for thr grid Columns
+            &#{$key} [class^="#{prefix.$prefix}column"]
+            {
+                @if $key == 0 {
+                    @include spacing.inner($padding !important, $padding !important, $padding !important, $padding !important);
+                } @else {
+                    @include spacing.inner($padding, $padding, $padding, $padding);
+                }
+            }
+
+            // (Left & right) Padding gap for thr grid Columns
+            &x-#{$key} [class^="#{prefix.$prefix}column"]{
+                @include spacing.outer-x($padding);
+            }
+
+            // (Top & Bottom) Padding gap for thr grid Columns
+            &y-#{$key} [class^="#{prefix.$prefix}column"]{
+                @include spacing.outer-y($padding);
+            }
+        }
+    }
+}
+
+
+// * Generate Columns
+// * --
+
+@include banner.section('The grid columns');
+.#{prefix.$prefix}column {
+    @include flex.grow(1);
+    @include flex.shrink(0);
+    @include flex.basis(0%);
+
+    // .column-break
+    &-break {
+        @include flex.basis(100%);
+        @include size.height(0);
+        @include spacing.inner(0, 0, 0, 0, true);
+        @include spacing.outer(0, 0, 0, 0, true);
+    }
+
+    // column-X
+    @for $i from 1 through $divisions {
+        &-#{$i} {
+            @include make-column($i);
+        }
+    }
+
+    // Responsive columns
+    @each $key, $value in $breakpoints {
+        @if $value > 0 {
+            @media (min-width: map.get($breakpoints, $key)) {
+                @for $i from 1 through $divisions {
+                    &-#{$key}-#{$i} {
+                        @include make-column($i);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// * Generate Offset
+// * --
+
+@include banner.section('The grid offsets');
+.#{prefix.$prefix}offset {
+
+    // .offset-x
+    @for $i from 1 through $divisions {
+        &-#{$i} {
+            @include make-offset($i);
+        }
+    }
+
+    // Responsive offsets
+    @each $key, $values in $breakpoints {
+        @if $values > 0 {
+            @media (min-width: map.get($breakpoints, $key)) {
+                @for $i from 1 through $divisions {
+                    &-#{$key}-#{$i} {
+                        @include make-offset($i);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -8,9 +8,11 @@
 @use "sass:list";
 @use "sass:meta";
 @use "sass:color";
+@use './../builders/banner';
 @use './../storages/colors' as store;
-@use './../abstracts/functions/color' as f-color;
-@use './../abstracts/functions/collection' as f-collection;
+@use './../functions/color' as f-color;
+@use './../functions/collection' as f-collection;
+@include banner.header('Colors');
 
 
 // * Retrieve stored data

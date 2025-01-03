@@ -1,9 +1,0 @@
-
-@mixin both()
-{
-    &:after {
-        content: "";
-        display: table;
-        clear: both;
-    }
-}

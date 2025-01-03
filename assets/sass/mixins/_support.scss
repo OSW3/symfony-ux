@@ -1,0 +1,17 @@
+
+@mixin prefix($property, $value, $prefixes: (), $important: false) {
+  // Output with prefix
+  @each $prefix in $prefixes 
+  {
+    @if ($property == 'flex-shrink' and $prefix == 'ms') {
+      $prefix: #{'-' + $prefix + '-flex-negative'};
+    }
+    @else {
+      $prefix: #{'-' + $prefix + '-' + $property};
+    }
+    #{$prefix}: $value;
+  }
+
+  // Standard non-prefixed
+  #{$property}: $value #{if($important, '!important', '')};
+}

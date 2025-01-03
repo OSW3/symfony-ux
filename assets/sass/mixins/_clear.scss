@@ -1,0 +1,53 @@
+// clear.scss
+// =============================================================================
+// This file contains mixins for managing the "clear" behavior in CSS layouts.
+// These mixins are used to resolve issues with floated elements by resetting
+// the floating effect inside a parent element using the :after pseudo-class 
+// along with the "clear" property.
+//
+// Available Mixins:
+// - `clear($clear)` : A generic mixin to apply a value to the `clear` property.
+// - `both()` : Applies `clear: both` to clear both left and right floats.
+// - `left()` : Applies `clear: left` to clear left floats.
+// - `right()` : Applies `clear: right` to clear right floats.
+// - `none()` : Applies `clear: none` to avoid clearing floats.
+// - `clearfix()` : Applies `clear: both` for a simplified clearfix solution.
+//
+// Example usage:
+// @include both();  // Uses clear: both
+// @include left();  // Uses clear: left
+// @include right(); // Uses clear: right
+// @include clearfix(); // Uses clear: both for floating elements in a parent
+//
+// This approach simplifies managing floats in complex layouts, ensuring that
+// floated elements are properly "cleared" after their use.
+// =============================================================================
+
+
+@mixin clear($clear: both) {
+    &:after {
+        content: "";
+        display: block;
+        clear: $clear;
+    }
+}
+
+@mixin both() {
+    @include clear(both);
+}
+
+@mixin left() {
+    @include clear(left);
+}
+
+@mixin right() {
+    @include clear(right);
+}
+
+@mixin none() {
+    @include clear(none);
+}
+
+@mixin clearfix() {
+    @include clear(both);
+}

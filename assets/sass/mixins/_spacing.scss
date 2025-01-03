@@ -1,0 +1,86 @@
+
+@mixin margin($top: null, $right: null, $bottom: null, $left: null, $important: false) 
+{
+  @include _coords('margin', $top, $right, $bottom, $left, $important);
+}
+@mixin margin-x($value: null, $important: false) 
+{
+  @include _coords-x('margin', $value, $important);
+}
+@mixin margin-y($value: null, $important: false) 
+{
+  @include _coords-y('margin', $value, $important);
+}
+
+@mixin outer($top: null, $right: null, $bottom: null, $left: null, $important: false) 
+{
+  @include margin($top, $right, $bottom, $left, $important);
+}
+@mixin outer-x($value: null, $important: false) 
+{
+  @include margin-x($value, $important);
+}
+@mixin outer-y($value: null, $important: false) 
+{
+  @include margin-y($value, $important);
+}
+
+
+@mixin padding($top: null, $right: null, $bottom: null, $left: null, $important: false) 
+{
+  @include _coords('padding', $top, $right, $bottom, $left, $important);
+}
+@mixin padding-x($value: null, $important: false) 
+{
+  @include _coords-x('padding', $value, $important);
+}
+@mixin padding-y($value: null, $important: false) 
+{
+  @include _coords-y('padding', $value, $important);
+}
+
+@mixin inner($top: null, $right: null, $bottom: null, $left: null, $important: false) 
+{
+  @include padding($top, $right, $bottom, $left, $important);
+}
+@mixin inner-x($value: null, $important: false) 
+{
+  @include padding-x($value, $important);
+}
+@mixin inner-y($value: null, $important: false) 
+{
+  @include padding-y($value, $important);
+}
+
+
+
+
+
+/// Position mixin's utilities
+/// =============================================
+/// 
+@mixin _coords($type, $top: null, $right: null, $bottom: null, $left: null, $important: false) 
+{
+  @if $right == $top and $bottom == $right and $left == $bottom and $top == $left {
+    #{$type}: $top  #{if($important, '!important', '')};
+  }
+  @else if $top == $bottom and $left == $right {
+    #{$type}: $top $left  #{if($important, '!important', '')};
+  }
+  @else {
+    @if ($top not null) {#{$type}-top : $top  #{if($important, '!important', '')};}
+    @if ($right not null) {#{$type}-right : $right  #{if($important, '!important', '')};}
+    @if ($bottom not null) {#{$type}-bottom : $bottom  #{if($important, '!important', '')};}
+    @if ($left not null) {#{$type}-left : $left  #{if($important, '!important', '')};}
+  }
+}
+@mixin _coords-x($type, $value: null, $important: false) 
+{
+  #{$type}-right : $value  #{if($important, '!important', '')};
+  #{$type}-left : $value  #{if($important, '!important', '')};
+}
+@mixin _coords-y($type, $value: null, $important: false) 
+{
+  #{$type}-top : $value  #{if($important, '!important', '')};
+  #{$type}-bottom : $value  #{if($important, '!important', '')};
+}

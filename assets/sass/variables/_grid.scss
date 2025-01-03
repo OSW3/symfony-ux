@@ -1,0 +1,16 @@
+// * ------------- @osw3/symfony-ux/assets/sass/variables/grid.scss ------------
+// *
+// *    Default grid definition.
+// *
+// *    - Default grid divisions
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:meta';
+@use './../generated';
+
+
+// * Default grid divisions
+// * ---------------------------------------------
+$divisions: if(meta.global-variable-exists('grid-divisions', $module: generated), generated.$grid-divisions, 12) !default;
+

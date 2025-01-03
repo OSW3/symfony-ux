@@ -1,0 +1,93 @@
+// flex.scss
+// =============================================================================
+// This file contains utility mixins for working with flexbox properties.
+// These mixins simplify the implementation of flexbox layouts by applying
+// standard flexbox behaviors using various flex properties.
+//
+// Available Mixins:
+// - `display()` : Applies flex display for modern browsers with prefixes.
+// - `direction($direction)` : Sets the flex-direction property (row, column, etc.)
+// - `wrap($wrap)` : Controls how the items wrap in the flex container.
+// - `justifyContent($alignment)` : Aligns items along the main axis (horizontal or vertical).
+// - `alignItems($alignment)` : Aligns items along the cross axis (perpendicular to the main axis).
+// - `alignSelf($alignment)` : Allows individual items to override their container's align-items.
+// - `flex($grow, $shrink, $basis)` : Sets the flex shorthand for flex-grow, flex-shrink, and flex-basis.
+//
+// Example usage:
+// @include display();
+// @include direction(row);
+// @include justifyContent(center);
+// @include alignItems(center);
+// @include flex(1, 0, auto);  // Flex-grow, flex-shrink, and flex-basis
+//
+// These utility mixins ensure that your flexbox layouts are easy to implement
+// and maintain, with minimal code repetition and maximum compatibility.
+// =============================================================================
+
+@use "sass:list";
+@use "./support";
+
+// Display Flex for all browsers
+@mixin display($important: false) {
+    display: -webkit-box;       // Old Safari, iOS 6.x
+    display: -ms-flexbox;       // IE10
+    display: -webkit-flex;      // Old Safari
+    display: flex  #{if($important, '!important', '')}; // Modern browsers
+}
+  
+// Set the flex direction (row, column, etc.)
+@mixin direction($direction: row, $important: false) {
+    $valid-values: column, column-reverse, row, row-reverse;
+
+    @if list.index($valid-values, $direction) {  
+        -webkit-box-orient: horizontal; // Pour les anciennes versions de Safari
+        -webkit-box-direction: normal; // Pour les anciennes versions de Safari
+        @include support.prefix('flex-direction', $direction, (webkit ms), $important);
+    } @else {
+        @error "'flex.direction()' invalid value. Expected values: column, column-reverse, row, row-reverse.";
+    }
+}
+
+// Set flex wrap behavior (nowrap, wrap, wrap-reverse)
+@mixin wrap($wrap: nowrap, $important: false) {
+    $valid-values: nowrap, wrap, wrap-reverse, inherit, initial, unset;
+
+    @if list.index($valid-values, $wrap) {
+        @include support.prefix('flex-wrap', $wrap, (webkit ms), $important);
+    } @else {
+        @error "'flex.wrap()' invalid value. Expected values: nowrap, wrap, wrap-reverse, inherit, initial, unset.";
+    }
+}
+
+
+// Justify content along the main axis (flex-start, flex-end, center, space-between, space-around)
+@mixin justify-content($alignment: flex-start, $important: false) {
+    justify-content: $alignment #{if($important, '!important', '')};
+}
+
+// // Align items along the cross axis (flex-start, flex-end, center, baseline, stretch)
+// @mixin alignItems($alignment: stretch) {
+//     align-items: $alignment;
+// }
+
+// // Align an individual item along the cross axis (flex-start, flex-end, center, baseline, stretch)
+// @mixin alignSelf($alignment: auto) {
+//     align-self: $alignment;
+// }
+
+// // Set the flex shorthand (flex-grow, flex-shrink, flex-basis)
+// @mixin flex($grow: 0, $shrink: 1, $basis: auto) {
+//     flex: $grow $shrink $basis;
+// }
+  
+
+@mixin grow($value: 1, $important: false) {
+    @include support.prefix('flex-grow', $value, (webkit, moz, ms), $important);
+}
+@mixin shrink($value: 1, $important: false) {
+    -ms-flex-negative: $value; // Ancien IE 10 (utilise -ms-flex-negative au lieu de flex-shrink)
+    @include support.prefix('flex-shrink', $value, (webkit), $important);
+}
+@mixin basis($value: 0, $important: false) {
+    @include support.prefix('flex-basis', $value, (webkit, moz, ms), $important);
+}

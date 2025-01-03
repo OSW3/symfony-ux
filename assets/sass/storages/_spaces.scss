@@ -1,0 +1,22 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/spaces.scss ------------
+// *
+// *    Spaces Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../variables/spaces' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$spaces: (
+    0: 0,
+    1: default.$spacer-base * default.$spacer-1,
+    2: default.$spacer-base * default.$spacer-2,
+    3: default.$spacer-base * default.$spacer-3,
+    4: default.$spacer-base * default.$spacer-4,
+    5: default.$spacer-base * default.$spacer-5,
+    6: default.$spacer-base * default.$spacer-6,
+    auto: auto,
+) !default;

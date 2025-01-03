@@ -1,0 +1,21 @@
+// * ------------- @osw3/symfony-ux/assets/sass/storages/grid.scss -------------
+// *
+// *    Grid Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../variables/grid' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$divisions: default.$divisions !default;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin divisions($value) {
+    $divisions: $value !global;
+}

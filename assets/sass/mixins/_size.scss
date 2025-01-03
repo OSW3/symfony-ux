@@ -1,0 +1,10 @@
+@mixin width($value, $min: null, $max: null) {
+    width: $value;
+    @if ($min) {min-width: $min;}
+    @if ($max) {max-width: $max;}
+}
+@mixin height($value, $min: null, $max: null) {
+    height: $value;
+    @if ($min) {min-height: $min;}
+    @if ($max) {max-height: $max;}
+}
