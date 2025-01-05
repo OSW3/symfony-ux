@@ -16,12 +16,29 @@
 @use './../mixins/support';
 @use './../mixins/component';
 @use './../mixins/transition';
-
 @include banner.header('Component Button');
+
+
+@function palette-declination($palette, $property) {
+
+    @if 'button-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+    }
+    @else if 'button-hover-bg-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
+    }
+    @else if 'button-hover-border-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
+    }
+
+    @return null;
+};
 
 
 // * Component properties
 // * ---------------------------------------------
+
+// * Theme properties
 
 $theme-properties: (
     button-color             : var(--#{prefix.$prefix}purple),
@@ -31,6 +48,9 @@ $theme-properties: (
     button-border-color      : var(--#{prefix.$prefix}red),
     button-hover-border-color: var(--#{prefix.$prefix}red),
 );
+
+
+// * Structure properties
 
 $structure-properties: fnMap.map-merge-multiple((
     button-padding-x         : store.$padding-x,
@@ -46,15 +66,17 @@ $structure-properties: fnMap.map-merge-multiple((
     button-focus-box-shadow  : store.$focus-box-shadow
 ), $theme-properties, map.get(themes.$themes, themes.$default));
 
+
+// * Generate CSS variables
+
 :root {
-    // 3. Ecrit les variables de theme du composant
-    // :root {}
+    
+    // * All properties variables
     @each $name, $value in $structure-properties {
         --#{prefix.$prefix}#{$name}: #{$value};
     }
 
-    // 4. Ecrit (uniquement) les variables de theme additionnel
-    // :root[data-theme=dark] {}
+    // * Redefined themes properties variables
     @each $theme-name, $properties in themes.$themes {
         @if $theme-name != themes.$default {
             &[data-theme=#{$theme-name}] {
@@ -74,22 +96,11 @@ $structure-properties: fnMap.map-merge-multiple((
 
 // * Component Structure
 // * ---------------------------------------------
-@function palette-declination($palette, $property) {
-
-    @if 'button-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
-    }
-    @else if 'button-hover-bg-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
-    }
-    @else if 'button-hover-border-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
-    }
-
-    @return null;
-};
 
 .#{prefix.$prefix}button {
+
+    // Default state
+    // --
 
     display         : inline-block;
     cursor          : pointer;
@@ -119,6 +130,8 @@ $structure-properties: fnMap.map-merge-multiple((
     );
     @include support.prefix('user-select', none, (webkit, moz));
 
+    
+    // hover state
     // --
 
     &:hover {
@@ -130,11 +143,15 @@ $structure-properties: fnMap.map-merge-multiple((
     }
 
     &.focus, &:focus, &:focus-visible {
+        outline-color: rgb(198, 3, 100);
+        outline-style: solid;
+        outline-width: 4px;
     }
 
     &[disabled] {
         cursor          : default;
         opacity         : var(--#{prefix.$prefix}button-disabled-opacity);
+        color           : var(--#{prefix.$prefix}button-color);
         background-color: var(--#{prefix.$prefix}button-bg-color);
         border-color    : var(--#{prefix.$prefix}button-border-color);
     }

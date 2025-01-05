@@ -15,7 +15,7 @@
 @use './../mixins/flex';
 @use './../mixins/size';
 @use './../mixins/spacing';
-@include banner.header('Grid & Columns');
+// @include banner.header('Grid & Columns');
 
 
 // * Retrieve stored data
@@ -52,7 +52,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 // * Generate the Grid
 // * --
 
-@include banner.section('The grid');
+// @include banner.section('The grid');
 .#{prefix.$prefix}grid {
 
     @include flex.display;
@@ -78,7 +78,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 // * Generate Gaps
 // * --
 
-@include banner.section('Grid gaps');
+// @include banner.section('Grid gaps');
 .#{prefix.$prefix}gap- {
     @each $key, $value in stored-spaces.$spaces {
     
@@ -118,7 +118,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 // * Generate Columns
 // * --
 
-@include banner.section('The grid columns');
+// @include banner.section('The grid columns');
 .#{prefix.$prefix}column {
     @include flex.grow(1);
     @include flex.shrink(0);
@@ -157,7 +157,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 // * Generate Offset
 // * --
 
-@include banner.section('The grid offsets');
+// @include banner.section('The grid offsets');
 .#{prefix.$prefix}offset {
 
     // .offset-x

@@ -82,9 +82,9 @@
   $lightness: color.channel($result, "lightness", $space: hsl);
 
   @if ($lightness < 40) {
-    $result: black;
+    $result: #000000;
   } @else {
-    $result: white;
+    $result: #FFFFFF;
   }
 
   @return $result;

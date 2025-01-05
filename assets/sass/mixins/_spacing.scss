@@ -67,6 +67,9 @@
   @else if $top == $bottom and $left == $right {
     #{$type}: $top $left  #{if($important, '!important', '')};
   }
+  @else if $top not null and $right not null and $bottom not null and $left not null {
+    #{$type}: $top $right $bottom $left #{if($important, '!important', '')};
+  }
   @else {
     @if ($top not null) {#{$type}-top : $top  #{if($important, '!important', '')};}
     @if ($right not null) {#{$type}-right : $right  #{if($important, '!important', '')};}

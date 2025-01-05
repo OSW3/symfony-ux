@@ -1,3 +1,317 @@
-[type=button], [type=reset], [type=submit], button {
-    -webkit-appearance: button;
+// * ------------- @osw3/symfony-ux/assets/sass/builders/reset.scss ------------
+// *
+// *    Builder for CSS Reset
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use './../mixins/spacing';
+@use './../mixins/size';
+@use './../storages/font' as font;
+@use './../storages/prefix';
+@use './../storages/themes';
+
+// @function palette-declination($palette, $property) {
+//     @return null;
+// };
+
+
+// * Component properties
+// * ---------------------------------------------
+
+$theme-properties: map.merge((
+    main-color   : var(--#{prefix.$prefix}gray-800),
+    main-bg-color: var(--#{prefix.$prefix}white),
+), map.get(themes.$themes, themes.$default));
+
+
+
+// * Build CSS
+// * ---------------------------------------------
+
+
+:root {
+
+    @each $name, $value in $theme-properties {
+        --#{prefix.$prefix}#{$name}: #{$value};
+    }
+
+    font-size: font.$base-font-size;
+    line-height: font.$base-line-height;
+    scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+    @include spacing.outer(0, 0, 0, 0);
+    @include spacing.inner(0, 0, 0, 0);
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 1rem;
+    // line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    @include spacing.outer(0, 0, 0, 0);
+    @include spacing.inner(0, 0, 0, 0);
+    @include size.width(null, 100vw, null);
+    @include size.height(null, 100vh, null);
+    font-family: Arial, sans-serif; // todo: customize
+    font-size: 1rem; // todo: customize
+    font-weight: 400; // todo: customize
+    color: var(--#{prefix.$prefix}main-color);
+    background-color: var(--#{prefix.$prefix}main-bg-color);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    @include spacing.outer(0, 0, 0, 0.5rem);
+    @include spacing.inner(0, 0, 0, 0);
+    font-family: inherit;
+    font-weight: inherit;
+    line-height: font.$heading-line-height;
+    color: inherit;
+}
+h1 { font-size: font.$h1-font-size; }
+h2 { font-size: font.$h2-font-size; }
+h3 { font-size: font.$h3-font-size; }
+h4 { font-size: font.$h4-font-size; }
+h5 { font-size: font.$h5-font-size; }
+h6 { font-size: font.$h6-font-size; }
+
+
+p {
+    margin: 0 0 1em;
+    word-wrap: break-word;
+    hyphens: auto;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+ul, ol {
+    margin: 0;
+    padding-left: 1.5em;
+    list-style-position: outside;
+    line-height: inherit;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ul ul, ol ol, ul ol, ol ul {
+    padding-left: 1.5em;
+}
+
+li {
+    margin: 0 0 0.5em;
+}
+
+li::marker {
+    font-size: 1em;
+    color: #666;
+}
+
+blockquote {
+    margin: 0 0 1em;
+    padding-left: 1.5em;
+    border-left: 4px solid #ccc;
+    color: #555;
+    font-style: italic;
+}
+
+pre, code, kbd, samp {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    background-color: #f8f9fa;
+    color: #212529;
+    padding: 0.2em 0.4em;
+    border-radius: 4px;
+}
+
+img, video, canvas, svg {
+    margin: 0;
+    padding: 0;
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-style: none;
+}
+
+picture {
+    display: block;
+}
+
+figure {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+figcaption {
+    display: block;
+    font-size: 0.875rem;
+    color: #666;
+    margin-top: 0.5em;
+}
+
+button, input, select, textarea {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+textarea {
+    resize: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+select {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+fieldset, legend {
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-size: inherit;
+    color: inherit;
+}
+
+label {
+    cursor: pointer;
+}
+
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder,
+::placeholder {
+    color: #aaa;
+    opacity: 1;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.5em;
+    border: 1px solid #ddd;
+}
+
+thead {
+    background-color: #f9f9f9;
+}
+
+caption {
+    margin-bottom: 0.5em;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #f7f7f7;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+section, article, aside, nav, header, footer, main, div {
+    display: block;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+// header, footer {
+//     background-color: #f9f9f9;
+//     padding: 1em 0;
+// }
+
+section {
+    margin-bottom: 2em;
+}
+
+article {
+    margin-bottom: 1.5em;
+}
+
+main {
+    display: block;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+a:focus, button:focus, input:focus, select:focus, textarea:focus {
+    outline: 2px solid #005fcc;
+    outline-offset: 2px;
+}
+
+a:focus:not(:focus-visible), 
+button:focus:not(:focus-visible), 
+input:focus:not(:focus-visible), 
+select:focus:not(:focus-visible), 
+textarea:focus:not(:focus-visible) {
+    outline: none;
+}
+textarea {
+    overflow: auto;
+}
+
+[role="button"], button {
+    cursor: pointer;
+}
+
+[aria-hidden="true"] {
+    display: none;
+}
+
+template,
+[hidden] {
+    display: none !important;
+}
+
+::selection {
+    background-color: #005fcc;
+    color: #fff;
+}
+
+abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
 }
