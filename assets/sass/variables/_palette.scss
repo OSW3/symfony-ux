@@ -22,4 +22,4 @@ $ui-color-name-primary  : if(meta.global-variable-exists('palette-name-primary' 
 $ui-color-name-secondary: if(meta.global-variable-exists('palette-name-secondary'   , $module: generated), generated.$ui-color-name-secondary   , 'secondary') !default;
 $ui-color-name-light    : if(meta.global-variable-exists('palette-name-light'       , $module: generated), generated.$ui-color-name-light       , 'light') !default;
 $ui-color-name-dark     : if(meta.global-variable-exists('palette-name-dark'        , $module: generated), generated.$ui-color-name-dark        , 'dark') !default;
-$ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted'       , $module: generated), generated.$ui-color-name-muted       , 'muted') !default;
+// $ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted'       , $module: generated), generated.$ui-color-name-muted       , 'muted') !default;

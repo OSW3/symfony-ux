@@ -4,11 +4,14 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use "sass:list";
+@use "sass:map";
 @use './../builders/banner';
+@use './../storages/prefix';
 @use './../storages/palette' as store;
-@use './../functions/color' as f-color;
-@use './../functions/collection' as f-collection;
-@include banner.header('Palette');
+@use './../functions/color' as fnColor;
+@use './../functions/collection' as fnCollection;
+// @include banner.header('Palette');
 
 
 // * Retrieve stored data
@@ -16,15 +19,37 @@
 
 $palette: store.$palette;
 $useless: store.$useless;
+$declinations: store.$declinations;
 
+
+// * Local mixins
+// * ---------------------------------------------
+
+// Generate declination
+@mixin declination($palette-name, $base, $rules) {
+    @each $declination-name, $declination in $rules{
+
+        $mode : list.nth($declination, 1);
+        $value: list.nth($declination, 2);
+
+        @if $mode == tint {
+            $color: fnColor.tint($base, $value);
+            --#{prefix.$prefix}#{$palette-name}-#{$declination-name}: #{$color};
+        }
+        @else {
+            $color: fnColor.shade($base, $value);
+            --#{prefix.$prefix}#{$palette-name}-#{$declination-name}: #{$color};
+        }
+    }
+}
 
 // * Unset useless colors
 // * ---------------------------------------------
 
-@if f-collection.notEmpty($useless) {
+@if fnCollection.notEmpty($useless) {
     @each $key, $value in $palette {
-        @if f-collection.keyExists($useless, $key) {
-            $palette: f-collection.unset($palette, $key);
+        @if fnCollection.keyExists($useless, $key) {
+            $palette: fnCollection.unset($palette, $key);
         }
     }
 }
@@ -33,15 +58,34 @@ $useless: store.$useless;
 // * Build CSS
 // * ---------------------------------------------
 
-// todo: really need to create palette CSS Variable ? or just export SCSS variable to components ?
-// :root {
-    // /* */
-//     @each $key, $value in $palette {
+:root {
+    @each $palette-name, $palette-color in $palette {
 
-//         --#{$key}: #{$value};
+        // Main color
+        // --
 
-//         // --#{$key}--text: #{f-color.shade($value, 60%)};
-//         // --#{$key}--background: #{f-color.tint($value, 80%)};
-//         // --#{$key}--border: #{f-color.tint($value, 60%)};
-//     }
-// }
+        --#{prefix.$prefix}#{$palette-name}: #{$palette-color};
+
+
+        // Properties declination
+        // --
+
+        $hasDeclination: false;
+
+        // Specified declination
+        @each $declination-name, $declination-properties in $declinations {
+            @if $declination-name == $palette-name {
+                @include declination($palette-name, $palette-color, $declination-properties);
+                $hasDeclination: true;
+            }
+        }
+
+        // All declination '*'
+        @if $hasDeclination == false {
+            $declination-properties: map.get($declinations, '*');
+            @include declination($palette-name, $palette-color, $declination-properties);
+        }
+
+        --#{prefix.$prefix}#{$palette-name}-bw-contrast: #{fnColor.bwContrast($palette-color)};
+    }
+}

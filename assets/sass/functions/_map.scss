@@ -1,0 +1,16 @@
+
+@use "sass:map";
+@use "sass:meta";
+
+@function map-merge-multiple($maps...) {
+    $result: ();
+
+    @each $map in $maps {
+
+        @if meta.type-of($map) == 'map' {
+            $result: map.merge($result, $map);
+        }
+    }
+
+    @return $result;
+}

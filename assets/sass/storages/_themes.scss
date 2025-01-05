@@ -1,0 +1,24 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/themes.scss ------------
+// *
+// *    Themes Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$default: '' !default;
+$themes: () !default;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin add($name, $props, $isDefault: false) {
+    $themes: map.merge($themes, ($name: $props)) !global;
+    
+    @if ($isDefault) {$default: $name !global;}
+}

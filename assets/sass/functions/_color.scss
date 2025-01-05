@@ -13,11 +13,11 @@
 
 
 @function tint($color, $percentage) {
-  @return color.mix(white, $color, $percentage * 1%);
+  @return color.mix(white, $color, $percentage);
 }
 
 @function shade($color, $percentage) {
-  @return color.mix(black, $color, $percentage * 1%);
+  @return color.mix(black, $color, $percentage);
 }
 
 @function rgb-to-hex($color) {
@@ -62,15 +62,31 @@
 //   @return color.mix(black, $color, $percentage);
 // }
 
-@function contrastText($color) {
-  $result: invert($color);
-  $lightness: lightness($result);
+// @function bwContrast($color) {
+//   $result: invert($color);
+//   $lightness: lightness($result);
+
+//   // color.channel($color, "lightness", $space: hsl)
+
+//   @if ($lightness < 40) {
+//     $result: black;
+//   }
+//   @else {
+//     $result: white;
+//   }
+//   @return $result;
+// }
+
+@function bwContrast($color) {
+  $result: color.invert($color);
+  $lightness: color.channel($result, "lightness", $space: hsl);
+
   @if ($lightness < 40) {
     $result: black;
-  }
-  @else {
+  } @else {
     $result: white;
   }
+
   @return $result;
 }
 

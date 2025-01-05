@@ -1,0 +1,33 @@
+// * ---------- @osw3/symfony-ux/assets/sass/variables/transition.scss ---------
+// *
+// *    Default transition definition.
+// *
+// *    - Default transitions names
+// *    - Default transitions values
+// *    - Default containers names
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:meta";
+@use './../generated';
+
+
+// * Default transitions base
+// * ---------------------------------------------
+
+$base: if(meta.global-variable-exists('transition-base', $module: generated), generated.$transition-base, '1s') !default;
+
+// * Default transitions names
+// * ---------------------------------------------
+
+$transition-name-slow  : if(meta.global-variable-exists('transition-name-slow'      , $module: generated), generated.$transition-name-slow      , 'slow') !default;
+$transition-name-normal: if(meta.global-variable-exists('transition-name-normal'    , $module: generated), generated.$transition-name-normal    , 'normal') !default;
+$transition-name-fast  : if(meta.global-variable-exists('transition-name-fast'      , $module: generated), generated.$transition-name-fast      , 'fast') !default;
+
+
+// * Default transitions values
+// * ---------------------------------------------
+
+$transition-slow       : if(meta.global-variable-exists('transition-slow'           , $module: generated), generated.$transition-slow           , 'slow') !default;
+$transition-normal     : if(meta.global-variable-exists('transition-normal'         , $module: generated), generated.$transition-normal         , 'normal') !default;
+$transition-fast       : if(meta.global-variable-exists('transition-fast'           , $module: generated), generated.$transition-fast           , 'fast') !default;

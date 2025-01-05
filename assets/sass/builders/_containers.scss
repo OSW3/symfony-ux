@@ -9,9 +9,12 @@
 @use 'sass:string';
 @use './../builders/banner';
 @use './../storages/prefix';
+@use './../storages/spaces' as stored-spaces;
 @use './../storages/breakpoints' as store;
-@use './../functions/collection' as f-collection;
-@include banner.header('Containers');
+@use './../functions/collection' as fnCollection;
+@use './../mixins/size';
+@use './../mixins/spacing';
+// @include banner.header('Containers');
 
 
 // * Retrieve stored data
@@ -25,15 +28,15 @@ $useless    : store.$useless;
 // * Unset useless breakpoints
 // * ---------------------------------------------
 
-@if f-collection.notEmpty($useless) {
+@if fnCollection.notEmpty($useless) {
     @each $key, $value in $breakpoints {
-        @if f-collection.keyExists($useless, $key) {
-            $breakpoints: f-collection.unset($breakpoints, $key);
+        @if fnCollection.keyExists($useless, $key) {
+            $breakpoints: fnCollection.unset($breakpoints, $key);
         }
     }
     @each $key, $value in $containers {
-        @if f-collection.keyExists($useless, $key) {
-            $containers: f-collection.unset($containers, $key);
+        @if fnCollection.keyExists($useless, $key) {
+            $containers: fnCollection.unset($containers, $key);
         }
     }
 }
@@ -67,17 +70,12 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
 // * --
 
 #{$containers-string} {
-    
     display: block;
     position: relative;
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
+    @include size.width(100%);
+    @include spacing.outer-x(auto);
+    @include spacing.inner-x(map.get(stored-spaces.$spaces, 3));
     z-index: 1;
-    
-    // todo: add padding left / right
-    // $padding: map.get($_SPACERS, 3);
-    // @include spaces.padding-x($padding);
 }
 
 
@@ -87,7 +85,7 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
 .#{prefix.$prefix}container- {
     @each $key, $value in $containers {
         &#{$key} {
-            max-width: map.get($containers, $key);
+            @include size.width(null, null, map.get($containers, $key));
         }
     }
 }
@@ -97,13 +95,11 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
 // * --
 
 @each $key, $value in $breakpoints {
-//   @if $value > 0 {
-
     $container-list : (container);
     @media (min-width: $value) {
 
         $selectors: '';
-        $container-list: f-collection.reverse($container-list);
+        $container-list: fnCollection.reverse($container-list);
 
         @each $container in $container-list {
             $selectors: $selectors + '.#{prefix.$prefix}#{$container}, ';
@@ -111,7 +107,7 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
         $selectors: string.unquote(string.slice($selectors, 1, -3));
 
         #{$selectors} { 
-            max-width: map.get($containers, $key);
+            @include size.width(null, null, map.get($containers, $key));
         }
     }
 }

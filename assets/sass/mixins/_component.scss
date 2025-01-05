@@ -1,0 +1,31 @@
+
+@use "sass:meta";
+@use './../builders/palette';
+@use './../storages/prefix';
+
+
+@mixin palette-declination($function, $properties: ()) {
+
+    @each $palette-name, $palette-color in palette.$palette {
+        &-#{$palette-name} {
+            @each $property-name, $property-value in $properties {
+
+                $isExceptionValue: meta.call($function, (
+                    name: $palette-name, 
+                    value: $palette-color), (
+                    name: $property-name,
+                    value: $property-value
+                ));
+
+                @if $isExceptionValue {
+                    --#{prefix.$prefix}#{$property-name}: #{$isExceptionValue};
+                }
+                @else {
+                    --#{prefix.$prefix}#{$property-name}: var(--#{prefix.$prefix}#{$palette-name});
+                    // --#{prefix.$prefix}#{$property-name}: #{$palette-color};
+                }
+            }
+            
+        }
+    }
+}

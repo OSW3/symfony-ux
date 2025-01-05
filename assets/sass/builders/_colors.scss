@@ -8,11 +8,13 @@
 @use "sass:list";
 @use "sass:meta";
 @use "sass:color";
+@use "sass:string";
 @use './../builders/banner';
+@use './../storages/prefix';
 @use './../storages/colors' as store;
-@use './../functions/color' as f-color;
-@use './../functions/collection' as f-collection;
-@include banner.header('Colors');
+@use './../functions/color' as fnColor;
+@use './../functions/collection' as fnCollection;
+// @include banner.header('Colors');
 
 
 // * Retrieve stored data
@@ -25,10 +27,10 @@ $useless: store.$useless;
 // * Unset useless colors
 // * ---------------------------------------------
 
-@if f-collection.notEmpty($useless) {
+@if fnCollection.notEmpty($useless) {
     @each $key, $value in $colors {
-        @if f-collection.keyExists($useless, $key) {
-            $colors: f-collection.unset($colors, $key);
+        @if fnCollection.keyExists($useless, $key) {
+            $colors: fnCollection.unset($colors, $key);
         }
     }
 }
@@ -40,8 +42,7 @@ $useless: store.$useless;
 :root {
     @each $key, $value in $colors {
 
-        --#{$key}: #{$value};
-
+        --#{prefix.$prefix}#{$key}: #{$value};
 
         $tints: if(
             meta.type-of(store.$tints) == 'map' and map.has_key(store.$tints, $key),
@@ -54,9 +55,9 @@ $useless: store.$useless;
         @if $tints and meta.type-of($tints) == 'list' and list.length($tints) > 0 {
             @for $i from 1 through list.length($tints) {
                 $tint_percent: list.nth($tints, $i);
-                $tint_color: f-color.tint($value, $tint_percent);
-                $tint_color_hex: f-color.rgb-to-hex($tint_color);
-                --#{$key}--tint-#{$tint_percent}: #{$tint_color_hex};
+                $tint_color: fnColor.tint($value, $tint_percent);
+                $tint_color_hex: fnColor.rgb-to-hex($tint_color);
+                --#{prefix.$prefix}#{$key}--tint-#{string.slice(#{$tint_percent}, 1, -2)}: #{$tint_color_hex};
             }
         }
 
@@ -71,9 +72,9 @@ $useless: store.$useless;
         @if $shades and meta.type-of($shades) == 'list' and list.length($shades) > 0 {
             @for $i from 1 through list.length($shades) {
                 $shade_percent: list.nth($shades, $i);
-                $shade_color: f-color.shade($value, $shade_percent * 0.01);
-                $shade_color_hex: f-color.rgb-to-hex($shade_color);
-                --#{$key}--shade-#{$shade_percent}: #{$shade_color_hex};
+                $shade_color: fnColor.shade($value, $shade_percent * 0.01);
+                $shade_color_hex: fnColor.rgb-to-hex($shade_color);
+                --#{prefix.$prefix}#{$key}--shade-#{string.slice(#{$shade_percent}, 1, -2)}: #{$shade_color_hex};
             }
         }
 

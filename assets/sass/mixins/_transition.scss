@@ -1,0 +1,24 @@
+// ************************************************************************** //
+// *                                                                        * //
+// ************************************************************************** //
+
+@use "sass:list";
+
+/// Generate a transition property
+/// 
+/// @example @include transition.set((color, width)), .3s);
+/// 
+/// @param {List} $properties Properties list
+/// @param {String} $delay  Transition delay for all properties
+/// 
+@mixin set($properties: (), $type: 'ease-in-out', $delay: .3s)
+{
+    $transitions: ();
+
+    @each $property in $properties {
+      $transitions: list.append($transitions, $property + " " + $delay + " " + $type, comma);
+    }
+    
+    transition: $transitions;
+
+}

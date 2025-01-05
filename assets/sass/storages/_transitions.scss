@@ -1,0 +1,31 @@
+// * ---------- @osw3/symfony-ux/assets/sass/storages/transitions.scss ---------
+// *
+// *    Transitions Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use './../variables/transitions' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+// * Transition base
+$base: default.$base !default;
+
+// * Transition collection
+$transitions: (
+    default.$transition-name-slow  : default.$transition-slow,
+    default.$transition-name-normal: default.$transition-normal,
+    default.$transition-name-fast  : default.$transition-fast,
+) !default;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin base($new-base) {$base: $new-base !global;}
+@mixin ratio($key, $value) {
+    $transitions: map.merge($transitions, ($key: $value)) !global;
+}

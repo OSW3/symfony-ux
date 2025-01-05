@@ -1,0 +1,38 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/button.scss ------------
+// *
+// *    Button Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/spaces';
+
+// * Define storage data
+// * ---------------------------------------------
+
+$padding-x       : spaces.$base * .6;
+$padding-y       : spaces.$base * 1.4 ;
+$border-width    : 1px;
+$border-radius   : 6px !default;
+$font-family     : '';
+$font-size       : 1rem;
+$font-weight     : 400;
+$line-height     : 1.5;
+$box-shadow      : 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)';
+$disabled-opacity: 0.65;
+$focus-box-shadow: 0 0 0 0.25rem;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin padding-x($value) {$padding-x: $value !global;}
+@mixin padding-y($value) {$padding-y: $value !global;}
+@mixin border-width($value) {$border-width: $value !global;}
+@mixin border-radius($value) {$border-radius: $value !global;}
+@mixin font-family($value) {$font-family: $value !global;}
+@mixin font-size($value) {$font-size: $value !global;}
+@mixin font-weight($value) {$font-weight: $value !global;}
+@mixin line-height($value) {$line-height: $value !global;}
+@mixin box-shadow($value) {$box-shadow: $value !global;}
+@mixin disabled-opacity($value) {$disabled-opacity: $value !global;}
+@mixin focus-box-shadow($value) {$focus-box-shadow: $value !global;}

@@ -28,8 +28,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 // * Grid mixins
 // * ---------------------------------------------
 
-@mixin make-column($columns) 
-{
+@mixin make-column($columns) {
     @include flex.grow(0);
     @include flex.shrink(0);
     @include flex.basis(math.percentage(math.div($columns, $divisions)));
@@ -37,14 +36,12 @@ $breakpoints: stored-breakpoints.$breakpoints;
     max-width: math.percentage(math.div($columns, $divisions));
 }
 
-@mixin make-break($columns) 
-{
+@mixin make-break($columns) {
     // flex: 0 0 percentage(math.div($columns, $grid-divisions));
     margin-right: 100% - (math.percentage(math.div($columns, $divisions)));
 }
 
-@mixin make-offset($columns) 
-{
+@mixin make-offset($columns) {
     margin-left: math.percentage(math.div($columns, $divisions));
 }
 
@@ -96,8 +93,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
             // }
     
             // (All) Padding gap for thr grid Columns
-            &#{$key} [class^="#{prefix.$prefix}column"]
-            {
+            &#{$key} [class^="#{prefix.$prefix}column"]{
                 @if $key == 0 {
                     @include spacing.inner($padding !important, $padding !important, $padding !important, $padding !important);
                 } @else {

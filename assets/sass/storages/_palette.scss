@@ -26,22 +26,28 @@
 
 // * UI Colors collection
 $palette: (
+    default.$ui-color-name-primary  : colors.$blue,
+    default.$ui-color-name-secondary: colors.$gray-600,
     default.$ui-color-name-success  : colors.$green,
     default.$ui-color-name-danger   : colors.$red,
     default.$ui-color-name-warning  : colors.$orange,
     default.$ui-color-name-info     : colors.$cyan,
-    default.$ui-color-name-primary  : colors.$blue,
-    default.$ui-color-name-secondary: colors.$gray-600,
     default.$ui-color-name-light    : colors.$white,
     default.$ui-color-name-dark     : colors.$black,
-    default.$ui-color-name-muted    : colors.$gray-500,
+    // default.$ui-color-name-muted    : colors.$gray-500,
 ) !default;
 
-// * Tints collection
-$tints  : () !default;
-
-// * Shades collection
-$shades : () !default;
+// * Declinations collection
+$declinations  : (
+    'dark': (
+        emphasis: tint 30%,
+        subtle: tint 70%,
+    ),
+    '*': (
+        emphasis: shade 20%,
+        subtle: tint 70%,
+    )
+) !default;
 
 // * Useless UI Colors collection
 $useless: () !default;
@@ -66,12 +72,8 @@ $useless: () !default;
     $palette: $new-palette !global;
 }
   
-@mixin tints($tint-map) {
-    $tints: map.merge($tints, $tint-map) !global;
-}
-
-@mixin shades($shade-map) {
-    $shades: map.merge($shades, $shade-map) !global;
+@mixin declinations($declination-map) {
+    $declinations: map.merge($declinations, $declination-map) !global;
 }
 
 @mixin remove($useless-colors) {

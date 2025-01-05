@@ -4,19 +4,61 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use "sass:map";
+@use "sass:meta";
 @use './../variables/spaces' as default;
+
+
+// * Spaces generator
+// * ---------------------------------------------
+
+@function generate-spaces($base, $count) {
+    $result: ();
+
+    @for $i from 0 through $count {
+
+        $spacer: 0;
+        @if map.has-key($spacers, $i) {
+            $spacer: map.get($spacers, $i);
+        }
+
+        $value: $base * $spacer;
+        $result: map.merge($result, ($i: $value));
+    }
+
+    @return $result;
+}
 
 
 // * Define storage data
 // * ---------------------------------------------
 
-$spaces: (
-    0: 0,
-    1: default.$spacer-base * default.$spacer-1,
-    2: default.$spacer-base * default.$spacer-2,
-    3: default.$spacer-base * default.$spacer-3,
-    4: default.$spacer-base * default.$spacer-4,
-    5: default.$spacer-base * default.$spacer-5,
-    6: default.$spacer-base * default.$spacer-6,
-    auto: auto,
+// * Spacer base
+$base: default.$base !default;
+
+// * Spacers collection
+$spacers: (
+    1: default.$spacer-1,
+    2: default.$spacer-2,
+    3: default.$spacer-3,
+    4: default.$spacer-4,
+    5: default.$spacer-5,
+    6: default.$spacer-6,
 ) !default;
+
+// * Generated spaces
+$spaces: generate-spaces($base, 6) !default;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin base($new-base) {
+    $base: $new-base !global;
+    $spaces: generate-spaces($base, 6) !global;
+}
+
+@mixin set($key, $value) {
+    $spacers: map.merge($spacers, ($key: $value)) !global;
+    $spaces: generate-spaces($base, 6) !global;
+}
