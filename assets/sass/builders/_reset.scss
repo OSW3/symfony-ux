@@ -37,6 +37,22 @@ $theme-properties: map.merge((
         --#{prefix.$prefix}#{$name}: #{$value};
     }
 
+    // * Redefined themes properties variables
+    @each $theme-name, $properties in themes.$themes {
+        @if $theme-name != themes.$default {
+            &[data-theme=#{$theme-name}] {
+                @each $property-name, $value in $properties {
+                    @if map.has-key($theme-properties, $property-name) {
+                        --#{prefix.$prefix}#{$property-name}: #{$value};
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
     font-size: fonts.$base-font-size;
     line-height: fonts.$base-line-height;
     scroll-behavior: smooth;
