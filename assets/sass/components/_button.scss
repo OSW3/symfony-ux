@@ -24,6 +24,9 @@
     @if 'button-color' == map.get($property, name) {
         @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
+    @else if 'button-hover-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+    }
     @else if 'button-hover-bg-color' == map.get($property, name) {
         @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
     }
@@ -41,12 +44,12 @@
 // * Theme properties
 
 $theme-properties: (
-    button-color             : var(--#{prefix.$prefix}purple),
-    button-hover-color       : var(--#{prefix.$prefix}purple),
-    button-bg-color          : var(--#{prefix.$prefix}cyan),
-    button-hover-bg-color    : var(--#{prefix.$prefix}cyan),
-    button-border-color      : var(--#{prefix.$prefix}red),
-    button-hover-border-color: var(--#{prefix.$prefix}red),
+    button-color             : var(--#{prefix.$prefix}purple), // todo: redifine this base
+    button-hover-color       : var(--#{prefix.$prefix}inherit),
+    button-bg-color          : var(--#{prefix.$prefix}cyan), // todo: redifine this base
+    button-hover-bg-color    : var(--#{prefix.$prefix}cyan), // todo: redifine this base
+    button-border-color      : var(--#{prefix.$prefix}red), // todo: redifine this base
+    button-hover-border-color: var(--#{prefix.$prefix}red), // todo: redifine this base
 );
 
 
@@ -135,6 +138,7 @@ $structure-properties: fnMap.map-merge-multiple((
     // --
 
     &:hover {
+        color: var(--#{prefix.$prefix}button-hover-color);
         background-color: var(--#{prefix.$prefix}button-hover-bg-color);
         border-color: var(--#{prefix.$prefix}button-hover-border-color);
     }

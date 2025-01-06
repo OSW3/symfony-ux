@@ -34,10 +34,12 @@ $declinations: store.$declinations;
 
         @if $mode == tint {
             $color: fnColor.tint($base, $value);
+            // $color: fnColor.rgb-to-hex($color);
             --#{prefix.$prefix}#{$palette-name}-#{$declination-name}: #{$color};
         }
         @else {
             $color: fnColor.shade($base, $value);
+            // $color: fnColor.rgb-to-hex($color);
             --#{prefix.$prefix}#{$palette-name}-#{$declination-name}: #{$color};
         }
     }

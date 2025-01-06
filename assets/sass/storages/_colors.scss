@@ -37,11 +37,8 @@ $colors: (
     'cyan'    : default.$cyan,
 ) !default;
 
-// * Tints collection
-$tints  : () !default;
-
-// * Shades collection
-$shades : () !default;
+// * Declinations collection
+$declinations: ();
 
 // * Useless colors collection
 $useless: () !default;
@@ -54,12 +51,8 @@ $useless: () !default;
     $colors: map.merge($colors, $new-colors) !global;
 }
 
-@mixin tints($tint-map) {
-    $tints: map.merge($tints, $tint-map) !global;
-}
-
-@mixin shades($shade-map) {
-    $shades: map.merge($shades, $shade-map) !global;
+@mixin declinations($declination-map) {
+    $declinations: map.merge($declinations, $declination-map) !global;
 }
 
 @mixin remove($useless-colors) {

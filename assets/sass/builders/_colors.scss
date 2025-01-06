@@ -22,6 +22,7 @@
 
 $colors : store.$colors;
 $useless: store.$useless;
+$declinations : store.$declinations;
 
 
 // * Unset useless colors
@@ -40,43 +41,30 @@ $useless: store.$useless;
 // * ---------------------------------------------
 
 :root {
-    @each $key, $value in $colors {
+    @each $color-name, $color-value in $colors {
 
-        --#{prefix.$prefix}#{$key}: #{$value};
+        --#{prefix.$prefix}#{$color-name}: #{$color-value};
 
-        $tints: if(
-            meta.type-of(store.$tints) == 'map' and map.has_key(store.$tints, $key),
-            map.get(store.$tints, $key),
-            ()
-        );
-        @if meta.type-of($tints) == 'number' {
-            $tints: ($tints,); 
-        }
-        @if $tints and meta.type-of($tints) == 'list' and list.length($tints) > 0 {
-            @for $i from 1 through list.length($tints) {
-                $tint_percent: list.nth($tints, $i);
-                $tint_color: fnColor.tint($value, $tint_percent);
-                $tint_color_hex: fnColor.rgb-to-hex($tint_color);
-                --#{prefix.$prefix}#{$key}--tint-#{string.slice(#{$tint_percent}, 1, -2)}: #{$tint_color_hex};
+        @each $declination-name, $declination-rules in $declinations {
+            @if $color-name == $declination-name {
+                @each $declination in $declination-rules {
+
+                    $mode : list.nth($declination, 1);
+                    $value: list.nth($declination, 2);
+
+                    @if $mode == tint {
+                        $color: fnColor.tint($color-value, $value);
+                        // $color: fnColor.rgb-to-hex($color);
+                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+                    }
+                    @else {
+                        $color: fnColor.shade($color-value, $value);
+                        // $color: fnColor.rgb-to-hex($color);
+                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+                    }
+
+                }
             }
         }
-
-        $shades: if(
-            meta.type-of(store.$shades) == 'map' and map.has_key(store.$shades, $key),
-            map.get(store.$shades, $key),
-            ()
-        );
-        @if meta.type-of($shades) == 'number' {
-            $shades: ($shades,); 
-        }
-        @if $shades and meta.type-of($shades) == 'list' and list.length($shades) > 0 {
-            @for $i from 1 through list.length($shades) {
-                $shade_percent: list.nth($shades, $i);
-                $shade_color: fnColor.shade($value, $shade_percent * 0.01);
-                $shade_color_hex: fnColor.rgb-to-hex($shade_color);
-                --#{prefix.$prefix}#{$key}--shade-#{string.slice(#{$shade_percent}, 1, -2)}: #{$shade_color_hex};
-            }
-        }
-
     }
 }

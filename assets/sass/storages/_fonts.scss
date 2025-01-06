@@ -1,0 +1,45 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/fonts.scss ------------
+// *
+// *    Fonts Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../variables/fonts' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+// * Base fonts sizes
+$base-font-size     : default.$base-font-size;
+$base-line-height   : default.$base-line-height;
+
+// * Headings base sizes
+$h1-font-size       : default.$h1-font-size;
+$h2-font-size       : default.$h2-font-size;
+$h3-font-size       : default.$h3-font-size;
+$h4-font-size       : default.$h4-font-size;
+$h5-font-size       : default.$h5-font-size;
+$h6-font-size       : default.$h6-font-size;
+$heading-line-height: default.$heading-line-height;
+
+$fonts: (
+    monospace: ( // generate --ux-font-monospace
+        family: "SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+    ),
+    open-sans: (
+        family: "'OpenSans', 'Cantarell', 'Helvetica', 'Arial', sans-serif"
+    ),
+    montserrat: (
+        family: "'Montserrat', serif",
+        source: 'https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap'
+    )
+);
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin add($new-font) {
+
+}

@@ -1,0 +1,37 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builders/root.scss -------------
+// *
+// *    Builder for CSS variables
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use './../storages/prefix';
+@use './../storages/transitions';
+@use './../storages/fonts';
+
+
+$base-radius: 6px; // todo; move this definition
+
+// * Build CSS
+// * ---------------------------------------------
+
+:root {
+    --#{prefix.$prefix}inherit: inherit;
+
+    --#{prefix.$prefix}border-radius-none       : 0px;
+    --#{prefix.$prefix}border-radius-small      : #{$base-radius * 0.5};
+    --#{prefix.$prefix}border-radius-normal     : #{$base-radius * 1};
+    --#{prefix.$prefix}border-radius-large      : #{$base-radius * 2};
+    --#{prefix.$prefix}border-radius-pill       : 50%;
+    --#{prefix.$prefix}border-radius-half-pill  : 9999px;
+    --#{prefix.$prefix}border-radius-half-circle: 9999px 0;
+
+    @each $transition-name, $transition-value in transitions.$transitions {
+        $delay: $transition-value * transitions.$base;
+        --#{prefix.$prefix}transition-#{$transition-name}: #{$delay};
+    }
+
+    @each $font-name, $font-properties in fonts.$fonts {
+        --#{prefix.$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
+    }
+}

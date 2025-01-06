@@ -13,18 +13,28 @@
 
 
 @function tint($color, $percentage) {
-  @return color.mix(white, $color, $percentage);
+  @return color.mix(#ffffff, $color, $percentage);
+  // $mixed-color: mix(#ffffff, $color, $percentage);
+  // $r: color.channel($color, "red", $space: rgb);
+  // $g: color.channel($color, "green", $space: rgb);
+  // $b: color.channel($color, "blue", $space: rgb);
+  // @return rgb($r, $g, $b);
 }
 
 @function shade($color, $percentage) {
-  @return color.mix(black, $color, $percentage);
+  @return color.mix(#000000, $color, $percentage); 
+  // $mixed-color: mix(#000000, $color, $percentage);
+  // $r: color.channel($color, "red", $space: rgb);
+  // $g: color.channel($color, "green", $space: rgb);
+  // $b: color.channel($color, "blue", $space: rgb);
+  // @return rgb($r, $g, $b);
 }
 
 @function rgb-to-hex($color) {
   $r: color.channel($color, "red", $space: rgb);
   $g: color.channel($color, "green", $space: rgb);
   $b: color.channel($color, "blue", $space: rgb);
-
+  
   @return "#" + string.slice("00#{$r}", -2) + string.slice("00#{$g}", -2) + string.slice("00#{$b}", -2);
 }
 

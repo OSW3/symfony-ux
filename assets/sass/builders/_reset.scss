@@ -7,7 +7,7 @@
 @use "sass:map";
 @use './../mixins/spacing';
 @use './../mixins/size';
-@use './../storages/font' as font;
+@use './../storages/fonts' as fonts;
 @use './../storages/prefix';
 @use './../storages/themes';
 
@@ -20,8 +20,10 @@
 // * ---------------------------------------------
 
 $theme-properties: map.merge((
-    main-color   : var(--#{prefix.$prefix}gray-800),
-    main-bg-color: var(--#{prefix.$prefix}white),
+    main-color           : var(--#{prefix.$prefix}gray-800),
+    main-link-color      : var(--#{prefix.$prefix}inherit),
+    main-hover-link-color: var(--#{prefix.$prefix}blue),
+    main-bg-color        : var(--#{prefix.$prefix}white),
 ), map.get(themes.$themes, themes.$default));
 
 
@@ -31,13 +33,12 @@ $theme-properties: map.merge((
 
 
 :root {
-
     @each $name, $value in $theme-properties {
         --#{prefix.$prefix}#{$name}: #{$value};
     }
 
-    font-size: font.$base-font-size;
-    line-height: font.$base-line-height;
+    font-size: fonts.$base-font-size;
+    line-height: fonts.$base-line-height;
     scroll-behavior: smooth;
 }
 
@@ -60,7 +61,8 @@ body {
     @include spacing.inner(0, 0, 0, 0);
     @include size.width(null, 100vw, null);
     @include size.height(null, 100vh, null);
-    font-family: Arial, sans-serif; // todo: customize
+    // font-family: Arial, sans-serif; // todo: customize
+    font-family: var(--#{prefix.$prefix}font-open-sans);
     font-size: 1rem; // todo: customize
     font-weight: 400; // todo: customize
     color: var(--#{prefix.$prefix}main-color);
@@ -70,64 +72,58 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    @include spacing.outer(0, 0, 0, 0.5rem);
+    @include spacing.outer(0, 0, 0, 0.5rem); // todo: customize spaces
     @include spacing.inner(0, 0, 0, 0);
     font-family: inherit;
     font-weight: inherit;
-    line-height: font.$heading-line-height;
+    line-height: fonts.$heading-line-height;
     color: inherit;
 }
-h1 { font-size: font.$h1-font-size; }
-h2 { font-size: font.$h2-font-size; }
-h3 { font-size: font.$h3-font-size; }
-h4 { font-size: font.$h4-font-size; }
-h5 { font-size: font.$h5-font-size; }
-h6 { font-size: font.$h6-font-size; }
+h1 { font-size: fonts.$h1-font-size; }
+h2 { font-size: fonts.$h2-font-size; }
+h3 { font-size: fonts.$h3-font-size; }
+h4 { font-size: fonts.$h4-font-size; }
+h5 { font-size: fonts.$h5-font-size; }
+h6 { font-size: fonts.$h6-font-size; }
 
 
 p {
-    margin: 0 0 1em;
+    @include spacing.outer(0, 0, 1rem); // todo: customize spaces
     word-wrap: break-word;
     hyphens: auto;
 }
 
 a {
-    color: inherit;
+    color: var(--#{prefix.$prefix}main-link-color);
     text-decoration: none;
 }
-
 a:hover,
 a:focus {
     text-decoration: underline;
-    color: #0056b3;
+    color: var(--#{prefix.$prefix}main-hover-link-color);
 }
 
 ul, ol {
-    margin: 0;
-    padding-left: 1.5em;
+    @include spacing.outer(0, 0, 0, 0); // todo: customize spaces
+    @include spacing.inner(0, 0, 0, 1.5em); // todo: customize spaces
     list-style-position: outside;
     line-height: inherit;
 }
-
 ul {
     list-style-type: disc;
 }
-
 ol {
     list-style-type: decimal;
 }
-
 ul ul, ol ol, ul ol, ol ul {
     padding-left: 1.5em;
 }
-
 li {
     margin: 0 0 0.5em;
 }
-
 li::marker {
     font-size: 1em;
-    color: #666;
+    color: #ff0000;
 }
 
 blockquote {
@@ -255,11 +251,6 @@ section, article, aside, nav, header, footer, main, div {
     padding: 0;
     box-sizing: border-box;
 }
-
-// header, footer {
-//     background-color: #f9f9f9;
-//     padding: 1em 0;
-// }
 
 section {
     margin-bottom: 2em;

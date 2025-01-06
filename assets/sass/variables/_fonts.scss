@@ -1,0 +1,29 @@
+// * ------------ @osw3/symfony-ux/assets/sass/variables/fonts.scss ------------
+// *
+// *    Default fonts definition.
+// *
+// *    - Base fonts sizes
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:meta';
+@use './../generated';
+
+
+// * Base fonts sizes
+// * ---------------------------------------------
+
+$base-font-size  : if(meta.global-variable-exists('base-font-size'      , $module: generated), generated.$base-font-size    , 16px);
+$base-line-height: if(meta.global-variable-exists('base-line-height'    , $module: generated), generated.$base-line-height  , 1.5);
+
+
+// * Headings base sizes
+// * ---------------------------------------------
+
+$h1-font-size: if(meta.global-variable-exists('h1-font-size'    , $module: generated), generated.$h1-font-size  , 2rem);
+$h2-font-size: if(meta.global-variable-exists('h2-font-size'    , $module: generated), generated.$h2-font-size  , 1.75rem);
+$h3-font-size: if(meta.global-variable-exists('h3-font-size'    , $module: generated), generated.$h3-font-size  , 1.5rem);
+$h4-font-size: if(meta.global-variable-exists('h4-font-size'    , $module: generated), generated.$h4-font-size  , 1.25rem);
+$h5-font-size: if(meta.global-variable-exists('h5-font-size'    , $module: generated), generated.$h5-font-size  , 1rem);
+$h6-font-size: if(meta.global-variable-exists('h6-font-size'    , $module: generated), generated.$h6-font-size  , 0.875rem);
+$heading-line-height: if(meta.global-variable-exists('heading-line-height'    , $module: generated), generated.$heading-line-height  , 1.25);

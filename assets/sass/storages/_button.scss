@@ -4,6 +4,7 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use './../storages/prefix';
 @use './../storages/spaces';
 
 // * Define storage data
@@ -12,8 +13,8 @@
 $padding-x       : spaces.$base * .6;
 $padding-y       : spaces.$base * 1.4;
 $border-width    : 1px;
-$border-radius   : 6px;
-$font-family     : '';
+$border-radius   : var(--#{prefix.$prefix}border-radius-normal);
+$font-family     : var(--#{prefix.$prefix}inherit);
 $font-size       : 1rem;
 $font-weight     : 400;
 $line-height     : 1.5;
