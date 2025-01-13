@@ -2,7 +2,7 @@
 @use "sass:map";
 @use "sass:meta";
 
-@function map-merge-multiple($maps...) {
+@function merge-multiple($maps...) {
     $result: ();
 
     @each $map in $maps {

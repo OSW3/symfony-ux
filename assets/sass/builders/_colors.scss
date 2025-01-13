@@ -20,51 +20,51 @@
 // * Retrieve stored data
 // * ---------------------------------------------
 
-$colors : store.$colors;
-$useless: store.$useless;
-$declinations : store.$declinations;
+// $colors : store.$colors;
+// $useless: store.$useless;
+// $declinations : store.$declinations;
 
 
-// * Unset useless colors
-// * ---------------------------------------------
+// // * Unset useless colors
+// // * ---------------------------------------------
 
-@if fnCollection.notEmpty($useless) {
-    @each $key, $value in $colors {
-        @if fnCollection.keyExists($useless, $key) {
-            $colors: fnCollection.unset($colors, $key);
-        }
-    }
-}
+// @if fnCollection.notEmpty($useless) {
+//     @each $key, $value in $colors {
+//         @if fnCollection.keyExists($useless, $key) {
+//             $colors: fnCollection.unset($colors, $key);
+//         }
+//     }
+// }
 
 
 // * Build CSS
 // * ---------------------------------------------
 
-:root {
-    @each $color-name, $color-value in $colors {
+// :root {
+//     @each $color-name, $color-value in $colors {
 
-        --#{prefix.$prefix}#{$color-name}: #{$color-value};
+//         --#{prefix.$prefix}#{$color-name}: #{$color-value};
 
-        @each $declination-name, $declination-rules in $declinations {
-            @if $color-name == $declination-name {
-                @each $declination in $declination-rules {
+//         @each $declination-name, $declination-rules in $declinations {
+//             @if $color-name == $declination-name {
+//                 @each $declination in $declination-rules {
 
-                    $mode : list.nth($declination, 1);
-                    $value: list.nth($declination, 2);
+//                     $mode : list.nth($declination, 1);
+//                     $value: list.nth($declination, 2);
 
-                    @if $mode == tint {
-                        $color: fnColor.tint($color-value, $value);
-                        // $color: fnColor.rgb-to-hex($color);
-                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
-                    }
-                    @else {
-                        $color: fnColor.shade($color-value, $value);
-                        // $color: fnColor.rgb-to-hex($color);
-                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
-                    }
+//                     @if $mode == tint {
+//                         $color: fnColor.tint($color-value, $value);
+//                         // $color: fnColor.rgb-to-hex($color);
+//                         --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+//                     }
+//                     @else {
+//                         $color: fnColor.shade($color-value, $value);
+//                         // $color: fnColor.rgb-to-hex($color);
+//                         --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+//                     }
 
-                }
-            }
-        }
-    }
-}
+//                 }
+//             }
+//         }
+//     }
+// }

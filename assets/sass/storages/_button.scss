@@ -14,7 +14,7 @@ $padding-x       : spaces.$base * .6;
 $padding-y       : spaces.$base * 1.4;
 $border-width    : 1px;
 $border-radius   : var(--#{prefix.$prefix}border-radius-normal);
-$font-family     : var(--#{prefix.$prefix}inherit);
+$font-family     : inherit;
 $font-size       : 1rem;
 $font-weight     : 400;
 $line-height     : 1.5;
@@ -26,14 +26,112 @@ $focus-box-shadow: 0 0 0 0.25rem;
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-@mixin padding-x($value) {$padding-x: $value !global;}
-@mixin padding-y($value) {$padding-y: $value !global;}
-@mixin border-width($value) {$border-width: $value !global;}
-@mixin border-radius($value) {$border-radius: $value !global;}
-@mixin font-family($value) {$font-family: $value !global;}
-@mixin font-size($value) {$font-size: $value !global;}
-@mixin font-weight($value) {$font-weight: $value !global;}
-@mixin line-height($value) {$line-height: $value !global;}
-@mixin box-shadow($value) {$box-shadow: $value !global;}
-@mixin disabled-opacity($value) {$disabled-opacity: $value !global;}
-@mixin focus-box-shadow($value) {$focus-box-shadow: $value !global;}
+/// Customize padding X
+/// --
+/// 
+/// Example :
+/// @include button.padding-x(.6rem)
+/// 
+@mixin padding-x($value) {
+    $padding-x: $value !global;
+}
+
+/// Customize padding Y
+/// --
+/// 
+/// Example :
+/// @include button.padding-y(1.4rem)
+/// 
+@mixin padding-y($value) {
+    $padding-y: $value !global;
+}
+
+/// Customize border width
+/// --
+/// 
+/// Example :
+/// @include button.border-width( 1px )
+/// 
+@mixin border-width($value) {
+    $border-width: $value !global;
+}
+
+/// Customize border radius
+/// --
+/// 
+/// Example :
+/// @include button.border-radius( 4px )
+/// 
+@mixin border-radius($value) {
+    $border-radius: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin font-family($value) {
+    $font-family: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin font-size($value) {
+    $font-size: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin font-weight($value) {
+    $font-weight: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin line-height($value) {
+    $line-height: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin box-shadow($value) {
+    $box-shadow: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin disabled-opacity($value) {
+    $disabled-opacity: $value !global;
+}
+
+/// Customize 
+/// --
+/// 
+/// Example :
+/// @include button.xxxx( xxx )
+/// 
+@mixin focus-box-shadow($value) {
+    $focus-box-shadow: $value !global;
+}

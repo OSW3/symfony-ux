@@ -5,18 +5,63 @@
 // * ---------------------------------------------------------------------------
 
 @use "sass:map";
-@use './../storages/prefix';
-@use './../storages/transitions';
+@use "sass:list";
+@use "sass:meta";
+@use "sass:color";
+@use "sass:string";
+@use './../builders/banner';
+@use './../functions/color' as fnColor;
+@use './../functions/collection' as fnCollection;
+@use './../functions/map' as fnMap;
 @use './../storages/fonts';
+@use './../storages/colors';
+@use './../storages/prefix';
+@use './../storages/themes';
+@use './../storages/transitions';
+
+@use './../components/brand';
+@use './../components/button';
 
 
 $base-radius: 6px; // todo; move this definition
+
+
+
+
+// * Colors
+// * ---------------------------------------------
+
+$colors : colors.$colors;
+
+// * Unset useless colors
+@if fnCollection.notEmpty(colors.$useless) {
+    @each $key, $value in $colors {
+        @if fnCollection.keyExists(colors.$useless, $key) {
+            $colors: fnCollection.unset($colors, $key);
+        }
+    }
+}
+
+
+
+// * Components Theme
+// * ---------------------------------------------
+
+$themes: fnMap.merge-multiple(
+    brand.$theme-properties, 
+    button.$theme-properties, 
+    map.get(themes.$themes, themes.$default)
+);
+
 
 // * Build CSS
 // * ---------------------------------------------
 
 :root {
-    --#{prefix.$prefix}inherit: inherit;
+    // --#{prefix.$prefix}inherit: inherit;
+
+    // Border Radius
+    // --
 
     --#{prefix.$prefix}border-radius-none       : 0px;
     --#{prefix.$prefix}border-radius-small      : #{$base-radius * 0.5};
@@ -26,12 +71,86 @@ $base-radius: 6px; // todo; move this definition
     --#{prefix.$prefix}border-radius-half-pill  : 9999px;
     --#{prefix.$prefix}border-radius-half-circle: 9999px 0;
 
+
+    // Colors
+    // --
+
+    @each $color-name, $color-value in $colors {
+
+        --#{prefix.$prefix}#{$color-name}: #{$color-value};
+
+        @each $declination-name, $declination-rules in colors.$declinations {
+            @if $color-name == $declination-name {
+                @each $declination in $declination-rules {
+
+                    $mode : list.nth($declination, 1);
+                    $value: list.nth($declination, 2);
+
+                    @if $mode == tint {
+                        $color: fnColor.tint($color-value, $value);
+                        // $color: fnColor.rgb-to-hex($color);
+                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+                    }
+                    @else {
+                        $color: fnColor.shade($color-value, $value);
+                        // $color: fnColor.rgb-to-hex($color);
+                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+                    }
+
+                }
+            }
+        }
+    }
+
+
+    // Transition Delays
+    // --
+
     @each $transition-name, $transition-value in transitions.$transitions {
         $delay: $transition-value * transitions.$base;
         --#{prefix.$prefix}transition-#{$transition-name}: #{$delay};
     }
 
+
+    // Font families
+    // --
+
     @each $font-name, $font-properties in fonts.$fonts {
         --#{prefix.$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
     }
+
+
+
+
+
+
+
+
+
+
+
+
+    // Components Themes
+    // --
+    
+    // * Default components themes
+    @each $name, $value in $themes {
+        --#{prefix.$prefix}#{$name}: #{$value};
+    }
+
+    // * Redefined Default components themes from themes definitions
+    @each $theme-name, $properties in themes.$themes {
+        @if $theme-name != themes.$default {
+            &[data-theme=#{$theme-name}] {
+                @each $property-name, $value in $properties {
+    
+                    @if map.has-key($themes, $property-name) {
+                        --#{prefix.$prefix}#{$property-name}: #{$value};
+                    }
+    
+                }
+            }
+        }
+    }
+
 }

@@ -1,0 +1,40 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/brand.scss -------------
+// *
+// *    Builder for Brand component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../components/brand';
+@include banner.header('Component Brand');
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}brand {
+
+    // Set layout css variables
+    // --
+
+    @each $name, $value in brand.$layout-properties {
+        --#{prefix.$prefix}#{$name}: #{$value};
+    }
+
+
+    // Brand container
+    // --
+
+    display         : inline-block;
+    text-decoration : none;
+    white-space     : nowrap;
+    height          : fit-content;
+    color           : var(--#{prefix.$prefix}brand-color);
+
+
+    border: 1px solid red;
+
+    // Brand Link
+    // --
+}

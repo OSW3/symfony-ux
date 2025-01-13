@@ -1,0 +1,30 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/brand.scss -----------
+// *
+// *    Builder for Brand component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/brand.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    brand-color             : var(--#{prefix.$prefix}red), // todo: redifine this base
+    brand-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
+    // brand-bg-color          : var(--#{prefix.$prefix}cyan), // todo: redifine this base
+    // brand-hover-bg-color    : var(--#{prefix.$prefix}cyan), // todo: redifine this base
+    // brand-border-color      : var(--#{prefix.$prefix}red), // todo: redifine this base
+    // brand-hover-border-color: var(--#{prefix.$prefix}red), // todo: redifine this base
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

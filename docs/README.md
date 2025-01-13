@@ -3,28 +3,29 @@
 Add many UX Components to your app.
 
 ## Installation
-- [Installation (no comment process)](./docs/install/no-comment.md)
-- [Installation (process explained)](./docs/install/explained.md)
+- [Installation (no comment process)](./install/no-comment.md)
+- [Installation (process explained)](./install/explained.md)
 
 ## Layout
-- [Prefix](./docs/layout/prefix.md)
-- [Breakpoints & Containers](./docs/layout/breakpoints.md)
-- [Colors](./docs/layout/colors.md)
-- [palette & Context](./docs/layout/palette.md)
-<!-- - [Grid](./docs/layout/grid.md) -->
-<!-- - [Themes](./docs/layout/themes.md) -->
-<!-- - [Transitions](./docs/layout/transitions.md) -->
+- [Prefix](./layout/prefix.md)
+- [Breakpoints & Containers](./layout/breakpoints.md)
+- [Colors](./layout/colors.md)
+- [palette & Context](./layout/palette.md)
+<!-- - [Grid](./layout/grid.md) -->
+<!-- - [Themes](./layout/themes.md) -->
+<!-- - [Transitions](./layout/transitions.md) -->
 
 ## Components
-- [Accordions](./docs/components/accordion.md)
-- [Alerts](./docs/components/alert.md)
-- [Analytics](./docs/components/analytics.md)
-- [Announcement](./docs/components/analytics.md)
-- [Copyright](./docs/components/copyright.md)
-- [link](./docs/components/link.md)
-- [Rotators](./docs/components/rotator.md)
-- [Scroll to top](./docs/components/scroll-to-top.md)
-- [Tickers](./docs/components/ticker.md)
+<!-- - [Accordions](./components/accordion.md) -->
+<!-- - [Alerts](./components/alert.md) -->
+<!-- - [Analytics](./components/analytics.md) -->
+<!-- - [Announcement](./components/analytics.md) -->
+  - [Buttons](./components/buttons.md)
+<!-- - [Copyright](./components/copyright.md) -->
+<!-- - [link](./components/link.md) -->
+<!-- - [Rotators](./components/rotator.md) -->
+<!-- - [Scroll to top](./components/scroll-to-top.md) -->
+<!-- - [Tickers](./components/ticker.md) -->
 <br>
 
 ## How UX Components works ?

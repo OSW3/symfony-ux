@@ -1,4 +1,4 @@
-<!-- docs/_sidebar.md -->
+<!-- _sidebar.md -->
 
 - Getting started
   - [Installation](./getting-started/installation.md)
@@ -10,19 +10,20 @@
   - [Breakpoints & Containers](./layout/breakpoints.md)
   - [Colors](./layout/colors.md)
   - [palette & Context](./layout/palette.md)
-  <!-- - [Grid](./docs/layout/grid.md) -->
-  <!-- - [Themes](./docs/layout/themes.md) -->
-  <!-- - [Transitions](./docs/layout/transitions.md) -->
+  <!-- - [Grid](./layout/grid.md) -->
+  <!-- - [Themes](./layout/themes.md) -->
+  <!-- - [Transitions](./layout/transitions.md) -->
 - Components
-  - [Introduction](./docs/components//README.md)
-  - [Accordions](./docs/components/accordion.md)
-  - [Alerts](./docs/components/alert.md)
-  - [Analytics](./docs/components/analytics.md)
-  - [Announcement](./docs/components/analytics.md)
-  - [Copyright](./docs/components/copyright.md)
-  - [link](./docs/components/link.md)
-  - [Rotators](./docs/components/rotator.md)
-  - [Scroll to top](./docs/components/scroll-to-top.md)
-  - [Tickers](./docs/components/ticker.md)
+  <!-- - [Introduction](./components//README.md) -->
+  <!-- - [Accordions](./components/accordion.md) -->
+  <!-- - [Alerts](./components/alert.md) -->
+  <!-- - [Analytics](./components/analytics.md) -->
+  <!-- - [Announcement](./components/analytics.md) -->
+  - [Buttons](./components/buttons.md)
+  <!-- - [Copyright](./components/copyright.md) -->
+  <!-- - [link](./components/link.md) -->
+  <!-- - [Rotators](./components/rotator.md) -->
+  <!-- - [Scroll to top](./components/scroll-to-top.md) -->
+  <!-- - [Tickers](./components/ticker.md) -->
 - Forms
-  - [Introduction](./docs/components//README.md)
+  - [Introduction](./components//README.md)

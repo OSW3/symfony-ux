@@ -1,0 +1,135 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/button.scss ------------
+// *
+// *    Builder for Button component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use './../builders/banner';
+@use './../components/button';
+
+@use './../storages/prefix';
+@use './../mixins/component';
+@use './../mixins/spacing';
+@use './../mixins/support';
+@use './../mixins/transition';
+@include banner.header('Component Button');
+
+
+
+@function palette-declination($palette, $property) {
+
+    @if 'button-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+    }
+    @else if 'button-hover-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+    }
+    @else if 'button-hover-bg-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
+    }
+    @else if 'button-hover-border-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
+    }
+
+    @return null;
+};
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}button {
+
+    // Set layout css variables
+    // --
+
+    @each $name, $value in button.$layout-properties {
+        --#{prefix.$prefix}#{$name}: #{$value};
+    }
+
+
+    // Default state
+    // --
+
+    display         : inline-block;
+    cursor          : pointer;
+    background-color: var(--#{prefix.$prefix}button-bg-color);
+    border          : var(--#{prefix.$prefix}button-border-width) solid var(--#{prefix.$prefix}button-border-color);
+    border-radius   : var(--#{prefix.$prefix}button-border-radius);
+    color           : var(--#{prefix.$prefix}button-color);
+    font-family     : var(--#{prefix.$prefix}button-font-family);
+    font-size       : var(--#{prefix.$prefix}button-font-size);
+    font-weight     : var(--#{prefix.$prefix}button-font-weight);
+    line-height     : var(--#{prefix.$prefix}button-line-height);
+    text-align      : center;
+    text-decoration : none;
+    vertical-align  : middle;
+
+    @include transition.set(
+        (color, background-color, border-color, box-shadow),
+        var(--#{prefix.$prefix}transition-normal),
+        ease-in-out
+    );
+
+    @include spacing.inner( 
+        var(--#{prefix.$prefix}button-padding-x),
+        var(--#{prefix.$prefix}button-padding-y),
+        var(--#{prefix.$prefix}button-padding-x),
+        var(--#{prefix.$prefix}button-padding-y),
+    );
+    @include support.prefix('user-select', none, (webkit, moz));
+
+    
+    // hover state
+    // --
+
+    &:hover {
+        color           : var(--#{prefix.$prefix}button-hover-color);
+        background-color: var(--#{prefix.$prefix}button-hover-bg-color);
+        border-color    : var(--#{prefix.$prefix}button-hover-border-color);
+    }
+
+    
+    // active state
+    // --
+
+    &.active, &:active {
+    }
+
+    
+    // Focus state
+    // --
+
+    &.focus, &:focus, &:focus-visible {
+        outline-color: rgb(198, 3, 100);
+        outline-style: solid;
+        outline-width: 4px;
+    }
+
+    
+    // Disabled state
+    // --
+
+    &[disabled] {
+        cursor          : default;
+        opacity         : var(--#{prefix.$prefix}button-disabled-opacity);
+        color           : var(--#{prefix.$prefix}button-color);
+        background-color: var(--#{prefix.$prefix}button-bg-color);
+        border-color    : var(--#{prefix.$prefix}button-border-color);
+    }
+
+    & .no-border {
+        border: none !important;
+    }
+    
+
+    // --
+
+    @include component.palette-declination( 
+        meta.get-function(palette-declination), 
+        button.$theme-properties
+    );
+}

@@ -13,4 +13,3 @@
 // * Default grid divisions
 // * ---------------------------------------------
 $divisions: if(meta.global-variable-exists('grid-divisions', $module: generated), generated.$grid-divisions, 12) !default;
-

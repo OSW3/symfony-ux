@@ -1,174 +1,43 @@
 // * ----------- @osw3/symfony-ux/assets/sass/components/button.scss -----------
 // *
-// *    Builder for Button component
+// *    Default variables for Button component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/button.scss'
 // *
 // * ---------------------------------------------------------------------------
 
-@use "sass:map";
-@use "sass:meta";
-@use './../builders/banner';
-@use './../storages/button' as store;
+@use './../storages/button';
 @use './../storages/prefix';
-@use './../storages/themes';
-@use './../functions/color' as fnColor;
-@use './../functions/map' as fnMap;
-@use './../mixins/spacing';
-@use './../mixins/support';
-@use './../mixins/component';
-@use './../mixins/transition';
-@include banner.header('Component Button');
 
 
-@function palette-declination($palette, $property) {
-
-    @if 'button-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
-    }
-    @else if 'button-hover-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
-    }
-    @else if 'button-hover-bg-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
-    }
-    @else if 'button-hover-border-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-emphasis);
-    }
-
-    @return null;
-};
-
-
-// * Component properties
+// * Default theme properties
 // * ---------------------------------------------
 
-// * Theme properties
-
 $theme-properties: (
-    button-color             : var(--#{prefix.$prefix}purple), // todo: redifine this base
-    button-hover-color       : var(--#{prefix.$prefix}inherit),
-    button-bg-color          : var(--#{prefix.$prefix}cyan), // todo: redifine this base
-    button-hover-bg-color    : var(--#{prefix.$prefix}cyan), // todo: redifine this base
-    button-border-color      : var(--#{prefix.$prefix}red), // todo: redifine this base
-    button-hover-border-color: var(--#{prefix.$prefix}red), // todo: redifine this base
+    button-color             : var(--#{prefix.$prefix}black),
+    button-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
+    button-bg-color          : var(--#{prefix.$prefix}gray-400),
+    button-hover-bg-color    : var(--#{prefix.$prefix}gray-500),
+    button-border-color      : var(--#{prefix.$prefix}gray-600),
+    button-hover-border-color: var(--#{prefix.$prefix}gray-700),
 );
 
 
-// * Structure properties
-
-$structure-properties: fnMap.map-merge-multiple((
-    button-padding-x         : store.$padding-x,
-    button-padding-y         : store.$padding-y,
-    button-border-width      : store.$border-width,
-    button-border-radius     : store.$border-radius,
-    button-font-family       : store.$font-family,
-    button-font-size         : store.$font-size,
-    button-font-weight       : store.$font-weight,
-    button-line-height       : store.$line-height,
-    button-box-shadow        : store.$box-shadow,
-    button-disabled-opacity  : store.$disabled-opacity,
-    button-focus-box-shadow  : store.$focus-box-shadow
-), $theme-properties, map.get(themes.$themes, themes.$default));
-
-
-// * Generate CSS variables
-
-:root {
-    
-    // * All properties variables
-    @each $name, $value in $structure-properties {
-        --#{prefix.$prefix}#{$name}: #{$value};
-    }
-
-    // * Redefined themes properties variables
-    @each $theme-name, $properties in themes.$themes {
-        @if $theme-name != themes.$default {
-            &[data-theme=#{$theme-name}] {
-                @each $property-name, $value in $properties {
-    
-                    @if map.has-key($structure-properties, $property-name) {
-                        --#{prefix.$prefix}#{$property-name}: #{$value};
-                    }
-    
-                }
-            }
-        }
-    }
-}
-
-
-
-// * Component Structure
+// * Default structure properties
 // * ---------------------------------------------
 
-.#{prefix.$prefix}button {
-
-    // Default state
-    // --
-
-    display         : inline-block;
-    cursor          : pointer;
-    background-color: var(--#{prefix.$prefix}button-bg-color);
-    border          : var(--#{prefix.$prefix}button-border-width) solid var(--#{prefix.$prefix}button-border-color);
-    border-radius   : var(--#{prefix.$prefix}button-border-radius);
-    color           : var(--#{prefix.$prefix}button-color);
-    font-family     : var(--#{prefix.$prefix}button-font-family);
-    font-size       : var(--#{prefix.$prefix}button-font-size);
-    font-weight     : var(--#{prefix.$prefix}button-font-weight);
-    line-height     : var(--#{prefix.$prefix}button-line-height);
-    text-align      : center;
-    text-decoration : none;
-    vertical-align  : middle;
-
-    @include transition.set(
-        (color, background-color, border-color, box-shadow),
-        var(--transition-normal),
-        ease-in-out
-    );
-
-    @include spacing.inner( 
-        var(--#{prefix.$prefix}button-padding-x),
-        var(--#{prefix.$prefix}button-padding-y),
-        var(--#{prefix.$prefix}button-padding-x),
-        var(--#{prefix.$prefix}button-padding-y),
-    );
-    @include support.prefix('user-select', none, (webkit, moz));
-
-    
-    // hover state
-    // --
-
-    &:hover {
-        color: var(--#{prefix.$prefix}button-hover-color);
-        background-color: var(--#{prefix.$prefix}button-hover-bg-color);
-        border-color: var(--#{prefix.$prefix}button-hover-border-color);
-    }
-
-    &.active, &:active {
-    }
-
-    &.focus, &:focus, &:focus-visible {
-        outline-color: rgb(198, 3, 100);
-        outline-style: solid;
-        outline-width: 4px;
-    }
-
-    &[disabled] {
-        cursor          : default;
-        opacity         : var(--#{prefix.$prefix}button-disabled-opacity);
-        color           : var(--#{prefix.$prefix}button-color);
-        background-color: var(--#{prefix.$prefix}button-bg-color);
-        border-color    : var(--#{prefix.$prefix}button-border-color);
-    }
-
-    & .no-border {
-        border: none !important;
-    }
-    
-
-    // --
-
-    @include component.palette-declination( 
-        meta.get-function(palette-declination), 
-        $theme-properties
-    );
-}
+$layout-properties: (
+    button-padding-x         : button.$padding-x,
+    button-padding-y         : button.$padding-y,
+    button-border-width      : button.$border-width,
+    button-border-radius     : button.$border-radius,
+    button-font-family       : button.$font-family,
+    button-font-size         : button.$font-size,
+    button-font-weight       : button.$font-weight,
+    button-line-height       : button.$line-height,
+    button-box-shadow        : button.$box-shadow,
+    button-disabled-opacity  : button.$disabled-opacity,
+    button-focus-box-shadow  : button.$focus-box-shadow
+);

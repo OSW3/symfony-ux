@@ -21,7 +21,7 @@
 
 $theme-properties: map.merge((
     main-color           : var(--#{prefix.$prefix}gray-800),
-    main-link-color      : var(--#{prefix.$prefix}inherit),
+    main-link-color      : inherit, //var(--#{prefix.$prefix}inherit),
     main-hover-link-color: var(--#{prefix.$prefix}blue),
     main-bg-color        : var(--#{prefix.$prefix}white),
 ), map.get(themes.$themes, themes.$default));
@@ -284,10 +284,12 @@ main {
     padding: 1em;
 }
 
-a:focus, button:focus, input:focus, select:focus, textarea:focus {
-    outline: 2px solid #005fcc;
-    outline-offset: 2px;
-}
+
+
+// a:focus, button:focus, input:focus, select:focus, textarea:focus {
+//     outline: 2px solid #005fcc;
+//     outline-offset: 2px;
+// }
 
 a:focus:not(:focus-visible), 
 button:focus:not(:focus-visible), 
