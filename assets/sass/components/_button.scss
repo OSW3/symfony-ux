@@ -31,10 +31,19 @@ $theme-properties: (
 $layout-properties: (
     button-padding-x         : button.$padding-x,
     button-padding-y         : button.$padding-y,
+    button-padding-small-x   : button.$padding-small-x,
+    button-padding-small-y   : button.$padding-small-y,
+    button-padding-large-x   : button.$padding-large-x,
+    button-padding-large-y   : button.$padding-large-y,
+
     button-border-width      : button.$border-width,
     button-border-radius     : button.$border-radius,
     button-font-family       : button.$font-family,
+    
     button-font-size         : button.$font-size,
+    button-font-size-small   : button.$font-size-small,
+    button-font-size-large   : button.$font-size-large,
+
     button-font-weight       : button.$font-weight,
     button-line-height       : button.$line-height,
     button-box-shadow        : button.$box-shadow,

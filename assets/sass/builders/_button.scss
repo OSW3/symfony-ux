@@ -124,8 +124,29 @@
     & .no-border {
         border: none !important;
     }
-    
 
+    
+    // Sizes declinations
+    // --
+
+    &-small {
+        --#{prefix.$prefix}button-padding-x: var(--#{prefix.$prefix}button-padding-small-x);
+        --#{prefix.$prefix}button-padding-y: var(--#{prefix.$prefix}button-padding-small-y);
+        --#{prefix.$prefix}button-font-size: var(--#{prefix.$prefix}button-font-size-small);
+    }
+    &-large {
+        --#{prefix.$prefix}button-padding-x: var(--#{prefix.$prefix}button-padding-large-x);
+        --#{prefix.$prefix}button-padding-y: var(--#{prefix.$prefix}button-padding-large-y);
+        --#{prefix.$prefix}button-font-size: var(--#{prefix.$prefix}button-font-size-large);
+    }
+
+    &-block {
+        display: block;
+        min-width: 100%;
+    }
+
+    
+    // Palette declinations
     // --
 
     @include component.palette-declination( 
