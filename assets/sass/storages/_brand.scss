@@ -1,0 +1,95 @@
+// * ------------- @osw3/symfony-ux/assets/sass/storages/brand.scss ------------
+// *
+// *    Brand Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:list';
+@use './../storages/breakpoints';
+@use './../storages/fonts';
+@use './../storages/prefix';
+@use './../storages/spaces';
+
+@use './../functions/collection' as fnCollection;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$breakpoints: ();
+@each $name, $value in breakpoints.$breakpoints {
+    $breakpoints: list.append($breakpoints, $name) !global;
+}
+
+$padding-x            : spaces.$base * .6;
+$padding-y            : spaces.$base * .8;
+$primary-font-family  : var(--#{prefix.$prefix}font-open-sans);
+$primary-font-size    : fonts.$base-font-size * 1.5;
+$primary-font-weight  : 100 * 6;
+$secondary-font-family: var(--#{prefix.$prefix}font-monospace);
+$secondary-font-size  : fonts.$base-font-size * .8;
+$secondary-font-weight: 100 * 4;
+$tagline-offset       : (spaces.$base * .5) * -1;
+$transition-delay     : var(--#{prefix.$prefix}transition-normal);
+$transition-type      : ease-in-out;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin breakpoints($list) {
+    $breakpoints: $list !global;
+}
+
+@mixin useless-breakpoints($useless) {
+    @each $key, $value in $breakpoints {
+        @if fnCollection.keyExists($useless, $key) {
+            $breakpoints: fnCollection.unset($breakpoints, $key) !global;
+        }
+    }
+}
+
+@mixin padding-x($value) {
+    $padding-x: $value !global;
+}
+
+@mixin padding-y($value) {
+    $padding-y: $value !global;
+}
+
+@mixin primary-font-family($value) {
+    $primary-font-family: $value !global;
+}
+
+@mixin primary-font-size($value) {
+    $primary-font-size: $value !global;
+}
+
+@mixin primary-font-weight($value) {
+    $primary-font-weight: $value !global;
+}
+
+@mixin secondary-font-family($value) {
+    $secondary-font-family: $value !global;
+}
+
+@mixin secondary-font-size($value) {
+    $secondary-font-size: $value !global;
+}
+
+@mixin secondary-font-weight($value) {
+    $secondary-font-weight: $value !global;
+}
+
+@mixin tagline-offset($value) {
+    $tagline-offset: $value !global;
+}
+
+@mixin transition-delay($value) {
+    $transition-delay: $value !global;
+}
+
+@mixin transition-type($value) {
+    $transition-type: $value !global;
+}
+

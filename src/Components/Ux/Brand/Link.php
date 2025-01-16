@@ -24,7 +24,7 @@ final class Link extends AbstractComponent
     public string $link;
 
     #[ExposeInTemplate(name: 'logo')]
-    public array $logo;
+    public array|string $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -46,7 +46,7 @@ final class Link extends AbstractComponent
         $resolver->setAllowedTypes('link', ['null', 'string']);
 
         $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['array']);
+        $resolver->setAllowedTypes('logo', ['array','string']);
 
         return $resolver->resolve($data) + $data;
     }

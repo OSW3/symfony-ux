@@ -3,3 +3,12 @@
 {# - Part : Inner                               - #}
 {# ---------------------------------------------- #}
 {% extends '@SymfonyUx/brand/inner.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+{# Set the Class attribute #}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+{# {% set _attr = _add_attribute(_attr, 'class', 'inner') %} #}

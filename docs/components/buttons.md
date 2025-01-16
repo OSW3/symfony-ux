@@ -4,7 +4,7 @@
 
 Create advanced buttons.
 
-## Twig integration
+## Integration
 
 <!-- tabs:start -->
 
@@ -99,7 +99,17 @@ Create advanced buttons.
 
 <!-- tabs:end -->
 
-## Twig configuration
+
+## Configuration
+
+<!-- tabs:start -->
+### **YAML**
+
+This component has no configuration in the `symfony_ux.yaml` file
+
+### **Twig Components**
+
+### Twig configuration
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -116,8 +126,9 @@ Create advanced buttons.
 | `size` | `string` | Set the size of the button. | no | `medium` |
 | `block` | `bool` | If true the button will displayed as a block. | no | `false` |
 
+<hr>
 
-### `type` values
+#### `type` values
 
 | Value | Description |
 |-|-|
@@ -126,7 +137,7 @@ Create advanced buttons.
 | `reset` | Set a button type Reset |
 | `link` | Set a button as a link |
 
-### `target` values
+#### `target` values
 
 | Value | Description |
 |-|-|
@@ -135,7 +146,7 @@ Create advanced buttons.
 | `_blank` | Set a link with target _blank |
 | `custom` | Set a link with a custom target |
 
-### `is` values
+#### `is` values
 
 | Value | Description |
 |-|-|
@@ -150,7 +161,7 @@ Create advanced buttons.
 | `dark` | Set the style `dark` |
 <!-- | `custom` | Set the style of the custom palette | -->
 
-### `size` values
+#### `size` values
 
 | Value | Description |
 |-|-|
@@ -159,8 +170,32 @@ Create advanced buttons.
 | `medium` | Set the style `medium` |
 | `large` | Set the style `large` |
 
-## SASS Integration
+### **SASS**
 
+### [optional] Customize the button component layout
 
-## JavaScript Integration
+```scss 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/prefix';
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/spaces';
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/button';
 
+@include button.padding-x(spaces.$base * .6);
+@include button.padding-y(spaces.$base * 1.4);
+@include button.border-width(1px);
+@include button.border-radius(var(--#{prefix.$prefix}border-radius-half-pill));
+@include button.font-family(var(--#{prefix.$prefix}font-monospace));
+@include button.font-size(1rem);
+@include button.font-weight(400);
+@include button.line-height(1.5);
+@include button.box-shadow('inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)');
+@include button.disabled-opacity(0.65);
+@include button.focus-box-shadow(0 0 0 0.25rem);
+```
+
+### Use the builder for button component
+
+```scss 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/button';
+```
+
+<!-- tabs:end -->

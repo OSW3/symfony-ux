@@ -2,6 +2,7 @@
 namespace OSW3\UX\Components\Ux\Brand;
 
 use OSW3\UX\Components\Ux\Brand;
+use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Components\AbstractComponent;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -11,6 +12,8 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 #[AsTwigComponent(template: '@SymfonyUx/brand/inner.twig')]
 final class Inner extends AbstractComponent
 {
+    use AttributeClassTrait;
+
     #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
     public ?string $name;
 
@@ -18,7 +21,7 @@ final class Inner extends AbstractComponent
     public ?string $tagline;
 
     #[ExposeInTemplate(name: 'logo')]
-    public array $logo;
+    public array|string $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -34,7 +37,7 @@ final class Inner extends AbstractComponent
         $resolver->setAllowedTypes('tagline', ['null', 'string']);
 
         $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['array']);
+        $resolver->setAllowedTypes('logo', ['array','string']);
 
         return $resolver->resolve($data) + $data;
     }
@@ -42,6 +45,11 @@ final class Inner extends AbstractComponent
     protected function getConfig(): array 
     {
         return $this->config['components'][Brand::NAME];
+    }
+
+    protected function getComponentClassname(): string 
+    {
+        return $this->prefix . Brand::NAME . "-inner";
     }
 
     public function fetchName(): ?string

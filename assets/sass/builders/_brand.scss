@@ -4,9 +4,14 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use 'sass:map';
+@use 'sass:list';
 @use './../builders/banner';
+@use './../storages/breakpoints';
 @use './../storages/prefix';
 @use './../components/brand';
+@use './../mixins/spacing';
+@use './../mixins/transition';
 @include banner.header('Component Brand');
 
 
@@ -26,15 +31,113 @@
     // Brand container
     // --
 
-    display         : inline-block;
-    text-decoration : none;
-    white-space     : nowrap;
-    height          : fit-content;
-    color           : var(--#{prefix.$prefix}brand-color);
+    display        : inline-block;
+    text-decoration: none;
+    white-space    : nowrap;
+    height         : fit-content;
+    color          : var(--#{prefix.$prefix}brand-color);
+    font-family    : var(--#{prefix.$prefix}brand-primary-font-family);
+    font-size      : var(--#{prefix.$prefix}brand-primary-font-size);
+    font-weight    : var(--#{prefix.$prefix}brand-primary-font-weight);
 
-
-    border: 1px solid red;
 
     // Brand Link
     // --
+
+    &-link {
+        color          : var(--#{prefix.$prefix}brand-color);
+        display        : table;
+        text-decoration: none;
+
+        // border: 10px solid green;
+        // padding: 15px;
+
+        @include transition.set(
+            (color),
+            var(--#{prefix.$prefix}brand-transition-delay),
+            var(--#{prefix.$prefix}brand-transition-type),
+        );
+
+        &:hover {
+            color: var(--#{prefix.$prefix}brand-hover-color);
+        }
+    }
+
+
+    // Brand Inner
+    // --
+
+    &-inner {
+        // border: 10px solid orange;
+
+        @include spacing.inner( 
+            var(--#{prefix.$prefix}brand-padding-x),
+            var(--#{prefix.$prefix}brand-padding-y),
+            var(--#{prefix.$prefix}brand-padding-x),
+            var(--#{prefix.$prefix}brand-padding-y),
+        );
+    }
+    
+
+    /// Brand Text
+    /// --
+
+    &-name {
+        // border: 10px solid green;
+        display: block;
+        font-size: inherit;
+        font-weight: inherit;
+    }
+
+    &-tagline {
+        @include spacing.outer( 0,0,0,0 );
+        display    : block;
+        font-family: var(--#{prefix.$prefix}brand-secondary-font-family);
+        font-size  : var(--#{prefix.$prefix}brand-secondary-font-size);
+        font-weight: var(--#{prefix.$prefix}brand-secondary-font-weight);
+    }
+    &-name + &-tagline {
+        @include spacing.outer( var(--#{prefix.$prefix}brand-tagline-offset) ,0,0,0 );
+    }
+    
+
+    /// Brand images (logo & icon)
+    /// --
+    
+    &-logo {
+        display: none;
+        width: auto;
+        height: auto;
+    }
+    &-logo-main {
+        display: block !important;
+    }
+
+
+    /// Responsive Brand & main logo
+    /// --
+    
+    $default-breakpoint: '';
+
+    @each $name in brand.$breakpoints {
+        @if map.has-key(breakpoints.$breakpoints, $name) {
+            // Default brand breakpoint. Displayed when all media queries ar hidden
+            @if $default-breakpoint == '' {
+                $default-breakpoint: $name;
+                &-logo-#{$name} {
+                    display: block;
+                }
+            }
+
+            // Media query fot Available breakpoints
+            @media (min-width: map.get(breakpoints.$breakpoints, $name)) {
+                &-logo {
+                    display: none;
+                }
+                &-logo-#{$name} {
+                    display: block;
+                }
+            }
+        }
+    }
 }

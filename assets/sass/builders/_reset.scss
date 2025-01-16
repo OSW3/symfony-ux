@@ -19,12 +19,16 @@
 // * Component properties
 // * ---------------------------------------------
 
-$theme-properties: map.merge((
+$theme-properties: (
     main-color           : var(--#{prefix.$prefix}gray-800),
     main-link-color      : inherit, //var(--#{prefix.$prefix}inherit),
     main-hover-link-color: var(--#{prefix.$prefix}blue),
     main-bg-color        : var(--#{prefix.$prefix}white),
-), map.get(themes.$themes, themes.$default));
+);
+
+@if map.has-key(themes.$themes, themes.$default) {
+    $theme-properties: map.merge($theme-properties, map.get(themes.$themes, themes.$default));
+}
 
 
 

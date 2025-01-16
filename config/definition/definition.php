@@ -92,7 +92,6 @@ return static function($definition)
             /**
              * Colors
              */
-
             ->arrayNode('colors')->addDefaultsIfNotSet()->children()
 
                 ->arrayNode('defaults')->addDefaultsIfNotSet()->children()
@@ -510,8 +509,6 @@ return static function($definition)
 
             ->end()->end()
 
-            // Brand
-            // -- 
             ->arrayNode('brand')
                 ->info("Parameters settings of the Brand component.")
                 ->addDefaultsIfNotSet()->children()

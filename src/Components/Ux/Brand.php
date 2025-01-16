@@ -39,7 +39,7 @@ final class Brand extends AbstractComponent
     public ?string $route;
     
     #[ExposeInTemplate(name: 'logo', getter: 'fetchLogo')]
-    public array|null $logo;
+    public array|string|null $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -71,7 +71,7 @@ final class Brand extends AbstractComponent
         $resolver->setAllowedTypes('route', ['null', 'string']);
 
         $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['array','null']);
+        $resolver->setAllowedTypes('logo', ['array','string','null']);
 
         return $resolver->resolve($data) + $data;
     }
@@ -135,9 +135,17 @@ final class Brand extends AbstractComponent
         return $link;
     }
 
-    public function fetchLogo(): array 
+    public function fetchLogo(): array|string 
     {
         $options = $this->getConfig();
-        return !empty($this->logo) ? $this->logo : $options['logo'];
+
+        $logo = $this->logo;
+        $logo = !empty($logo) ? $logo : $options['logo'];
+
+        if (gettype($this->logo) === 'string') {
+            $logo = ['main' => $logo];
+        }
+        
+        return $logo;
     }
 }

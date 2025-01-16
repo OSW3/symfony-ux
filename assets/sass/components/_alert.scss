@@ -2,8 +2,45 @@
 // *
 // *    Builder for Alert component
 // *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/alert.scss'
+// *
 // * ---------------------------------------------------------------------------
 
-@use "sass:map";
-@use './../builders/banner';
-@use './../builders/palette';
+@use './../storages/prefix';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // alert-color             : var(--#{prefix.$prefix}red),
+    // alert-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
+    // alert-bg-color          : var(--#{prefix.$prefix}cyan),
+    // alert-hover-bg-color    : var(--#{prefix.$prefix}cyan),
+    // alert-border-color      : var(--#{prefix.$prefix}red),
+    // alert-hover-border-color: var(--#{prefix.$prefix}red),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: (
+    // * Spaces
+    // * --
+
+    // * Border
+    // * --
+
+    // * Font
+    // * --
+
+    // * Box Shadow
+    // * --
+
+    // * Opacity
+    // * --
+
+);
