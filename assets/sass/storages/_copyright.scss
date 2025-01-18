@@ -12,14 +12,20 @@
 // * Define storage data
 // * ---------------------------------------------
 
-$cursor               : initial;
-$font-family          : var(--#{prefix.$prefix}font-open-sans);
-$font-size            : fonts.$base-font-size * .8;
+$cursor               : null;
+
+$font-family          : null; //var(--#{prefix.$prefix}font-open-sans);
+$font-size            : fonts.$scale-base * .8;
 $font-weight          : 100 * 4;
+
 $padding-x            : spaces.$base * 0;
 $padding-y            : spaces.$base * 0;
-$transition-delay     : var(--#{prefix.$prefix}transition-normal);
-$transition-type      : ease-in-out;
+
+$transition           : false;
+$transition-delay     : null;
+$transition-type      : null;
+
+$hover                : false;
 
  
 // * Storage Mixins definition
@@ -32,11 +38,9 @@ $transition-type      : ease-in-out;
 @mixin setFontFamily($value) {
     $font-family: $value !global;
 }
-
 @mixin setFontSize($value) {
     $font-size: $value !global;
 }
-
 @mixin setFontWeight($value) {
     $font-weight: $value !global;
 }
@@ -44,15 +48,28 @@ $transition-type      : ease-in-out;
 @mixin setPaddingX($value) {
     $padding-x: $value !global;
 }
-
 @mixin setPaddingY($value) {
     $padding-y: $value !global;
 }
 
+
+@mixin setTransition($value) {
+    $transition: $value !global;
+
+    @if $transition and $transition-delay == null {
+        $transition-delay : var(--#{prefix.$prefix}transition-normal) !global;
+    }
+    @if $transition and $transition-type == null {
+        $transition-type  : ease-in-out !global;
+    }
+}
 @mixin setTransitionDelay($value) {
     $transition-delay: $value !global;
 }
-
 @mixin setTransitionType($value) {
     $transition-type: $value !global;
+}
+
+@mixin setHover($value) {
+    $hover: $value !global;
 }

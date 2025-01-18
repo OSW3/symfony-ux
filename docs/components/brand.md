@@ -65,37 +65,72 @@ symfony_ux:
 
 ### **SASS**
 
-### [optional] Customize the button component layout
-
-```scss 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/prefix';
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/fonts';
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/spaces';
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/brand';
-
-// Redefine available breakpoints name for the Brand Component
-@include brand.breakpoints((laptop, desktop));
-
-// Or exclude some breakpoints
-@include brand.useless-breakpoints(( wide, ultra, ultra-wid ));
-
-@include brand.padding-x(spaces.$base * .6);
-@include brand.padding-y(spaces.$base * .8);
-@include brand.primary-font-family(var(--#{prefix.$prefix}font-open-sans));
-@include brand.primary-font-size(fonts.$base-font-size * 1.5);
-@include brand.primary-font-weight(100 * 6);
-@include brand.secondary-font-family(var(--#{prefix.$prefix}font-monospace));
-@include brand.secondary-font-size(fonts.$base-font-size * .8);
-@include brand.secondary-font-weight(100 * 4);
-@include brand.tagline-offset((spaces.$base * .5) * -1);
-@include brand.transition-delay(var(--#{prefix.$prefix}transition-normal));
-@include brand.transition-type(ease-in-out);
-```
-
 ### Use the builder for button component
 
 ```scss 
 @use './../../../vendor/osw3/symfony-ux/assets/sass/builders/brand';
+```
+
+### [optional] Customize the button component layout
+
+- `setBreakpoints`  
+Redefine available breakpoints name for the Brand Component
+```scss 
+@include brand.setBreakpoints((laptop, desktop));
+```
+
+- `setUselessBreakpoints`  
+Or exclude some breakpoints
+```scss 
+@include brand.setUselessBreakpoints(( wide, ultra, ultra-wid ));
+```
+
+- `setPaddingX`  
+```scss 
+@include brand.setPaddingX(spaces.$base * .6);
+```
+
+- `setPaddingY`  
+```scss 
+@include brand.setPaddingY(spaces.$base * .8);
+```
+
+- `setPrimaryFontFamily` & `setSecondaryFontFamily`  
+```scss 
+@include brand.setPrimaryFontFamily(var(--#{prefix.$prefix}font-open-sans));
+@include brand.setSecondaryFontFamily(var(--#{prefix.$prefix}font-open-sans));
+```
+
+- `setPrimaryFontSize` & `setSecondaryFontSize`  
+```scss 
+@include brand.setPrimaryFontSize(fonts.$base-font-size * 1.5);
+@include brand.setSecondaryFontSize(fonts.$base-font-size * 1.5);
+```
+
+- `setPrimaryFontWeight` & `setSecondaryFontWeight`  
+```scss 
+@include brand.setPrimaryFontWeight(100 * 6);
+@include brand.setSecondaryFontWeight(100 * 6);
+```
+
+- `setTransition`  
+```scss 
+@include brand.setTransition(false);
+```
+
+- `setTransitionDelay`  
+```scss 
+@include brand.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+```
+
+- `setTransitionType`  
+```scss 
+@include brand.setTransitionType(ease-in-out);
+```
+
+- `setTaglineOffset`  
+```scss 
+@include brand.setTaglineOffset((spaces.$base * .5) * -1);
 ```
 
 <!-- tabs:end -->

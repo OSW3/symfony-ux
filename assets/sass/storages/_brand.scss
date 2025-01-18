@@ -21,27 +21,32 @@ $breakpoints: ();
     $breakpoints: list.append($breakpoints, $name) !global;
 }
 
+$primary-font-family  : null;
+$primary-font-size    : fonts.$scale-base * 1.5;
+$primary-font-weight  : 100 * 6;
+$secondary-font-family: null;
+$secondary-font-size  : fonts.$scale-base * .8;
+$secondary-font-weight: 100 * 4;
+
 $padding-x            : spaces.$base * .6;
 $padding-y            : spaces.$base * .8;
-$primary-font-family  : var(--#{prefix.$prefix}font-open-sans);
-$primary-font-size    : fonts.$base-font-size * 1.5;
-$primary-font-weight  : 100 * 6;
-$secondary-font-family: var(--#{prefix.$prefix}font-monospace);
-$secondary-font-size  : fonts.$base-font-size * .8;
-$secondary-font-weight: 100 * 4;
-$tagline-offset       : (spaces.$base * .5) * -1;
+
+
+$transition           : false;
 $transition-delay     : var(--#{prefix.$prefix}transition-normal);
 $transition-type      : ease-in-out;
+
+$tagline-offset       : (spaces.$base * .5) * -1;
 
 
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-@mixin breakpoints($list) {
+@mixin setBreakpoints($list) {
     $breakpoints: $list !global;
 }
 
-@mixin useless-breakpoints($useless) {
+@mixin setUselessBreakpoints($useless) {
     @each $key, $value in $breakpoints {
         @if fnCollection.keyExists($useless, $key) {
             $breakpoints: fnCollection.unset($breakpoints, $key) !global;
@@ -49,47 +54,49 @@ $transition-type      : ease-in-out;
     }
 }
 
-@mixin padding-x($value) {
+@mixin setPaddingX($value) {
     $padding-x: $value !global;
 }
-
-@mixin padding-y($value) {
+@mixin setPaddingY($value) {
     $padding-y: $value !global;
 }
 
-@mixin primary-font-family($value) {
+@mixin setPrimaryFontFamily($value) {
     $primary-font-family: $value !global;
 }
-
-@mixin primary-font-size($value) {
+@mixin setPrimaryFontSize($value) {
     $primary-font-size: $value !global;
 }
-
-@mixin primary-font-weight($value) {
+@mixin setPrimaryFontWeight($value) {
     $primary-font-weight: $value !global;
 }
-
-@mixin secondary-font-family($value) {
+@mixin setSecondaryFontFamily($value) {
     $secondary-font-family: $value !global;
 }
-
-@mixin secondary-font-size($value) {
+@mixin setSecondaryFontSize($value) {
     $secondary-font-size: $value !global;
 }
-
-@mixin secondary-font-weight($value) {
+@mixin setSecondaryFontWeight($value) {
     $secondary-font-weight: $value !global;
 }
 
-@mixin tagline-offset($value) {
-    $tagline-offset: $value !global;
-}
+@mixin setTransition($value) {
+    $transition: $value !global;
 
-@mixin transition-delay($value) {
+    // @if $transition and $transition-delay == null {
+    //     $transition-delay : var(--#{prefix.$prefix}transition-normal) !global;
+    // }
+    // @if $transition and $transition-type == null {
+    //     $transition-type  : ease-in-out !global;
+    // }
+}
+@mixin setTransitionDelay($value) {
     $transition-delay: $value !global;
 }
-
-@mixin transition-type($value) {
+@mixin setTransitionType($value) {
     $transition-type: $value !global;
 }
 
+@mixin setTaglineOffset($value) {
+    $tagline-offset: $value !global;
+}

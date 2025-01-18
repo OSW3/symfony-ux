@@ -1,0 +1,95 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/scroll-to-top.scss ------------
+// *
+// *    Builder for Scroll-to-top component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use './../builders/banner';
+@use './../storages/prefix';
+// @use './../mixins/component';
+// @use './../mixins/spacing';
+// @use './../mixins/support';
+@use './../mixins/transition';
+@use './../mixins/position';
+
+@use './../storages/scroll-to-top' as store;
+@use './../components/scroll-to-top';
+@include banner.header('Component Scroll To Top');
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}scroll-to-top {
+
+    // Set layout css variables
+    // --
+
+    // @each $name, $value in scroll-to-top.$layout-properties {
+    //     --#{prefix.$prefix}#{$name}: #{$value};
+    // }
+
+    $position-top       : null;
+    $position-right     : null;
+    $position-bottom    : null;
+    $position-left      : null;
+    $offset-top         : null;
+    $offset-right       : null;
+    $offset-bottom      : null;
+    $offset-left        : null;
+    $transition-elements: (opacity, background-color, border-color, color);
+    $background-position: center;
+
+
+    color: var(--#{prefix.$prefix}scroll-to-top-color);
+    background-color: var(--#{prefix.$prefix}scroll-to-top-bg-color);
+
+    width: 40px;
+    height: 40px;
+    z-index: 99999;
+
+    // Positions
+    // --
+
+    // Position
+
+    @include position.fixed(
+        $position-top, 
+        $position-right, 
+        $position-bottom, 
+        $position-left
+    );
+
+    // Offset positions 
+
+    @if $offset-top != null and $offset-top != 0 {
+        margin-top: $offset-top;
+    }
+
+    @if $offset-right != null and $offset-right != 0 {
+        margin-right: $offset-right;
+    }
+
+    @if $offset-bottom != null and $offset-bottom != 0 {
+        margin-bottom: $offset-bottom;
+    }
+
+    @if $offset-left != null and $offset-left != 0 {
+        margin-left: $offset-left;
+    }
+
+    
+    
+    // Transition 
+    // -- 
+
+    @include transition.set(
+        $transition-elements,
+        store.$transition-delay,
+        store.$transition-type,
+    );
+
+}

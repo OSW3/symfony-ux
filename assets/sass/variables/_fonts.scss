@@ -16,7 +16,6 @@
 $base-font-size  : if(meta.global-variable-exists('base-font-size'      , $module: generated), generated.$base-font-size    , 16px);
 $base-line-height: if(meta.global-variable-exists('base-line-height'    , $module: generated), generated.$base-line-height  , 1.5);
 
-
 // * Headings base sizes
 // * ---------------------------------------------
 

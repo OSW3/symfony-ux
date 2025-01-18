@@ -5,140 +5,121 @@
 // * ---------------------------------------------------------------------------
 
 @use './../storages/prefix';
+@use './../storages/fonts';
 @use './../storages/spaces';
 
 // * Define storage data
 // * ---------------------------------------------
 
-$padding-x       : spaces.$base * .6;
-$padding-y       : spaces.$base * 1.4;
-$padding-small-x : spaces.$base * .4;
-$padding-small-y : spaces.$base * 1;
-$padding-large-x : spaces.$base * 2;
-$padding-large-y : spaces.$base * 2;
+$border-width     : 1px;
+$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
 
-$border-width    : 1px;
-$border-radius   : var(--#{prefix.$prefix}border-radius-normal);
-$font-family     : inherit;
-$font-size       : 1rem * 1; // todo: get font size base
-$font-size-small : 1rem * .8; // todo: get font size base
-$font-size-large : 1rem * 1.6; // todo: get font size base
-$font-weight     : 400;
-$line-height     : 1.5;
-$box-shadow      : 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)';
-$disabled-opacity: 0.65;
-$focus-box-shadow: 0 0 0 0.25rem;
+$cursor           : pointer;
+
+$padding-x        : spaces.$base * .6;
+$padding-y        : spaces.$base * 1.4;
+$padding-x-small  : spaces.$base * .4;
+$padding-y-small  : spaces.$base * 1;
+$padding-x-large  : spaces.$base * 1;
+$padding-y-large  : spaces.$base * 1.6;
+
+$font-family      : inherit;
+$font-size        : fonts.$scale-base * 1;
+$font-size-small  : fonts.$scale-base * .8;
+$font-size-large  : fonts.$scale-base * 1.6;
+$font-weight      : 100 * 4;
+$font-weight-small: 100 * 4;
+$font-weight-large: 100 * 7;
+$line-height      : 1.5;
+$line-height-small: 1;
+$line-height-large: 1.8;
+
+$disabled-opacity : 0.65;
+$box-shadow       : 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)';
+$focus-box-shadow : 0 0 0 0.25rem;
 
 
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-/// Customize padding X
-/// --
-/// 
-/// Example :
-/// @include button.padding-x(.6rem)
-/// 
-@mixin padding-x($value) {
-    $padding-x: $value !global;
-}
-
-/// Customize padding Y
-/// --
-/// 
-/// Example :
-/// @include button.padding-y(1.4rem)
-/// 
-@mixin padding-y($value) {
-    $padding-y: $value !global;
-}
-
-/// Customize border width
-/// --
-/// 
-/// Example :
-/// @include button.border-width( 1px )
-/// 
-@mixin border-width($value) {
+@mixin setBorderWidth($value) {
     $border-width: $value !global;
 }
-
-/// Customize border radius
-/// --
-/// 
-/// Example :
-/// @include button.border-radius( 4px )
-/// 
-@mixin border-radius($value) {
+@mixin setBorderRadius($value) {
     $border-radius: $value !global;
 }
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
-@mixin font-family($value) {
+@mixin setCursor($value) {
+    $cursor: $value !global;
+}
+
+@mixin setFontFamily($value) {
     $font-family: $value !global;
 }
+@mixin setFontSize($normal, $small: null, $large: null) {
+    $font-size: $normal !global;
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
-@mixin font-size($value) {
-    $font-size: $value !global;
+    @if $small {
+        $font-size-small: $small !global;
+    }
+    @if $large {
+        $font-size-large: $large !global;
+    }
+}
+@mixin setFontWeight($normal, $small: null, $large: null) {
+    $font-weight: $normal !global;
+
+    @if $small {
+        $font-weight-small: $small !global;
+    }
+    @if $large {
+        $font-weight-large: $large !global;
+    }
+}
+@mixin setLineHeight($normal, $small: null, $large: null) {
+    $line-height: $normal !global;
+
+    @if $small {
+        $line-height-small: $small !global;
+    }
+    @if $large {
+        $line-height-large: $large !global;
+    }
 }
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
-@mixin font-weight($value) {
-    $font-weight: $value !global;
+@mixin setPaddingX($normal, $small: null, $large: null) {
+    $padding-x: $normal !global;
+
+    @if $small {
+        $padding-x-small: $small !global;
+    }
+    @if $large {
+        $padding-x-large: $large !global;
+    }
+}
+@mixin setPaddingY($normal, $small: null, $large: null) {
+    $padding-y: $normal !global;
+
+    @if $small {
+        $padding-y-small: $small !global;
+    }
+    @if $large {
+        $padding-y-large: $large !global;
+    }
 }
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
-@mixin line-height($value) {
-    $line-height: $value !global;
+@mixin setDisabledOpacity($value) {
+    $disabled-opacity: $value !global;
 }
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
+
+
+
 @mixin box-shadow($value) {
     $box-shadow: $value !global;
 }
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
-@mixin disabled-opacity($value) {
-    $disabled-opacity: $value !global;
-}
 
-/// Customize 
-/// --
-/// 
-/// Example :
-/// @include button.xxxx( xxx )
-/// 
 @mixin focus-box-shadow($value) {
     $focus-box-shadow: $value !global;
 }

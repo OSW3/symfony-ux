@@ -1,0 +1,63 @@
+// * --------- @osw3/symfony-ux/assets/sass/storages/scroll-to-top.scss --------
+// *
+// *    Scroll-to-top Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/spaces';
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$cursor    : pointer;
+$shape     : square;
+$position  : bottom-right;
+$symbol    : arrow-up;
+
+$transition      : natural;
+$transition-delay: null;
+$transition-type : null;
+
+$size      : 40px;
+$position-x: spaces.$base *2;
+$position-y: spaces.$base *2;
+$offset-x  : 0px;
+$offset-y  : 0px;
+$font-size : 2;
+// $z-index   : zindex.$z-index--scroll-to-top;
+
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin setCursor($value) {
+    $cursor: $value !global;
+}
+
+@mixin setShape($value) {
+    // square, circle, corner
+    $shape: $value !global;
+}
+
+@mixin setPosition($value) {
+    // top-left, top-center, top-right, middle-left, middle-center, centered, middle-right, bottom-left, bottom-center, bottom-right
+    $position: $value !global;
+}
+
+@mixin setTransition($value) {
+    // natural, inverse, right, left
+    $transition: $value !global;
+}
+@mixin setTransitionDelay($value) {
+    $transition-delay: $value !global;
+}
+@mixin setTransitionType($value) {
+    $transition-type: $value !global;
+}
+
+@mixin setSymbol($value) {
+    $symbol: $value !global;
+}

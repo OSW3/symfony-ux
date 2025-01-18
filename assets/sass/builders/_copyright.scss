@@ -9,7 +9,8 @@
 @use './../mixins/spacing';
 @use './../mixins/transition';
 
-@use './../components/copyright';
+@use './../storages/copyright' as store;
+@use './../components/copyright' ;
 @include banner.header('Component Copyright');
 
 
@@ -18,37 +19,39 @@
 
 .#{prefix.$prefix}copyright {
 
-    // Set layout css variables
-    // --
-
-    @each $name, $value in copyright.$layout-properties {
-        --#{prefix.$prefix}#{$name}: #{$value};
-    }
-
     display: inline-block;
-    cursor: var(--#{prefix.$prefix}copyright-cursor);
     color: var(--#{prefix.$prefix}copyright-color);
     background-color: var(--#{prefix.$prefix}copyright-bg-color);
 
-    font-family: var(--#{prefix.$prefix}copyright-font-family);
-    font-size: var(--#{prefix.$prefix}copyright-font-size);
-    font-weight: var(--#{prefix.$prefix}copyright-font-weight);
+    @if store.$font-family {
+        font-family: store.$font-family;
+    }
+    font-size: store.$font-size;
+    font-weight: store.$font-weight;
 
     @include spacing.inner( 
-        var(--#{prefix.$prefix}copyright-padding-x),
-        var(--#{prefix.$prefix}copyright-padding-y),
-        var(--#{prefix.$prefix}copyright-padding-x),
-        var(--#{prefix.$prefix}copyright-padding-y),
+        store.$padding-x,
+        store.$padding-y,
+        store.$padding-x,
+        store.$padding-y,
     );
 
-    @include transition.set(
-        (color, background-color),
-        var(--#{prefix.$prefix}copyright-transition-delay),
-        var(--#{prefix.$prefix}copyright-transition-type),
-    );
+    @if store.$cursor {
+        cursor: store.$cursor;
+    }
 
-    &:hover {
-        color: var(--#{prefix.$prefix}copyright-hover-color);
-        background-color: var(--#{prefix.$prefix}copyright-hover-bg-color);
+    @if store.$transition {
+        @include transition.set(
+            (color, background-color),
+            store.$transition-delay,
+            store.$transition-type,
+        );
+    }
+
+    @if store.$hover {
+        &:hover {
+            color: var(--#{prefix.$prefix}copyright-hover-color);
+            background-color: var(--#{prefix.$prefix}copyright-hover-bg-color);
+        }
     }
 }

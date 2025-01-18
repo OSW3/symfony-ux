@@ -7,13 +7,14 @@
 @use "sass:map";
 @use "sass:meta";
 @use './../builders/banner';
-@use './../components/button';
-
 @use './../storages/prefix';
 @use './../mixins/component';
 @use './../mixins/spacing';
 @use './../mixins/support';
 @use './../mixins/transition';
+
+@use './../storages/button' as store;
+@use './../components/button';
 @include banner.header('Component Button');
 
 
@@ -55,18 +56,24 @@
     // --
 
     display         : inline-block;
-    cursor          : pointer;
     background-color: var(--#{prefix.$prefix}button-bg-color);
-    border          : var(--#{prefix.$prefix}button-border-width) solid var(--#{prefix.$prefix}button-border-color);
-    border-radius   : var(--#{prefix.$prefix}button-border-radius);
+    border          : store.$border-width solid var(--#{prefix.$prefix}button-border-color);
+    border-radius   : store.$border-radius;
     color           : var(--#{prefix.$prefix}button-color);
-    font-family     : var(--#{prefix.$prefix}button-font-family);
+
+    @if store.$font-family {
+        font-family: store.$font-family;
+    }
     font-size       : var(--#{prefix.$prefix}button-font-size);
     font-weight     : var(--#{prefix.$prefix}button-font-weight);
     line-height     : var(--#{prefix.$prefix}button-line-height);
     text-align      : center;
     text-decoration : none;
     vertical-align  : middle;
+
+    @if store.$cursor {
+        cursor: store.$cursor;
+    }
 
     @include transition.set(
         (color, background-color, border-color, box-shadow),
@@ -115,14 +122,24 @@
 
     &[disabled] {
         cursor          : default;
-        opacity         : var(--#{prefix.$prefix}button-disabled-opacity);
+        opacity         : store.$disabled-opacity;
+        
+        // force the disabled button to not change colors on mouseover
         color           : var(--#{prefix.$prefix}button-color);
         background-color: var(--#{prefix.$prefix}button-bg-color);
         border-color    : var(--#{prefix.$prefix}button-border-color);
     }
 
-    & .no-border {
+    &-no-border {
         border: none !important;
+    }
+
+    &-outline,&-outline[disabled] {
+        border-style: solid;
+        border-width: 2px;
+        color: var(--#{prefix.$prefix}button-bg-color);
+        border-color: var(--#{prefix.$prefix}button-bg-color);
+        background-color: transparent;
     }
 
     
@@ -130,14 +147,18 @@
     // --
 
     &-small {
-        --#{prefix.$prefix}button-padding-x: var(--#{prefix.$prefix}button-padding-small-x);
-        --#{prefix.$prefix}button-padding-y: var(--#{prefix.$prefix}button-padding-small-y);
-        --#{prefix.$prefix}button-font-size: var(--#{prefix.$prefix}button-font-size-small);
+        --#{prefix.$prefix}button-padding-x  : var(--#{prefix.$prefix}button-small-padding-x);
+        --#{prefix.$prefix}button-padding-y  : var(--#{prefix.$prefix}button-small-padding-y);
+        --#{prefix.$prefix}button-font-size  : var(--#{prefix.$prefix}button-small-font-size);
+        --#{prefix.$prefix}button-font-weight: var(--#{prefix.$prefix}button-small-font-weight);
+        --#{prefix.$prefix}button-line-height: var(--#{prefix.$prefix}button-small-line-height);
     }
     &-large {
-        --#{prefix.$prefix}button-padding-x: var(--#{prefix.$prefix}button-padding-large-x);
-        --#{prefix.$prefix}button-padding-y: var(--#{prefix.$prefix}button-padding-large-y);
-        --#{prefix.$prefix}button-font-size: var(--#{prefix.$prefix}button-font-size-large);
+        --#{prefix.$prefix}button-padding-x  : var(--#{prefix.$prefix}button-large-padding-x);
+        --#{prefix.$prefix}button-padding-y  : var(--#{prefix.$prefix}button-large-padding-y);
+        --#{prefix.$prefix}button-font-size  : var(--#{prefix.$prefix}button-large-font-size);
+        --#{prefix.$prefix}button-font-weight: var(--#{prefix.$prefix}button-large-font-weight);
+        --#{prefix.$prefix}button-line-height: var(--#{prefix.$prefix}button-large-line-height);
     }
 
     &-block {

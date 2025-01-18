@@ -6,12 +6,14 @@
 
 @use 'sass:map';
 @use 'sass:list';
-@use './../builders/banner';
-@use './../storages/breakpoints';
-@use './../storages/prefix';
-@use './../components/brand';
 @use './../mixins/spacing';
+@use './../builders/banner';
+@use './../storages/prefix';
 @use './../mixins/transition';
+@use './../storages/breakpoints';
+
+@use './../storages/brand' as store;
+@use './../components/brand';
 @include banner.header('Component Brand');
 
 
@@ -23,9 +25,9 @@
     // Set layout css variables
     // --
 
-    @each $name, $value in brand.$layout-properties {
-        --#{prefix.$prefix}#{$name}: #{$value};
-    }
+    // @each $name, $value in brand.$layout-properties {
+    //     --#{prefix.$prefix}#{$name}: #{$value};
+    // }
 
 
     // Brand container
@@ -35,10 +37,14 @@
     text-decoration: none;
     white-space    : nowrap;
     height         : fit-content;
+
     color          : var(--#{prefix.$prefix}brand-color);
-    font-family    : var(--#{prefix.$prefix}brand-primary-font-family);
-    font-size      : var(--#{prefix.$prefix}brand-primary-font-size);
-    font-weight    : var(--#{prefix.$prefix}brand-primary-font-weight);
+
+    @if store.$primary-font-family {
+        font-family: store.$primary-font-family;
+    }
+    font-size      : store.$primary-font-size;
+    font-weight    : store.$primary-font-weight;
 
 
     // Brand Link
@@ -54,8 +60,8 @@
 
         @include transition.set(
             (color),
-            var(--#{prefix.$prefix}brand-transition-delay),
-            var(--#{prefix.$prefix}brand-transition-type),
+            store.$transition-delay,
+            store.$transition-type,
         );
 
         &:hover {
@@ -71,10 +77,10 @@
         // border: 10px solid orange;
 
         @include spacing.inner( 
-            var(--#{prefix.$prefix}brand-padding-x),
-            var(--#{prefix.$prefix}brand-padding-y),
-            var(--#{prefix.$prefix}brand-padding-x),
-            var(--#{prefix.$prefix}brand-padding-y),
+            store.$padding-x,
+            store.$padding-y,
+            store.$padding-x,
+            store.$padding-y,
         );
     }
     
@@ -92,12 +98,15 @@
     &-tagline {
         @include spacing.outer( 0,0,0,0 );
         display    : block;
-        font-family: var(--#{prefix.$prefix}brand-secondary-font-family);
-        font-size  : var(--#{prefix.$prefix}brand-secondary-font-size);
-        font-weight: var(--#{prefix.$prefix}brand-secondary-font-weight);
+        
+        @if store.$secondary-font-family {
+            font-family: store.$secondary-font-family;
+        }
+        font-size  : store.$secondary-font-size;
+        font-weight: store.$secondary-font-weight;
     }
     &-name + &-tagline {
-        @include spacing.outer( var(--#{prefix.$prefix}brand-tagline-offset) ,0,0,0 );
+        @include spacing.outer( store.$tagline-offset ,0,0,0 );
     }
     
 
