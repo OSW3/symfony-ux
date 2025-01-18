@@ -1,0 +1,54 @@
+// * ----------- @osw3/symfony-ux/assets/sass/builder/copyright.scss -----------
+// *
+// *    Builder for Copyright component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/spacing';
+@use './../mixins/transition';
+
+@use './../components/copyright';
+@include banner.header('Component Copyright');
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}copyright {
+
+    // Set layout css variables
+    // --
+
+    @each $name, $value in copyright.$layout-properties {
+        --#{prefix.$prefix}#{$name}: #{$value};
+    }
+
+    display: inline-block;
+    cursor: var(--#{prefix.$prefix}copyright-cursor);
+    color: var(--#{prefix.$prefix}copyright-color);
+    background-color: var(--#{prefix.$prefix}copyright-bg-color);
+
+    font-family: var(--#{prefix.$prefix}copyright-font-family);
+    font-size: var(--#{prefix.$prefix}copyright-font-size);
+    font-weight: var(--#{prefix.$prefix}copyright-font-weight);
+
+    @include spacing.inner( 
+        var(--#{prefix.$prefix}copyright-padding-x),
+        var(--#{prefix.$prefix}copyright-padding-y),
+        var(--#{prefix.$prefix}copyright-padding-x),
+        var(--#{prefix.$prefix}copyright-padding-y),
+    );
+
+    @include transition.set(
+        (color, background-color),
+        var(--#{prefix.$prefix}copyright-transition-delay),
+        var(--#{prefix.$prefix}copyright-transition-type),
+    );
+
+    &:hover {
+        color: var(--#{prefix.$prefix}copyright-hover-color);
+        background-color: var(--#{prefix.$prefix}copyright-hover-bg-color);
+    }
+}

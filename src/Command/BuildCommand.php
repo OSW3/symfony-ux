@@ -251,7 +251,7 @@ class BuildCommand extends Command
     {
         foreach ($transitions as $name => $value)
         {
-            $value = $name != 'base' ? $value : "${value}s";
+            $value = $name != 'base' ? $value : "{$value}s";
             $vars[] = "\$transition-{$name}: {$value};";
         }
     }

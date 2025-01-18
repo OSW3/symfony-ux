@@ -1,4 +1,4 @@
-# Copyright# Alerts
+# Copyright
 
 ## What is it about ?
 

@@ -1,0 +1,54 @@
+// * ---------- @osw3/symfony-ux/assets/sass/components/copyright.scss ---------
+// *
+// *    Default variables for Copyright component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/copyright.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/copyright';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    copyright-color             : inherit,
+    copyright-hover-color       : initial,
+    copyright-bg-color          : initial,
+    copyright-hover-bg-color    : initial,
+    // copyright-border-color      : var(--#{prefix.$prefix}gray-600),
+    // copyright-hover-border-color: var(--#{prefix.$prefix}gray-700),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: (
+    copyright-cursor         : copyright.$cursor,
+    copyright-padding-x         : copyright.$padding-x,
+    // copyright-padding-small-x   : copyright.$padding-small-x,
+    // copyright-padding-large-x   : copyright.$padding-large-x,
+    copyright-padding-y         : copyright.$padding-y,
+    // copyright-padding-small-y   : copyright.$padding-small-y,
+    // copyright-padding-large-y   : copyright.$padding-large-y,
+    // copyright-border-width      : copyright.$border-width,
+    // copyright-border-radius     : copyright.$border-radius,
+    copyright-font-family       : copyright.$font-family,
+    copyright-font-size         : copyright.$font-size,
+    // copyright-font-size-small   : copyright.$font-size-small,
+    // copyright-font-size-large   : copyright.$font-size-large,
+    copyright-font-weight       : copyright.$font-weight,
+    // copyright-line-height       : copyright.$line-height,
+    // copyright-box-shadow        : copyright.$box-shadow,
+    // copyright-focus-box-shadow  : copyright.$focus-box-shadow,
+    // copyright-disabled-opacity  : copyright.$disabled-opacity,
+
+
+    copyright-transition-delay  : copyright.$transition-delay,
+    copyright-transition-type   : copyright.$transition-type,
+);

@@ -545,9 +545,7 @@ return static function($definition)
                 ->end()
 
             ->end()->end()
-
-            // Copyright
-            // -- 
+            
             ->arrayNode('copyright')
                 ->info("Parameters settings of the Copyright component.")
                 ->addDefaultsIfNotSet()->children()

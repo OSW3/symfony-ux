@@ -101,6 +101,27 @@
     }
     
 
+
+    /// Brand Sizes
+    /// --
+
+    // @each $size, $properties in $sizes {
+    //     &-#{$size} {
+    //         font-size: map.get($properties, 'font-size');
+    //         font-weight: map.get($properties, 'font-weight');
+            
+    //         .#{$_CLASSNAME}-tagline {
+    //             font-size: map.get($properties, 'tagline-size');
+    //             font-weight: map.get($properties, 'font-weight');
+    //             margin-top: map.get($properties, 'tagline-offset');
+    //         }
+    //         .#{$_CLASSNAME}-logo {
+    //             max-height: map.get($properties, 'img-height');
+    //         }
+    //     }
+    // }
+
+
     /// Brand images (logo & icon)
     /// --
     

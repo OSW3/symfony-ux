@@ -21,6 +21,7 @@
   <!-- - [Announcement](./components/analytics.md) -->
   - [Brand](./components/brand.md)
   - [Buttons](./components/buttons.md)
+  - [Copyright](./components/copyright.md)
   <!-- - [Copyright](./components/copyright.md) -->
   <!-- - [link](./components/link.md) -->
   <!-- - [Rotators](./components/rotator.md) -->
