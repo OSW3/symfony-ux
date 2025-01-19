@@ -22,13 +22,13 @@
 "use strict";
 
 // import AbstractComponent from './../abstracts/AbstractComponent';
-// import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/prefix";
 
 // /** @var string Component classname */
 // const NAME = 'scroll-to-top';
 
 // /** @var string Components prefix */
-// const PREFIX = getPrefix();
+const PREFIX = getPrefix();
 
 // /** @var string Component selector */
 // const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
@@ -40,8 +40,8 @@
 // /** @var number Trigger point to show/hide the button */
 // const TOGGLE_AT = 200;
 
-// export default class ScrollToTopComponent extends AbstractComponent
-// {
+export default class ScrollToTopComponent extends AbstractComponent
+{
 //     _onInit() 
 //     {
 //         window.onload = x => this.#scroll();
@@ -64,12 +64,19 @@
 //         document.body.scrollTop            = topAt;
 //         document.documentElement.scrollTop = topAt;
 //     }
-// }
+}
 
 // document.querySelectorAll(SELECTOR).forEach(node => new ScrollToTopComponent(node));
 
 
+// const config = {
+//     selector: ''
+// };
 
-export default function ScrollToTopComponent() {
-    alert('Plop');
-}
+// const component =  () => {
+//     alert(`${PREFIX} Plop`);
+// }
+
+
+
+// export default component;

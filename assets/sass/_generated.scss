@@ -1,4 +1,4 @@
-// Last gen: 2025-01-03 22:32:57
+// Last gen: 2025-01-19 11:48:51
 $prefix: 'ux';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -62,7 +62,7 @@ $transition-base: 1s;
 $transition-slow: 0.8;
 $transition-normal: 0.3;
 $transition-fast: 0.1;
-$brand-breakpoints: ('');
+$brand-breakpoints: ('laptop','desktop');
 $scroll-to-top--shape: 'square';
 $scroll-to-top--symbol: 'arrow-up';
 $scroll-to-top--position: 'bottom-right';

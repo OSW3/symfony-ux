@@ -37,11 +37,13 @@ class BuildCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io                = new SymfonyStyle($input, $output);
-        $sassVarDir        = Path::join(__DIR__, "../../", "assets/sass");
-        $scriptVarDir      = Path::join(__DIR__, "../../", "assets/scripts");
         $lastGen           = "// Last gen: ". date("Y-m-d H:i:s");
+        
+        $sassVarDir        = Path::join(__DIR__, "../../", "assets/sass");
         $sassVariables     = [];
         $sassVariables[]   = $lastGen;
+        
+        $scriptVarDir      = Path::join(__DIR__, "../../", "assets/scripts");
         $scriptVariables   = [];
         $scriptVariables[] = $lastGen;
 
@@ -93,9 +95,19 @@ class BuildCommand extends Command
         // Generate Files
         // --
 
-        file_put_contents("{$sassVarDir}/_generated.scss", implode("\n", $sassVariables));
-        file_put_contents("{$scriptVarDir}/generated.js", implode("\n", $scriptVariables));
-        $io->success("SCSS variables exported successfully.");
+        file_put_contents("{$sassVarDir}/_generated.scss", implode("\n", $sassVariables))
+            ? $output->writeln("-> <info>SCSS variables exported successfully.</info>")
+            : $output->writeln("-> <error>Failed to export SCSS variables.</error>")
+        ;
+
+        file_put_contents("{$scriptVarDir}/generated.js", implode("\n", $scriptVariables))
+            ? $output->writeln("-> <info>JS variables exported successfully.</info>")
+            : $output->writeln("-> <error>Failed to export JS variables.</error>")
+        ;
+
+        $output->writeln("");
+
+        // $io->success("SCSS variables exported successfully.");
 
         return Command::SUCCESS;
     }
