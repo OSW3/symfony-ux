@@ -4,6 +4,7 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use "sass:list";
 @use "sass:map";
 @use "sass:meta";
 @use './../builders/banner';
@@ -11,12 +12,303 @@
 // @use './../mixins/component';
 // @use './../mixins/spacing';
 // @use './../mixins/support';
+@use './../mixins/corner';
 @use './../mixins/transition';
 @use './../mixins/position';
 
 @use './../storages/scroll-to-top' as store;
 @use './../components/scroll-to-top';
 @include banner.header('Component Scroll To Top');
+
+
+
+$position-top       : null;
+$position-right     : null;
+$position-bottom    : null;
+$position-left      : null;
+
+$offset-top         : null;
+$offset-right       : null;
+$offset-bottom      : null;
+$offset-left        : null;
+
+$transition-elements: (opacity, background-color, border-color, color);
+$background-position: center;
+
+
+@if store.$position == 'top-left' {
+    @if store.$offset-y != 0 {$offset-top: store.$offset-y;}
+    @if store.$offset-x != 0 {$offset-left: store.$offset-x;}
+    
+    @if store.$transition == 'inverse' {
+        $position-top   : 100%;
+        $position-left  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+    @else if store.$transition == 'right' {
+        $position-top   : store.$position-y;
+        $position-left  : 100%;
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else if store.$transition == 'left' {
+        $position-top   : store.$position-y;
+        $position-left  : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else {
+        $position-top   : 0 - store.$size;
+        $position-left  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+}
+@else if store.$position == 'top-center' {
+    @if store.$offset-y != 0 {$offset-top: store.$offset-y;}
+    @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+    @if store.$offset-x > 0 {$offset-left: store.$offset-x;}
+
+    @if store.$transition == 'inverse' {
+        $position-top   : 100%;
+        $position-right : calc(50% - math.div(store.$size, 2));
+        $transition-elements: list.append($transition-elements, top);
+    }
+    @else if store.$transition == 'right' {
+        $position-top   : store.$position-y;
+        $position-right : 0 - store.$size;
+
+        @if $offset-right != null {
+            $position-right : 0 - store.$size;
+            $position-left  : null;
+        }
+        @if $offset-left != null {
+            $position-right: null;
+            $position-left : 0 - store.$size;
+        }
+
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else if store.$transition == 'left' {
+        $position-top   : store.$position-y;
+        $position-left : 0 - store.$size;
+
+        @if $offset-right != null {
+            $position-right: null;
+            $position-left : 0 - store.$size;
+        }
+        @if $offset-left != null {
+            $position-right : 0 - store.$size;
+            $position-left  : null;
+        }
+
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else {
+        $position-top   : 0 - store.$size;
+        $position-right : calc(50% - math.div(store.$size, 2));
+        $transition-elements: list.append($transition-elements, top);
+    }
+}
+@else if store.$position == 'top-right' {
+    @if store.$offset-y != 0 {$offset-top: store.$offset-y;}
+    @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+    @if store.$offset-x > 0 {$offset-right: store.$offset-x * -1;}
+
+    @if store.$transition == 'inverse' {
+        $position-top   : 100%;
+        $position-right  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+    @else if store.$transition == 'right' {
+        $position-top   : store.$position-y;
+        $position-right  : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else if store.$transition == 'left' {
+        $position-top   : store.$position-y;
+        $position-right  : 100%;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else {
+        $position-top   : 0 - store.$size;
+        $position-right  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+}
+@else if store.$position == 'middle-left' {
+    @if store.$offset-y > 0 {$offset-top: store.$offset-y * -1;}
+    @if store.$offset-y < 0 {$offset-top: store.$offset-y * -1;}
+    @if store.$offset-x != 0 {$offset-left: store.$offset-x;}
+
+    @if store.$transition == 'inverse' {
+        $position-top   : 0 - store.$size;
+        $position-left  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+    @else if store.$transition == 'right' {
+        $position-top   : calc(50% - math.div(store.$size, 2));
+        $position-left  : 100%;
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else if store.$transition == 'left' {
+        $position-top   : calc(50% - math.div(store.$size, 2));
+        $position-left  : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else {
+        $position-top   : 100%;
+        $position-left  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+}
+@else if store.$position == 'middle-center' or store.$position == 'centered' {
+    @if store.$offset-y > 0 {$offset-top: store.$offset-y * -1;}
+    @if store.$offset-y < 0 {$offset-top: store.$offset-y * -1;}
+    @if store.$offset-x > 0 {$offset-right: store.$offset-x * -1;}
+    @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+
+    @if store.$transition == 'inverse' {
+        $position-top   : 0 - store.$size;
+        $position-right  : calc(50% - math.div(store.$size, 2));;
+        $transition-elements: list.append($transition-elements, top);
+    }
+    @else if store.$transition == 'right' {
+        $position-top   : calc(50% - math.div(store.$size, 2));
+        $position-right  : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else if store.$transition == 'left' {
+        $position-top   : calc(50% - math.div(store.$size, 2));
+        $position-right  : 100%;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else {
+        $position-top   : 100%;
+        $position-right  : calc(50% - math.div(store.$size, 2));;
+        $transition-elements: list.append($transition-elements, top);
+    }
+}
+@else if store.$position == 'middle-right' {
+    @if store.$offset-y > 0 {$offset-top: store.$offset-y * -1;}
+    @if store.$offset-y < 0 {$offset-top: store.$offset-y * -1;}
+    @if store.$offset-x != 0 {$offset-right: store.$offset-x * -1;}
+
+    @if store.$transition == 'inverse' {
+        $position-top   : 0 - store.$size;
+        $position-right  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+    @else if store.$transition == 'right' {
+        $position-top   : calc(50% - math.div(store.$size, 2));
+        $position-right  : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else if store.$transition == 'left' {
+        $position-top   : calc(50% - math.div(store.$size, 2));
+        $position-right  : 100%;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else {
+        $position-top   : 100%;
+        $position-right  : store.$position-x;
+        $transition-elements: list.append($transition-elements, top);
+    }
+}
+@else if store.$position == 'bottom-left' {
+    @if store.$offset-y != 0 {$offset-bottom: store.$offset-y;}
+    @if store.$offset-x != 0 {$offset-left: store.$offset-x;}
+
+    @if store.$transition == 'inverse' {
+        $position-bottom   : 100%;
+        $position-left  : store.$position-x;
+        $transition-elements: list.append($transition-elements, bottom);
+    }
+    @else if store.$transition == 'right' {
+        $position-bottom   : store.$position-y;
+        $position-left  : 100%;
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else if store.$transition == 'left' {
+        $position-bottom   : store.$position-y;
+        $position-left  : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else {
+        $position-bottom   : 0 - store.$size;
+        $position-left  : store.$position-x;
+        $transition-elements: list.append($transition-elements, bottom);
+    }
+}
+@else if store.$position == 'bottom-center' {
+    @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+    @if store.$offset-y != 0 {$offset-bottom: store.$offset-y;}
+    @if store.$offset-x > 0 {$offset-left: store.$offset-x;}
+
+    @if store.$transition == 'inverse' {
+        $position-bottom   : 100%;
+        $position-right : calc(50% - math.div(store.$size, 2));
+        $transition-elements: list.append($transition-elements, bottom);
+    }
+    @else if store.$transition == 'right' {
+        $position-bottom   : store.$position-y;
+        $position-right : 0 - store.$size;
+
+        @if $offset-right != null {
+            $position-right : 0 - store.$size;
+            $position-left  : null;
+        }
+        @if $offset-left != null {
+            $position-right: null;
+            $position-left : 0 - store.$size;
+        }
+
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else if store.$transition == 'left' {
+        $position-bottom   : store.$position-y;
+        $position-left : 0 - store.$size;
+
+        @if $offset-right != null {
+            $position-right: null;
+            $position-left : 0 - store.$size;
+        }
+        @if $offset-left != null {
+            $position-right : 0 - store.$size;
+            $position-left  : null;
+        }
+
+        $transition-elements: list.append($transition-elements, left);
+    }
+    @else {
+        $position-bottom   : 0 - store.$size;
+        $position-right : calc(50% - math.div(store.$size, 2));
+        $transition-elements: list.append($transition-elements, bottom);
+    }
+}
+@else {
+    @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+    @if store.$offset-x > 0 {$offset-right: store.$offset-x * -1;}
+    @if store.$offset-y != 0 {$offset-bottom: store.$offset-y;}
+
+    @if store.$transition == 'inverse' {
+        $position-bottom: 100%;
+        $position-right : store.$position-x;
+        $transition-elements: list.append($transition-elements, bottom);
+    }
+    @else if store.$transition == 'right' {
+        $position-bottom: store.$position-y;
+        $position-right : 0 - store.$size;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else if store.$transition == 'left' {
+        $position-bottom: store.$position-y;
+        $position-right : 100%;
+        $transition-elements: list.append($transition-elements, right);
+    }
+    @else {
+        $position-bottom: 0 - store.$size;
+        $position-right : store.$position-x;
+        $transition-elements: list.append($transition-elements, bottom);
+    }
+}
 
 
 
@@ -32,25 +324,26 @@
     //     --#{prefix.$prefix}#{$name}: #{$value};
     // }
 
-    $position-top       : null;
-    $position-right     : null;
-    $position-bottom    : null;
-    $position-left      : null;
-    $offset-top         : null;
-    $offset-right       : null;
-    $offset-bottom      : null;
-    $offset-left        : null;
-    $transition-elements: (opacity, background-color, border-color, color);
-    $background-position: center;
-
-
+    cursor: store.$cursor;
     color: var(--#{prefix.$prefix}scroll-to-top-color);
     background-color: var(--#{prefix.$prefix}scroll-to-top-bg-color);
+    width: store.$size;
+    height: store.$size;
+    opacity: 0;
+    z-index: store.$z-index;
 
-    width: 40px;
-    height: 40px;
-    z-index: 99999;
 
+    // Shape
+    // --
+
+    @if store.$shape == 'circle' {
+        @include corner.rounded(50%);
+    }
+    @else {
+        @include corner.rounded(store.$square-radius);
+    }
+
+    
     // Positions
     // --
 
@@ -68,21 +361,17 @@
     @if $offset-top != null and $offset-top != 0 {
         margin-top: $offset-top;
     }
-
     @if $offset-right != null and $offset-right != 0 {
         margin-right: $offset-right;
     }
-
     @if $offset-bottom != null and $offset-bottom != 0 {
         margin-bottom: $offset-bottom;
     }
-
     @if $offset-left != null and $offset-left != 0 {
         margin-left: $offset-left;
     }
 
-    
-    
+
     // Transition 
     // -- 
 
@@ -92,4 +381,135 @@
         store.$transition-type,
     );
 
+    
+    // Showed button
+    // -- 
+
+    &.show {
+        $position-top   : null;
+        $position-right : null;
+        $position-bottom: null;
+        $position-left  : null;
+
+        $offset-top   : null;
+        $offset-right : null;
+        $offset-bottom: null;
+        $offset-left  : null;
+
+        @if store.$position == 'top-left' {
+            $position-top   : store.$position-y;
+            $position-left  : store.$position-x;
+        }
+        @else if store.$position == 'top-center' {
+            @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+            @if store.$offset-x > 0 {$offset-left: store.$offset-x;}
+
+            $position-top   : store.$position-y;
+
+            @if store.$transition == 'left' {
+                $position-left : calc(50% - math.div(store.$size, 2));
+
+                @if $offset-right != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div(store.$size, 2));
+                }
+                @if $offset-left != null {
+                    $position-right : calc(50% - math.div(store.$size, 2));
+                    $position-left  : null;
+                }
+            }
+            @else {
+                $position-right : calc(50% - math.div(store.$size, 2));
+
+                @if $offset-right != null {
+                    $position-right : calc(50% - math.div(store.$size, 2));
+                    $position-left  : null;
+                }
+                @if $offset-left != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div(store.$size, 2));
+                }
+            }
+        }
+        @else if store.$position == 'top-right' {
+            $position-top   : store.$position-y;
+            $position-right : store.$position-x;
+            $position-bottom: null;
+            $position-left  : null;
+        }
+        @else if store.$position == 'middle-left' {
+            $position-top   : calc(50% - math.div(store.$size, 2));
+            $position-right : null;
+            $position-bottom: null;
+            $position-left  : store.$position-x;
+        }
+        @else if store.$position == 'middle-center' or store.$position == 'centered' {
+            $position-top   : calc(50% - math.div(store.$size, 2));
+            $position-right : calc(50% - math.div(store.$size, 2));
+            $position-bottom: null;
+            $position-left  : null;
+        }
+        @else if store.$position == 'middle-right' {
+            $position-top   : calc(50% - math.div(store.$size, 2));
+            $position-right : store.$position-x;
+        }
+        @else if store.$position == 'bottom-left' {
+            $position-bottom: store.$position-y;
+            $position-left  : store.$position-x;
+        }
+        @else if store.$position == 'bottom-center' {
+            @if store.$offset-x < 0 {$offset-right: store.$offset-x * -1;}
+            @if store.$offset-x > 0 {$offset-left: store.$offset-x;}
+
+            $position-bottom: store.$position-y;
+            
+            @if store.$transition == 'left' {
+                $position-left : calc(50% - math.div(store.$size, 2));
+
+                @if $offset-right != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div(store.$size, 2));
+                }
+                @if $offset-left != null {
+                    $position-right : calc(50% - math.div(store.$size, 2));
+                    $position-left  : null;
+                }
+            }
+            @else {
+                $position-right : calc(50% - math.div(store.$size, 2));
+
+                @if $offset-right != null {
+                    $position-right : calc(50% - math.div(store.$size, 2));
+                    $position-left  : null;
+                }
+                @if $offset-left != null {
+                    $position-right: null;
+                    $position-left : calc(50% - math.div(store.$size, 2));
+                }
+            }
+        }
+        @else {
+            $position-right : store.$position-x;
+            $position-bottom: store.$position-y;
+        }
+
+        // Button position
+
+        @if $position-top != null {top: $position-top;}
+        @if $position-right != null {right: $position-right;}
+        @if $position-bottom != null {bottom: $position-bottom;}
+        @if $position-left != null {left: $position-left;}
+
+        opacity: 1;
+    }
+
+    
+    // Mouse Over 
+    // -- 
+
+    &:hover {
+        color           : var(--#{prefix.$prefix}scroll-to-top-hover-color);
+        background-color: var(--#{prefix.$prefix}scroll-to-top-hover-bg-color);
+        border-color    : var(--#{prefix.$prefix}scroll-to-top-hover-border-color);
+    }
 }
