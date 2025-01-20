@@ -8,8 +8,6 @@ docsify serve docs
 ```
 
 
-
-
 Add many UX Components to your app.
 
 ## Installation

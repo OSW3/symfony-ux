@@ -1,0 +1,22 @@
+// * -------------- @osw3/symfony-ux/assets/sass/builder/menu.scss -------------
+// *
+// *    Builder for Menu component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/flex';
+@use './../mixins/spacing';
+
+@use './../storages/menu' as store;
+@use './../components/menu';
+@include banner.header('Component Menu');
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}menu {
+
+}

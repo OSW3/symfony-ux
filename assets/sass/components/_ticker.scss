@@ -1,0 +1,31 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/ticker.scss -----------
+// *
+// *    Builder for Ticker component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/ticker.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // ticker-color             : var(--#{prefix.$prefix}red),
+    // ticker-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
+    // ticker-bg-color          : var(--#{prefix.$prefix}cyan),
+    // ticker-hover-bg-color    : var(--#{prefix.$prefix}cyan),
+    // ticker-border-color      : var(--#{prefix.$prefix}red),
+    // ticker-hover-border-color: var(--#{prefix.$prefix}red),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: (
+);

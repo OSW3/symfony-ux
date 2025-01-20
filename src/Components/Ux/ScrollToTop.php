@@ -19,8 +19,6 @@ final class ScrollToTop extends AbstractComponent
     use AttributeClassTrait;
     use AttributeDatasetTrait;
 
-
-
     #[ExposeInTemplate(name: 'title', getter: 'fetchTitle')]
     public string $title;
 
@@ -36,8 +34,6 @@ final class ScrollToTop extends AbstractComponent
     #[ExposeInTemplate(name: 'rel', getter: 'fetchRel')]
     private string $rel;
     
-
-
     #[PreMount]
     public function preMount(array $data): array
     {

@@ -1,0 +1,20 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/ticker.scss ------------
+// *
+// *    Ticker Storage
+// *
+// * ---------------------------------------------------------------------------
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$height: 40px;
+
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin setHeight($value) {
+    $height: $value !global;
+}

@@ -41,8 +41,7 @@ const PAUSE_HOVER = true;
 const DIRECTION = 'rtl';
 // const DIRECTION = 'ltr';
 
-export default class TickerComponent
-{
+export default class TickerComponent {
     #node;
     #items;
     #index = 0;
@@ -54,8 +53,7 @@ export default class TickerComponent
     #loop = LOOP;
     #pauseHover = PAUSE_HOVER;
 
-    constructor(node)
-    {
+    constructor(node) {
         this.#node = node;
         this.#items = this.#node.querySelectorAll(`.${CLASS_TICKER_ITEM}`);
 
@@ -73,13 +71,13 @@ export default class TickerComponent
         this.#loop = parseBoolean(loop, loop);
 
         // Option Pause on Hover
-        let pausehover = this.#node.dataset.pausehover ?? PAUSE_HOVER;
-        this.#pauseHover = parseBoolean(pausehover, pausehover);
+        let pauseHover = this.#node.dataset.pauseHover ?? PAUSE_HOVER;
+        this.#pauseHover = parseBoolean(pauseHover, pauseHover);
 
-        this.#init();
+        this.#onInit();
     }
 
-    #init()
+    #onInit()
     {
         // Move items to Inner
         this.#node.innerHTML = '';
@@ -138,13 +136,10 @@ export default class TickerComponent
     }
 
     #pause() {
-        // this.#items[this.#index].style.transition = "left 1s ease-in-out"; // Smoothly stop the movement
         clearInterval(this.#instance);
-        
     }
 
     #resume() {
-        // this.#items[this.#index].style.transition = ""; // Remove smooth effect when resuming
         this.#play(parseInt(this.#items[this.#index].style.left));
     }
 }

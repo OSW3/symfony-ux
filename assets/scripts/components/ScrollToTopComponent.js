@@ -1,82 +1,63 @@
-// ************************************************************************** //
+// * ---- @osw3/symfony-ux/assets/scripts/components/ScrollToTopComponent.js ---
 // *
-// *    Components: ScrollToTopComponent
-// *
-// ************************************************************************** //
+// *    ScrollToTop Component
+// *    ---------------------
 // *
 // *    Import
-// *        import ScrollToTopComponent from './../../../bundle/assets/scripts/components/ScrollToTopComponent';
+// *        import './../../vendor/osw3/symfony-ux/assets/scripts/components/ScrollToTopComponent';
 // *
-// *    Instance
-// *        new ScrollToTopComponent( document.querySelector('.my-custom-component') );
-// *
-// *    Events
-// *        onClick(event, element)
-// *        onBeforeClick(event, element)
-// *        onAfterClick(event, element)
-// *
-// *    Methods
-// *        isActive()
-// *
-// ************************************************************************** //
+// * ---------------------------------------------------------------------------
 "use strict";
 
-// import AbstractComponent from './../abstracts/AbstractComponent';
 import { getPrefix } from "../utils/prefix";
 
-// /** @var string Component classname */
-// const NAME = 'scroll-to-top';
+/** Component name
+ * 
+ * @var string  
+ */
+const NAME = 'scroll-to-top';
 
-// /** @var string Components prefix */
-const PREFIX = getPrefix();
+/** Component selector
+ * 
+ * @var string 
+ */
+const SELECTOR = `[rel=js-${getPrefix()}${NAME}]`;
 
-// /** @var string Component selector */
-// const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
+/** Component selector
+ * 
+ * @var number 
+ */
+const TOP_AT = 0;
 
+/** Trigger point to show/hide the button
+ * 
+ * @var number  
+ */
+const TOGGLE_AT = 200;
 
-// /** @var number Set the "top" position */
-// const TOP_AT = 0;
+export default class ScrollToTopComponent {
+    #node;
 
-// /** @var number Trigger point to show/hide the button */
-// const TOGGLE_AT = 200;
+    constructor(node) {
+        this.node       = node;
+        node.onclick    = () => this.#onClick();
+        window.onload   = () => this.#onScroll();
+        window.onscroll = () => this.#onScroll();
+    }
 
-export default class ScrollToTopComponent extends AbstractComponent
-{
-//     _onInit() 
-//     {
-//         window.onload = x => this.#scroll();
-//         window.onscroll = x => this.#scroll();
-//         this.on('click');
-//     }
+    #onClick() {
+        const topAt = this.node.dataset.topAt ?? TOP_AT;
 
-//     #scroll()
-//     {
-//         const toggleAt   = this.node.dataset.toggleAt ?? TOGGLE_AT;
-//         const toggleShow = document.body.scrollTop > toggleAt || document.documentElement.scrollTop > toggleAt;
+        document.body.scrollTop = topAt;
+        document.documentElement.scrollTop = topAt;
+    }
 
-//         this.node.classList.toggle('show', toggleShow);
-//     }
+    #onScroll() {
+        const toggleAt = this.node.dataset.toggleAt ?? TOGGLE_AT;
+        const toggleShow = document.body.scrollTop > toggleAt || document.documentElement.scrollTop > toggleAt;
 
-//     _onClickAlways()
-//     {
-//         const topAt = this.node.dataset.topAt ?? TOP_AT;
-
-//         document.body.scrollTop            = topAt;
-//         document.documentElement.scrollTop = topAt;
-//     }
+        this.node.classList.toggle('show', toggleShow);
+    }
 }
 
-// document.querySelectorAll(SELECTOR).forEach(node => new ScrollToTopComponent(node));
-
-
-// const config = {
-//     selector: ''
-// };
-
-// const component =  () => {
-//     alert(`${PREFIX} Plop`);
-// }
-
-
-
-// export default component;
+document.querySelectorAll(SELECTOR).forEach(node => new ScrollToTopComponent(node));

@@ -65,10 +65,10 @@
     justify-content: $alignment #{if($important, '!important', '')};
 }
 
-// // Align items along the cross axis (flex-start, flex-end, center, baseline, stretch)
-// @mixin alignItems($alignment: stretch) {
-//     align-items: $alignment;
-// }
+// Align items along the cross axis (flex-start, flex-end, center, baseline, stretch)
+@mixin align-items($alignment: stretch, $important: false) {
+    align-items: $alignment #{if($important, '!important', '')};
+}
 
 // // Align an individual item along the cross axis (flex-start, flex-end, center, baseline, stretch)
 // @mixin alignSelf($alignment: auto) {
