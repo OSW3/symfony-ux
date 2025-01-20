@@ -1,5 +1,5 @@
 {% if type == 'link' %}
-<twig:Ux:Link :label="label" :url="url" :target="target" :disabled="disabled" :class="class" noClassLink />
+<twig:Component:Link :label="label" :url="url" :target="target" :disabled="disabled" :class="class" noClassLink />
 {% else %}
 <button {{ _get_attributes(_attr) }}>{{ label|raw }}</button>
 {% endif %}

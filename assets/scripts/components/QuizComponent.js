@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-quiz]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class QuizComponent extends AbstractComponent
+export default class QuizComponent extends Component
 {
     constructor(node)
     {

@@ -7,7 +7,7 @@ Add a Scroll to top button..
 ## Integration
 
 ```twig
-<twig:Ux:ScrollToTop />
+<twig:Component:ScrollToTop />
 ``` 
 
 ## Configuration
@@ -37,7 +37,7 @@ symfony_ux:
 ### Twig configuration
 
 ```twig 
-<twig:Ux:ScrollToTop />
+<twig:Component:ScrollToTop />
 ```
 
 | Parameter | Type | Description | Required | Default |

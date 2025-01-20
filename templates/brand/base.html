@@ -1,13 +1,13 @@
 <div {{ _get_attributes(_attr) }}>
     {% if link is not empty %}
-    <twig:Ux:Brand:Link 
+    <twig:Component:Brand:Link 
         :logo="logo" 
         :name="name" 
         :tagline="tagline" 
         :link="link" 
         />
     {% else %}
-    <twig:Ux:Brand:Inner 
+    <twig:Component:Brand:Inner 
         :logo="logo" 
         :name="name" 
         :tagline="tagline" 

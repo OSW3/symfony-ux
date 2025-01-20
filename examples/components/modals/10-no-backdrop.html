@@ -1,13 +1,13 @@
 <!-- {"title": "No Backdrop", "Description":"The default modal is centered"} -->
 
 <!-- Trigger button -->
-<twig:Ux:Button is="primary" label="no backdrop" :dataset="{
+<twig:Component:Button is="primary" label="no backdrop" :dataset="{
     target: 'no-backdrop-modal',
     action: 'open'
 }"/>
 
 <!-- Modal component -->
-<twig:Ux:Modal id="no-backdrop-modal" placement="centered" :open="false" :backdrop="false"
+<twig:Component:Modal id="no-backdrop-modal" placement="centered" :open="false" :backdrop="false"
     headerTemplate="components/modal/header.html.twig"
     bodyTemplate="components/modal/body.html.twig"
     footerTemplate="components/modal/footer.html.twig"

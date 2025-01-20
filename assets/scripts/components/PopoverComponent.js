@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-popover]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class PopoverComponent extends AbstractComponent
+export default class PopoverComponent extends Component
 {
     constructor(node)
     {

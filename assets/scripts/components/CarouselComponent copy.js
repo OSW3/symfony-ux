@@ -25,7 +25,7 @@ const CLASS_SLIDE_START      = 'slide-start';
 const CLASS_SLIDE_END        = 'slide-end';
 const CLASS_INDICATOR_ACTIVE = 'active';
 
-export default class CarouselComponent extends AbstractComponent
+export default class CarouselComponent extends Component
 {
     // loop;
     slides;

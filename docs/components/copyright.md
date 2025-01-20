@@ -7,7 +7,7 @@ Display a copyright, generally on the website footer.
 ## Integration
 
 ```twig
-<twig:Ux:Copyright />
+<twig:Component:Copyright />
 ``` 
 
 ## Configuration
@@ -38,7 +38,7 @@ symfony_ux:
 ### Twig configuration
 
 ```twig 
-<twig:Ux:Copyright company="My awesome company" since="2025" />
+<twig:Component:Copyright company="My awesome company" since="2025" />
 ```
 
 | Parameter | Type | Description | Required | Default |

@@ -1,9 +1,9 @@
 <form {{ _get_attributes(_attr) }}>
-    <twig:Ux:SearchOld:Input 
+    <twig:Component:SearchOld:Input 
         :param="param" 
         :placeholder="placeholder"
         :autocomplete="autocomplete"
     />
 
-    <twig:Ux:Button:Submit :label="label" />
+    <twig:Component:Button:Submit :label="label" />
 </form>

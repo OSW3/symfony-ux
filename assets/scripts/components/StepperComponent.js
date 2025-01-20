@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-stepper]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class StepperComponent extends AbstractComponent
+export default class StepperComponent extends Component
 {
     constructor(node)
     {

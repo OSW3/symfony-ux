@@ -15,7 +15,7 @@ const SELECTOR          = '[rel=js-cookie-box]';
 const ACTIONS_HANDLER   = ['accept-all','reject-all','accept-selected'];
 // const CLASS_NAME_ACTIVE = 'active';
 
-export default class CookieBoxComponent extends AbstractComponent
+export default class CookieBoxComponent extends Component
 {
     name;
     options = [];

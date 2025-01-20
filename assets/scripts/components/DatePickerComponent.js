@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-datepicker]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class DatePickerComponent extends AbstractComponent
+export default class DatePickerComponent extends Component
 {
     constructor(node)
     {

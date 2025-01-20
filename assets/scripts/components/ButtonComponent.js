@@ -59,7 +59,7 @@ const EVENTS = new Set([
 // _onAfterClickAlways      onAfterClick     _onAfterClickDefault
 
 
-export default class ButtonComponent // extends AbstractComponent
+export default class ButtonComponent // extends Component
 {
     #node;
 

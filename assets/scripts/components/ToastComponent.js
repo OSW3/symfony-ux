@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-toast]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class ToastComponent extends AbstractComponent
+export default class ToastComponent extends Component
 {
     constructor(node)
     {

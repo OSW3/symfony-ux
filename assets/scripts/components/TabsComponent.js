@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-tabs]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class TabsComponent extends AbstractComponent
+export default class TabsComponent extends Component
 {
     constructor(node)
     {

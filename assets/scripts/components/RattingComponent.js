@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-ratting]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class RattingComponent extends AbstractComponent
+export default class RattingComponent extends Component
 {
     constructor(node)
     {

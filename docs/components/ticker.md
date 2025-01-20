@@ -10,7 +10,7 @@ Create an horizontal text scroll.
 ### **Single message**
 
 ```twig
-<twig:Ux:Ticker items="My ticker message" />
+<twig:Component:Ticker items="My ticker message" />
 ``` 
 
 ### **Multiple messages**
@@ -21,14 +21,14 @@ Create an horizontal text scroll.
     "My ticker message 2",
     "My ticker message 3",
 ] %}
-<twig:Ux:Ticker :items="messages" />
+<twig:Component:Ticker :items="messages" />
 ``` 
 
 ### **Message with HTML**
 
 ```twig
 {% set message = "My ticker <a href=\"#\">message</a>" %}
-<twig:Ux:Ticker :items="message" />
+<twig:Component:Ticker :items="message" />
 ``` 
 
 <!-- tabs:end -->
@@ -63,7 +63,7 @@ symfony_ux:
 
 ```twig 
 {% set messages = [ ... ] %}
-<twig:Ux:Ticker :items="messages" />
+<twig:Component:Ticker :items="messages" />
 ```
 
 | Parameter | Type | Description | Required | Default |

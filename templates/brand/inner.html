@@ -1,10 +1,10 @@
 <div {{ _get_attributes(_attr) }}>
     {% for breakpoint, figure in logo %}
-    <twig:Ux:Brand:Figure :src="figure" :alt="name" :breakpoint="breakpoint" />
+    <twig:Component:Brand:Figure :src="figure" :alt="name" :breakpoint="breakpoint" />
     {% else %}
-    <twig:Ux:Brand:Name :name="name" />
+    <twig:Component:Brand:Name :name="name" />
     {% endfor %}
     {% if tagline is not empty %}
-    <twig:Ux:Brand:Tagline :tagline="tagline" />
+    <twig:Component:Brand:Tagline :tagline="tagline" />
     {% endif %}
 </div>

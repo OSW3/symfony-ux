@@ -1,3 +1,4 @@
-<nav {{ _get_attributes(_attr) }}>
-    <twig:Ux:Menu:Items :items="items" />
+<nav {{ attributes }}>
+{# <nav {{ _get_attributes(_attr) }}> #}
+    <twig:Component:Menu:Items :items="items" />
 </nav>

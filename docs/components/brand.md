@@ -7,7 +7,7 @@ Create a responsive brand component.
 ## Integration
 
 ```twig
-<twig:Ux:Brand />
+<twig:Component:Brand />
 ``` 
 
 ## Configuration
@@ -48,7 +48,7 @@ symfony_ux:
     'laptop': asset("build/images/favicon.png"),
     'desktop': asset("build/images/logo-text.png"),
 } %}
-<twig:Ux:Brand 
+<twig:Component:Brand 
     name="My awesome brand" 
     tagline="This brand is awesome" 
     route="app_homepage" 

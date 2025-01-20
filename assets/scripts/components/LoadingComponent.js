@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-loading]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class LoadingComponent extends AbstractComponent
+export default class LoadingComponent extends Component
 {
     constructor(node)
     {

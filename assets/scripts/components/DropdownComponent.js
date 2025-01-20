@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-dropdown]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class DropdownComponent extends AbstractComponent
+export default class DropdownComponent extends Component
 {
     constructor(node)
     {

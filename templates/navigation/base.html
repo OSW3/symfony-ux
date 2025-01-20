@@ -2,7 +2,7 @@
     <div class="{{ classname('container-'~ wrapper) }}">
 
         {% if _brand is not empty %}
-        <twig:Ux:Brand 
+        <twig:Component:Brand 
             :name="_brand.name|default()"
             :tagline="_brand.tagline|default()"
             :logo="_brand.logo|default(null)"
@@ -13,7 +13,7 @@
         {% endif %}
 
         {# Expand button - if menu is not showed on small devices #}
-        <twig:Ux:Button
+        <twig:Component:Button
             label="Expand"
             :class="navigation_toggler_classname"
             :dataset="navigation_toggler_dataset"
@@ -22,7 +22,7 @@
         <div class="{{ classname('navigation-content') }}">
 
             {# Close button - if menu is showed on small device #}
-            <twig:Ux:Button
+            <twig:Component:Button
                 label="Close"
                 :class="navigation_close_classname"
                 :dataset="navigation_close_dataset"
@@ -31,11 +31,11 @@
             {# Menu Schema #}
             {% for node in schema %}
                 {% if node.type == 'menu' %}
-                <twig:Ux:Navigation:Menu :options="node.options" />
+                <twig:Component:Navigation:Menu :options="node.options" />
                 {% elseif node.type == 'searchbar' %}
-                <twig:Ux:Navigation:Searchbar :options="node.options" />
+                <twig:Component:Navigation:Searchbar :options="node.options" />
                 {% elseif node.type == 'template' %}
-                <twig:Ux:Navigation:Template :template="node.template" :options="node.options" />
+                <twig:Component:Navigation:Template :template="node.template" :options="node.options" />
                 {% endif %}
             {% endfor %}
 

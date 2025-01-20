@@ -27,7 +27,7 @@ Create advanced buttons.
 #### Twig component
 
 ```twig
-<twig:Ux:Button label="My button" />
+<twig:Component:Button label="My button" />
 ``` 
 
 ### **submit**
@@ -49,7 +49,7 @@ Create advanced buttons.
 #### Twig component
 
 ```twig
-<twig:Ux:Button:Submit label="My submit button" />
+<twig:Component:Button:Submit label="My submit button" />
 ``` 
 
 ### **reset**
@@ -71,7 +71,7 @@ Create advanced buttons.
 #### Twig component
 
 ```twig
-<twig:Ux:Button:Reset label="My reset button" />
+<twig:Component:Button:Reset label="My reset button" />
 ``` 
 
 ### **link**
@@ -93,8 +93,8 @@ Create advanced buttons.
 #### Twig component
 
 ```twig
-<twig:Ux:Button:Link label="My link button" />
-<twig:Ux:Button type="link" label="My link button" />
+<twig:Component:Button:Link label="My link button" />
+<twig:Component:Button type="link" label="My link button" />
 ``` 
 
 <!-- tabs:end -->

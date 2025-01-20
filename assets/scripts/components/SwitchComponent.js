@@ -22,7 +22,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR = '[rel=js-switch]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class SwitchComponent extends AbstractComponent
+export default class SwitchComponent extends Component
 {
     constructor(node)
     {

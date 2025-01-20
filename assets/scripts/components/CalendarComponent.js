@@ -13,7 +13,7 @@ import AbstractComponent from "../abstracts/AbstractComponent";
 const SELECTOR          = '[rel=js-calendar]';
 const CLASS_NAME_ACTIVE = 'active';
 
-export default class CalendarComponent extends AbstractComponent
+export default class CalendarComponent extends Component
 {
     constructor(node)
     {

@@ -1,17 +1,17 @@
 {% if provider == 'clicky' %}
-<twig:Ux:Analytics:Clicky :trackingId="trackingId" />
+<twig:Component:Analytics:Clicky :trackingId="trackingId" />
 {% elseif provider == 'google' %}
-<twig:Ux:Analytics:Google :trackingId="trackingId" />
+<twig:Component:Analytics:Google :trackingId="trackingId" />
 {% elseif provider == 'go_squared' %}
-<twig:Ux:Analytics:GoSquared :trackingId="trackingId" />
+<twig:Component:Analytics:GoSquared :trackingId="trackingId" />
 {% elseif provider == 'heap' %}
-<twig:Ux:Analytics:Heap :trackingId="trackingId" />
+<twig:Component:Analytics:Heap :trackingId="trackingId" />
 {% elseif provider == 'matomo' %}
-<twig:Ux:Analytics:Matomo :trackingId="trackingId" :trackingUrl="trackingUrl" />
+<twig:Component:Analytics:Matomo :trackingId="trackingId" :trackingUrl="trackingUrl" />
 {% elseif provider == 'piwik' %}
-<twig:Ux:Analytics:Piwik :trackingId="trackingId" :trackingUrl="trackingUrl" />
+<twig:Component:Analytics:Piwik :trackingId="trackingId" :trackingUrl="trackingUrl" />
 {% elseif provider == 'plausible' %}
-<twig:Ux:Analytics:Plausible :trackingDomain="trackingDomain" />
+<twig:Component:Analytics:Plausible :trackingDomain="trackingDomain" />
 {% elseif provider == 'woopra' %}
-<twig:Ux:Analytics:Woopra :trackingDomain="trackingDomain" />
+<twig:Component:Analytics:Woopra :trackingDomain="trackingDomain" />
 {% endif %}

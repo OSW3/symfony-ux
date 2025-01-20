@@ -1,12 +1,12 @@
 <li {{ _get_attributes(_attr) }}>
 {% if children is not empty %}
     <span class="{{ classname('menu-link') }}">{{ label|raw }}</span>
-    <twig:Ux:Menu:Items 
+    <twig:Component:Menu:Items 
         :items="children"
         :level="level"
     />
 {% else %}
-    <twig:Ux:Link 
+    <twig:Component:Link 
         :class="classname('menu-link')"
         :label="label"
         :icon="icon"

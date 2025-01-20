@@ -1,38 +1,18 @@
-{# ---------------------------------------------- #}
-{# - Component : Menu                           - #}
-{# - Part : Base                                - #}
-{# ---------------------------------------------- #}
+{# ---------------------- Component: Menu | Part: Base ---------------------- #}
+{# -------------------------------------------------------------------------- #}
 {% extends '@SymfonyUx/menu/base.html' %}
 
-
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
 {% set _attr = attr|default({}) %}
 
-
-{# -- Render component attributes --------------- #}
-{# ---------------------------------------------- #}
-
-{# Set the ID attribute #}
-{% set _attr = _add_attribute(_attr, 'id', id) %}
-
-{# Set the Class attribute #}
+{# {% set _attr = _add_attribute(_attr, 'id', id) %}
 {% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'aria-label', label | default()) %}
+{% set _attr = _add_attribute(_attr, 'aria-orientation', orientation) %} #}
 
 {# Set the data-xxx attributes #}
-{% for _property, _value in dataset %}
+{# {% for _property, _value in dataset | default([]) %}
     {% set _attr = _add_attribute(_attr, _property, _value) %}
-{% endfor %}
-
-{# Aria label #}
-{% set _attr = _add_attribute(_attr, 'aria-label', label) %}
-
-{# Aria orientation #}
-{% set _attr = _add_attribute(_attr, 'aria-orientation', orientation) %}
-
-
-{# -- Render other attributes ------------------- #}
-{# ---------------------------------------------- #}
+{% endfor %} #}
 
 {% for name, value in attributes %}
     {% set _attr = _add_attribute(_attr, name, value) %}
