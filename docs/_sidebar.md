@@ -14,6 +14,7 @@
   <!-- - [Themes](./layout/themes.md) -->
   <!-- - [Transitions](./layout/transitions.md) -->
 - Components
+  - [Example](./components/example.md)
   <!-- - [Introduction](./components//README.md) -->
   <!-- - [Accordions](./components/accordion.md) -->
   <!-- - [Alerts](./components/alert.md) -->

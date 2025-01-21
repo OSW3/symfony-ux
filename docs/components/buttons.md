@@ -1,103 +1,67 @@
 # Buttons
 
+
+
 ## What is it about ?
 
 Create advanced buttons.
 
+
+
 ## Integration
 
 <!-- tabs:start -->
-
-### **button**
-
-#### HTML component
-
-##### Basic HTML integration
+### **HTML**
 
 ```twig
-<button type="button" class="ux-button">My button</button> 
+<button type="button" class="ux-button">My button</button>
+<button type="submit" class="ux-button">My button</button>
+<button type="reset" class="ux-button">My button</button>
+<a href="#" class="ux-button">My button</a>
 ``` 
 
-##### HTML integration with `classname` function
+```twig 
+<button type="button" class="ux-button ux-button-primary">primary</button>
+<button type="button" class="ux-button ux-button-secondary">secondary</button>
+<button type="button" class="ux-button ux-button-success">Success</button>
+<button type="button" class="ux-button ux-button-danger">Danger</button>
+<button type="button" class="ux-button ux-button-warning">Warning</button>
+<button type="button" class="ux-button ux-button-info">Info</button>
+<button type="button" class="ux-button ux-button-light">Light</button>
+<button type="button" class="ux-button ux-button-dark">Dark</button>
+<button type="button" class="ux-button ux-button-my-custom-palette">my-custom-palette</button>
+```
 
-```twig
-<button type="button" class="{{ classname('button') }}">My button</button> 
-``` 
-
-#### Twig component
+### **Twig**
 
 ```twig
 <twig:Component:Button label="My button" />
+<twig:Component:Button:Submit label="My button" />
+<twig:Component:Button:Reset label="My button" />
+<twig:Component:Button:Link url="#" label="My button" />
 ``` 
 
-### **submit**
+```twig 
+<twig:Component:Button is="primary" label="primary" />
+<twig:Component:Button is="secondary" label="secondary" />
+<twig:Component:Button is="success" label="Success" />
+<twig:Component:Button is="danger" label="Danger" />
+<twig:Component:Button is="warning" label="Warning" />
+<twig:Component:Button is="info" label="Info" />
+<twig:Component:Button is="light" label="Light" />
+<twig:Component:Button is="dark" label="Dark" />
+<twig:Component:Button type="button" label="my-custom-palette" />
+```
 
-#### HTML component
+### **SCSS**
 
-##### Basic HTML integration
+Import the builder `_button.scss`
 
-```twig
-<button type="submit" class="ux-button">My submit button</button> 
-``` 
-
-##### HTML integration with `classname` function
-
-```twig
-<button type="submit" class="{{ classname('button') }}">My submit button</button> 
-``` 
-
-#### Twig component
-
-```twig
-<twig:Component:Button:Submit label="My submit button" />
-``` 
-
-### **reset**
-
-#### HTML component
-
-##### Basic HTML integration
-
-```twig
-<button type="reset" class="ux-button">My reset button</button> 
-``` 
-
-##### HTML integration with `classname` function
-
-```twig
-<button type="reset" class="{{ classname('button') }}">My reset button</button> 
-``` 
-
-#### Twig component
-
-```twig
-<twig:Component:Button:Reset label="My reset button" />
-``` 
-
-### **link**
-
-#### HTML component
-
-##### Basic HTML integration
-
-```twig
-<a href="#" class="ux-button">My button</a> 
-``` 
-
-##### HTML integration with `classname` function
-
-```twig
-<a href="#" class="{{ classname('button') }}">My link button</a> 
-``` 
-
-#### Twig component
-
-```twig
-<twig:Component:Button:Link label="My link button" />
-<twig:Component:Button type="link" label="My link button" />
-``` 
-
+```css 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/button';
+```
 <!-- tabs:end -->
+
 
 
 ## Configuration
@@ -105,11 +69,13 @@ Create advanced buttons.
 <!-- tabs:start -->
 ### **YAML**
 
-This component has no configuration in the `symfony_ux.yaml` file
+> This component has no YAML configuration.
 
-### **Twig Components**
+### **Twig**
 
 ### Twig configuration
+
+> Note: Parameters with • override the YAML configuration.
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -170,32 +136,62 @@ This component has no configuration in the `symfony_ux.yaml` file
 | `medium` | Set the style `medium` |
 | `large` | Set the style `large` |
 
-### **SASS**
+<!-- tabs:end -->
 
-### [optional] Customize the button component layout
 
-```scss 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/prefix';
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/spaces';
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storages/button';
 
-@include button.padding-x(spaces.$base * .6);
-@include button.padding-y(spaces.$base * 1.4);
-@include button.border-width(1px);
-@include button.border-radius(var(--#{prefix.$prefix}border-radius-half-pill));
-@include button.font-family(var(--#{prefix.$prefix}font-monospace));
-@include button.font-size(1rem);
-@include button.font-weight(400);
-@include button.line-height(1.5);
-@include button.box-shadow('inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)');
-@include button.disabled-opacity(0.65);
-@include button.focus-box-shadow(0 0 0 0.25rem);
+## Customize SCSS
+
+<!-- tabs:start -->
+
+### **Theme**
+
+These properties allow you to define the theme of buttons that are not associated with a palette.
+
+```css 
+@use './../../../../bundle/assets/sass/storages/prefix';
+
+$props: map.merge($props, (
+    example-color             : var(--#{prefix.$prefix}black),
+    example-hover-color       : inherit,
+    example-bg-color          : var(--#{prefix.$prefix}yellow),
+    example-hover-bg-color    : var(--#{prefix.$prefix}green),
+    example-border-color      : var(--#{prefix.$prefix}gray-600),
+    example-hover-border-color: var(--#{prefix.$prefix}gray-700),
+));
 ```
 
-### Use the builder for button component
+### **Layout**
 
-```scss 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/button';
+#### Custom file example
+
+```css 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/button';
+
+@include button.setBorderWidth( 1px );
+@include button.setBorderRadius( var(--#{prefix.$prefix}border-radius-normal) );
+@include button.setCursor( pointer );
+@include button.setFontFamily( inherit );
+@include button.setFontSize(fonts.$scale-base * 1, fonts.$scale-base * .8 , fonts.$scale-base * 1.6 );
+@include button.setFontWeight(100 * 4, 100 * 4, 100 * 7);
+@include button.setLineHeight(1.5, 1, 1.8);
+@include button.setPaddingX(spaces.$base * .6, spaces.$base * .4, spaces.$base * 1);
+@include button.setPaddingY(spaces.$base * 1.4, spaces.$base * 1, spaces.$base * 1.6);
+@include button.setDisabledOpacity( 0.65 );
+@include button.setBoxShadow('inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)');
+@include button.setFocusBoxShadow( 0 0 0 0.25rem );
 ```
+
+<hr>
+
+#### Available mixins
+
+<!-- ##### `setPadding`
+
+Mixin include definition.
+
+```css 
+@include example.setPadding(1rem);
+``` -->
 
 <!-- tabs:end -->
