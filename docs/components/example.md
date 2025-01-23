@@ -81,6 +81,7 @@ symfony_ux:
 
 
 
+
 ## Customize SCSS
 
 <!-- tabs:start -->
@@ -115,22 +116,15 @@ $props: map.merge($props, (
 
 #### Available mixins
 
-##### `setPadding`
+##### `xxxx`
 
-Mixin include definition.
-
-```css 
-@include example.setPadding(1rem);
-```
-
-##### `setUselessBreakpoints`
-
-Mixin include definition.
+xxxx
 
 ```css 
-@include example.setTransitionType(ease-in-out);
+@xxxx;
 ```
 <!-- tabs:end -->
+
 
 
 

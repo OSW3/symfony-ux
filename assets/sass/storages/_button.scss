@@ -43,20 +43,34 @@ $focus-box-shadow : 0 0 0 0.25rem;
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-@mixin setBorderWidth($value) {
-    $border-width: $value !global;
-}
-@mixin setBorderRadius($value) {
-    $border-radius: $value !global;
-}
-
-@mixin setCursor($value) {
-    $cursor: $value !global;
+// Sets the border width of the button.
+// @param {Length} $width - The width of the border (e.g., 1px).
+@mixin setBorderWidth($width) {
+    $border-width: $width !global;
 }
 
-@mixin setFontFamily($value) {
-    $font-family: $value !global;
+// Sets the border radius of the button for rounded corners.
+// @param {Length} $radius - The radius for the button's corners, typically a CSS variable.
+@mixin setBorderRadius($radius) {
+    $border-radius: $radius !global;
 }
+
+// Sets the cursor style when hovering over the button.
+// @param {Cursor} $cursor
+@mixin setCursor($cursor) {
+    $cursor: $cursor !global;
+}
+
+// Sets the font family for the button's text.
+// @param {String} $family - The font family to inherit or specify.
+@mixin setFontFamily($family) {
+    $font-family: $family !global;
+}
+
+// Sets the font size of the button for different screen sizes.
+// @param {Length} $normal.
+// @param {Length} $small.
+// @param {Length} $large.
 @mixin setFontSize($normal, $small: null, $large: null) {
     $font-size: $normal !global;
 
@@ -67,6 +81,11 @@ $focus-box-shadow : 0 0 0 0.25rem;
         $font-size-large: $large !global;
     }
 }
+
+// Sets the font weight of the button's text for different screen sizes.
+// @param {Number} $normal.
+// @param {Number} $small.
+// @param {Number} $large.
 @mixin setFontWeight($normal, $small: null, $large: null) {
     $font-weight: $normal !global;
 
@@ -77,6 +96,11 @@ $focus-box-shadow : 0 0 0 0.25rem;
         $font-weight-large: $large !global;
     }
 }
+
+// Sets the line height of the button's text for different screen sizes.
+// @param {Number} $normal.
+// @param {Number} $small.
+// @param {Number} $large.
 @mixin setLineHeight($normal, $small: null, $large: null) {
     $line-height: $normal !global;
 
@@ -88,6 +112,10 @@ $focus-box-shadow : 0 0 0 0.25rem;
     }
 }
 
+// Sets the horizontal padding of the button for different screen sizes.
+// @param {Length} $normal.
+// @param {Length} $small.
+// @param {Length} $large.
 @mixin setPaddingX($normal, $small: null, $large: null) {
     $padding-x: $normal !global;
 
@@ -98,6 +126,11 @@ $focus-box-shadow : 0 0 0 0.25rem;
         $padding-x-large: $large !global;
     }
 }
+
+// Sets the vertical padding of the button for different screen sizes.
+// @param {Length} $normal.
+// @param {Length} $small.
+// @param {Length} $large.
 @mixin setPaddingY($normal, $small: null, $large: null) {
     $padding-y: $normal !global;
 
@@ -109,18 +142,20 @@ $focus-box-shadow : 0 0 0 0.25rem;
     }
 }
 
-@mixin setDisabledOpacity($value) {
-    $disabled-opacity: $value !global;
+// Sets the opacity for the button when it is in a disabled state.
+// @param {Number} $opacity - The opacity level (e.g., 0.65).
+@mixin setDisabledOpacity($opacity) {
+    $disabled-opacity: $opacity !global;
 }
 
-
-
-
+// Sets the box-shadow for the button, often used to create depth or visual emphasis.
+// @param {String} $shadow - The CSS box-shadow value.
 @mixin setBoxShadow($value) {
     $box-shadow: $value !global;
 }
 
-
+// Sets the focus outline box-shadow for the button, often used for accessibility purposes.
+// @param {String} $shadow - The CSS box-shadow value to apply on focus.
 @mixin setFocusBoxShadow($value) {
     $focus-box-shadow: $value !global;
 }

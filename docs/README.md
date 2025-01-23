@@ -24,7 +24,7 @@ Add many UX Components to your app.
   - [Buttons](./components/buttons.md)
   - [Copyright](./components/copyright.md)
 <!-- - [Copyright](./components/copyright.md) -->
-<!-- - [link](./components/link.md) -->
+- [Links](./components/link.md)
 - [Menus](./components/menu.md)
 <!-- - [Rotators](./components/rotator.md) -->
 - [Scroll to top](./components/scroll-to-top.md)

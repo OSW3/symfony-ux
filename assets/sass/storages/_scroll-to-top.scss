@@ -35,40 +35,59 @@ $square-radius: 6px;
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-@mixin setCursor($value) {
-    $cursor: $value !global;
+// Sets the cursor style for the scroll-to-top button.
+// @param {Cursor} $cursor - The cursor style, e.g., pointer for clickable elements.
+@mixin setCursor($cursor) {
+    $cursor: $cursor !global;
 }
 
-@mixin setShape($value) {
+// Sets the shape of the scroll-to-top button.
+// @param {String} $shape - The shape of the button, e.g., `square`.
+@mixin setShape($shape) {
     // square, circle, corner
-    $shape: $value !global;
+    $shape: $shape !global;
 }
 
-@mixin setPosition($value) {
+// Sets the position of the scroll-to-top button on the screen.
+// @param {String} $position - The position, e.g., `bottom-right`.
+@mixin setPosition($position) {
     // top-left, top-center, top-right, middle-left, middle-center, centered, middle-right, bottom-left, bottom-center, bottom-right
-    $position: $value !global;
+    $position: $position !global;
 }
 
-@mixin setTransition($value) {
+// Sets the type of transition for the scroll-to-top button.
+// @param {String} $transition - The type of transition, e.g., `natural` for smooth behavior.
+@mixin setTransition($transition) {
     // natural, inverse, right, left
-    $transition: $value !global;
-}
-@mixin setTransitionDelay($value) {
-    $transition-delay: $value !global;
-}
-@mixin setTransitionType($value) {
-    $transition-type: $value !global;
+    $transition: $transition !global;
 }
 
-@mixin setSymbol($value) {
-    $symbol: $value !global;
+// Sets the delay before the transition begins for the scroll-to-top button.
+// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
 }
 
-@mixin setZIndex($value) {
-    $z-index: $value !global;
+// Sets the transition type (easing function) for the scroll-to-top button.
+// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
 }
 
-@mixin setSquareRadius($value) {
-    $square-radius: $value !global;
+// Sets the symbol displayed inside the scroll-to-top button.
+// @param {String} $symbol - The symbol or icon, e.g., `arrow-up`.
+@mixin setSymbol($symbol) {
+    $symbol: $symbol !global;
 }
 
+// Sets the z-index of the scroll-to-top button to control stacking order.
+// @param {Number} $zIndex - The z-index value, e.g., 999999 to ensure it is on top.
+@mixin setZIndex($zIndex) {
+    $z-index: $zIndex !global;
+}
+
+// Sets the border radius for a square-shaped scroll-to-top button.
+// @param {Length} $radius - The radius for the button's corners, e.g., 6px.
+@mixin setSquareRadius($radius) {
+    $square-radius: $radius !global;
+}

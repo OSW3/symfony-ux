@@ -42,10 +42,14 @@ $tagline-offset       : (spaces.$base * .5) * -1;
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-@mixin setBreakpoints($list) {
-    $breakpoints: $list !global;
+// Sets the breakpoints for responsive design specific to the brand.
+// @param {List} $breakpoints - A list of breakpoints, e.g., (laptop, desktop).
+@mixin setBreakpoints($breakpoints) {
+    $breakpoints: $breakpoints !global;
 }
 
+// Sets the breakpoints considered unnecessary for responsive design.
+// @param {List} $breakpoints - A list of breakpoints, e.g., (laptop, desktop).
 @mixin setUselessBreakpoints($useless) {
     @each $key, $value in $breakpoints {
         @if fnCollection.keyExists($useless, $key) {
@@ -54,34 +58,58 @@ $tagline-offset       : (spaces.$base * .5) * -1;
     }
 }
 
+// Sets the horizontal padding for the brand's elements.
+// @param {Length} $padding - The horizontal padding value.
 @mixin setPaddingX($value) {
     $padding-x: $value !global;
 }
+
+// Sets the vertical padding for the brand's elements.
+// @param {Length} $padding - The vertical padding value.
 @mixin setPaddingY($value) {
     $padding-y: $value !global;
 }
 
-@mixin setPrimaryFontFamily($value) {
-    $primary-font-family: $value !global;
-}
-@mixin setPrimaryFontSize($value) {
-    $primary-font-size: $value !global;
-}
-@mixin setPrimaryFontWeight($value) {
-    $primary-font-weight: $value !global;
-}
-@mixin setSecondaryFontFamily($value) {
-    $secondary-font-family: $value !global;
-}
-@mixin setSecondaryFontSize($value) {
-    $secondary-font-size: $value !global;
-}
-@mixin setSecondaryFontWeight($value) {
-    $secondary-font-weight: $value !global;
+// Sets the primary font family for the brand. If null, defaults to the system or inherited font.
+// @param {String|Null} $family - The primary font family or null to inherit.
+@mixin setPrimaryFontFamily($family) {
+    $primary-font-family: $family !global;
 }
 
-@mixin setTransition($value) {
-    $transition: $value !global;
+// Sets the primary font size for the brand.
+// @param {Length} $size - The size of the primary font.
+@mixin setPrimaryFontSize($size) {
+    $primary-font-size: $size !global;
+}
+
+// Sets the primary font weight for the brand.
+// @param {Number} $weight - The weight of the primary font.
+@mixin setPrimaryFontWeight($weight) {
+    $primary-font-weight: $weight !global;
+}
+
+// Sets the secondary font family for the brand. If null, defaults to the system or inherited font.
+// @param {String|Null} $family - The secondary font family or null to inherit.
+@mixin setSecondaryFontFamily($family) {
+    $secondary-font-family: $family !global;
+}
+
+// Sets the secondary font size for the brand.
+// @param {Length} $size - The size of the secondary font.
+@mixin setSecondaryFontSize($size) {
+    $secondary-font-size: $size !global;
+}
+
+// Sets the secondary font weight for the brand.
+// @param {Number} $weight - The weight of the secondary font.
+@mixin setSecondaryFontWeight($weight) {
+    $secondary-font-weight: $weight !global;
+}
+
+// Enables or disables transitions for the brand's elements.
+// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
+@mixin setTransition($enabled) {
+    $transition: $enabled !global;
 
     // @if $transition and $transition-delay == null {
     //     $transition-delay : var(--#{prefix.$prefix}transition-normal) !global;
@@ -90,13 +118,21 @@ $tagline-offset       : (spaces.$base * .5) * -1;
     //     $transition-type  : ease-in-out !global;
     // }
 }
-@mixin setTransitionDelay($value) {
-    $transition-delay: $value !global;
-}
-@mixin setTransitionType($value) {
-    $transition-type: $value !global;
+
+// Sets the transition delay for the brand's elements.
+// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
 }
 
-@mixin setTaglineOffset($value) {
-    $tagline-offset: $value !global;
+// Sets the transition type (easing function) for the brand's elements.
+// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
+}
+
+// Sets the offset for the brand's tagline, allowing for precise alignment.
+// @param {Length} $offset - The offset value, typically negative for upward positioning.
+@mixin setTaglineOffset($offset) {
+    $tagline-offset: $offset !global;
 }

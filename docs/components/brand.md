@@ -124,19 +124,19 @@ $props: map.merge($props, (
 @use './../../../vendor/osw3/symfony-ux/assets/sass/storage/brand';
 
 @include brand.setBreakpoints((laptop, desktop));
-@include brand.setUselessBreakpoints(xxx);
-@include brand.setPaddingX(xxx);
-@include brand.setPaddingY(xxx);
-@include brand.setPrimaryFontFamily(xxx);
-@include brand.setPrimaryFontSize(xxx);
-@include brand.setPrimaryFontWeight(xxx);
-@include brand.setSecondaryFontFamily(xxx);
-@include brand.setSecondaryFontSize(xxx);
-@include brand.setSecondaryFontWeight(xxx);
-@include brand.setTransition(xxx);
-@include brand.setTransitionDelay(xxx);
-@include brand.setTransitionType(xxx);
-@include brand.setTaglineOffset(xxx);
+@include brand.setUselessBreakpoints((laptop, desktop));
+@include brand.setPaddingX(spaces.$base * .6);
+@include brand.setPaddingY(spaces.$base * .8);
+@include brand.setPrimaryFontFamily(null);
+@include brand.setPrimaryFontSize(fonts.$scale-base * 1.5);
+@include brand.setPrimaryFontWeight(100 * 6);
+@include brand.setSecondaryFontFamily(null);
+@include brand.setSecondaryFontSize(fonts.$scale-base * .8);
+@include brand.setSecondaryFontWeight(100 * 4);
+@include brand.setTransition(false);
+@include brand.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+@include brand.setTransitionType(ease-in-out);
+@include brand.setTaglineOffset((spaces.$base * .5) * -1);
 ```
 
 <hr>
@@ -145,74 +145,92 @@ $props: map.merge($props, (
 
 ##### `setBreakpoints`
 
-Redefine available breakpoints name for the Brand Component.
+Sets the breakpoints for responsive design specific to the brand.
 
 ```css 
-@include brand.setBreakpoints( list );
+@include brand.setBreakpoints( {List} $breakpoints );
 ```
 
 ##### `setUselessBreakpoints`
 
-exclude some breakpoints.
+Sets the breakpoints considered unnecessary for responsive design.
 
 ```css 
-@include brand.setUselessBreakpoints( list );
+@include brand.setUselessBreakpoints( {List} $breakpoints  );
 ```
 
 ##### `setPaddingX`
 
+Sets the horizontal padding for the brand's elements.
+
 ```css 
-@include brand.setPaddingX( string );
+@include brand.setPaddingX( {Length} $padding  );
 ```
 
 ##### `setPaddingY`
 
+Sets the vertical padding for the brand's elements.
+
 ```css 
-@include brand.setPaddingY( string );
+@include brand.setPaddingY( {Length} $padding  );
 ```
 
 ##### `setPrimaryFontFamily` & `setSecondaryFontFamily`
 
+Sets the primary or secondary font family for the brand. If null, defaults to the system or inherited font.
+
 ```css 
-@include brand.setPrimaryFontFamily( string );
-@include brand.setSecondaryFontFamily( string );
+@include brand.setPrimaryFontFamily( {String|Null} $family );
+@include brand.setSecondaryFontFamily( {String|Null} $family );
 ```
 
 ##### `setPrimaryFontSize` & `setSecondaryFontSize`
 
+Sets the primary or secondary font size for the brand.
+
 ```css 
-@include brand.setPrimaryFontSize( string );
-@include brand.setSecondaryFontSize( string );
+@include brand.setPrimaryFontSize( {Length} $size );
+@include brand.setSecondaryFontSize( {Length} $size );
 ```
 
 ##### `setPrimaryFontWeight` & `setSecondaryFontWeight`
 
+Sets the primary or secondary font weight for the brand.
+
 ```css 
-@include brand.setPrimaryFontWeight( number );
-@include brand.setSecondaryFontWeight( number );
+@include brand.setPrimaryFontWeight( {Number} $weight );
+@include brand.setSecondaryFontWeight( {Number} $weight );
 ```
 
 ##### `setTransition`
 
+Enables or disables transitions for the brand's elements.
+
 ```css 
-@include brand.setTransition( boolean );
+@include brand.setTransition( {Boolean} $enabled );
 ```
 
 ##### `setTransitionDelay`
 
+Sets the transition delay for the brand's elements.
+
 ```css 
-@include brand.setTransitionDelay( string );
+@include brand.setTransitionDelay( {Length} $delay );
 ```
 
 ##### `setTransitionType`
 
+Sets the transition type (easing function) for the brand's elements.
+
 ```css 
-@include brand.setTransitionType( string );
+@include brand.setTransitionType( {String} $type );
 ```
 
 ##### `setTaglineOffset`
 
+Sets the offset for the brand's tagline, allowing for precise alignment.
+
 ```css 
-@include brand.setTaglineOffset( string );
+@include brand.setTaglineOffset( {Length} $offset );
 ```
 <!-- tabs:end -->

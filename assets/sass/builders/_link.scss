@@ -1,0 +1,101 @@
+// * -------------- @osw3/symfony-ux/assets/sass/builder/link.scss -------------
+// *
+// *    Builder for Link component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/spacing';
+@use './../mixins/transition';
+
+@use './../storages/link' as store;
+@use './../components/link' ;
+@include banner.header('Component Link');
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}link {
+
+    // border: 3px solid red;
+
+    cursor: store.$cursor;
+    color: var(--#{prefix.$prefix}link-color);
+    text-decoration: store.$text-decoration;
+    text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-color);
+    
+    @if store.$text-decoration == underline {
+        text-decoration-thickness: 2px;
+    }
+    @else {
+        text-decoration-thickness: 0px;
+    }
+
+    @include transition.set(
+        (color, text-decoration, text-decoration-color, text-decoration-thickness),
+        store.$transition-delay,
+        store.$transition-type,
+    );
+
+    &:hover {
+        color: var(--#{prefix.$prefix}link-hover-color) !important;
+        text-decoration: store.$text-decoration-hover !important;
+        text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-hover-color) !important;
+
+        @if store.$text-decoration == underline {
+            text-decoration-thickness: 2px;
+        }
+        @else {
+            text-decoration-thickness: 0px;
+        }
+    }
+
+    &:active, 
+    &.active,
+    &:active:hover, 
+    &.active:hover {
+        color: var(--#{prefix.$prefix}link-active-color) !important;
+        text-decoration: store.$text-decoration-active !important;
+        text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-active-color) !important;
+
+        @if store.$text-decoration == underline {
+            text-decoration-thickness: 2px;
+        }
+        @else {
+            text-decoration-thickness: 0px;
+        }
+    }
+
+    &[disabled],
+    &[disabled]:active, 
+    &[disabled].active, 
+    &[disabled]:hover, 
+    &[disabled]:active:hover, 
+    &[disabled].active:hover {
+        color: var(--#{prefix.$prefix}link-disabled-color) !important;
+        cursor: default !important;
+        text-decoration: none !important;
+    }
+
+
+    &[target]:not([target=_self],[target=_parent]) {
+        position: relative;
+        padding-right: 8px;
+
+        &::after {
+            content: "++";
+            display: block;
+            box-sizing: border-box;
+            position: absolute;
+            // width: 12px;
+            // height: 12px;
+
+            border: 3px solid red;
+            // top: 2px;
+            right: -8px;
+            // background: transparent var(--icon) center no-repeat;
+        }
+    }
+}

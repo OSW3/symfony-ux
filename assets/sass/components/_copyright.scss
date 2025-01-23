@@ -29,28 +29,4 @@ $theme-properties: (
 // * Default structure properties
 // * ---------------------------------------------
 
-// $layout-properties: (
-//     'copyright-padding-x'  : copyright.$padding-x,
-//     'copyright-padding-y'  : copyright.$padding-y,
-//     'copyright-font-size'  : copyright.$font-size,
-//     'copyright-font-weight': copyright.$font-weight,
-// );
-
-// @if copyright.$font-family {
-//     $layout-properties: map.merge($layout-properties, (
-//         'copyright-font-family': copyright.$font-family,
-//     ));
-// }
-
-// // @if copyright.$cursor {
-// //     $layout-properties: map.merge($layout-properties, (
-// //         'copyright-cursor': copyright.$cursor,
-// //     ));
-// // }
-
-// @if copyright.$transition {
-//     $layout-properties: map.merge($layout-properties, (
-//         'copyright-transition-delay': copyright.$transition-delay,
-//         'copyright-transition-type': copyright.$transition-type,
-//     ));
-// }
+$layout-properties: ();

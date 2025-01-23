@@ -186,12 +186,100 @@ $props: map.merge($props, (
 
 #### Available mixins
 
-<!-- ##### `setPadding`
+##### `setBorderWidth`
 
-Mixin include definition.
+Sets the border width of the button.
 
 ```css 
-@include example.setPadding(1rem);
-``` -->
+@include button.setBorderWidth( {Length} $width );
+```
+
+##### `setBorderRadius`
+
+Sets the border radius of the button for rounded corners.
+
+```css 
+@include button.setBorderRadius( {Length} $radius );
+```
+
+##### `setCursor`
+
+Sets the cursor style when hovering over the button.
+
+```css 
+@include button.setCursor( {Cursor} $cursor );
+```
+
+##### `setFontFamily`
+
+Sets the font family for the button's text.
+
+```css 
+@include button.setFontFamily( {String} $family );
+```
+
+##### `setFontSize`
+
+Sets the font size of the button for different screen sizes.
+
+```css 
+@include button.setFontSize( {Length} $normal, {Length} $small, {Length} $large );
+```
+
+##### `setFontWeight`
+
+Sets the font weight of the button's text for different screen sizes.
+
+```css 
+@include button.setFontWeight( {Number} $normal, {Number} $small, {Number} $large );
+```
+
+##### `setLineHeight`
+
+Sets the line height of the button's text for different screen sizes..
+
+```css 
+@include button.setLineHeight( {Number} $normal, {Number} $small, {Number} $large );
+```
+
+##### `setPaddingX`
+
+Sets the horizontal padding of the button for different screen sizes.
+
+```css 
+@include button.setPaddingX( {Length} $normal, {Length} $small, {Length} $large );
+```
+
+##### `setPaddingY`
+
+Sets the vertical padding of the button for different screen sizes.
+
+```css 
+@include button.setPaddingY( {Length} $normal, {Length} $small, {Length} $large );
+```
+
+##### `setDisabledOpacity`
+
+Sets the opacity for the button when it is in a disabled state.
+
+```css 
+@include button.setDisabledOpacity( {Number} $opacity );
+```
+
+##### `setBoxShadow`
+
+Sets the box-shadow for the button, often used to create depth or visual emphasis..
+
+```css 
+@include button.setBoxShadow( {String} $shadow );
+```
+
+##### `setFocusBoxShadow`
+
+Sets the focus outline box-shadow for the button, often used for accessibility purposes..
+
+```css 
+@include button.setFocusBoxShadow( {String} $shadow );
+```
 
 <!-- tabs:end -->

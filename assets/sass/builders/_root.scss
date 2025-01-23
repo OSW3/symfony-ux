@@ -22,6 +22,7 @@
 @use './../components/brand';
 @use './../components/button';
 @use './../components/copyright';
+@use './../components/link';
 @use './../components/scroll-to-top';
 
 
@@ -53,6 +54,7 @@ $themes: fnMap.merge-multiple(
     brand.$theme-properties, 
     button.$theme-properties, 
     copyright.$theme-properties, 
+    link.$theme-properties, 
     scroll-to-top.$theme-properties, 
     map.get(themes.$themes, themes.$default)
 );

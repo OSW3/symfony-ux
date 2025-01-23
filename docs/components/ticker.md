@@ -1,19 +1,27 @@
 # Ticker
 
+
+
 ## What is it about ?
 
 Create an horizontal text scroll.
 
+
+
 ## Integration
 
 <!-- tabs:start -->
-### **Single message**
+### **HTML**
 
 ```twig
-<twig:Component:Ticker items="My ticker message" />
+<div class="ux-ticker" rel="js-ux-ticker" data-speed="15" data-delay="0" data-direction="rtl" data-loop="true" data-pauseHover="true">
+    <div class="ux-ticker-item">My ticker <a href="#">message</a> 1</div>
+    <div class="ux-ticker-item">My ticker message 2</div>
+    <div class="ux-ticker-item">My ticker message 3</div>
+</div>
 ``` 
 
-### **Multiple messages**
+### **Twig**
 
 ```twig
 {% set messages = [
@@ -24,20 +32,37 @@ Create an horizontal text scroll.
 <twig:Component:Ticker :items="messages" />
 ``` 
 
-### **Message with HTML**
+### **SCSS**
 
-```twig
-{% set message = "My ticker <a href=\"#\">message</a>" %}
-<twig:Component:Ticker :items="message" />
-``` 
+Import the builder `_example.scss`
 
+```css 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/ticker';
+```
+
+### **JavaScript**
+
+Import the component `ExampleComponent`
+
+```js
+import './../../../vendor/osw3/symfony-ux/assets/scripts/components/TickerComponent';
+```
 <!-- tabs:end -->
+
 
 
 ## Configuration
 
 <!-- tabs:start -->
 ### **YAML**
+
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `speed` | `integer` | Set the speed of scroll. 0 = No scroll | no | `15` |
+| `delay` | `integer` | Set the delay before next message. | no | `0` |
+| `direction` | `string` | Set the scroll direction. | no | `rtl` |
+| `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
+| `pause_hover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |
 
 ```yaml
 symfony_ux:
@@ -49,22 +74,9 @@ symfony_ux:
             pause_hover: true
 ```
 
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `speed` | `integer` | Set the speed of scroll. 0 = No scroll | no | `15` |
-| `delay` | `integer` | Set the delay before next message. | no | `0` |
-| `direction` | `string` | Set the scroll direction. | no | `rtl` |
-| `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
-| `pause_hover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |
-
 ### **Twig**
 
 ### Twig configuration
-
-```twig 
-{% set messages = [ ... ] %}
-<twig:Component:Ticker :items="messages" />
-```
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
@@ -75,31 +87,45 @@ symfony_ux:
 | `loop` | `bool` | Set whether the ticker will be played in loop. | no | `true` |
 | `pauseHover` | `bool` | Set whether the ticker will be paused on mouseover. | no | `true` |
 
-### **SASS**
 
-<!-- 
+> Note: Parameters with • override the YAML configuration.
 
-### Use the builder for button component
+```twig 
+{% set messages = [ ... ] %}
+<twig:Component:Ticker :items="messages" />
+```
+<!-- tabs:end -->
 
-```scss 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/brand';
+
+
+
+## Customize SCSS
+
+<!-- tabs:start -->
+
+### **Theme**
+
+> There is no theme variable for this component.
+
+### **Layout**
+
+#### Custom file example
+
+```css 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/ticker';
+
+@include ticker.setHeight(40px);
 ```
 
-### [optional] Customize the button component layout
+<hr>
 
-- `setBreakpoints`  
-Redefine available breakpoints name for the Brand Component
-```scss 
-@include brand.setBreakpoints((laptop, desktop));
-``` -->
+#### Available mixins
 
+##### `setHeight`
 
-### **JavaScript**
+Sets the height of the ticker element.
 
-### Import the component
-
-```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/TickerComponent';
+```css 
+@include ticker.setHeight( {Length} $height );
 ```
-
 <!-- tabs:end -->

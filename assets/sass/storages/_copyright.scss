@@ -31,28 +31,45 @@ $hover                : false;
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-@mixin setCursor($value) {
-    $cursor: $value !global;
+
+// Sets the cursor style for the copyright element. If null, it defaults to the system or inherited style.
+// @param {Cursor|Null} $cursor - The cursor style or null to inherit.
+@mixin setCursor($cursor) {
+    $cursor: $cursor !global;
 }
 
+// Sets the font family for the copyright element. If null, it defaults to the system or inherited font.
+// @param {String|Null} $family - The font family or null to inherit.
 @mixin setFontFamily($value) {
     $font-family: $value !global;
 }
+
+// Sets the font size for the copyright element.
+// @param {Length} $size - The size of the font.
 @mixin setFontSize($value) {
     $font-size: $value !global;
 }
+
+// Sets the font weight for the copyright element.
+// @param {Number} $weight - The weight of the font.
 @mixin setFontWeight($value) {
     $font-weight: $value !global;
 }
 
+// Sets the horizontal padding for the copyright element.
+// @param {Length} $padding - The horizontal padding value.
 @mixin setPaddingX($value) {
     $padding-x: $value !global;
 }
+
+// Sets the vertical padding for the copyright element.
+// @param {Length} $padding - The vertical padding value.
 @mixin setPaddingY($value) {
     $padding-y: $value !global;
 }
 
-
+// Enables or disables transitions for the copyright element.
+// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
 @mixin setTransition($value) {
     $transition: $value !global;
 
@@ -63,13 +80,21 @@ $hover                : false;
         $transition-type  : ease-in-out !global;
     }
 }
+
+// Sets the transition delay for the copyright element.
+// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
 @mixin setTransitionDelay($value) {
     $transition-delay: $value !global;
 }
+
+// Sets the transition type (easing function) for the copyright element.
+// @param {String} $type - The type of easing, e.g., `ease-in-out`.
 @mixin setTransitionType($value) {
     $transition-type: $value !global;
 }
 
-@mixin setHover($value) {
-    $hover: $value !global;
+// Enables or disables hover effects for the copyright element.
+// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) hover effects.
+@mixin setHover($enabled) {
+    $hover: $enabled !global;
 }

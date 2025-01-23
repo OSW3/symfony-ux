@@ -11,7 +11,7 @@
 /// @param {List} $properties Properties list
 /// @param {String} $delay  Transition delay for all properties
 /// 
-@mixin set($properties: (), $type: 'ease-in-out', $delay: .3s)
+@mixin set($properties: (), $delay: '.3s', $type: 'ease-in-out')
 {
     $transitions: ();
 
