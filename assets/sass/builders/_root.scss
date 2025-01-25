@@ -15,6 +15,7 @@
 @use './../functions/map' as fnMap;
 @use './../storages/fonts';
 @use './../storages/colors';
+@use './../storages/icons';
 @use './../storages/prefix';
 @use './../storages/themes';
 @use './../storages/transitions';
@@ -126,14 +127,12 @@ $themes: fnMap.merge-multiple(
     }
 
 
+    // Icons
+    // -- 
 
-
-
-
-
-
-
-
+    @each $name, $value in icons.$icons {
+        --#{prefix.$prefix}icon-#{$name}: #{$value};
+    }
 
 
     // Components Themes

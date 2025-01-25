@@ -8,6 +8,7 @@
 // ************************************************************************** //
 
 @use "sass:color";
+@use "sass:meta";
 @use "sass:string";
 @use './utils';
 
@@ -110,7 +111,7 @@
 /// @return {string} The encoded color
 @function encode($color)
 {
-    @if type-of($color) == color {
+    @if meta.type-of($color) == color {
         $color: utils.str-replace(#{$color}, '#', '%23');
     }
 
@@ -120,7 +121,7 @@
 
 
 @function luminance($color) {
-  $color: if(type-of($color) == 'color', $color, color($color));
+  $color: if(meta.type-of($color) == 'color', $color, color($color));
   
   // Convertir la couleur en RGB
   $r: red($color) / 255;

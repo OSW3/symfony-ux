@@ -8,7 +8,9 @@
 @use './../storages/prefix';
 @use './../mixins/spacing';
 @use './../mixins/transition';
+// @use './../mixins/icon';
 
+@use './../storages/icons';
 @use './../storages/link' as store;
 @use './../components/link' ;
 @include banner.header('Component Link');
@@ -19,7 +21,7 @@
 
 .#{prefix.$prefix}link {
 
-    // border: 3px solid red;
+    display: inline-flex;
 
     cursor: store.$cursor;
     color: var(--#{prefix.$prefix}link-color);
@@ -81,21 +83,17 @@
 
 
     &[target]:not([target=_self],[target=_parent]) {
-        position: relative;
-        padding-right: 8px;
-
         &::after {
-            content: "++";
-            display: block;
-            box-sizing: border-box;
-            position: absolute;
-            // width: 12px;
-            // height: 12px;
-
-            border: 3px solid red;
-            // top: 2px;
-            right: -8px;
-            // background: transparent var(--icon) center no-repeat;
+            content: "";
+            display: inline-block;
+            margin-left: 2px;
+            margin-top: 4px;
+            width: .6em;
+            height: .6em;
+            mask: var(--ux-icon-external-link) no-repeat;
+            background-color: currentColor;
+            -webkit-mask: var(--ux-icon-external-link) no-repeat;
+            -webkit-mask-size: contain;
         }
     }
 }

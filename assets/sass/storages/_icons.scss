@@ -1,0 +1,33 @@
+// * ------------- @osw3/symfony-ux/assets/sass/storages/icons.scss ------------
+// *
+// *    Icons Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:map';
+@use 'sass:string';
+@use 'sass:color';
+@use './../functions//utils';
+
+// * Define storage data
+// * ---------------------------------------------
+
+$icons: ();
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@function get ($icon, $fill-color: null) {
+    @if $fill-color == null or $fill-color == '' {
+        $fill-color: #000000;
+    }
+
+    $icon: map.get($icons, $icon);
+    @return $icon;
+}
+
+@mixin add-svg($name, $icon) {
+    $icon: url("#{$icon}");
+    $icons: map.merge($icons, ($name: $icon)) !global;
+}
