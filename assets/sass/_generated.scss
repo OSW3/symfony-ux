@@ -1,4 +1,4 @@
-// Last gen: 2025-01-19 11:48:51
+// Last gen: 2025-01-26 16:24:53
 $prefix: 'ux';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -19,6 +19,11 @@ $container-wide: 1440px;
 $breakpoint-name-ultra: 'ultra';
 $breakpoint-ultra: 1600px;
 $container-ultra: 1520px;
+$transition-base: 1s;
+$transition-slow: 0.8;
+$transition-normal: 0.3;
+$transition-fast: 0.1;
+$grid-divisions: 12;
 $blue: #0d6efd;
 $indigo: #6610f2;
 $purple: #6f42c1;
@@ -49,7 +54,6 @@ $ui-color-name-secondary: 'secondary';
 $ui-color-name-light: 'light';
 $ui-color-name-dark: 'dark';
 $ui-color-name-muted: 'muted';
-$grid-divisions: 12;
 $spacer-base: 1rem;
 $spacer-1: 0.25;
 $spacer-2: 0.5;
@@ -58,10 +62,6 @@ $spacer-4: 1.5;
 $spacer-5: 2;
 $spacer-6: 3;
 $theme-default: 'light';
-$transition-base: 1s;
-$transition-slow: 0.8;
-$transition-normal: 0.3;
-$transition-fast: 0.1;
 $brand-breakpoints: ('laptop','desktop');
 $scroll-to-top--shape: 'square';
 $scroll-to-top--symbol: 'arrow-up';

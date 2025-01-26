@@ -14,11 +14,10 @@
   <!-- - [Themes](./layout/themes.md) -->
   <!-- - [Transitions](./layout/transitions.md) -->
 - Components
-  - [Example](./components/example.md)
   <!-- - [Introduction](./components//README.md) -->
   <!-- - [Accordions](./components/accordion.md) -->
   <!-- - [Alerts](./components/alert.md) -->
-  <!-- - [Analytics](./components/analytics.md) -->
+  - [Analytics](./components/analytics.md)
   <!-- - [Announcement](./components/analytics.md) -->
   - [Brand](./components/brand.md)
   - [Buttons](./components/buttons.md)

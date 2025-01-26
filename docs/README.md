@@ -19,7 +19,7 @@ Add many UX Components to your app.
 <!-- - [Accordions](./components/accordion.md) -->
 <!-- - [Alerts](./components/alert.md) -->
 <!-- - [Analytics](./components/analytics.md) -->
-<!-- - [Announcement](./components/analytics.md) -->
+- [Announcement](./components/analytics.md)
   - [Brand](./components/brand.md)
   - [Buttons](./components/buttons.md)
   - [Copyright](./components/copyright.md)

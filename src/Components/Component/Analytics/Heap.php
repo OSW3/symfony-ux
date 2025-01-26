@@ -41,6 +41,10 @@ final class Heap extends Component
             $this->trackingId = $options[static::PROVIDER]['tracking_id'];
         }
 
+        if (empty($this->trackingId)) {
+            throw new \Exception("Tracking ID is missing: please ensure it is configured under the '" . static::PROVIDER . "' provider settings.");
+        }
+
         return $this->trackingId;
     }
 }

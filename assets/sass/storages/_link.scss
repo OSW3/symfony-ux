@@ -12,20 +12,21 @@
 // * Define storage data
 // * ---------------------------------------------
 
-$cursor: pointer;
-$text-decoration: underline;
-$text-decoration-hover: underline;
+$cursor                : pointer;
+$text-decoration       : underline;
+$text-decoration-hover : underline;
 $text-decoration-active: underline;
-
-$transition: true;
-$transition-delay: var(--#{prefix.$prefix}transition-normal);
-$transition-type: ease-in-out;
+$transition            : true;
+$transition-delay      : var(--#{prefix.$prefix}transition-normal);
+$transition-type       : ease-in-out;
 
 
  
 // * Storage Mixins definition
 // * ---------------------------------------------
 
+// Sets the cursor style when hovering over the button.
+// @param {Cursor} $cursor
 @mixin setCursor($cursor) {
     $cursor: $cursor !global;
 }
@@ -35,23 +36,11 @@ $transition-type: ease-in-out;
     $text-decoration-hover: $hover !global;
     $text-decoration-active: $active !global;
 }
-@mixin setTextDecorationColor($normal, $hover: none, $active: none) {
-    $text-decoration-color: $normal !global;
-    $text-decoration-hover-color: $hover !global;
-    $text-decoration-active-color: $active !global;
-}
 
 // Enables or disables transitions for the brand's elements.
 // @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
 @mixin setTransition($enabled) {
     $transition: $enabled !global;
-
-    // @if $transition and $transition-delay == null {
-    //     $transition-delay : var(--#{prefix.$prefix}transition-normal) !global;
-    // }
-    // @if $transition and $transition-type == null {
-    //     $transition-type  : ease-in-out !global;
-    // }
 }
 
 // Sets the transition delay for the brand's elements.

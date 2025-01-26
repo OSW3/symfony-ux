@@ -14,13 +14,13 @@ Create an advanced link.
 ### **HTML**
 
 ```twig
-<div class="ux-example"></div>
+<a class="ux-link" href="#">My link</a>
 ``` 
 
 ### **Twig**
 
 ```twig
-<twig:Component:Example />
+<twig:Component:Link label="My link" url="#" />
 ``` 
 
 ### **SCSS**
@@ -28,7 +28,7 @@ Create an advanced link.
 Import the builder `_example.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/example';
+@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/link';
 ```
 <!-- tabs:end -->
 
@@ -61,7 +61,7 @@ symfony_ux:
 | `dataset` | `array` | Set list of `data` attributes; | no |  |
 | `label` | `string` | Set the label of the link. | yes |  |
 | `url` | `string` | Set the destination of the link. | yes |  |
-| `target` | `string` | Specifies the window target of links. | no | `_self` |
+| `• target` | `string` | Specifies the window target of links. | no | `_self` |
 | `isDisabled` | `bool` | If true, the link is not clickable. | no | `false` |
 | `noClassLink` | `bool` | If true, the base classname is removed. | no | `false` |
 
@@ -74,5 +74,91 @@ symfony_ux:
     url="https://github.com/osw3/symfony-ux" 
     target="_blank" 
 />
+```
+<!-- tabs:end -->
+
+
+
+
+## Customize SCSS
+
+<!-- tabs:start -->
+
+### **Theme**
+
+```css 
+@use './../../../../bundle/assets/sass/storages/prefix';
+
+$props: map.merge($props, (
+    'link-color'                       : var(--#{prefix.$prefix}blue),
+    'link-hover-color'                 : var(--#{prefix.$prefix}green),
+    'link-active-color'                : var(--#{prefix.$prefix}orange),
+    'link-disabled-color'              : var(--#{prefix.$prefix}gray-600),
+    'link-text-decoration-color'       : var(--#{prefix.$prefix}blue),
+    'link-text-decoration-hover-color' : var(--#{prefix.$prefix}green),
+    'link-text-decoration-active-color': var(--#{prefix.$prefix}orange),
+    'link-bg-color'                    : initial,
+    'link-hover-bg-color'              : initial,
+    'link-active-bg-color'             : initial,
+));
+```
+
+### **Layout**
+
+#### Custom file example
+
+```css 
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/prefix';
+@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/link';
+
+@include link.setCursor(pointer);
+@include link.setTextDecoration(none, underline, underline);
+@include link.setTransition(true);
+@include link.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+@include link.setTransitionType(ease-in-out);
+```
+
+<hr>
+
+#### Available mixins
+
+##### `setCursor`
+
+Sets the cursor style when hovering over the button.
+
+```css 
+@include link.setCursor( {Cursor} $cursor );
+```
+
+##### `setTextDecoration`
+
+Sets the text decoration properties.
+
+```css 
+@include link.setTextDecoration( {String} $normal, {String} $hover, {String} $active );
+```
+
+##### `setTransition`
+
+Enables or disables transitions for the brand's elements.
+
+```css 
+@include link.setTransition( {Boolean} $enabled  );
+```
+
+##### `setTransitionDelay`
+
+Sets the transition delay for the brand's elements.
+
+```css 
+@include link.setTransitionDelay( {Length} $delay );
+```
+
+##### `setTransitionType`
+
+Sets the transition type (easing function) for the brand's elements.
+
+```css 
+@include link.setTransitionType( {String} $type );
 ```
 <!-- tabs:end -->

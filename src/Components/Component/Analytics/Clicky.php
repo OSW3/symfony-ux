@@ -33,12 +33,16 @@ final class Clicky extends Component
         return $resolver->resolve($data) + $data;
     }
 
-    public function fetchTrackingId()
+    public function fetchTrackingId(): string
     {
         $options  = $this->getConfig();
 
         if (empty($this->trackingId) && isset($options[static::PROVIDER]['tracking_id'])) {
             $this->trackingId = $options[static::PROVIDER]['tracking_id'];
+        }
+
+        if (empty($this->trackingId)) {
+            throw new \Exception("Tracking ID is missing: please ensure it is configured under the '" . static::PROVIDER . "' provider settings.");
         }
 
         return $this->trackingId;

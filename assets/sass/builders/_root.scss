@@ -140,7 +140,9 @@ $themes: fnMap.merge-multiple(
     
     // * Default components themes
     @each $name, $value in $themes {
-        --#{prefix.$prefix}#{$name}: #{$value};
+        @if $value {
+            --#{prefix.$prefix}#{$name}: #{$value};
+        }
     }
 
     // * Redefined Default components themes from themes definitions
@@ -149,7 +151,7 @@ $themes: fnMap.merge-multiple(
             &[data-theme=#{$theme-name}] {
                 @each $property-name, $value in $properties {
     
-                    @if map.has-key($themes, $property-name) {
+                    @if map.has-key($themes, $property-name) and $value {
                         --#{prefix.$prefix}#{$property-name}: #{$value};
                     }
     

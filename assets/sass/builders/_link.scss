@@ -25,6 +25,7 @@
 
     cursor: store.$cursor;
     color: var(--#{prefix.$prefix}link-color);
+    background-color: var(--#{prefix.$prefix}link-bg-color);
     text-decoration: store.$text-decoration;
     text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-color);
     
@@ -36,13 +37,14 @@
     }
 
     @include transition.set(
-        (color, text-decoration, text-decoration-color, text-decoration-thickness),
+        (color, background-color, text-decoration, text-decoration-color, text-decoration-thickness),
         store.$transition-delay,
         store.$transition-type,
     );
 
     &:hover {
         color: var(--#{prefix.$prefix}link-hover-color) !important;
+        background-color: var(--#{prefix.$prefix}link-hover-bg-color);
         text-decoration: store.$text-decoration-hover !important;
         text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-hover-color) !important;
 
@@ -59,6 +61,7 @@
     &:active:hover, 
     &.active:hover {
         color: var(--#{prefix.$prefix}link-active-color) !important;
+        background-color: var(--#{prefix.$prefix}link-active-bg-color);
         text-decoration: store.$text-decoration-active !important;
         text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-active-color) !important;
 

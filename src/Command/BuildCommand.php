@@ -73,8 +73,8 @@ class BuildCommand extends Command
             'ui_colors'      => $this->uxUiColors($sassVariables, $value),
             'spacer'         => $this->uxSpacer($sassVariables, $value),
             'transitions'    => $this->uxTransitions($sassVariables, $value),
-            'default_theme'  => $this->uxDefaultTheme($sassVariables, $value),
-            'grid_divisions' => $this->uxGridDivisions($sassVariables, $value),
+            'theme'          => $this->uxDefaultTheme($sassVariables, $value),
+            'grid'           => $this->uxGridDivisions($sassVariables, $value),
             default => null,
         };
 
@@ -112,9 +112,9 @@ class BuildCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function uxGridDivisions(array &$vars, $value)
+    private function uxGridDivisions(array &$vars, $grid)
     {
-        $vars[] = "\$grid-divisions: {$value};";
+        $vars[] = "\$grid-divisions: {$grid['divisions']};";
     }
 
     private function uxBreakpoints(array &$vars, $options)
@@ -268,9 +268,9 @@ class BuildCommand extends Command
         }
     }
 
-    private function uxDefaultTheme(array &$vars, $name)
+    private function uxDefaultTheme(array &$vars, $theme)
     {
-        $vars[] = "\$theme-default: '{$name}';";
+        $vars[] = "\$theme-default: '{$theme['default']}';";
     }
 
     private function accordions(array &$vars, $options)
