@@ -1,0 +1,161 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/callout.scss ------------
+// *
+// *    Callout Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/fonts';
+@use './../storages/spaces';
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$border-width     : 5px;
+$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
+
+// $cursor           : pointer;
+
+$padding-x        : spaces.$base * .6;
+$padding-y        : spaces.$base * 1.4;
+$padding-x-small  : spaces.$base * .4;
+$padding-y-small  : spaces.$base * 1;
+$padding-x-large  : spaces.$base * 1;
+$padding-y-large  : spaces.$base * 1.6;
+
+$font-family      : inherit;
+$font-size        : fonts.$scale-base * 1;
+$font-size-small  : fonts.$scale-base * .8;
+$font-size-large  : fonts.$scale-base * 1.6;
+$font-weight      : 100 * 4;
+$font-weight-small: 100 * 4;
+$font-weight-large: 100 * 7;
+$line-height      : 1.5;
+$line-height-small: 1;
+$line-height-large: 1.8;
+
+// $disabled-opacity : 0.65;
+// $box-shadow       : 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)';
+// $focus-box-shadow : 0 0 0 0.25rem;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+// Sets the border width of the callout.
+// @param {Length} $width - The width of the border (e.g., 1px).
+@mixin setBorderWidth($width) {
+    $border-width: $width !global;
+}
+
+// Sets the border radius of the callout for rounded corners.
+// @param {Length} $radius - The radius for the callout's corners, typically a CSS variable.
+@mixin setBorderRadius($radius) {
+    $border-radius: $radius !global;
+}
+
+// Sets the cursor style when hovering over the callout.
+// @param {Cursor} $cursor
+// @mixin setCursor($cursor) {
+//     $cursor: $cursor !global;
+// }
+
+// Sets the font family for the callout's text.
+// @param {String} $family - The font family to inherit or specify.
+@mixin setFontFamily($family) {
+    $font-family: $family !global;
+}
+
+// Sets the font size of the callout for different screen sizes.
+// @param {Length} $normal.
+// @param {Length} $small.
+// @param {Length} $large.
+@mixin setFontSize($normal, $small: null, $large: null) {
+    $font-size: $normal !global;
+
+    @if $small {
+        $font-size-small: $small !global;
+    }
+    @if $large {
+        $font-size-large: $large !global;
+    }
+}
+
+// Sets the font weight of the callout's text for different screen sizes.
+// @param {Number} $normal.
+// @param {Number} $small.
+// @param {Number} $large.
+@mixin setFontWeight($normal, $small: null, $large: null) {
+    $font-weight: $normal !global;
+
+    @if $small {
+        $font-weight-small: $small !global;
+    }
+    @if $large {
+        $font-weight-large: $large !global;
+    }
+}
+
+// Sets the line height of the callout's text for different screen sizes.
+// @param {Number} $normal.
+// @param {Number} $small.
+// @param {Number} $large.
+@mixin setLineHeight($normal, $small: null, $large: null) {
+    $line-height: $normal !global;
+
+    @if $small {
+        $line-height-small: $small !global;
+    }
+    @if $large {
+        $line-height-large: $large !global;
+    }
+}
+
+// Sets the horizontal padding of the callout for different screen sizes.
+// @param {Length} $normal.
+// @param {Length} $small.
+// @param {Length} $large.
+@mixin setPaddingX($normal, $small: null, $large: null) {
+    $padding-x: $normal !global;
+
+    @if $small {
+        $padding-x-small: $small !global;
+    }
+    @if $large {
+        $padding-x-large: $large !global;
+    }
+}
+
+// Sets the vertical padding of the callout for different screen sizes.
+// @param {Length} $normal.
+// @param {Length} $small.
+// @param {Length} $large.
+@mixin setPaddingY($normal, $small: null, $large: null) {
+    $padding-y: $normal !global;
+
+    @if $small {
+        $padding-y-small: $small !global;
+    }
+    @if $large {
+        $padding-y-large: $large !global;
+    }
+}
+
+// Sets the opacity for the callout when it is in a disabled state.
+// @param {Number} $opacity - The opacity level (e.g., 0.65).
+// @mixin setDisabledOpacity($opacity) {
+//     $disabled-opacity: $opacity !global;
+// }
+
+// Sets the box-shadow for the callout, often used to create depth or visual emphasis.
+// @param {String} $shadow - The CSS box-shadow value.
+// @mixin setBoxShadow($value) {
+//     $box-shadow: $value !global;
+// }
+
+// Sets the focus outline box-shadow for the callout, often used for accessibility purposes.
+// @param {String} $shadow - The CSS box-shadow value to apply on focus.
+// @mixin setFocusBoxShadow($value) {
+//     $focus-box-shadow: $value !global;
+// }

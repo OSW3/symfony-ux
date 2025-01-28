@@ -1,0 +1,31 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/rating.scss -----------
+// *
+// *    Builder for Rating component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/rating.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/rating';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // rating-color             : var(--#{prefix.$prefix}dark),
+    // rating-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
+    // rating-bg-color          : var(--#{prefix.$prefix}cyan),
+    // rating-hover-bg-color    : var(--#{prefix.$prefix}cyan),
+    // rating-border-color      : var(--#{prefix.$prefix}red),
+    // rating-hover-border-color: var(--#{prefix.$prefix}red),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

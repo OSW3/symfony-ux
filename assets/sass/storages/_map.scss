@@ -1,0 +1,20 @@
+// * -------------- @osw3/symfony-ux/assets/sass/storages/map.scss -------------
+// *
+// *    Map Storage
+// *
+// * ---------------------------------------------------------------------------
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$offset: 0;
+
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin setOffset($offset) {
+    $offset: $offset !global;
+}

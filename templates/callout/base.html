@@ -1,0 +1,9 @@
+<div {{ _get_attributes(_attr) }}>
+    <span class="{{ classname('callout-icon') }}">{{ icon }}</span>
+    <p class="{{ classname('callout-message') }}">
+        {% if title %}
+        <strong>{{ title }} :</strong>
+        {% endif %}
+        {{ message }}
+    </p>
+</div>

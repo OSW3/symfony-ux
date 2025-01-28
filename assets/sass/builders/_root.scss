@@ -22,6 +22,7 @@
 
 @use './../components/brand';
 @use './../components/button';
+@use './../components/callout';
 @use './../components/copyright';
 @use './../components/link';
 @use './../components/scroll-to-top';
@@ -54,6 +55,7 @@ $colors : colors.$colors;
 $themes: fnMap.merge-multiple(
     brand.$theme-properties, 
     button.$theme-properties, 
+    callout.$theme-properties, 
     copyright.$theme-properties, 
     link.$theme-properties, 
     scroll-to-top.$theme-properties, 
