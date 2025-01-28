@@ -86,6 +86,7 @@ class BuildCommand extends Command
             'accordions'    => $this->accordions($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
             'offcanvas'     => $this->offcanvas($sassVariables, $value),
+            'rating'        => $this->rating($scriptVariables, $value),
             'search_box'    => $this->searchBox($scriptVariables, $value),
             'scroll_to_top' => $this->scrollToTop($sassVariables, $value),
             default => null,
@@ -296,6 +297,11 @@ class BuildCommand extends Command
     private function offcanvas(array &$vars, $options)
     {
         // $vars[] = "\$offcanvas--has-backdrop: ".($options['backdrop'] ? 'true' : 'false').";";
+    }
+
+    private function rating(array &$scriptVariables, $options)
+    {
+        $scriptVariables[] = "export const RATING_LEGENDS = ". json_encode($options['legends']) .";";
     }
     
     private function searchBox(array &$vars, $options)

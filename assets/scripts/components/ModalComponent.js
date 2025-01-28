@@ -7,7 +7,7 @@
 
 // todo: make it draggable
 
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
 
 

@@ -1,0 +1,48 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/rating.scss ------------
+// *
+// *    Rating Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$symbol-off           : var(--#{prefix.$prefix}icon-rating-off);
+$symbol-on            : var(--#{prefix.$prefix}icon-rating-on);
+
+$scale-selected       : false;
+$transition           : true;
+$transition-delay     : var(--#{prefix.$prefix}transition-fast);
+$transition-type      : ease-in-out;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin setSymbolOff($symbol) {
+    $symbol-off: $symbol !global;
+}
+@mixin setSymbolOn($symbol) {
+    $symbol-on: $symbol !global;
+}
+
+// Sets the transition delay for the brand's elements.
+// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
+}
+
+// Sets the transition type (easing function) for the brand's elements.
+// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
+}
+
+// Sets the offset for the brand's tagline, allowing for precise alignment.
+// @param {Length} $offset - The offset value, typically negative for upward positioning.
+@mixin setTaglineOffset($offset) {
+    $tagline-offset: $offset !global;
+}

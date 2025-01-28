@@ -1,0 +1,120 @@
+// * -------------- @osw3/symfony-ux/assets/sass/builder/rating.scss -------------
+// *
+// *    Builder for Rating component
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:math';
+@use './../builders/banner';
+@use './../storages/prefix';
+// @use './../mixins/spacing';
+@use './../mixins/transition';
+// @use './../mixins/icon';
+
+// @use './../storages/icons';
+@use './../storages/rating' as store;
+// @use './../components/rating' ;
+@include banner.header('Component Rating');
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+$base: 1.5rem;
+
+$sizes: (
+    small : .6,
+    medium: .9,
+    large : 1.4,
+);
+
+.#{prefix.$prefix}rating {
+    --#{prefix.$prefix}rating-symbol-off: #{store.$symbol-off};
+    --#{prefix.$prefix}rating-symbol-on: #{store.$symbol-on};
+
+    display: flex;
+    width: 100%;
+
+    &-selector {    
+        // border: 1px solid blue;
+        padding: .4rem;
+
+        display: flex;
+        overflow: hidden;
+        flex-direction: row;
+    }
+
+    &-item {
+        // border: 1px solid red;
+        height: $base * 1;
+        width: $base * 1;
+        background-image: var(--#{prefix.$prefix}rating-symbol-on);
+        background-repeat: no-repeat;
+        background-position: center;
+
+
+        @if store.$transition {
+            @include transition.set(
+                (transform),
+                store.$transition-delay,
+                store.$transition-type,
+            );
+        }
+
+        & > span {
+            display: none !important;
+        }
+
+        // &.selected {
+        //     background-image: var(--#{prefix.$prefix}rating-symbol-on);
+
+        // }
+        // &.pre-selected {
+        //     background-image: var(--#{prefix.$prefix}rating-symbol-on);
+        // }
+    }
+    &-radio {
+        display: none !important;
+    }
+
+
+
+
+    &-selector:hover &-item:not(#\#), 
+    &-item, 
+    &-radio:invalid ~ &-item:hover {
+        filter: grayscale(0);
+    }
+    
+    &-selector:hover &-item:hover ~ &-item:not(#\#), 
+    &-radio:invalid ~ &-item, 
+    &-radio:checked + &-item ~ &-item {
+        filter: grayscale(1) brightness(0.75) opacity(0.75);
+    }
+
+    @if store.$scale-selected {
+        &-radio:checked + &-item {
+            transform: scale(1.3);
+            transition-timing-function: cubic-bezier(0.5, 1.5, 0.25, 1);
+        }
+    }
+
+
+    @each $name, $multiplicate in $sizes {
+        &-#{$name} {
+            .#{prefix.$prefix}rating-item {
+                height: $base * $multiplicate;
+                width: $base * $multiplicate;
+            }
+        }
+    }
+
+    &-counter, &-legend {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        padding-left: math.div($base, 2);
+        padding-right: math.div($base, 2);
+    }
+}

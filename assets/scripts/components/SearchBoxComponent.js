@@ -7,7 +7,7 @@
 
 import ModalComponent from "./ModalComponent";
 import { parseBoolean } from "../utils/parseBoolean";
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 import { 
     SEARCH_BOX_TYPES, 
     SEARCH_BOX_SHORTCUT 

@@ -5,7 +5,7 @@
 // ************************************************************************** //
 "use strict";
 
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
 
 /** @var string Component classname */

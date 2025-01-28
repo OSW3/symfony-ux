@@ -15,7 +15,7 @@ import NavigationComponent from '../../assets/scripts/components/NavigationCompo
 import OffcanvasComponent from '../../assets/scripts/components/OffcanvasComponent';
 import PopoverComponent from '../../assets/scripts/components/PopoverComponent';
 import QuizComponent from '../../assets/scripts/components/QuizComponent';
-import RattingComponent from '../../assets/scripts/components/RattingComponent';
+import RattingComponent from '../../assets/scripts/components/RatingComponent';
 import RotatorComponent from '../../assets/scripts/components/RotatorComponent';
 import ScrollToTopComponent from '../../assets/scripts/components/ScrollToTopComponent';
 import SearchComponent from '../../assets/scripts/components/SearchComponent';

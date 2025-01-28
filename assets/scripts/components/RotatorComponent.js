@@ -5,7 +5,7 @@
 // ************************************************************************** //
 "use strict";
 
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 import { parseBoolean } from "../utils/parseBoolean";
 import Animate from "../utils/Animate";
 

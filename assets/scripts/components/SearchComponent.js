@@ -6,7 +6,7 @@
 "use strict";
 
 import { parseBoolean } from "../utils/parseBoolean";
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 import ModalComponent from "./ModalComponent";
 // import ButtonComponent from "./ButtonComponent";
 

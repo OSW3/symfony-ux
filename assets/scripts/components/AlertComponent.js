@@ -6,7 +6,7 @@
 "use strict";
 
 import Animate from "../utils/Animate";
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
 
 

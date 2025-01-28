@@ -1,0 +1,33 @@
+{# ---------------------------------------------- #}
+{# - Component : Rating                         - #}
+{# - Part : Base                                - #}
+{# ---------------------------------------------- #}
+{% extends '@SymfonyUx/rating/base.html' %}
+
+
+{# ---------------------------------------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+
+{# Set the ID attribute #}
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+
+{# Set the Class attribute #}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+
+{# Set the data-xxx attributes #}
+{% for _property, _value in dataset %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %}
+
+
+{# -- Render other attributes ------------------- #}
+{# ---------------------------------------------- #}
+
+{% for name, value in attributes %}
+    {% set _attr = _add_attribute(_attr, name, value) %}
+{% endfor %}

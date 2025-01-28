@@ -9,7 +9,7 @@
 // * ---------------------------------------------------------------------------
 "use strict";
 
-import { getPrefix } from "../utils/prefix";
+import { getPrefix } from "../utils/generated";
 
 /** Component name
  * 

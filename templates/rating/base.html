@@ -1,0 +1,19 @@
+<div {{ _get_attributes(_attr) }} rel="js-{{ classname('rating') }}">
+    <div class="{{ classname('rating-selector') }}">
+    {% for index in 1..length %}
+        {% set legendText = '' %}
+
+        {% for legend in legends %}
+        {% if legend.value == index %}
+        {% set legendText = legend.label|default('') %}
+        {% endif %}
+        {% endfor %}
+
+        <input class="{{ classname('rating-radio') }}" type="radio" name="rating-{{suffix}}" id="rating-{{suffix}}-{{ index }}" {% if selected == index %}checked{% endif %} required>
+        <label class="{{ classname('rating-item') }}" for="rating-{{suffix}}-{{ index }}"{% if tooltip %} title="{{ tooltipText|replace({'%value%': index, '%legend%': legendText}) }}"{% endif %}><span>{{ tooltipText|replace({'%value%': index, '%legend%': 'XXX'}) }}</span></label>
+    {% endfor %}
+    </div>
+
+    {% if hasCounter %}<div class="{{ classname('rating-counter') }}"></div>{% endif %}
+    {% if hasLegend %}<div class="{{ classname('rating-legend') }}"></div>{% endif %}
+</div>
