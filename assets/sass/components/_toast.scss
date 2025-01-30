@@ -1,0 +1,56 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/toast.scss -----------
+// *
+// *    Default variables for Toast component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/toast.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/toast';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    toast-color               : var(--#{prefix.$prefix}white),
+    toast-hover-color         : var(--#{prefix.$prefix}white),
+    toast-bg-color            : var(--#{prefix.$prefix}black),
+    toast-hover-bg-color      : var(--#{prefix.$prefix}black),
+    toast-border-color        : var(--#{prefix.$prefix}black),
+    toast-hover-border-color  : var(--#{prefix.$prefix}black),
+    toast-progress-color      : var(--#{prefix.$prefix}gray-500),
+    toast-hover-progress-color: var(--#{prefix.$prefix}gray-900),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: (
+    // toast-padding-x        : toast.$padding-x,
+    // toast-small-padding-x  : toast.$padding-x-small,
+    // toast-large-padding-x  : toast.$padding-x-large,
+    // toast-padding-y        : toast.$padding-y,
+    // toast-small-padding-y  : toast.$padding-y-small,
+    // toast-large-padding-y  : toast.$padding-y-large,
+    // toast-font-size        : toast.$font-size,
+    // toast-small-font-size  : toast.$font-size-small,
+    // toast-large-font-size  : toast.$font-size-large,
+    // toast-font-weight      : toast.$font-weight,
+    // toast-small-font-weight: toast.$font-weight-small,
+    // toast-large-font-weight: toast.$font-weight-large,
+    // toast-line-height      : toast.$line-height,
+    // toast-small-line-height: toast.$line-height-small,
+    // toast-large-line-height: toast.$line-height-large,
+
+    // toast-border-width      : toast.$border-width,
+    // toast-border-radius     : toast.$border-radius,
+    // toast-font-family       : toast.$font-family,
+    // toast-box-shadow        : toast.$box-shadow,
+    // toast-focus-box-shadow  : toast.$focus-box-shadow,
+    // toast-disabled-opacity  : toast.$disabled-opacity,
+);

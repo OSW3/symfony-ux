@@ -16,3 +16,8 @@ export function getData( $const )
 {
     return generated[$const] || null;
 }
+
+export function getConst( $const )
+{
+    return generated[$const] || null;
+}

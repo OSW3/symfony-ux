@@ -1,5 +1,6 @@
 <?php
 
+use OSW3\UX\Enum\PlacementLayout;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
@@ -20,8 +21,10 @@ return function (): ArrayNodeDefinition {
 
         ->enumNode('position')
             ->info("Specifies the position of the button")
-            ->values(['top-left','top-center','top-right','middle-left','middle-center','centered','middle-right','bottom-left','bottom-center','bottom-right'])
-            ->defaultValue('bottom-right')
+            // ->values(['top-left','top-center','top-right','middle-left','middle-center','centered','middle-right','bottom-left','bottom-center','bottom-right'])
+            // ->defaultValue('bottom-right')
+            ->values(PlacementLayout::toArray())
+            ->defaultValue(PlacementLayout::BOTTOM_RIGHT->value)
         ->end()
 
         ->enumNode('transition')

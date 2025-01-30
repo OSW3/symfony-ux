@@ -89,6 +89,7 @@ class BuildCommand extends Command
             'rating'        => $this->rating($scriptVariables, $value),
             'search_box'    => $this->searchBox($scriptVariables, $value),
             'scroll_to_top' => $this->scrollToTop($sassVariables, $value),
+            'toast'         => $this->toast($sassVariables, $scriptVariables, $value),
             default => null,
         };
 
@@ -310,11 +311,25 @@ class BuildCommand extends Command
         $vars[] = "export const SEARCH_BOX_SHORTCUT = '{$options['shortcut']}';";
     }
 
-    private function scrollToTop(array &$vars, $options)
-    {
+    private function scrollToTop(array &$vars, $options) {
         $vars[] = "\$scroll-to-top--shape: '{$options['shape']}';";
         $vars[] = "\$scroll-to-top--symbol: '{$options['symbol']}';";
         $vars[] = "\$scroll-to-top--position: '{$options['position']}';";
         $vars[] = "\$scroll-to-top--transition: '{$options['transition']}';";
+    }
+
+    private function toast(array &$sassVariables, array &$scriptVariables, $options) {
+
+        $iconSize = str_ends_with($options['icon_size'], 'px') ? $options['icon_size'] : "{$options['icon_size']}px";
+        $sassVariables[] = "\$toast--placement: '{$options['placement']}';";
+        $sassVariables[] = "\$toast--duration: {$options['duration']}s;";
+        $sassVariables[] = "\$toast--delay: {$options['delay']}s;";
+        $sassVariables[] = "\$toast--icon-size: {$iconSize};";
+
+        $jsDuration = $options['duration'] * 1000;
+        $jsDelay    = $options['delay'] * 1000;
+        $scriptVariables[] = "export const TOAST_DURATION = {$jsDuration};";
+        $scriptVariables[] = "export const TOAST_DELAY = {$jsDelay};";
+        $scriptVariables[] = "export const TOAST_ICON = '{$options['icon']}';";
     }
 }

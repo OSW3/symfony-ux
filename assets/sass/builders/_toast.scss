@@ -1,0 +1,306 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/toast.scss ------------
+// *
+// *    Builder for Toast component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/component';
+@use './../mixins/flex';
+@use './../mixins/spacing';
+@use './../mixins/position';
+@use './../mixins/transition';
+
+@use './../storages/toast' as store;
+@use './../components/toast';
+@include banner.header('Component Toast');
+
+@function palette-declination($palette, $property) {
+
+    @if 'toast-color' == map.get($property, name) or 'toast-progress-color' == map.get($property, name) or 'toast-hover-progress-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+    }
+    // @else if 'toast-bg-color' == map.get($property, name) {
+    //     @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-subtle);
+    // }
+
+    @return null;
+};
+
+$container-placement-top   : null;
+$container-placement-right : null;
+$container-placement-bottom: null;
+$container-placement-left  : null;
+$container-offset-right    : null;
+$container-offset-left     : null;
+$item-margin-top           : null;
+$item-margin-bottom        : null;
+$item-transform            : null;
+$btn-close-size: 24px;
+
+@if store.$placement == 'top-left' {
+    $container-placement-top   : 0;
+    $container-placement-right : null;
+    $container-placement-bottom: null;
+    $container-placement-left  : 0;
+    $item-margin-top           : store.$gutter;
+    $item-margin-bottom        : 0;
+    $item-transform            : translateX(-100%);
+}
+@else if store.$placement == 'top-center' {
+    $container-placement-top   : 0;
+    $container-placement-right : calc(50% - math.div(store.$width, 2));
+    $container-placement-bottom: null;
+    $container-placement-left  : null;
+    $item-margin-top           : store.$gutter;
+    $item-margin-bottom        : 0;
+    $item-transform            : translateY(-100%);
+}
+@else if store.$placement == 'top-right' {
+    $container-placement-top   : 0;
+    $container-placement-right : 0;
+    $container-placement-bottom: null;
+    $container-placement-left  : null;
+    $item-margin-top           : store.$gutter;
+    $item-margin-bottom        : 0;
+    $item-transform            : translateX(100%);
+}
+@else if store.$placement == 'middle-left' {
+    $container-placement-top   : 50%;
+    $container-placement-right : null;
+    $container-placement-bottom: null;
+    $container-placement-left  : 0;
+    $item-margin-top           : math.div(store.$gutter, 2);
+    $item-margin-bottom        : math.div(store.$gutter, 2);
+    $item-transform            : translateX(-100%);
+}
+@else if store.$placement == 'middle-center' or store.$placement == 'centered' {
+    $container-placement-top   : 50%;
+    $container-placement-right : null;
+    $container-placement-bottom: null;
+    $container-placement-left  : 50%;
+    $item-margin-top           : math.div(store.$gutter, 2);
+    $item-margin-bottom        : math.div(store.$gutter, 2);
+}
+@else if store.$placement == 'middle-right' {
+    $container-placement-top   : 50%;
+    $container-placement-right : 0;
+    $container-placement-bottom: null;
+    $container-placement-left  : null;
+    $item-margin-top           : math.div(store.$gutter, 2);
+    $item-margin-bottom        : math.div(store.$gutter, 2);
+    $item-transform            : translateX(100%);
+}
+@else if store.$placement == 'bottom-left' {
+    $container-placement-top   : null;
+    $container-placement-right : null;
+    $container-placement-bottom: 0;
+    $container-placement-left  : 0;
+    $item-margin-top           : 0;
+    $item-margin-bottom        : store.$gutter;
+    $item-transform            : translateX(-100%);
+}
+@else if store.$placement == 'bottom-center' {
+    $container-placement-top   : null;
+    $container-placement-right : calc(50% - math.div(store.$width, 2));
+    $container-placement-bottom: 0;
+    $container-placement-left  : null;
+    $item-margin-top           : 0;
+    $item-margin-bottom        : store.$gutter;
+    $item-transform            : translateY(100%);
+}
+@else {
+    $container-placement-top   : null;
+    $container-placement-right : 0;
+    $container-placement-bottom: 0;
+    $container-placement-left  : null;
+    $item-margin-top           : 0;
+    $item-margin-bottom        : store.$gutter;
+    $item-transform            : translateX(100%);
+}
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}toast {
+
+    &-container {
+        width: store.$width + (store.$gutter * 2);
+        z-index: 99999;
+        
+        @include spacing.inner(store.$offset);
+    
+        @include position.fixed(
+            $container-placement-top, 
+            $container-placement-right, 
+            $container-placement-bottom, 
+            $container-placement-left
+        );
+        @if store.$placement == 'middle-center' or store.$placement == 'centered' {
+            transform: translate(-50%, -50%);
+        }
+        @else if store.$placement == 'middle-left' or store.$placement == 'middle-right' {
+            transform: translateY(-50%);
+        }
+    }
+
+    &-item {
+        display: flex;
+        flex-direction: row;
+        cursor: default !important;
+        @include spacing.inner(15px);
+        margin-top: $item-margin-top;
+        margin-bottom: $item-margin-bottom;
+        &:first-child {
+            margin-top: 0;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    
+        opacity: 0;
+        transform: $item-transform;
+
+        color: var(--#{prefix.$prefix}toast-color);
+        background-color: var(--#{prefix.$prefix}toast-bg-color);
+        border-radius: store.$border-radius;
+        @if store.$border-width {
+            border: store.$border-width solid var(--#{prefix.$prefix}toast-border-color);
+        }
+
+        backdrop-filter: blur(5px);
+        box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+
+
+        @if store.$transition {
+            @include transition.set(
+                (background-color, color, opacity, transform, height), 
+                store.$transition-delay, 
+                store.$transition-type
+            );
+        }
+
+    
+        &.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        &.destroy {
+            height: 0;
+        }
+
+        &-effect:hover {
+            color: var(--#{prefix.$prefix}toast-hover-color);
+            background-color: var(--#{prefix.$prefix}toast-hover-bg-color);
+            @if store.$border-width {
+                border-color: var(--#{prefix.$prefix}toast-hover-border-color);
+            }
+        }
+    }
+
+    &-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 10px;
+        height: store.$icon-size;
+        width: store.$icon-size;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+    }
+
+    &-content {
+        margin-right: auto;
+    }
+
+    &-title {
+        display: flex;
+        align-items: center;
+        height: store.$icon-size;
+        font-size: store.$title-font-size;
+        font-weight: bold;
+        margin-bottom: 5px;
+        pointer-events: none;
+    }
+
+    &-message {
+        font-size: store.$message-font-size;
+    }
+
+    &-close {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: none;
+        border: none;
+        margin-left: 10px;
+        color: var(--#{prefix.$prefix}white);
+        height: $btn-close-size;
+        width: $btn-close-size;
+        line-height: math.div($btn-close-size, 1.5);
+        font-size: math.div($btn-close-size, 1.5);
+        opacity: 0;
+        
+        @include transition.set(
+            (opacity), 
+            store.$transition-delay, 
+            store.$transition-type
+        );
+    }
+
+    &-item:hover &-close {
+        opacity: 1;
+    }
+
+    &-progress {
+        position: absolute;
+        left: .25rem;
+        bottom: .25rem;
+        width: calc(100% - .5rem);
+        height: .2rem;
+        opacity: .5;
+        transform: scaleX(0);
+        transform-origin: left;
+        background-color: var(--#{prefix.$prefix}toast-progress-color);
+        animation: var(--#{prefix.$prefix}toast-duration, store.$duration) #{prefix.$prefix}toast-progress var(--#{prefix.$prefix}toast-delay, store.$delay) linear;
+
+
+        @if store.$transition {
+            @include transition.set(
+                (background-color, opacity), 
+                store.$transition-delay, 
+                store.$transition-type
+            );
+        }
+    }
+    &-item:hover &-progress {
+        opacity: 1;
+        background-color: var(--#{prefix.$prefix}toast-hover-progress-color);
+    }
+
+
+    // Palette declinations
+    // --
+
+    @include component.palette-declination( 
+        meta.get-function(palette-declination), 
+        toast.$theme-properties
+    );
+}
+
+
+@keyframes #{prefix.$prefix}toast-progress {
+    to {
+        transform: scaleX(1);
+    }
+}

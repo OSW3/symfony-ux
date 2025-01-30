@@ -26,6 +26,7 @@
 @use './../components/copyright';
 @use './../components/link';
 @use './../components/scroll-to-top';
+@use './../components/toast';
 
 
 $base-radius: 6px; // todo; move this definition
@@ -59,6 +60,7 @@ $themes: fnMap.merge-multiple(
     copyright.$theme-properties, 
     link.$theme-properties, 
     scroll-to-top.$theme-properties, 
+    toast.$theme-properties, 
     map.get(themes.$themes, themes.$default)
 );
 

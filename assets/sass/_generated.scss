@@ -1,4 +1,4 @@
-// Last gen: 2025-01-28 01:50:12
+// Last gen: 2025-01-30 16:41:06
 $prefix: 'ux';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -67,3 +67,7 @@ $scroll-to-top--shape: 'square';
 $scroll-to-top--symbol: 'arrow-up';
 $scroll-to-top--position: 'bottom-right';
 $scroll-to-top--transition: 'natural';
+$toast--placement: 'top-right';
+$toast--duration: 5s;
+$toast--delay: 0.3s;
+$toast--icon-size: 32px;

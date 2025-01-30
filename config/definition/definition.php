@@ -42,6 +42,7 @@ return static function($definition)
             // ->append( (include __DIR__."/components/search.php")() )
             // ->append( (include __DIR__."/components/search_box.php")() )
             ->append( (include __DIR__."/components/tickers.php")() )
+            ->append( (include __DIR__."/components/toast.php")() )
 
         ->end()->end()
 

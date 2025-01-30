@@ -1,0 +1,88 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/toast.scss ------------
+// *
+// *    Toast Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:meta';
+@use './../storages/prefix';
+@use './../storages/fonts';
+@use './../storages/spaces';
+
+@use './../generated';
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$placement        : if(meta.global-variable-exists('toast--placement', $module: generated), generated.$toast--placement, 'top-right') !default;
+$duration         : if(meta.global-variable-exists('toast--duration', $module: generated), generated.$toast--duration, 2.5s) !default;
+$delay            : if(meta.global-variable-exists('toast--delay', $module: generated), generated.$toast--delay, 0.3s) !default;
+$icon-size        : if(meta.global-variable-exists('toast--icon-size', $module: generated), generated.$toast--icon-size, 24px) !default;
+$width            : 380px;
+$gutter           : 10px;
+$offset           : $gutter;
+$border-width     : 1px;
+$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
+$transition       : true;
+$transition-delay : var(--#{prefix.$prefix}transition-normal);
+$transition-type  : ease-in-out;
+$title-font-size  : fonts.$scale-base * 1.1;
+$message-font-size: fonts.$scale-base * 1;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin setPlacement($placement) {
+    $placement: $placement !global;
+}
+@mixin setDuration($duration) {
+    $duration: $duration !global;
+}
+@mixin setDelay($delay) {
+    $delay: $delay !global;
+}
+@mixin setIconSize($size) {
+    $icon-size: $size !global;
+}
+@mixin setWidth($width) {
+    $width: $width !global;
+}
+@mixin setGutter($gutter) {
+    $gutter: $gutter !global;
+}
+@mixin setOffset($offset) {
+    $offset: $offset !global;
+}
+@mixin setBorderWidth($width) {
+    $border-width: $width !global;
+}
+@mixin setBorderRadius($radius) {
+    $border-radius: $radius !global;
+}
+
+// Enables or disables transitions for the brand's elements.
+// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
+@mixin setTransition($enabled) {
+    $transition: $enabled !global;
+}
+
+// Sets the transition delay for the brand's elements.
+// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
+}
+
+// Sets the transition type (easing function) for the brand's elements.
+// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
+}
+
+@mixin setTitleFontSize($font-size) {
+    $title-font-size: $font-size !global;
+}
+@mixin setMessageFontSize($font-size) {
+    $message-font-size: $font-size !global;
+}
