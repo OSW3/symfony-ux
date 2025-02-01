@@ -11,6 +11,11 @@
 // * ---------------------------------------------
 
 $divisions: default.$divisions !default;
+$enable-grid-columns-class: true; // Active .ux-grid-columns-XX  
+$enable-grid-alignments-class: true; // Active .ux-grid-content-start / center / end
+$enable-column-sizes-class: true; // Active .ux-column-XX  
+$enable-column-offset-class: true; // Active .ux-offset-XX  
+$enable-column-shift-class: true; // Active .ux-shift-XX  
 
 
 // * Storage Mixins definition
@@ -18,4 +23,19 @@ $divisions: default.$divisions !default;
 
 @mixin divisions($value) {
     $divisions: $value !global;
+}
+@mixin enableGridColumnsClass($enable) {
+    $enable-grid-columns-class: $enable !global;
+}
+@mixin enableGridAlignmentsClass($enable) {
+    $enable-grid-alignments-class: $enable !global;
+}
+@mixin enableColumnSizesClass($enable) {
+    $enable-column-sizes-class: $enable !global;
+}
+@mixin enableColumnOffsetClass($enable) {
+    $enable-column-offset-class: $enable !global;
+}
+@mixin enableColumnShiftClass($enable) {
+    $enable-column-shift-class: $enable !global;
 }

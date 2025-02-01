@@ -1,0 +1,28 @@
+// * ------------ @osw3/symfony-ux/assets/sass/storages/rotator.scss -----------
+// *
+// *    Rotator Storage
+// *
+// * ---------------------------------------------------------------------------
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$height: 40px;
+$min-height: 100%;
+
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+// Sets the height of the rotator element.
+// @param {Length} $height - The height value, e.g., 40px.
+@mixin setHeight($height) {
+    $height: $height !global;
+}
+// Sets the min height of the rotator element.
+// @param {Length} $height - The min-height value, e.g., 100%.
+@mixin setMinHeight($height) {
+    $min-height: $min-height !global;
+}

@@ -1,0 +1,30 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/announcement.scss -----------
+// *
+// *    Builder for Announcement component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/announcement.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    announcement-color             : var(--#{prefix.$prefix}gray-500),
+    announcement-hover-color       : var(--#{prefix.$prefix}white),
+    announcement-bg-color          : var(--#{prefix.$prefix}gray-800),
+    announcement-hover-bg-color    : var(--#{prefix.$prefix}gray-900),
+    announcement-border-color      : null,
+    announcement-hover-border-color: null,
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

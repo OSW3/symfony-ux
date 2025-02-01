@@ -1,0 +1,61 @@
+// * ---------- @osw3/symfony-ux/assets/sass/builder/announcement.scss ---------
+// *
+// *    Builder for Announcement component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/flex';
+@use './../mixins/size';
+// @use './../mixins/spacing';
+// @use './../mixins/support';
+@use './../mixins/transition';
+
+@use './../storages/announcement' as store;
+@use './../components/announcement';
+@include banner.header('Component Announcement');
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}announcement {
+    @include flex.display;
+    @include flex.justify-content(center);
+    @include flex.align-items(center);
+    @include size.height(null, store.$min-height, null);
+    @include size.width(null, 100%, null);
+
+    color: var(--#{prefix.$prefix}announcement-color);
+    background-color: var(--#{prefix.$prefix}announcement-bg-color);
+    border: store.$border-width solid var(--#{prefix.$prefix}announcement-border-color);
+    border-radius: store.$border-radius;
+
+    & a {
+        color: var(--#{prefix.$prefix}announcement-color);
+        text-decoration: underline;
+    }
+
+    @if store.$transition {
+        @include transition.set(
+            (color, background-color, border-color),
+            store.$transition-delay,
+            store.$transition-type,
+        );
+    }
+
+    &:hover {
+        color: var(--#{prefix.$prefix}announcement-hover-color);
+        background-color: var(--#{prefix.$prefix}announcement-hover-bg-color);
+        border-color: var(--#{prefix.$prefix}announcement-hover-border-color);
+
+        & a {
+            color: var(--#{prefix.$prefix}announcement-hover-color);
+            text-decoration: underline;
+        }
+    }
+}

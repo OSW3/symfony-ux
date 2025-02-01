@@ -17,8 +17,8 @@ return function (): ArrayNodeDefinition {
             ->defaultTrue()
         ->end()
 
-        ->integerNode('delay')
-            ->info("Set the delay (in second) before alerts are automatically dismiss.")
+        ->integerNode('duration')
+            ->info("Set the duration (in second) before alerts are automatically dismiss.")
             ->min(0)
             ->defaultValue(0)
         ->end()

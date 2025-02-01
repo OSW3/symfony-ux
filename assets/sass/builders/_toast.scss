@@ -235,7 +235,7 @@ $btn-close-size: 24px;
         font-size: store.$message-font-size;
     }
 
-    &-close {
+    &-button-close {
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -258,7 +258,7 @@ $btn-close-size: 24px;
         );
     }
 
-    &-item:hover &-close {
+    &-item:hover &-button-close {
         opacity: 1;
     }
 

@@ -6,11 +6,12 @@
 
 @use "sass:map";
 @use "sass:meta";
+@use './../mixins/flex';
+@use './../mixins/spacing';
+@use './../mixins/support';
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/component';
-@use './../mixins/spacing';
-@use './../mixins/support';
 @use './../mixins/transition';
 
 @use './../storages/callout' as store;
@@ -35,6 +36,7 @@
 // * ---------------------------------------------
 
 .#{prefix.$prefix}callout {
+    $parent: &;
 
     // Set layout css variables
     // --
@@ -43,15 +45,19 @@
         --#{prefix.$prefix}#{$name}: #{$value};
     }
 
-    display         : flex;
-    align-items     : center;
+
+    // Callout layout
+    // --
+
+    @include flex.display;
+    @include flex.direction(row);
+    @include flex.align-items(center);
+    @include spacing.inner(var(--#{prefix.$prefix}callout-padding-x));
+    @include spacing.outer(var(--#{prefix.$prefix}callout-padding-y) 0);
     background-color: var(--#{prefix.$prefix}callout-bg-color);
     border-left     : store.$border-width solid var(--#{prefix.$prefix}callout-border-color);
     border-radius   : store.$border-radius;
     // color           : var(--#{prefix.$prefix}callout-color);
-    padding         : 15px;
-    margin          : 20px 0;
-
 
     @if store.$font-family {
         font-family: store.$font-family;
@@ -60,136 +66,58 @@
     font-weight     : var(--#{prefix.$prefix}callout-font-weight);
     line-height     : var(--#{prefix.$prefix}callout-line-height);
     
+    box-shadow: store.$box-shadow;
+
+    // Content
+    // --
 
     &-icon {
         font-size: 24px;
         margin-right: 10px;
+        // margin-left: 0;
     }
     &-message {
         margin: 0 !important
     }
 
-    // // Default state
-    // // --
+    &-right {
+        @include flex.direction(row-reverse);
+        border-left: none;
+        border-right     : store.$border-width solid var(--#{prefix.$prefix}callout-border-color);
 
-    // display         : inline-block;
-    // background-color: var(--#{prefix.$prefix}callout-bg-color);
-    // border          : store.$border-width solid var(--#{prefix.$prefix}callout-border-color);
-    // border-radius   : store.$border-radius;
-    // color           : var(--#{prefix.$prefix}callout-color);
-
-    // @if store.$font-family {
-    //     font-family: store.$font-family;
-    // }
-    // font-size       : var(--#{prefix.$prefix}callout-font-size);
-    // font-weight     : var(--#{prefix.$prefix}callout-font-weight);
-    // line-height     : var(--#{prefix.$prefix}callout-line-height);
-    
-    // text-align      : center;
-    // text-decoration : none;
-    // vertical-align  : middle;
-
-    // @if store.$cursor {
-    //     cursor: store.$cursor;
-    // }
-
-    // @include transition.set(
-    //     (color, background-color, border-color, box-shadow),
-    //     var(--#{prefix.$prefix}transition-normal),
-    //     ease-in-out
-    // );
-
-    // @include spacing.inner( 
-    //     var(--#{prefix.$prefix}callout-padding-x),
-    //     var(--#{prefix.$prefix}callout-padding-y),
-    //     var(--#{prefix.$prefix}callout-padding-x),
-    //     var(--#{prefix.$prefix}callout-padding-y),
-    // );
-    // @include support.prefix('user-select', none, (webkit, moz));
+        #{$parent}-icon {
+            margin-right: 0;
+            margin-left: 10px;
+        }
+    }
 
     
-    // // hover state
-    // // --
+    // Sizes declinations
+    // --
 
-    // &:hover {
-    //     color           : var(--#{prefix.$prefix}callout-hover-color);
-    //     background-color: var(--#{prefix.$prefix}callout-hover-bg-color);
-    //     border-color    : var(--#{prefix.$prefix}callout-hover-border-color);
-    // }
-
-    
-    // // active state
-    // // --
-
-    // &.active, &:active {
-    // }
-
-    
-    // // Focus state
-    // // --
-
-    // &.focus, &:focus, &:focus-visible {
-    //     outline-color: rgb(198, 3, 100);
-    //     outline-style: solid;
-    //     outline-width: 4px;
-    // }
-
-    
-    // // Disabled state
-    // // --
-
-    // &[disabled] {
-    //     cursor          : default;
-    //     opacity         : store.$disabled-opacity;
-        
-    //     // force the disabled callout to not change colors on mouseover
-    //     color           : var(--#{prefix.$prefix}callout-color);
-    //     background-color: var(--#{prefix.$prefix}callout-bg-color);
-    //     border-color    : var(--#{prefix.$prefix}callout-border-color);
-    // }
-
-    // &-no-border {
-    //     border: none !important;
-    // }
-
-    // &-outline,&-outline[disabled] {
-    //     border-style: solid;
-    //     border-width: 2px;
-    //     color: var(--#{prefix.$prefix}callout-bg-color);
-    //     border-color: var(--#{prefix.$prefix}callout-bg-color);
-    //     background-color: transparent;
-    // }
-
-    
-    // // Sizes declinations
-    // // --
-
-    // &-small {
-    //     --#{prefix.$prefix}callout-padding-x  : var(--#{prefix.$prefix}callout-small-padding-x);
-    //     --#{prefix.$prefix}callout-padding-y  : var(--#{prefix.$prefix}callout-small-padding-y);
-    //     --#{prefix.$prefix}callout-font-size  : var(--#{prefix.$prefix}callout-small-font-size);
-    //     --#{prefix.$prefix}callout-font-weight: var(--#{prefix.$prefix}callout-small-font-weight);
-    //     --#{prefix.$prefix}callout-line-height: var(--#{prefix.$prefix}callout-small-line-height);
-    // }
-    // &-large {
-    //     --#{prefix.$prefix}callout-padding-x  : var(--#{prefix.$prefix}callout-large-padding-x);
-    //     --#{prefix.$prefix}callout-padding-y  : var(--#{prefix.$prefix}callout-large-padding-y);
-    //     --#{prefix.$prefix}callout-font-size  : var(--#{prefix.$prefix}callout-large-font-size);
-    //     --#{prefix.$prefix}callout-font-weight: var(--#{prefix.$prefix}callout-large-font-weight);
-    //     --#{prefix.$prefix}callout-line-height: var(--#{prefix.$prefix}callout-large-line-height);
-    // }
-
-    // &-block {
-    //     display: block;
-    //     min-width: 100%;
-    // }
+    &-small {
+        --#{prefix.$prefix}callout-padding-x  : var(--#{prefix.$prefix}callout-small-padding-x);
+        --#{prefix.$prefix}callout-padding-y  : var(--#{prefix.$prefix}callout-small-padding-y);
+        --#{prefix.$prefix}callout-font-size  : var(--#{prefix.$prefix}callout-small-font-size);
+        --#{prefix.$prefix}callout-font-weight: var(--#{prefix.$prefix}callout-small-font-weight);
+        --#{prefix.$prefix}callout-line-height: var(--#{prefix.$prefix}callout-small-line-height);
+    }
+    &-large {
+        --#{prefix.$prefix}callout-padding-x  : var(--#{prefix.$prefix}callout-large-padding-x);
+        --#{prefix.$prefix}callout-padding-y  : var(--#{prefix.$prefix}callout-large-padding-y);
+        --#{prefix.$prefix}callout-font-size  : var(--#{prefix.$prefix}callout-large-font-size);
+        --#{prefix.$prefix}callout-font-weight: var(--#{prefix.$prefix}callout-large-font-weight);
+        --#{prefix.$prefix}callout-line-height: var(--#{prefix.$prefix}callout-large-line-height);
+    }
 
     
     // Palette declinations
     // --
-
-    @include component.palette-declination( 
-        meta.get-function(palette-declination), 
-        callout.$theme-properties
-    );
+    
+    @if store.$enable-palette {
+        @include component.palette-declination( 
+            meta.get-function(palette-declination), 
+            callout.$theme-properties
+        );
+    }
 }

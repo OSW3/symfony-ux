@@ -1,11 +1,12 @@
 <?php 
 namespace OSW3\UX\Components\Component;
 
+use OSW3\UX\Enum\Palette;
+use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\DoNotExposeTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
-use OSW3\UX\Components\Component;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -20,16 +21,23 @@ class Alert extends Component
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
-    
-    #[ExposeInTemplate(name: 'type', getter: 'fetchType')]
-    public string $is;
-    
+
+    #[ExposeInTemplate(name: 'icon')]
+    public string|null $icon;
+
     #[ExposeInTemplate(name: 'message')]
     public string $message;
     
+    #[ExposeInTemplate(name: 'type', getter: 'fetchType')]
+    public string $is;
+
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public string $size;
+    
     #[ExposeInTemplate(name: 'dismissible')]
     public bool $dismissible;
-    public int|string $delay;
+
+    public int|string $duration;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -44,17 +52,24 @@ class Alert extends Component
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('is', 'success');
-        $resolver->setAllowedTypes('is', ['string']);
+        $resolver->setDefault('icon', null);
+        $resolver->setAllowedTypes('icon', ['string', 'null']);
 
         $resolver->setRequired('message');
         $resolver->setAllowedTypes('message', ['string']);
 
+        // $resolver->setDefault('is', 'success');
+        // $resolver->setAllowedTypes('is', ['string']);
+
+        $resolver->setDefaults(['is' => Palette::SUCCESS->value]);
+        $resolver->setAllowedTypes('is', ['string']);
+        $resolver->setAllowedValues('is', Palette::toArray());
+
         $resolver->setDefault('dismissible', $options['dismissible']);
         $resolver->setAllowedTypes('dismissible', ['bool']);
 
-        $resolver->setDefault('delay', $options['delay']);
-        $resolver->setAllowedTypes('delay', ['integer','string']);
+        $resolver->setDefault('duration', $options['duration']);
+        $resolver->setAllowedTypes('duration', ['integer','string']);
 
         return $resolver->resolve($data) + $data;
     }
@@ -80,8 +95,8 @@ class Alert extends Component
         if ($this->dismissible) {
             $dataset['dismissible'] = true;
 
-            if ($this->delay) {
-                $dataset['delay'] = $this->delay;
+            if ($this->duration) {
+                $dataset['duration'] = $this->duration;
             }
         }
         

@@ -20,6 +20,8 @@
 @use './../storages/themes';
 @use './../storages/transitions';
 
+@use './../components/alert';
+@use './../components/announcement';
 @use './../components/brand';
 @use './../components/button';
 @use './../components/callout';
@@ -54,6 +56,8 @@ $colors : colors.$colors;
 // * ---------------------------------------------
 
 $themes: fnMap.merge-multiple(
+    alert.$theme-properties, 
+    announcement.$theme-properties, 
     brand.$theme-properties, 
     button.$theme-properties, 
     callout.$theme-properties, 

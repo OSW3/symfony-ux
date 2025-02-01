@@ -32,15 +32,19 @@ $layout-properties: (
     callout-padding-x        : callout.$padding-x,
     callout-small-padding-x  : callout.$padding-x-small,
     callout-large-padding-x  : callout.$padding-x-large,
+
     callout-padding-y        : callout.$padding-y,
     callout-small-padding-y  : callout.$padding-y-small,
     callout-large-padding-y  : callout.$padding-y-large,
+
     callout-font-size        : callout.$font-size,
     callout-small-font-size  : callout.$font-size-small,
     callout-large-font-size  : callout.$font-size-large,
+
     callout-font-weight      : callout.$font-weight,
     callout-small-font-weight: callout.$font-weight-small,
     callout-large-font-weight: callout.$font-weight-large,
+    
     callout-line-height      : callout.$line-height,
     callout-small-line-height: callout.$line-height-small,
     callout-large-line-height: callout.$line-height-large,

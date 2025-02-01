@@ -83,11 +83,14 @@
 
 @mixin grow($value: 1, $important: false) {
     @include support.prefix('flex-grow', $value, (webkit, moz, ms), $important);
+    // @include support.prefix('flex-grow', $value, (), $important);
 }
 @mixin shrink($value: 1, $important: false) {
     -ms-flex-negative: $value; // Ancien IE 10 (utilise -ms-flex-negative au lieu de flex-shrink)
     @include support.prefix('flex-shrink', $value, (webkit), $important);
+    // @include support.prefix('flex-shrink', $value, (), $important); //
 }
 @mixin basis($value: 0, $important: false) {
     @include support.prefix('flex-basis', $value, (webkit, moz, ms), $important);
+    // @include support.prefix('flex-basis', $value, (), $important);
 }

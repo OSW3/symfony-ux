@@ -1,0 +1,168 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/alert.scss -------------
+// *
+// *    Builder for Alert component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+@use './../mixins/flex';
+// @use './../mixins/size';
+@use './../builders/banner';
+@use './../mixins/spacing';
+@use './../storages/prefix';
+@use './../mixins/position';
+@use './../storages/spaces';
+@use './../mixins/component';
+@use './../mixins/transition';
+
+@use './../storages/alert' as store;
+@use './../components/alert';
+@include banner.header('Component Alert');
+
+
+$btn-close-size: 24px;
+
+
+@function palette-declination($palette, $property) {
+
+    @if 'alert-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+    }
+    @else if 'alert-bg-color' == map.get($property, name) {
+        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-subtle);
+    }
+
+    @return null;
+};
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}alert {
+
+    // Set layout css variables
+    // --
+
+    @each $name, $value in alert.$layout-properties {
+        --#{prefix.$prefix}#{$name}: #{$value};
+    }
+
+
+    // Alert layout
+    // --
+    
+    @include flex.display;
+    @include flex.direction(row);
+    @include flex.align-items(center);
+    // @include position.relative;
+    @include spacing.inner(var(--#{prefix.$prefix}alert-padding-x));
+    @include spacing.outer-y(var(--#{prefix.$prefix}alert-padding-y));
+    background-color: var(--#{prefix.$prefix}alert-bg-color);
+    border: store.$border-width store.$border-style var(--#{prefix.$prefix}alert-border-color);
+    border-radius: store.$border-radius;
+    // color: var(--#{prefix.$prefix}alert-color);
+
+    @if store.$font-family {
+        font-family: store.$font-family;
+    }
+    font-size       : var(--#{prefix.$prefix}alert-font-size);
+    font-weight     : var(--#{prefix.$prefix}alert-font-weight);
+    line-height     : var(--#{prefix.$prefix}alert-line-height);
+    
+    box-shadow: store.$box-shadow;
+    
+
+
+    // Content
+    // --
+
+    &-icon {
+        // font-size: 24px;
+        margin-right: 10px;
+        // margin-left: 0;
+    }
+    &-message {
+        // margin: 0 !important
+        @include spacing.outer(0, auto, 0, 0, true);
+
+    }
+
+    // & + & {
+    //     @include spacing.outer(spaces.$base * .6, 0, 0, 0);
+    // }
+
+    
+    // Sizes declinations
+    // --
+
+    &-small {
+        --#{prefix.$prefix}alert-padding-x  : var(--#{prefix.$prefix}alert-small-padding-x);
+        --#{prefix.$prefix}alert-padding-y  : var(--#{prefix.$prefix}alert-small-padding-y);
+        --#{prefix.$prefix}alert-font-size  : var(--#{prefix.$prefix}alert-small-font-size);
+        --#{prefix.$prefix}alert-font-weight: var(--#{prefix.$prefix}alert-small-font-weight);
+        --#{prefix.$prefix}alert-line-height: var(--#{prefix.$prefix}alert-small-line-height);
+    }
+    &-large {
+        --#{prefix.$prefix}alert-padding-x  : var(--#{prefix.$prefix}alert-large-padding-x);
+        --#{prefix.$prefix}alert-padding-y  : var(--#{prefix.$prefix}alert-large-padding-y);
+        --#{prefix.$prefix}alert-font-size  : var(--#{prefix.$prefix}alert-large-font-size);
+        --#{prefix.$prefix}alert-font-weight: var(--#{prefix.$prefix}alert-large-font-weight);
+        --#{prefix.$prefix}alert-line-height: var(--#{prefix.$prefix}alert-large-line-height);
+    }
+    
+
+    // Palette declinations
+    // --
+
+    @include component.palette-declination( 
+        meta.get-function(palette-declination), 
+        alert.$theme-properties
+    );
+
+    // Close button
+
+    // & .#{prefix.$prefix}button-close {
+    //     content: "xx";
+    //     position: absolute;
+    //     top: 5px;
+    //     right: 10px;
+    //     background: none;
+    //     border: none;
+    //     color: white;
+    //     font-size: 18px;
+    //     cursor: pointer;
+    // }
+
+    & .#{prefix.$prefix}button-close {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // display: inline-block;
+
+        background: none;
+        border: none;
+        // position: absolute;
+        // top: 0;
+        // right: 0;
+        z-index: 2;
+        // padding: 1.25rem 1rem;
+        // margin-left: auto;
+        color: var(--#{prefix.$prefix}white);
+        height: $btn-close-size;
+        width: $btn-close-size;
+        line-height: math.div($btn-close-size, 1.5);
+        font-size: math.div($btn-close-size, 1.5);
+        opacity: 0.6;
+        
+        @include transition.set(
+            (opacity), 
+            store.$transition-delay, 
+            store.$transition-type
+        );
+    }
+}

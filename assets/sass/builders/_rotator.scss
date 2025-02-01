@@ -1,0 +1,48 @@
+// * ------------ @osw3/symfony-ux/assets/sass/builder/rotator.scss ------------
+// *
+// *    Builder for Rotator component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/flex';
+@use './../mixins/spacing';
+
+@use './../storages/rotator' as store;
+// @use './../components/rotator';
+@include banner.header('Component Rotator');
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}rotator {
+
+    @include flex.display;
+
+    overflow  : hidden;
+    min-height: store.$min-height;
+    min-width : 100%;
+    height    : store.$height;
+
+    &-inner {
+        @include flex.display;
+        @include flex.justify-content(center);
+        @include flex.align-items(center);
+        @include spacing.inner(0);
+        @include spacing.outer(0);
+        position: relative;
+        list-style: none;
+        width: 100%;
+        height: 100%;
+    }
+
+    &-item {
+        position: absolute;
+        white-space: nowrap;
+        display: none;
+        opacity: 0;
+    }
+
+}

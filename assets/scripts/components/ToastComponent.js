@@ -18,6 +18,7 @@ import { isEmoji, isCSSVariable, isVarFunction, isBase64Image, isBase64ImageURL,
 
 export default class ToastComponent {
     #options;
+    #message;
     #container;
     #item;
 
@@ -29,6 +30,7 @@ export default class ToastComponent {
             title      : null,
             icon       : getConst('TOAST_ICON'),
             message    : null,
+            template   : null,
             palette    : null,
             dismissible: true,
             hover      : false,
@@ -38,6 +40,8 @@ export default class ToastComponent {
     }
 
     #onInit() {
+        // this.#message = this.#options.template ?? this.#options.message;
+
         if (this.#options.message == null || this.#options.message.length <= 0) {
             return;
         }
@@ -124,7 +128,7 @@ export default class ToastComponent {
             // Close button
             if (this.#options.dismissible) {
                 let dismissible = document.createElement('button');
-                dismissible.classList.add(`${getPrefix()}toast-close`);
+                dismissible.classList.add(`${getPrefix()}toast-button-close`);
                 dismissible.type = "button";
                 dismissible.innerHTML = "&times;";
                 dismissible.onclick = event => this.#hide(event.target.parentNode);

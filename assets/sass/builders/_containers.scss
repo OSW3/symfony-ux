@@ -82,31 +82,18 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
 // * Containers max width
 // * --
 
-.#{prefix.$prefix}container- {
+.#{prefix.$prefix}container {
+
+    // Containers by breakpoints
     @each $key, $value in $containers {
-        &#{$key} {
+        &-#{$key} {
             @include size.width(null, null, map.get($containers, $key));
         }
     }
-}
 
-
-// * Responsive containers / Media queries
-// * --
-
-@each $key, $value in $breakpoints {
-    $container-list : (container);
-    @media (min-width: $value) {
-
-        $selectors: '';
-        $container-list: fnCollection.reverse($container-list);
-
-        @each $container in $container-list {
-            $selectors: $selectors + '.#{prefix.$prefix}#{$container}, ';
-        }
-        $selectors: string.unquote(string.slice($selectors, 1, -3));
-
-        #{$selectors} { 
+    // Responsive containers
+    @each $key, $value in $breakpoints {
+        @media (min-width: $value) {
             @include size.width(null, null, map.get($containers, $key));
         }
     }

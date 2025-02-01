@@ -1,0 +1,52 @@
+// * --------- @osw3/symfony-ux/assets/sass/storages/announcement.scss ---------
+// *
+// *    Announcement Storage
+// *
+// * ---------------------------------------------------------------------------
+
+
+@use './../storages/prefix';
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$min-height      : 48px;
+$border-width    : 0;
+$border-radius   : 0;
+$transition      : true;
+$transition-delay: var(--#{prefix.$prefix}transition-normal);
+$transition-type : ease-in-out;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin setMinHeight($height) {
+    $min-height: $height !global;
+}
+
+@mixin setBorderWidth($width) {
+    $border-width: $width !global;
+}
+@mixin setBorderRadius($radius) {
+    $border-radius: $radius !global;
+}
+
+// Enables or disables transitions for the brand's elements.
+// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
+@mixin setTransition($enabled) {
+    $transition: $enabled !global;
+}
+
+// Sets the transition delay for the brand's elements.
+// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
+}
+
+// Sets the transition type (easing function) for the brand's elements.
+// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
+}

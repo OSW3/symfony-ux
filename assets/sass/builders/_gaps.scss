@@ -1,0 +1,35 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builders/grid.scss -------------
+// *
+// *    Builder for CSS Grid
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../storages/spaces' as stored-spaces;
+@use './../storages/gaps' as store;
+// @include banner.header('Grid & Columns');
+
+
+// * Build CSS
+// * ---------------------------------------------
+
+// * Generate Gaps
+// * --
+
+// @include banner.section('Grid gaps');
+@if store.$enable-gaps-class {
+    .#{prefix.$prefix}gap {
+        @each $key, $value in stored-spaces.$spaces {
+            // $margin: calc(-1 * $value);
+            $padding: $value;
+        
+            &-#{$key}, &-x-#{$key} {
+                --#{prefix.$prefix}gap-x: #{$padding};
+            }
+            &-#{$key}, &-y-#{$key} {
+                --#{prefix.$prefix}gap-y: #{$padding};
+            }
+        }
+    }
+}

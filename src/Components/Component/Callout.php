@@ -1,6 +1,7 @@
 <?php 
 namespace OSW3\UX\Components\Component;
 
+use OSW3\UX\Enum\Size;
 use OSW3\UX\Enum\Palette;
 use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeIdTrait;
@@ -28,11 +29,14 @@ final class Callout extends Component
     #[ExposeInTemplate(name: 'icon')]
     public string|null $icon;
 
-    #[ExposeInTemplate(name: 'message', getter: 'fetchMessage')]
-    public string|null $message;
+    #[ExposeInTemplate(name: 'message')]
+    public string $message;
 
     #[ExposeInTemplate(getter: 'doNotExpose')]
     public string $is;
+
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public string $size;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -53,8 +57,8 @@ final class Callout extends Component
         $resolver->setDefault('icon', null);
         $resolver->setAllowedTypes('icon', ['string', 'null']);
 
-        $resolver->setDefault('message', null);
-        $resolver->setAllowedTypes('message', ['string', 'null']);
+        $resolver->setRequired('message');
+        $resolver->setAllowedTypes('message', ['string']);
 
         $defaultIsValue = 'none';
         $allowedIsValues = Palette::toArray();
@@ -62,17 +66,12 @@ final class Callout extends Component
         $resolver->setDefaults(['is' => $defaultIsValue]);
         $resolver->setAllowedTypes('is', ['string']);
         $resolver->setAllowedValues('is', $allowedIsValues);
+
+        $resolver->setDefaults(['size' => Size::NORMAL->value]);
+        $resolver->setAllowedTypes('size', 'string');
+        $resolver->setAllowedValues('size', Size::toArray());
         
         return $resolver->resolve($data) + $data;
-    }
-
-    public function fetchMessage(): string 
-    {
-        if (empty($this->message)) {
-            throw new \Exception(sprintf("The required option \"message\" is missing for the \"%s\" component.", ucfirst(static::NAME)));
-        }
-
-        return $this->message;
     }
 
     public function fetchClass(): string
@@ -81,6 +80,11 @@ final class Callout extends Component
 
         if ($this->is != 'none') {
             $classlist[] = "{$this->getComponentClassname()}-{$this->is}";
+        }
+
+        if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value)
+        {
+            $classlist[] = "{$this->getComponentClassname()}-{$this->size}";
         }
 
         return implode(" ", $classlist);

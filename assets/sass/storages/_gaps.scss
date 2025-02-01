@@ -1,0 +1,21 @@
+// * ------------- @osw3/symfony-ux/assets/sass/storages/grid.scss -------------
+// *
+// *    Grid Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../variables/grid' as default;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$enable-gaps-class: true; // Active .ux-gap-XX  
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+@mixin enableGapsClass($enable) {
+    $enable-gaps-class: $enable !global;
+}

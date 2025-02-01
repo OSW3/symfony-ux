@@ -4,8 +4,8 @@
 // *
 // * ---------------------------------------------------------------------------
 
-@use './../storages/prefix';
 @use './../storages/fonts';
+@use './../storages/prefix';
 @use './../storages/spaces';
 
 
@@ -15,28 +15,28 @@
 $border-width     : 5px;
 $border-radius    : var(--#{prefix.$prefix}border-radius-normal);
 
-// $cursor           : pointer;
-
-$padding-x        : spaces.$base * .6;
-$padding-y        : spaces.$base * 1.4;
-$padding-x-small  : spaces.$base * .4;
+$padding-x        : spaces.$base * .94;
+$padding-y        : spaces.$base * 1.25;
+$padding-x-small  : spaces.$base * .6;
 $padding-y-small  : spaces.$base * 1;
 $padding-x-large  : spaces.$base * 1;
 $padding-y-large  : spaces.$base * 1.6;
 
 $font-family      : inherit;
 $font-size        : fonts.$scale-base * 1;
-$font-size-small  : fonts.$scale-base * .8;
-$font-size-large  : fonts.$scale-base * 1.6;
-$font-weight      : 100 * 4;
-$font-weight-small: 100 * 4;
-$font-weight-large: 100 * 7;
+$font-size-small  : fonts.$scale-base * .95;
+$font-size-large  : fonts.$scale-base * 1.2;
+$font-weight      : 400;
+$font-weight-small: 400;
+$font-weight-large: 400;
 $line-height      : 1.5;
 $line-height-small: 1;
-$line-height-large: 1.8;
+$line-height-large: 1.6;
+
+$enable-palette: true;
 
 // $disabled-opacity : 0.65;
-// $box-shadow       : 'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)';
+$box-shadow       : inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 // $focus-box-shadow : 0 0 0 0.25rem;
 
 
@@ -54,12 +54,6 @@ $line-height-large: 1.8;
 @mixin setBorderRadius($radius) {
     $border-radius: $radius !global;
 }
-
-// Sets the cursor style when hovering over the callout.
-// @param {Cursor} $cursor
-// @mixin setCursor($cursor) {
-//     $cursor: $cursor !global;
-// }
 
 // Sets the font family for the callout's text.
 // @param {String} $family - The font family to inherit or specify.
@@ -140,6 +134,10 @@ $line-height-large: 1.8;
     @if $large {
         $padding-y-large: $large !global;
     }
+}
+
+@mixin setEnablePalette($enable) {
+    $enable-palette: $enable !global;
 }
 
 // Sets the opacity for the callout when it is in a disabled state.

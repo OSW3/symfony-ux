@@ -36,8 +36,7 @@ const LOOP = true;
 /** @var bool Pause ticker on mouse over */
 const PAUSE_HOVER = true;
 
-export default class RotatorComponent
-{
+export default class RotatorComponent {
     #node;
     #items;
     #index = 0;

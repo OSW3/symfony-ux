@@ -7,11 +7,8 @@
 @use 'sass:math';
 @use './../builders/banner';
 @use './../storages/prefix';
-// @use './../mixins/spacing';
 @use './../mixins/transition';
-// @use './../mixins/icon';
 
-// @use './../storages/icons';
 @use './../storages/rating' as store;
 // @use './../components/rating' ;
 @include banner.header('Component Rating');
