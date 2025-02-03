@@ -1,0 +1,92 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/media.scss -------------
+// *
+// *    Builder for Media component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+@use './../mixins/flex';
+// @use './../mixins/size';
+@use './../builders/banner';
+@use './../mixins/spacing';
+@use './../storages/prefix';
+@use './../mixins/position';
+@use './../storages/spaces';
+@use './../mixins/component';
+@use './../mixins/transition';
+
+@use './../storages/media' as store;
+@use './../components/media';
+@include banner.header('Component Media');
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{prefix.$prefix}media {
+    // border: 1px solid red;
+    margin-bottom: 10px;
+
+    @include flex.display;
+    @include flex.direction(column);
+    padding: .5rem;
+
+    width: var(--#{prefix.$prefix}media-width, 100%);
+
+    &-inline {
+        display: inline-flex;
+    }
+
+
+    & img {
+        object-fit: contain;
+        max-height: 100%;
+        max-width: 100%;
+    }
+}
+
+
+
+.#{prefix.$prefix}audio, 
+.#{prefix.$prefix}picture, 
+.#{prefix.$prefix}video, 
+.#{prefix.$prefix}pdf {
+    // border: 1px solid blue;
+    // margin-bottom: 10px;
+
+    @include flex.display;
+    @include flex.direction(column);
+    // padding: .5rem;
+
+    // .#{prefix.$prefix}media > & {
+    //     padding: 0;
+    // }
+
+
+    max-height: 100%;
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.#{prefix.$prefix}pdf {
+    width: 100%;
+    height: auto;
+    
+
+    &[data-orientation=portrait] {
+        aspect-ratio: 210 / 297;
+    }
+    &[data-orientation=landscape] {
+        aspect-ratio: 297 / 210;
+    }
+
+    & embed, & iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: transparent;
+    }
+}

@@ -61,4 +61,31 @@ export default class Animate
 
         this.fade(keyframes, onfinish);
     }
+
+
+
+    // resize(keyframes, onfinish) {
+
+    //     const options = {
+    //         duration: 2000,
+    //         delay: this.#delay,
+    //         easing: 'ease',
+    //         fill: 'forwards'
+    //     };
+
+    //     const animation = new Animation(
+    //         new KeyframeEffect(this.#node, keyframes, options),
+    //         document.timeline
+    //     );
+
+    //     this.#play(animation, onfinish);
+    // }
+    // reduce(onfinish) {
+    //     const keyframes = [
+    //         { height: this.#node.offsetHeight + 'px' }, 
+    //         { height: '0px' }
+    //     ];
+
+    //     this.resize(keyframes, onfinish);
+    // }
 }

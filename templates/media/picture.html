@@ -1,0 +1,6 @@
+<picture {{ _get_attributes(_attr) }}>
+{% for data in srcset %}
+    <source srcset="{{ data.src }}" media="(min-width: {{ data.breakpoint }}px)">
+{% endfor %}
+    <img src="{{ src }}" alt="{{ alt }}">
+</picture>

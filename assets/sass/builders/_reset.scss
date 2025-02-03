@@ -92,7 +92,8 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    @include spacing.outer(0, 0, 0, 0.5rem); // todo: customize spaces
+    // @include spacing.outer(0, 0, 0, 0.5rem);
+    @include spacing.outer(0, 0, 0, 0);
     @include spacing.inner(0, 0, 0, 0);
     font-family: inherit;
     font-weight: inherit;

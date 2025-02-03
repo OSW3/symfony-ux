@@ -76,17 +76,17 @@ final class Callout extends Component
 
     public function fetchClass(): string
     {
-        $classlist = $this->classList();
+        $classList = $this->classList();
 
         if ($this->is != 'none') {
-            $classlist[] = "{$this->getComponentClassname()}-{$this->is}";
+            $classList[] = "{$this->getComponentClassname()}-{$this->is}";
         }
 
         if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value)
         {
-            $classlist[] = "{$this->getComponentClassname()}-{$this->size}";
+            $classList[] = "{$this->getComponentClassname()}-{$this->size}";
         }
 
-        return implode(" ", $classlist);
+        return implode(" ", $classList);
     }
 }

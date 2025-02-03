@@ -47,12 +47,16 @@ export default class AlertComponent
         // Auto close delay
         // --
 
-        if (this.#node.dataset.delay)
+        if (this.#node.dataset.duration)
         {
             new Animate(
                 this.#node, 
-                this.#node.dataset.delay
+                this.#node.dataset.duration
             ).fadeOut(() => this.#close());
+            // new Animate(
+            //     this.#node, 
+            //     this.#node.dataset.duration
+            // ).reduce(() => this.#close());
         }        
     }
     

@@ -1,6 +1,7 @@
 <?php 
 namespace OSW3\UX\Components\Component;
 
+use OSW3\UX\Enum\Size;
 use OSW3\UX\Enum\Palette;
 use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeIdTrait;
@@ -31,13 +32,17 @@ class Alert extends Component
     #[ExposeInTemplate(name: 'type', getter: 'fetchType')]
     public string $is;
 
+    // #[ExposeInTemplate(getter: 'doNotExpose')]
+    // public string $is;
+
     #[ExposeInTemplate(getter: 'doNotExpose')]
     public string $size;
     
     #[ExposeInTemplate(name: 'dismissible')]
     public bool $dismissible;
 
-    public int|string $duration;
+    #[ExposeInTemplate(name: 'duration')]
+    public int|string|null $duration;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -58,18 +63,19 @@ class Alert extends Component
         $resolver->setRequired('message');
         $resolver->setAllowedTypes('message', ['string']);
 
-        // $resolver->setDefault('is', 'success');
-        // $resolver->setAllowedTypes('is', ['string']);
-
         $resolver->setDefaults(['is' => Palette::SUCCESS->value]);
         $resolver->setAllowedTypes('is', ['string']);
         $resolver->setAllowedValues('is', Palette::toArray());
+
+        $resolver->setDefaults(['size' => Size::NORMAL->value]);
+        $resolver->setAllowedTypes('size', 'string');
+        $resolver->setAllowedValues('size', Size::toArray());
 
         $resolver->setDefault('dismissible', $options['dismissible']);
         $resolver->setAllowedTypes('dismissible', ['bool']);
 
         $resolver->setDefault('duration', $options['duration']);
-        $resolver->setAllowedTypes('duration', ['integer','string']);
+        $resolver->setAllowedTypes('duration', ['integer','string', 'null']);
 
         return $resolver->resolve($data) + $data;
     }
@@ -82,7 +88,13 @@ class Alert extends Component
     public function fetchClass(): string
     {
         $classList = $this->classList();
+
         $classList[] = "{$this->getComponentClassname()}-{$this->fetchType()}";
+
+        if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value)
+        {
+            $classList[] = "{$this->getComponentClassname()}-{$this->size}";
+        }
 
         return implode(" ", $classList);
     }
@@ -112,5 +124,4 @@ class Alert extends Component
     {
         return $this->is;
     }
-
 }

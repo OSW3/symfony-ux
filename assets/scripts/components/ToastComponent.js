@@ -12,10 +12,6 @@
 import { getPrefix, getConst } from "../utils/generated";
 import { isEmoji, isCSSVariable, isVarFunction, isBase64Image, isBase64ImageURL, isImageURL, isImageURLWithURLFunction } from "../utils/String";
 
-// const SELECTOR          = '[rel=js-toast]';
-// const CLASS_NAME_ACTIVE = 'active';
-
-
 export default class ToastComponent {
     #options;
     #message;

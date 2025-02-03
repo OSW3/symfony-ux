@@ -1,0 +1,57 @@
+{# {{ dump({
+    tag: 'media',
+    type: type,
+    src: src,
+    download: download,
+}) }} #}
+{# {{ dump({
+    illustration: illustration,
+    illustrationsSet: illustrationsSet,
+}) }} #}
+<div {{ _get_attributes(_attr) }}>
+
+    {% if type == 'audio' %}
+    <twig:Component:Audio 
+        :autoplay="autoplay"
+        :controls="controls"
+        :loop="loop"
+        :muted="muted"
+        :playsinline="playsinline"
+        :preload="preload"
+        :src="src" 
+        :volume="volume"
+    />
+    {% elseif type == 'image' %}
+    <twig:Component:Picture 
+        :alt="alt" 
+        :lazy="lazy" 
+        :src="src" 
+    />
+    {% elseif type == 'pdf' %}
+    <twig:Component:Pdf 
+        :controls="controls"
+        :orientation="orientation"
+        :src="src[0].src" 
+    />
+    {% elseif type == 'video' %}
+    <twig:Component:Video 
+        :autoplay="autoplay"
+        :controls="controls"
+        :loop="loop"
+        :muted="muted"
+        :playsinline="playsinline"
+        :preload="preload"
+        :poster="poster"
+        :src="src" 
+        :volume="volume"
+    />
+    {% else %}
+        {% include '@SymfonyUx/media/'~type~'.twig' %}
+    {% endif %}
+
+    {% if download %}
+    {% for item in src %}
+    <a href="{{ item.src }}" download="">download link</a>
+    {% endfor %}
+    {% endif %}
+</div>

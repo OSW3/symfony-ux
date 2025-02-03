@@ -123,19 +123,9 @@ $btn-close-size: 24px;
         alert.$theme-properties
     );
 
+    
     // Close button
-
-    // & .#{prefix.$prefix}button-close {
-    //     content: "xx";
-    //     position: absolute;
-    //     top: 5px;
-    //     right: 10px;
-    //     background: none;
-    //     border: none;
-    //     color: white;
-    //     font-size: 18px;
-    //     cursor: pointer;
-    // }
+    // --
 
     & .#{prefix.$prefix}button-close {
         cursor: pointer;
