@@ -21,7 +21,7 @@ $breakpoints: (
     default.$breakpoint-name-desktop: default.$breakpoint-desktop,
     default.$breakpoint-name-wide   : default.$breakpoint-wide,
     default.$breakpoint-name-ultra  : default.$breakpoint-ultra,
-) !default;
+);
 
 
 // * Containers width collection
@@ -32,10 +32,10 @@ $containers: (
     default.$breakpoint-name-desktop: default.$container-desktop,
     default.$breakpoint-name-wide   : default.$container-wide,
     default.$breakpoint-name-ultra  : default.$container-ultra,
-) !default;
+);
 
 // * Useless breakpoints collection
-$useless: () !default;
+$useless: ();
 
 
 // * Storage Mixins definition
@@ -74,13 +74,32 @@ $useless: () !default;
 }
 
 @mixin replace-breakpoints-values($replacements) {
-
+    @each $replacement-key, $replacement-value in $replacements {
+        @each $breakpoint-key, $breakpoint-value in $breakpoints {
+            @if $replacement-key == $breakpoint-key {
+                $breakpoints: map.merge($breakpoints, ($breakpoint-key: $replacement-value)) !global;
+            }
+        }
+    }
 }
 
 @mixin replace-containers-values($replacements) {
-
+    @each $replacement-key, $replacement-value in $replacements {
+        @each $container-key, $container-value in $containers {
+            @if $replacement-key == $container-key {
+                $containers: map.merge($containers, ($container-key: $replacement-value)) !global;
+            }
+        }
+    }
 }
 
 @mixin remove($useless-breakpoints) {
     $useless: list.join($useless, $useless-breakpoints, 'comma') !global;
 }
+
+
+// * Additional & Useless breakpoints from generated
+// * ---------------------------------------------
+
+@include add(default.$additional);
+@include remove(default.$useless);

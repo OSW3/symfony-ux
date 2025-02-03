@@ -12,6 +12,10 @@
 // * Define storage data
 // * ---------------------------------------------
 
+$border-width     : .5rem;
+$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
+
+$box-shadow       : 0 2px 0 rgba(255, 255, 255, 0.15), 0 2px 1px rgba(0, 0, 0, 0.075);
 
 
 // * Storage Mixins definition

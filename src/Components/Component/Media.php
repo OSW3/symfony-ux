@@ -40,7 +40,7 @@ class Media extends Component
      * @var boolean
      */
     #[ExposeInTemplate(name: 'download')]
-    public bool $download;
+    public bool|string $download;
 
     #[ExposeInTemplate(name: 'figure', getter: 'isFigure')]
     public bool $figure;
@@ -147,7 +147,7 @@ class Media extends Component
         $resolver->setAllowedTypes('description', ['string', 'null']);
 
         $resolver->setDefault('download', false);
-        $resolver->setAllowedTypes('download', ['bool']);
+        $resolver->setAllowedTypes('download', ['bool','string']);
 
         $resolver->setDefault('figure', false);
         $resolver->setAllowedTypes('figure', ['bool']);
@@ -217,20 +217,7 @@ class Media extends Component
     }
 
     public function fetchSrc(): array|string {
-
-        $sources = $this->generateSrcset($this->src);
-
-        // dump($sources);
-        return $sources;
-
-        // if (count($sources) > 1) {
-        //     $this->srcset = $sources;
-        // }
-        
-        // $defaultSources = array_filter($sources, fn($source) => isset($source['default']) && $source['default']);
-        // sort($defaultSources);
-
-        // return $defaultSources[0]['src'] ?? end($sources)['src'];
+        return $this->generateSrcset($this->src);
     }
 
     private function generateSrcset(string|array $sources): array {
@@ -359,27 +346,6 @@ class Media extends Component
 
         return null;
     }
-
-
-    // public function controls(): string {
-    //     return $this->type === 'pdf' && $this->controls === 'yes' ? 'no' : 'yes';
-    // }
-
-    // public function loop(): bool {
-    //     return $this->loop === 'yes';
-    // }
-
-    // public function autoplay(): bool {
-    //     return $this->autoplay === 'yes';
-    // }
-
-    // public function muted(): bool {
-    //     return $this->muted === 'yes';
-    // }
-
-    // public function playsinline(): bool {
-    //     return $this->playsinline === 'yes';
-    // }
 
     public function fetchStyle() {
         $styles = [];

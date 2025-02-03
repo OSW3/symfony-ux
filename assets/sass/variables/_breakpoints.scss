@@ -44,3 +44,10 @@ $container-laptop       : if(meta.global-variable-exists('container-laptop'     
 $container-desktop      : if(meta.global-variable-exists('container-desktop'        , $module: generated), generated.$container-desktop         , 1140px) !default;
 $container-wide         : if(meta.global-variable-exists('container-wide'           , $module: generated), generated.$container-wide            , 1340px) !default;
 $container-ultra        : if(meta.global-variable-exists('container-ultra'          , $module: generated), generated.$container-ultra           , 1520px) !default;
+
+
+// * Additional & Useless breakpoints
+// * ---------------------------------------------
+
+$additional             : if(meta.global-variable-exists('additional-breakpoints'    , $module: generated), generated.$additional-breakpoints    , ()) !default;
+$useless                : if(meta.global-variable-exists('useless-breakpoints'    , $module: generated), generated.$useless-breakpoints    , ()) !default;

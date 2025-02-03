@@ -1,178 +1,66 @@
 # Grid
 
+
+
+## What is it about ?
+
 The Grid Processor allows you to manage the Grid, Columns, Grid Alignment and Column Spacing/Gutters.
+
+
 
 ## Integration
 
-Create your custom scss file  (like `app.scss`) and add:
+<!-- tabs:start -->
+### **SCSS**
 
-```scss 
-@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/grid';
-@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/factories/grid';
+Import the builder
+
+```css 
+@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/builders/grid';
 ```
+<!-- tabs:end -->
 
-## The grid
 
-<div class="ux-grid" style="border: 1px solid green;">
-    <div class="ux-column" style="border: 1px solid gray;">column</div>
-    <div class="ux-column" style="border: 1px solid gray;">column</div>
-    <div class="ux-column" style="border: 1px solid gray;">column</div>
-</div>
 
-```html
-<div class="ux-grid" style="border: 1px solid green;">
-    <div class="ux-column" style="border: 1px solid gray;">column</div>
-    <div class="ux-column" style="border: 1px solid gray;">column</div>
-    <div class="ux-column" style="border: 1px solid gray;">column</div>
-</div>
-```
-
-<hr>
-
-<div class="ux-grid" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-
-```html 
-<div class="ux-grid">
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-</div>
-```
-
-<hr>
-
-<div class="ux-grid" style="border: 1px solid green;">
-    <div class="ux-column-6" style="border: 1px solid gray;">column-6</div>
-    <div class="ux-column-3" style="border: 1px solid gray;">column-3</div>
-    <div class="ux-column-4" style="border: 1px solid gray;">column-4</div>
-    <div class="ux-column-3" style="border: 1px solid gray;">column-3</div>
-    <div class="ux-column-3" style="border: 1px solid gray;">column-3</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-
-```html 
-<div class="ux-grid">
-    <div class="ux-column-6">column-6</div>
-    <div class="ux-column-3">column-3</div>
-    <div class="ux-column-4">column-4</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-</div>
-```
-
-## Grid divisions (number of columns)
-
-### From the `symfony_ux.yaml`configuration file
-
-By default, the grid system is based on 12 divisions.
-
-```yaml 
-symfony_ux:
-    layout:
-        grid_divisions: 12
-```
+## Configuration
 
 > Don't forget to run the command `php bin/console ux:build` to apply changes.
 
-### From `SCSS` variables
+<!-- tabs:start -->
+### **Grid**
 
-Define your custom grid division before the Symfony UX integration.
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `divisions` | `integer` | Set the number of columns of the grid | no | 12 |
+| `columns` | `boolean` | If `true`, classes `grid-columns-xx` will added | no | true |
+| `container` | `boolean` | If `true`, classes `grid-content-xx` (alignment) will added | no | true |
 
-```scss 
-// Your custom grid divisions
-$grid-divisions: 12;
-
-// Import Symfony UX bundle
-@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/variables/grid';
-@import './<path-to-vendor>/osw3/symfony-ux/assets/sass/factories/grid';
+```yaml
+symfony_ux:
+    layout:
+        grid:
+            divisions: 12
+            columns: true
+            alignments: true
 ```
 
-## Grid alignments
+### **Columns**
 
-<div class="ux-grid ux-grid-start" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-<div class="ux-grid ux-grid-center" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-<div class="ux-grid ux-grid-end" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
+| Parameter | Type | Description | Required | Default |
+|-|-|-|-|-|
+| `sizes` | `boolean` | Set the number of columns of the grid | no | 12 |
+| `offset` | `boolean` | If `true`, classes `grid-columns-xx` will added | no | true |
+| `shift` | `boolean` | If `true`, classes `grid-content-xx` (alignment) will added | no | true |
 
-```html 
-<div class="ux-grid ux-grid-start" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-<div class="ux-grid ux-grid-center" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-<div class="ux-grid ux-grid-end" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
+```yaml
+symfony_ux:
+    layout:
+        columns:
+            sizes: true
+            offset: true
+            shift: true
 ```
 
-<br>
+### **Useless breakpoints**
 
-## Spaces & Gutters
-
-<div class="ux-grid ux-gap-5" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-
-```html 
-<div class="ux-grid ux-gap-5">
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-</div>
-```
-<div class="ux-grid ux-gap-0" style="border: 1px solid green;">
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-    <div class="ux-column-2" style="border: 1px solid gray;">column-2</div>
-</div>
-
-```html 
-<div class="ux-grid ux-gap-0">
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-    <div class="ux-column-2">column-2</div>
-</div>
-```
+<!-- tabs:end -->

@@ -6,7 +6,7 @@ return static function($definition)
 
         ->scalarNode('prefix')
             ->info("Specifies the prefix")
-            ->defaultValue('ux')
+            ->defaultValue('ui')
         ->end()
 
         ->booleanNode('var_default')
@@ -18,6 +18,7 @@ return static function($definition)
 
             ->append( (include __DIR__."/layout/breakpoints.php")() )
             ->append( (include __DIR__."/layout/grid.php")() )
+            ->append( (include __DIR__."/layout/columns.php")() )
             ->append( (include __DIR__."/layout/colors.php")() )
             ->append( (include __DIR__."/layout/palette.php")() )
             ->append( (include __DIR__."/layout/spacers.php")() )

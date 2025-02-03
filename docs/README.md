@@ -9,9 +9,9 @@ Add many UX Components to your app.
 ## Layout
 - [Prefix](./layout/prefix.md)
 - [Breakpoints & Containers](./layout/breakpoints.md)
+- [Grid & Columns](./layout/grid.md)
 - [Colors](./layout/colors.md)
-- [palette & Context](./layout/palette.md)
-<!-- - [Grid](./layout/grid.md) -->
+- [Palette & Context](./layout/palette.md)
 <!-- - [Themes](./layout/themes.md) -->
 <!-- - [Transitions](./layout/transitions.md) -->
 
@@ -20,9 +20,9 @@ Add many UX Components to your app.
 <!-- - [Alerts](./components/alert.md) -->
 <!-- - [Analytics](./components/analytics.md) -->
 - [Announcement](./components/analytics.md)
-  - [Brand](./components/brand.md)
-  - [Buttons](./components/buttons.md)
-  - [Copyright](./components/copyright.md)
+- [Brand](./components/brand.md)
+- [Buttons](./components/buttons.md)
+- [Copyright](./components/copyright.md)
 <!-- - [Copyright](./components/copyright.md) -->
 - [Links](./components/link.md)
 - [Menus](./components/menu.md)

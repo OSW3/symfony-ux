@@ -10,9 +10,10 @@
 @use './../mixins/flex';
 // @use './../mixins/size';
 @use './../builders/banner';
+@use './../mixins/size';
 @use './../mixins/spacing';
 @use './../storages/prefix';
-@use './../mixins/position';
+// @use './../mixins/position';
 @use './../storages/spaces';
 @use './../mixins/component';
 @use './../mixins/transition';
@@ -27,14 +28,16 @@
 // * ---------------------------------------------
 
 .#{prefix.$prefix}media {
-    // border: 1px solid red;
-    margin-bottom: 10px;
-
     @include flex.display;
     @include flex.direction(column);
-    padding: .5rem;
+    @include size.width(var(--#{prefix.$prefix}media-width, 100%));
+    // padding: .5rem;
+    // margin: .5rem;
+    // border: store.$border-width solid transparent;
+    // border-radius: store.$border-radius;
+    // box-shadow: store.$box-shadow;
 
-    width: var(--#{prefix.$prefix}media-width, 100%);
+    // width: var(--#{prefix.$prefix}media-width, 100%);
 
     &-inline {
         display: inline-flex;
@@ -45,6 +48,10 @@
         object-fit: contain;
         max-height: 100%;
         max-width: 100%;
+    }
+
+    & figcaption {
+        font-style: italic;
     }
 }
 

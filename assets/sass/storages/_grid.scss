@@ -10,12 +10,12 @@
 // * Define storage data
 // * ---------------------------------------------
 
-$divisions: default.$divisions !default;
-$enable-grid-columns-class: true; // Active .ux-grid-columns-XX  
-$enable-grid-alignments-class: true; // Active .ux-grid-content-start / center / end
-$enable-column-sizes-class: true; // Active .ux-column-XX  
-$enable-column-offset-class: true; // Active .ux-offset-XX  
-$enable-column-shift-class: true; // Active .ux-shift-XX  
+$divisions                   : default.$divisions;
+$enable-grid-columns-class   : default.$enable-grid-columns-class;
+$enable-grid-alignments-class: default.$enable-grid-alignments-class;
+$enable-column-sizes-class   : default.$enable-column-sizes-class;
+$enable-column-offset-class  : default.$enable-column-offset-class;
+$enable-column-shift-class   : default.$enable-column-shift-class;
 
 
 // * Storage Mixins definition

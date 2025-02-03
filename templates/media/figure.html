@@ -7,7 +7,7 @@
 <figure {{ _get_attributes(_attr) }}>
 
     {% if title is not empty %}
-    <{{titleLevel}}>title</{{titleLevel}}>
+    <{{titleLevel}}>{{ title|raw }}</{{titleLevel}}>
     {% endif %}
     
     {% if type == 'audio' %}
@@ -50,12 +50,12 @@
     {% endif %}
 
     {% if description is not empty %}
-    <figcaption>Description</figcaption>
+    <figcaption>{{ description|raw }}</figcaption>
     {% endif %}
 
-    {% if download %}
-    {% for item in src %}
-    <a href="{{ item.src }}" download="">download link</a>
-    {% endfor %}
-    {% endif %}
+    {% include '@SymfonyUx/media/download.html' with {
+        src: src, 
+        download: download, 
+        label: 'download link'
+    } only %}
 </figure>

@@ -1,0 +1,9 @@
+{% if download %}
+{% for item in src %}
+{% if download is same as true %}
+<twig:Component:Link :url="item.src" :label="label" download />
+{% else %}
+<twig:Component:Link :url="item.src" :label="label" :download="download" />
+{% endif %}
+{% endfor %}
+{% endif %}

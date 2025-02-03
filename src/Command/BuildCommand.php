@@ -74,7 +74,8 @@ class BuildCommand extends Command
             'spacer'         => $this->uxSpacer($sassVariables, $value),
             'transitions'    => $this->uxTransitions($sassVariables, $value),
             'theme'          => $this->uxDefaultTheme($sassVariables, $value),
-            'grid'           => $this->uxGridDivisions($sassVariables, $value),
+            'grid'           => $this->uxGridSystem($sassVariables, $value),
+            'columns'        => $this->uxColumnsSystem($sassVariables, $value),
             default => null,
         };
 
@@ -114,9 +115,27 @@ class BuildCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function uxGridDivisions(array &$vars, $grid)
+    private function uxGridSystem(array &$sassVariables, $grid)
     {
-        $vars[] = "\$grid-divisions: {$grid['divisions']};";
+        $sassVariables[] = "\$grid-divisions: {$grid['divisions']};";
+
+        $gridColumns = $grid['columns'] ? 'true' : 'false';
+        $sassVariables[] = "\$grid-columns: {$gridColumns};";
+
+        $gridAlignments = $grid['alignments'] ? 'true' : 'false';
+        $sassVariables[] = "\$grid-alignments: {$gridAlignments};";
+    }
+
+    private function uxColumnsSystem(array &$sassVariables, $columns)
+    {
+        $columnsSizes = $columns['sizes'] ? 'true' : 'false';
+        $sassVariables[] = "\$columns-sizes: {$columnsSizes};";
+
+        $columnsOffset = $columns['offset'] ? 'true' : 'false';
+        $sassVariables[] = "\$columns-offset: {$columnsOffset};";
+
+        $columnsShift = $columns['shift'] ? 'true' : 'false';
+        $sassVariables[] = "\$columns-shift: {$columnsShift};";
     }
 
     private function uxBreakpoints(array &$vars, $options)

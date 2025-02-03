@@ -49,9 +49,9 @@
         {% include '@SymfonyUx/media/'~type~'.twig' %}
     {% endif %}
 
-    {% if download %}
-    {% for item in src %}
-    <a href="{{ item.src }}" download="">download link</a>
-    {% endfor %}
-    {% endif %}
+    {% include '@SymfonyUx/media/download.html' with {
+        src: src, 
+        download: download, 
+        label: 'download link'
+    } only %}
 </div>

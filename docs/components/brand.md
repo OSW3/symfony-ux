@@ -108,7 +108,7 @@ symfony_ux:
 ### **Theme**
 
 ```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
+@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
     example-color: var(--#{prefix.$prefix}dark),
@@ -121,7 +121,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/brand';
+@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storage/brand';
 
 @include brand.setBreakpoints((laptop, desktop));
 @include brand.setUselessBreakpoints((laptop, desktop));

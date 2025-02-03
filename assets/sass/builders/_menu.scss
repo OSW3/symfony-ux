@@ -17,6 +17,20 @@
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}menu {
+.#{prefix.$prefix}nav {
+    border: 1px solid red;
 
+    // list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    // background: #333;
+
+    // Nav Horizontal (default)
+    flex-direction: row;
+
+    // Nav vertical
+    &-vertical { 
+        flex-direction: column;
+    }
 }

@@ -1,5 +1,5 @@
-// Last gen: 2025-01-30 16:41:06
-$prefix: 'ux';
+// Last gen: 2025-02-03 22:54:12
+$prefix: 'ui';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
 $breakpoint-phone: 576px;
@@ -19,11 +19,18 @@ $container-wide: 1440px;
 $breakpoint-name-ultra: 'ultra';
 $breakpoint-ultra: 1600px;
 $container-ultra: 1520px;
+$additional-breakpoints: ('from-yaml': (breakpoint: 1600px, container: 1520px));
+$useless-breakpoints: ('wide');
+$grid-divisions: 12;
+$grid-columns: true;
+$grid-alignments: true;
+$columns-sizes: true;
+$columns-offset: true;
+$columns-shift: true;
 $transition-base: 1s;
 $transition-slow: 0.8;
 $transition-normal: 0.3;
 $transition-fast: 0.1;
-$grid-divisions: 12;
 $blue: #0d6efd;
 $indigo: #6610f2;
 $purple: #6f42c1;

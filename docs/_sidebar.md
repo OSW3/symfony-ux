@@ -8,9 +8,9 @@
 - Layout
   - [Prefix](./layout/prefix.md)
   - [Breakpoints & Containers](./layout/breakpoints.md)
+  - [Grid & Columns](./layout/grid.md)
   - [Colors](./layout/colors.md)
-  - [palette & Context](./layout/palette.md)
-  <!-- - [Grid](./layout/grid.md) -->
+  - [Palette & Context](./layout/palette.md)
   <!-- - [Themes](./layout/themes.md) -->
   <!-- - [Transitions](./layout/transitions.md) -->
 - Components

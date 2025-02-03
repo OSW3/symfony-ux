@@ -10,6 +10,17 @@
 @use './../generated';
 
 
-// * Default grid divisions
+// * Default grid settings
 // * ---------------------------------------------
-$divisions: if(meta.global-variable-exists('grid-divisions', $module: generated), generated.$grid-divisions, 12) !default;
+
+$divisions                   : if(meta.global-variable-exists('grid-divisions', $module: generated), generated.$grid-divisions, 12);
+$enable-grid-columns-class   : if(meta.global-variable-exists('grid-columns', $module: generated), generated.$grid-columns, true);
+$enable-grid-alignments-class: if(meta.global-variable-exists('grid-alignments', $module: generated), generated.$grid-alignments, true);
+
+
+// * Default columns settings
+// * ---------------------------------------------
+
+$enable-column-sizes-class   : if(meta.global-variable-exists('columns-sizes', $module: generated), generated.$columns-sizes, true);                                                                                                      // Active .ux-column-XX  
+$enable-column-offset-class  : if(meta.global-variable-exists('columns-offset', $module: generated), generated.$columns-offset, true);                                                                                                      // Active .ux-offset-XX  
+$enable-column-shift-class   : if(meta.global-variable-exists('columns-shift', $module: generated), generated.$columns-shift, true);                                                                                                      // Active .ux-shift-XX  

@@ -66,11 +66,21 @@ $alignments: (
 
 @if store.$enable-grid-columns-class {
     .#{prefix.$prefix}grid {
+
+        $selector-group : '';
+
+        @for $i from 1 through $divisions {
+            $selector-group: $selector-group + '&-columns-#{$i}>*, ';
+        }
+
+        #{$selector-group} {
+            @include flex.grow(0);
+            @include flex.shrink(0);
+            @include flex.basis(auto);
+        }
+
         @for $i from 1 through $divisions {
             &-columns-#{$i}>* {
-                @include flex.grow(0);
-                @include flex.shrink(0);
-                @include flex.basis(auto);
                 @include size.width(math.percentage(math.div(1,$i)), null, null);
             }
         }
@@ -98,13 +108,23 @@ $alignments: (
 @if store.$enable-column-sizes-class {
     .#{prefix.$prefix}column {
 
+        $selector-group : '';
+
+        @for $i from 1 through $divisions {
+            $selector-group: $selector-group + '&-#{$i}, ';
+        }
+
+        #{$selector-group} {
+            @include flex.grow(0);
+            @include flex.shrink(0);
+            @include flex.basis(var(--#{prefix.$prefix}column-width));
+            @include size.width(null, null, var(--#{prefix.$prefix}column-width));
+        }
+
         // .column-xx
         @for $i from 1 through $divisions {
             &-#{$i} {
-                @include flex.grow(0);
-                @include flex.shrink(0);
-                @include flex.basis(math.percentage(math.div($i, $divisions)));
-                @include size.width(null, null, math.percentage(math.div($i, $divisions)));
+                --#{prefix.$prefix}column-width: #{math.percentage(math.div($i, $divisions))};
             }
         }
     
@@ -117,15 +137,32 @@ $alignments: (
             @include spacing.outer(0, 0, 0, 0, true);
         }
 
+
         // Responsive columns
+        // --
+
+
+        $selector-group : '';
+
+        @each $key, $value in $breakpoints {
+            @for $i from 1 through $divisions {
+                $selector-group: $selector-group + '&-#{$key}-#{$i}, ';
+            }
+        }
+
+        #{$selector-group} {
+            @include flex.grow(0);
+            @include flex.shrink(0);
+            @include flex.basis(var(--#{prefix.$prefix}column-media-width));
+            @include size.width(null, null, var(--#{prefix.$prefix}column-media-width));
+        }
+
         @each $key, $value in $breakpoints {
             @media (min-width: map.get($breakpoints, $key)) {
                 @for $i from 1 through $divisions {
                     &-#{$key}-#{$i} {
-                        @include flex.grow(0);
-                        @include flex.shrink(0);
-                        @include flex.basis(math.percentage(math.div($i, $divisions)));
-                        @include size.width(null, null, math.percentage(math.div($i, $divisions)));
+                        --#{prefix.$prefix}column-media-width: #{math.percentage(math.div($i, $divisions))};
+
                     }
                 }
             }
