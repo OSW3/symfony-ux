@@ -111,7 +111,7 @@ symfony_ux:
 @use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
-    example-color: var(--#{prefix.$prefix}dark),
+    example-color: var(--#{$prefix}dark),
     example-hover-color: inherit,
 ));
 ```
@@ -134,7 +134,7 @@ $props: map.merge($props, (
 @include brand.setSecondaryFontSize(fonts.$scale-base * .8);
 @include brand.setSecondaryFontWeight(100 * 4);
 @include brand.setTransition(false);
-@include brand.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+@include brand.setTransitionDelay(var(--#{$prefix}transition-normal));
 @include brand.setTransitionType(ease-in-out);
 @include brand.setTaglineOffset((spaces.$base * .5) * -1);
 ```

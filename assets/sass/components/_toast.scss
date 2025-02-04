@@ -10,20 +10,21 @@
 
 @use './../storages/prefix';
 @use './../storages/toast';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    toast-color               : var(--#{prefix.$prefix}white),
-    toast-hover-color         : var(--#{prefix.$prefix}white),
-    toast-bg-color            : var(--#{prefix.$prefix}black),
-    toast-hover-bg-color      : var(--#{prefix.$prefix}black),
-    toast-border-color        : var(--#{prefix.$prefix}black),
-    toast-hover-border-color  : var(--#{prefix.$prefix}black),
-    toast-progress-color      : var(--#{prefix.$prefix}gray-500),
-    toast-hover-progress-color: var(--#{prefix.$prefix}gray-900),
+    toast-color               : var(--#{$prefix}white),
+    toast-hover-color         : var(--#{$prefix}white),
+    toast-bg-color            : var(--#{$prefix}black),
+    toast-hover-bg-color      : var(--#{$prefix}black),
+    toast-border-color        : var(--#{$prefix}black),
+    toast-hover-border-color  : var(--#{$prefix}black),
+    toast-progress-color      : var(--#{$prefix}gray-500),
+    toast-hover-progress-color: var(--#{$prefix}gray-900),
 );
 
 

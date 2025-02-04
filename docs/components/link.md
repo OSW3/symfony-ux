@@ -90,13 +90,13 @@ symfony_ux:
 @use './../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
-    'link-color'                       : var(--#{prefix.$prefix}blue),
-    'link-hover-color'                 : var(--#{prefix.$prefix}green),
-    'link-active-color'                : var(--#{prefix.$prefix}orange),
-    'link-disabled-color'              : var(--#{prefix.$prefix}gray-600),
-    'link-text-decoration-color'       : var(--#{prefix.$prefix}blue),
-    'link-text-decoration-hover-color' : var(--#{prefix.$prefix}green),
-    'link-text-decoration-active-color': var(--#{prefix.$prefix}orange),
+    'link-color'                       : var(--#{$prefix}blue),
+    'link-hover-color'                 : var(--#{$prefix}green),
+    'link-active-color'                : var(--#{$prefix}orange),
+    'link-disabled-color'              : var(--#{$prefix}gray-600),
+    'link-text-decoration-color'       : var(--#{$prefix}blue),
+    'link-text-decoration-hover-color' : var(--#{$prefix}green),
+    'link-text-decoration-active-color': var(--#{$prefix}orange),
     'link-bg-color'                    : initial,
     'link-hover-bg-color'              : initial,
     'link-active-bg-color'             : initial,
@@ -114,7 +114,7 @@ $props: map.merge($props, (
 @include link.setCursor(pointer);
 @include link.setTextDecoration(none, underline, underline);
 @include link.setTransition(true);
-@include link.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+@include link.setTransitionDelay(var(--#{$prefix}transition-normal));
 @include link.setTransitionType(ease-in-out);
 ```
 

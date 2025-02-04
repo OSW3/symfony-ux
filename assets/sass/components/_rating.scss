@@ -10,18 +10,19 @@
 
 @use './../storages/prefix';
 @use './../storages/rating';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    // rating-color             : var(--#{prefix.$prefix}dark),
-    // rating-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
-    // rating-bg-color          : var(--#{prefix.$prefix}cyan),
-    // rating-hover-bg-color    : var(--#{prefix.$prefix}cyan),
-    // rating-border-color      : var(--#{prefix.$prefix}red),
-    // rating-hover-border-color: var(--#{prefix.$prefix}red),
+    // rating-color             : var(--#{$prefix}dark),
+    // rating-hover-color       : inherit, //var(--#{$prefix}inherit),
+    // rating-bg-color          : var(--#{$prefix}cyan),
+    // rating-hover-bg-color    : var(--#{$prefix}cyan),
+    // rating-border-color      : var(--#{$prefix}red),
+    // rating-hover-border-color: var(--#{$prefix}red),
 );
 
 

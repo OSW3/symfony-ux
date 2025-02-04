@@ -1,0 +1,42 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/nav.scss -----------
+// *
+// *    Builder for Nav component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/nav.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/nav';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // nav-color             : var(--#{$prefix}red),
+    // nav-hover-color       : inherit, //var(--#{$prefix}inherit),
+    nav-bg-color          : var(--#{$prefix}gray-800),
+    // nav-hover-bg-color    : var(--#{$prefix}cyan),
+    // nav-border-color      : var(--#{$prefix}red),
+    // nav-hover-border-color: var(--#{$prefix}red),
+
+    nav-item-color          : var(--#{$prefix}gray-500),
+    nav-item-hover-color    : var(--#{$prefix}white),
+    nav-item-active-color   : var(--#{$prefix}white),
+    nav-item-bg-color       : inherit,
+    nav-item-hover-bg-color : var(--#{$prefix}gray-900),
+    nav-item-active-bg-color: var(--#{$prefix}gray-600),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: (
+    nav-item-padding-x: nav.$padding-x,
+    nav-item-padding-y: nav.$padding-y,
+);

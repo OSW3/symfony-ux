@@ -10,18 +10,19 @@
 
 @use './../storages/prefix';
 @use './../storages/scroll-to-top';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    scroll-to-top-color             : var(--#{prefix.$prefix}red),
-    scroll-to-top-hover-color       : var(--#{prefix.$prefix}pink),
-    scroll-to-top-bg-color          : var(--#{prefix.$prefix}green),
-    scroll-to-top-hover-bg-color    : var(--#{prefix.$prefix}yellow),
-    scroll-to-top-border-color      : var(--#{prefix.$prefix}gray-600),
-    scroll-to-top-hover-border-color: var(--#{prefix.$prefix}gray-700),
+    scroll-to-top-color             : var(--#{$prefix}red),
+    scroll-to-top-hover-color       : var(--#{$prefix}pink),
+    scroll-to-top-bg-color          : var(--#{$prefix}green),
+    scroll-to-top-hover-bg-color    : var(--#{$prefix}yellow),
+    scroll-to-top-border-color      : var(--#{$prefix}gray-600),
+    scroll-to-top-hover-border-color: var(--#{$prefix}gray-700),
 );
 
 

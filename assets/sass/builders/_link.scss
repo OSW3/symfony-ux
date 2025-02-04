@@ -14,20 +14,21 @@
 @use './../storages/link' as store;
 @use './../components/link' ;
 @include banner.header('Component Link');
+$prefix: prefix.$prefix;
 
 
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}link {
+.#{$prefix}link {
 
     display: inline-flex;
 
     cursor: store.$cursor;
-    color: var(--#{prefix.$prefix}link-color);
-    background-color: var(--#{prefix.$prefix}link-bg-color);
+    color: var(--#{$prefix}link-color);
+    background-color: var(--#{$prefix}link-bg-color);
     text-decoration: store.$text-decoration;
-    text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-color);
+    text-decoration-color: var(--#{$prefix}link-text-decoration-color);
     width: fit-content;
 
     @if store.$text-decoration == underline {
@@ -44,10 +45,10 @@
     );
 
     &:hover {
-        color: var(--#{prefix.$prefix}link-hover-color) !important;
-        background-color: var(--#{prefix.$prefix}link-hover-bg-color);
+        color: var(--#{$prefix}link-hover-color) !important;
+        background-color: var(--#{$prefix}link-hover-bg-color);
         text-decoration: store.$text-decoration-hover !important;
-        text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-hover-color) !important;
+        text-decoration-color: var(--#{$prefix}link-text-decoration-hover-color) !important;
 
         @if store.$text-decoration == underline {
             text-decoration-thickness: 2px;
@@ -61,10 +62,10 @@
     &.active,
     &:active:hover, 
     &.active:hover {
-        color: var(--#{prefix.$prefix}link-active-color) !important;
-        background-color: var(--#{prefix.$prefix}link-active-bg-color);
+        color: var(--#{$prefix}link-active-color) !important;
+        background-color: var(--#{$prefix}link-active-bg-color);
         text-decoration: store.$text-decoration-active !important;
-        text-decoration-color: var(--#{prefix.$prefix}link-text-decoration-active-color) !important;
+        text-decoration-color: var(--#{$prefix}link-text-decoration-active-color) !important;
 
         @if store.$text-decoration == underline {
             text-decoration-thickness: 2px;
@@ -80,7 +81,7 @@
     &[disabled]:hover, 
     &[disabled]:active:hover, 
     &[disabled].active:hover {
-        color: var(--#{prefix.$prefix}link-disabled-color) !important;
+        color: var(--#{$prefix}link-disabled-color) !important;
         cursor: default !important;
         text-decoration: none !important;
     }

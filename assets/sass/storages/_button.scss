@@ -7,13 +7,14 @@
 @use './../storages/prefix';
 @use './../storages/fonts';
 @use './../storages/spaces';
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
 // * ---------------------------------------------
 
 $border-width     : 1px;
-$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
+$border-radius    : var(--#{$prefix}border-radius-normal);
 
 $cursor           : pointer;
 

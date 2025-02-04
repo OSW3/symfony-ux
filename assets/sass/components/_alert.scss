@@ -10,18 +10,19 @@
 
 @use './../storages/alert';
 @use './../storages/prefix';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    alert-color             : var(--#{prefix.$prefix}red),
-    alert-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
-    alert-bg-color          : var(--#{prefix.$prefix}cyan),
-    alert-hover-bg-color    : var(--#{prefix.$prefix}cyan),
-    alert-border-color      : var(--#{prefix.$prefix}red),
-    alert-hover-border-color: var(--#{prefix.$prefix}red),
+    alert-color             : var(--#{$prefix}red),
+    alert-hover-color       : inherit, //var(--#{$prefix}inherit),
+    alert-bg-color          : var(--#{$prefix}cyan),
+    alert-hover-bg-color    : var(--#{$prefix}cyan),
+    alert-border-color      : var(--#{$prefix}red),
+    alert-hover-border-color: var(--#{$prefix}red),
 );
 
 

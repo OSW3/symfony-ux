@@ -10,6 +10,7 @@
 @use './../storages/spaces';
 
 @use './../generated';
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
@@ -23,9 +24,9 @@ $width            : 380px;
 $gutter           : 10px;
 $offset           : $gutter;
 $border-width     : 1px;
-$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
+$border-radius    : var(--#{$prefix}border-radius-normal);
 $transition       : true;
-$transition-delay : var(--#{prefix.$prefix}transition-normal);
+$transition-delay : var(--#{$prefix}transition-normal);
 $transition-type  : ease-in-out;
 $title-font-size  : fonts.$scale-base * 1.1;
 $message-font-size: fonts.$scale-base * 1;

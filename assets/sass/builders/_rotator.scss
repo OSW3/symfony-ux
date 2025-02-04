@@ -12,12 +12,13 @@
 @use './../storages/rotator' as store;
 // @use './../components/rotator';
 @include banner.header('Component Rotator');
+$prefix: prefix.$prefix;
 
 
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}rotator {
+.#{$prefix}rotator {
 
     @include flex.display;
 

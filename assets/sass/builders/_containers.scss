@@ -14,7 +14,8 @@
 @use './../functions/collection' as fnCollection;
 @use './../mixins/size';
 @use './../mixins/spacing';
-// @include banner.header('Containers');
+@include banner.header('Containers');
+$prefix: prefix.$prefix;
 
 
 // * Retrieve stored data
@@ -57,7 +58,7 @@ $containers-list: ('container', 'container-fluid');
 $containers-string : '';
 
 @each $_selector in $containers-list {
-    $containers-string: $containers-string + '.#{prefix.$prefix}#{$_selector}, ';
+    $containers-string: $containers-string + '.#{$prefix}#{$_selector}, ';
 }
 
 $containers-string: string.unquote(string.slice($containers-string, 1, -3));
@@ -82,7 +83,7 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
 // * Containers max width
 // * --
 
-.#{prefix.$prefix}container {
+.#{$prefix}container {
 
     // Containers by breakpoints
     @each $key, $value in $containers {

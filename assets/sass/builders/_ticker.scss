@@ -12,12 +12,13 @@
 @use './../storages/ticker' as store;
 @use './../components/ticker';
 @include banner.header('Component Ticker');
+$prefix: prefix.$prefix;
 
 
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}ticker {
+.#{$prefix}ticker {
 
     @include flex.display;
 

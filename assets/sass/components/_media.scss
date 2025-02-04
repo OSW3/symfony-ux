@@ -10,18 +10,19 @@
 
 @use './../storages/media';
 @use './../storages/prefix';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    // media-color             : var(--#{prefix.$prefix}red),
-    // media-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
-    // media-bg-color          : var(--#{prefix.$prefix}cyan),
-    // media-hover-bg-color    : var(--#{prefix.$prefix}cyan),
-    // media-border-color      : var(--#{prefix.$prefix}red),
-    // media-hover-border-color: var(--#{prefix.$prefix}red),
+    // media-color             : var(--#{$prefix}red),
+    // media-hover-color       : inherit, //var(--#{$prefix}inherit),
+    // media-bg-color          : var(--#{$prefix}cyan),
+    // media-hover-bg-color    : var(--#{$prefix}cyan),
+    // media-border-color      : var(--#{$prefix}red),
+    // media-hover-border-color: var(--#{$prefix}red),
 );
 
 

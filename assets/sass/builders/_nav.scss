@@ -1,0 +1,165 @@
+// * -------------- @osw3/symfony-ux/assets/sass/builder/nav.scss -------------
+// *
+// *    Builder for Nav component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../mixins/flex';
+@use './../mixins/spacing';
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/position';
+@use './../mixins/transition';
+@use './../variables/alignments';
+
+@use './../storages/nav' as store;
+@use './../components/nav';
+@include banner.header('Component Nav');
+$prefix: prefix.$prefix;
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}nav {
+
+    // Set layout css variables
+    // --
+
+    @each $name, $value in nav.$layout-properties {
+        --#{$prefix}#{$name}: #{$value};
+    }
+
+
+    // Nav
+    // --
+
+    // border: 5px solid red;
+    background-color: var(--#{$prefix}nav-bg-color);
+    @include spacing.inner(0);
+    @include spacing.outer(0);
+
+
+    // Items
+    // --
+
+    // Items <ul>
+    &-items {
+        // border: 5px solid green;
+        list-style: none;
+        @include flex.display;
+        @include flex.direction(row);
+        @include spacing.inner(0);
+        @include spacing.outer(0);
+    }
+
+    // Alignments nav
+    @each $name, $value in alignments.$flex-alignments {
+        &-#{$name} &-items {
+            @include flex.justify-content($value, true);
+        }
+    }
+
+    &-fill &-item {
+        @include flex.grow(1);
+    }
+
+    // Vertical nav
+    &-vertical &-items { 
+        @include flex.direction(column);
+    }
+
+    
+    // Item
+    // --
+
+    &-item {
+        // border: 10px solid pink;
+        @include position.relative;
+        @include spacing.outer(0);
+    }
+
+    
+    // Link
+    // --
+
+    &-link {
+        cursor: store.$cursor;
+        display: flex;
+        background-color: var(--#{$prefix}nav-item-bg-color);
+        color: var(--#{$prefix}nav-item-color);
+        z-index: 1;
+
+        @include spacing.inner( 
+            var(--#{$prefix}nav-item-padding-x),
+            var(--#{$prefix}nav-item-padding-y),
+            var(--#{$prefix}nav-item-padding-x),
+            var(--#{$prefix}nav-item-padding-y),
+        );
+
+        @if store.$transition {
+            @include transition.set(
+                (color, background-color),
+                var(--#{$prefix}transition-normal),
+                ease-in-out
+            );
+        }
+
+        &.active,
+        &:active,
+        &.active:hover,
+        &:active:hover {
+            background-color: var(--#{$prefix}nav-item-active-bg-color);
+            color: var(--#{$prefix}nav-item-active-color);
+            // pointer-events: none;
+        }
+        &:focus,
+        &:hover {
+            background-color: var(--#{$prefix}nav-item-hover-bg-color);
+            color: var(--#{$prefix}nav-item-hover-color);
+        }
+    }
+
+    &-fill &-link {
+        @include flex.justify-content(center);
+    }
+    
+    &-item[disabled], &-item[inert],
+    &-item[disabled] &-link:hover, &-item[inert] &-link:hover {
+        cursor: default;
+        opacity: store.$disabled-opacity;
+        // background-color: var(--#{$prefix}nav-item-bg-color);
+        // color: var(--#{$prefix}nav-item-color);
+        pointer-events: none;
+    }
+
+
+
+
+
+    .submenu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        min-width: 100%;
+        width: 280px;
+        background-color: aliceblue;
+        z-index: 2;
+    }
+    .dropdown-right .submenu,
+    .dropup-right .submenu {
+        left: auto;
+        right: 0;
+    }
+    .dropup .submenu {
+        top: auto;
+        bottom: 100%;
+    }
+
+    .dropdown:hover > .submenu,
+    .dropup:hover > .submenu {
+        display: block;
+    }
+
+}

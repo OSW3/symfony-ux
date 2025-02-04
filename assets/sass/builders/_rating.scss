@@ -12,6 +12,7 @@
 @use './../storages/rating' as store;
 // @use './../components/rating' ;
 @include banner.header('Component Rating');
+$prefix: prefix.$prefix;
 
 
 // * Component Structure
@@ -25,9 +26,9 @@ $sizes: (
     large : 1.4,
 );
 
-.#{prefix.$prefix}rating {
-    --#{prefix.$prefix}rating-symbol-off: #{store.$symbol-off};
-    --#{prefix.$prefix}rating-symbol-on: #{store.$symbol-on};
+.#{$prefix}rating {
+    --#{$prefix}rating-symbol-off: #{store.$symbol-off};
+    --#{$prefix}rating-symbol-on: #{store.$symbol-on};
 
     display: flex;
     width: 100%;
@@ -45,7 +46,7 @@ $sizes: (
         // border: 1px solid red;
         height: $base * 1;
         width: $base * 1;
-        background-image: var(--#{prefix.$prefix}rating-symbol-on);
+        background-image: var(--#{$prefix}rating-symbol-on);
         background-repeat: no-repeat;
         background-position: center;
 
@@ -63,11 +64,11 @@ $sizes: (
         }
 
         // &.selected {
-        //     background-image: var(--#{prefix.$prefix}rating-symbol-on);
+        //     background-image: var(--#{$prefix}rating-symbol-on);
 
         // }
         // &.pre-selected {
-        //     background-image: var(--#{prefix.$prefix}rating-symbol-on);
+        //     background-image: var(--#{$prefix}rating-symbol-on);
         // }
     }
     &-radio {
@@ -99,7 +100,7 @@ $sizes: (
 
     @each $name, $multiplicate in $sizes {
         &-#{$name} {
-            .#{prefix.$prefix}rating-item {
+            .#{$prefix}rating-item {
                 height: $base * $multiplicate;
                 width: $base * $multiplicate;
             }

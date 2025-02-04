@@ -11,6 +11,7 @@
 @use 'sass:map';
 @use './../storages/prefix';
 @use './../storages/copyright';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
@@ -21,8 +22,8 @@ $theme-properties: (
     'copyright-hover-color'       : initial,
     'copyright-bg-color'          : initial,
     'copyright-hover-bg-color'    : initial,
-    // copyright-border-color      : var(--#{prefix.$prefix}gray-600),
-    // copyright-hover-border-color: var(--#{prefix.$prefix}gray-700),
+    // copyright-border-color      : var(--#{$prefix}gray-600),
+    // copyright-hover-border-color: var(--#{$prefix}gray-700),
 );
 
 

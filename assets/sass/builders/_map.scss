@@ -12,6 +12,7 @@
 @use './../storages/map' as store;
 // @use './../components/map';
 @include banner.header('Component Map');
+$prefix: prefix.$prefix;
 
 
 // $offset_px: 1px * store.$offset;
@@ -20,7 +21,7 @@ $offset_px: store.$offset;
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}map {
+.#{$prefix}map {
     position  : relative;
     min-width : 100%;
     min-height: 100%;

@@ -130,12 +130,12 @@ symfony_ux:
 @use './../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
-    example-color             : var(--#{prefix.$prefix}black),
-    example-hover-color       : var(--#{prefix.$prefix}orange),
-    example-bg-color          : var(--#{prefix.$prefix}yellow),
-    example-hover-bg-color    : var(--#{prefix.$prefix}green),
-    example-border-color      : var(--#{prefix.$prefix}gray-600),
-    example-hover-border-color: var(--#{prefix.$prefix}gray-700),
+    example-color             : var(--#{$prefix}black),
+    example-hover-color       : var(--#{$prefix}orange),
+    example-bg-color          : var(--#{$prefix}yellow),
+    example-hover-bg-color    : var(--#{$prefix}green),
+    example-border-color      : var(--#{$prefix}gray-600),
+    example-hover-border-color: var(--#{$prefix}gray-700),
 ));
 ``` -->
 

@@ -11,6 +11,7 @@
 @use './../storages/spaces';
 
 @use './../functions/collection' as fnCollection;
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
@@ -33,7 +34,7 @@ $padding-y            : spaces.$base * .8;
 
 
 $transition           : false;
-$transition-delay     : var(--#{prefix.$prefix}transition-normal);
+$transition-delay     : var(--#{$prefix}transition-normal);
 $transition-type      : ease-in-out;
 
 $tagline-offset       : (spaces.$base * .5) * -1;
@@ -112,7 +113,7 @@ $tagline-offset       : (spaces.$base * .5) * -1;
     $transition: $enabled !global;
 
     // @if $transition and $transition-delay == null {
-    //     $transition-delay : var(--#{prefix.$prefix}transition-normal) !global;
+    //     $transition-delay : var(--#{$prefix}transition-normal) !global;
     // }
     // @if $transition and $transition-type == null {
     //     $transition-type  : ease-in-out !global;

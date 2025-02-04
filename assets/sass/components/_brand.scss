@@ -10,6 +10,7 @@
 
 @use './../storages/prefix';
 @use './../storages/brand';
+$prefix: prefix.$prefix;
 
 $breakpoints: brand.$breakpoints;
 
@@ -18,12 +19,12 @@ $breakpoints: brand.$breakpoints;
 // * ---------------------------------------------
 
 $theme-properties: (
-    brand-color             : var(--#{prefix.$prefix}dark),
-    brand-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
-    // brand-bg-color          : var(--#{prefix.$prefix}cyan),
-    // brand-hover-bg-color    : var(--#{prefix.$prefix}cyan),
-    // brand-border-color      : var(--#{prefix.$prefix}red),
-    // brand-hover-border-color: var(--#{prefix.$prefix}red),
+    brand-color             : var(--#{$prefix}dark),
+    brand-hover-color       : inherit, //var(--#{$prefix}inherit),
+    // brand-bg-color          : var(--#{$prefix}cyan),
+    // brand-hover-bg-color    : var(--#{$prefix}cyan),
+    // brand-border-color      : var(--#{$prefix}red),
+    // brand-hover-border-color: var(--#{$prefix}red),
 );
 
 

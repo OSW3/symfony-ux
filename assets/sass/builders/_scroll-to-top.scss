@@ -19,6 +19,7 @@
 @use './../storages/scroll-to-top' as store;
 @use './../components/scroll-to-top';
 @include banner.header('Component Scroll To Top');
+$prefix: prefix.$prefix;
 
 
 
@@ -315,18 +316,18 @@ $background-position: center;
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}scroll-to-top {
+.#{$prefix}scroll-to-top {
 
     // Set layout css variables
     // --
 
     // @each $name, $value in scroll-to-top.$layout-properties {
-    //     --#{prefix.$prefix}#{$name}: #{$value};
+    //     --#{$prefix}#{$name}: #{$value};
     // }
 
     cursor: store.$cursor;
-    color: var(--#{prefix.$prefix}scroll-to-top-color);
-    background-color: var(--#{prefix.$prefix}scroll-to-top-bg-color);
+    color: var(--#{$prefix}scroll-to-top-color);
+    background-color: var(--#{$prefix}scroll-to-top-bg-color);
     width: store.$size;
     height: store.$size;
     opacity: 0;
@@ -508,8 +509,8 @@ $background-position: center;
     // -- 
 
     &:hover {
-        color           : var(--#{prefix.$prefix}scroll-to-top-hover-color);
-        background-color: var(--#{prefix.$prefix}scroll-to-top-hover-bg-color);
-        border-color    : var(--#{prefix.$prefix}scroll-to-top-hover-border-color);
+        color           : var(--#{$prefix}scroll-to-top-hover-color);
+        background-color: var(--#{$prefix}scroll-to-top-hover-bg-color);
+        border-color    : var(--#{$prefix}scroll-to-top-hover-border-color);
     }
 }

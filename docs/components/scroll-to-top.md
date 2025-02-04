@@ -101,12 +101,12 @@ symfony_ux:
 @use './../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
-    scroll-to-top-color             : var(--#{prefix.$prefix}red),
-    scroll-to-top-hover-color       : var(--#{prefix.$prefix}pink),
-    scroll-to-top-bg-color          : var(--#{prefix.$prefix}green),
-    scroll-to-top-hover-bg-color    : var(--#{prefix.$prefix}yellow),
-    scroll-to-top-border-color      : var(--#{prefix.$prefix}gray-600),
-    scroll-to-top-hover-border-color: var(--#{prefix.$prefix}gray-700),
+    scroll-to-top-color             : var(--#{$prefix}red),
+    scroll-to-top-hover-color       : var(--#{$prefix}pink),
+    scroll-to-top-bg-color          : var(--#{$prefix}green),
+    scroll-to-top-hover-bg-color    : var(--#{$prefix}yellow),
+    scroll-to-top-border-color      : var(--#{$prefix}gray-600),
+    scroll-to-top-hover-border-color: var(--#{$prefix}gray-700),
 ));
 ```
 
@@ -121,7 +121,7 @@ $props: map.merge($props, (
 @include scroll-to-top.setShape(square);
 @include scroll-to-top.setPosition(bottom-right);
 @include scroll-to-top.setTransition(natural);
-@include scroll-to-top.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+@include scroll-to-top.setTransitionDelay(var(--#{$prefix}transition-normal));
 @include scroll-to-top.setTransitionType(ease-in-out);
 @include scroll-to-top.setSymbol(arrow-up);
 @include scroll-to-top.setZIndex(999999);

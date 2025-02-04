@@ -9,6 +9,7 @@
 @use './../storages/spaces' as stored-spaces;
 @use './../storages/gaps' as store;
 @include banner.header('Gaps');
+$prefix: prefix.$prefix;
 
 
 // * Build CSS
@@ -20,22 +21,22 @@
 // @include banner.section('Grid gaps');
 @if store.$enable-gaps-class {
 
-    .#{prefix.$prefix}gap {
+    .#{$prefix}gap {
         @each $key, $value in stored-spaces.$spaces {
             // $margin: calc(-1 * $value);
             $padding: $value;
         
             &-#{$key}, &-x-#{$key} {
-                --#{prefix.$prefix}gap-x: #{$padding};
+                --#{$prefix}gap-x: #{$padding};
             }
             &-#{$key}, &-y-#{$key} {
-                --#{prefix.$prefix}gap-y: #{$padding};
+                --#{$prefix}gap-y: #{$padding};
             }
         }
     }
 
-    [class*=#{prefix.$prefix}gap-] {
-        margin-left: calc(var(--#{prefix.$prefix}gap-x) * -1);
-        margin-right: calc(var(--#{prefix.$prefix}gap-x) * -1);
+    [class*=#{$prefix}gap-] {
+        margin-left: calc(var(--#{$prefix}gap-x) * -1);
+        margin-right: calc(var(--#{$prefix}gap-x) * -1);
     }
 }

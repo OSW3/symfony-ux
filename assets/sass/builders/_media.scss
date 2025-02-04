@@ -21,23 +21,24 @@
 @use './../storages/media' as store;
 @use './../components/media';
 @include banner.header('Component Media');
+$prefix: prefix.$prefix;
 
 
 
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}media {
+.#{$prefix}media {
     @include flex.display;
     @include flex.direction(column);
-    @include size.width(var(--#{prefix.$prefix}media-width, 100%));
+    @include size.width(var(--#{$prefix}media-width, 100%));
     // padding: .5rem;
     // margin: .5rem;
     // border: store.$border-width solid transparent;
     // border-radius: store.$border-radius;
     // box-shadow: store.$box-shadow;
 
-    // width: var(--#{prefix.$prefix}media-width, 100%);
+    // width: var(--#{$prefix}media-width, 100%);
 
     &-inline {
         display: inline-flex;
@@ -57,10 +58,10 @@
 
 
 
-.#{prefix.$prefix}audio, 
-.#{prefix.$prefix}picture, 
-.#{prefix.$prefix}video, 
-.#{prefix.$prefix}pdf {
+.#{$prefix}audio, 
+.#{$prefix}picture, 
+.#{$prefix}video, 
+.#{$prefix}pdf {
     // border: 1px solid blue;
     // margin-bottom: 10px;
 
@@ -68,7 +69,7 @@
     @include flex.direction(column);
     // padding: .5rem;
 
-    // .#{prefix.$prefix}media > & {
+    // .#{$prefix}media > & {
     //     padding: 0;
     // }
 
@@ -78,7 +79,7 @@
     min-width: 100%;
 }
 
-.#{prefix.$prefix}pdf {
+.#{$prefix}pdf {
     width: 100%;
     height: auto;
     

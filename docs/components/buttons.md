@@ -152,12 +152,12 @@ These properties allow you to define the theme of buttons that are not associate
 @use './../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
-    example-color             : var(--#{prefix.$prefix}black),
+    example-color             : var(--#{$prefix}black),
     example-hover-color       : inherit,
-    example-bg-color          : var(--#{prefix.$prefix}yellow),
-    example-hover-bg-color    : var(--#{prefix.$prefix}green),
-    example-border-color      : var(--#{prefix.$prefix}gray-600),
-    example-hover-border-color: var(--#{prefix.$prefix}gray-700),
+    example-bg-color          : var(--#{$prefix}yellow),
+    example-hover-bg-color    : var(--#{$prefix}green),
+    example-border-color      : var(--#{$prefix}gray-600),
+    example-hover-border-color: var(--#{$prefix}gray-700),
 ));
 ```
 
@@ -169,7 +169,7 @@ $props: map.merge($props, (
 @use './../../../vendor/osw3/symfony-ux/assets/sass/storage/button';
 
 @include button.setBorderWidth( 1px );
-@include button.setBorderRadius( var(--#{prefix.$prefix}border-radius-normal) );
+@include button.setBorderRadius( var(--#{$prefix}border-radius-normal) );
 @include button.setCursor( pointer );
 @include button.setFontFamily( inherit );
 @include button.setFontSize(fonts.$scale-base * 1, fonts.$scale-base * .8 , fonts.$scale-base * 1.6 );

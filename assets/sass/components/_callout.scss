@@ -10,18 +10,19 @@
 
 @use './../storages/prefix';
 @use './../storages/callout';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    callout-color             : var(--#{prefix.$prefix}black),
-    // callout-hover-color       : inherit, //var(--#{prefix.$prefix}inherit),
-    callout-bg-color          : var(--#{prefix.$prefix}gray-400),
-    // callout-hover-bg-color    : var(--#{prefix.$prefix}gray-500),
-    callout-border-color      : var(--#{prefix.$prefix}gray-600),
-    // callout-hover-border-color: var(--#{prefix.$prefix}gray-700),
+    callout-color             : var(--#{$prefix}black),
+    // callout-hover-color       : inherit, //var(--#{$prefix}inherit),
+    callout-bg-color          : var(--#{$prefix}gray-400),
+    // callout-hover-bg-color    : var(--#{$prefix}gray-500),
+    callout-border-color      : var(--#{$prefix}gray-600),
+    // callout-hover-border-color: var(--#{$prefix}gray-700),
 );
 
 

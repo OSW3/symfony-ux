@@ -7,13 +7,14 @@
 @use './../storages/fonts';
 @use './../storages/prefix';
 @use './../storages/spaces';
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
 // * ---------------------------------------------
 
 $border-width     : 5px;
-$border-radius    : var(--#{prefix.$prefix}border-radius-normal);
+$border-radius    : var(--#{$prefix}border-radius-normal);
 
 $padding-x        : spaces.$base * .94;
 $padding-y        : spaces.$base * 1.25;

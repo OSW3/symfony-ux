@@ -7,6 +7,7 @@
 @use './../storages/prefix';
 @use './../storages/fonts';
 @use './../storages/spaces';
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
@@ -14,7 +15,7 @@
 
 $cursor               : null;
 
-$font-family          : null; //var(--#{prefix.$prefix}font-open-sans);
+$font-family          : null; //var(--#{$prefix}font-open-sans);
 $font-size            : fonts.$scale-base * .8;
 $font-weight          : 100 * 4;
 
@@ -74,7 +75,7 @@ $hover                : false;
     $transition: $value !global;
 
     @if $transition and $transition-delay == null {
-        $transition-delay : var(--#{prefix.$prefix}transition-normal) !global;
+        $transition-delay : var(--#{$prefix}transition-normal) !global;
     }
     @if $transition and $transition-type == null {
         $transition-type  : ease-in-out !global;

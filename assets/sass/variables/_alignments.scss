@@ -1,0 +1,14 @@
+// * ---------- @osw3/symfony-ux/assets/sass/variables/alignments.scss ---------
+// *
+// *    Alignments variables
+// *
+// * ---------------------------------------------------------------------------
+
+$flex-alignments: (
+    start  : start,
+    center : center,
+    end    : end,
+    around : space-around,
+    between: space-between,
+    evenly : space-evenly,
+);

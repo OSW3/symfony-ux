@@ -14,7 +14,9 @@
 @use './../storages/prefix';
 @use './../storages/spaces' as stored-spaces;
 @use './../storages/breakpoints' as stored-breakpoints;
+@use './../variables/alignments';
 @include banner.header('Grid & Columns');
+$prefix: prefix.$prefix;
 
 
 // * Retrieve stored data
@@ -22,15 +24,6 @@
 
 $divisions: store.$divisions;
 $breakpoints: stored-breakpoints.$breakpoints;
-
-$alignments: (
-    start  : start,
-    center : center,
-    end    : end,
-    around : space-around,
-    between: space-between,
-    evenly : space-evenly,
-);
 
 
 // * Grid mixins
@@ -44,7 +37,7 @@ $alignments: (
 // * Generate the Grid
 // * --
 
-.#{prefix.$prefix}grid {
+.#{$prefix}grid {
     @include flex.display;
     @include flex.direction(row);
     @include flex.wrap(wrap);
@@ -55,8 +48,8 @@ $alignments: (
         @include flex.shrink(0);
         @include flex.basis(0%);
         @include size.width(100%, null, 100%);
-        @include spacing.inner-x(var(--#{prefix.$prefix}gap-x, 0));
-        @include spacing.outer-y(var(--#{prefix.$prefix}gap-y, 0));
+        @include spacing.inner-x(var(--#{$prefix}gap-x, 0));
+        @include spacing.outer-y(var(--#{$prefix}gap-y, 0));
     }
 }
 
@@ -65,7 +58,7 @@ $alignments: (
 // * --
 
 @if store.$enable-grid-columns-class {
-    .#{prefix.$prefix}grid {
+    .#{$prefix}grid {
 
         $selector-group : '';
 
@@ -92,8 +85,8 @@ $alignments: (
 // * --
 
 @if store.$enable-grid-alignments-class {
-    .#{prefix.$prefix}grid {
-        @each $name, $value in $alignments {
+    .#{$prefix}grid {
+        @each $name, $value in alignments.$flex-alignments {
             &-content-#{$name} {
                 @include flex.justify-content($value, true);
             }
@@ -106,7 +99,7 @@ $alignments: (
 // * --
 
 @if store.$enable-column-sizes-class {
-    .#{prefix.$prefix}column {
+    .#{$prefix}column {
 
         $selector-group : '';
 
@@ -117,14 +110,14 @@ $alignments: (
         #{$selector-group} {
             @include flex.grow(0);
             @include flex.shrink(0);
-            @include flex.basis(var(--#{prefix.$prefix}column-width));
-            @include size.width(null, null, var(--#{prefix.$prefix}column-width));
+            @include flex.basis(var(--#{$prefix}column-width));
+            @include size.width(null, null, var(--#{$prefix}column-width));
         }
 
         // .column-xx
         @for $i from 1 through $divisions {
             &-#{$i} {
-                --#{prefix.$prefix}column-width: #{math.percentage(math.div($i, $divisions))};
+                --#{$prefix}column-width: #{math.percentage(math.div($i, $divisions))};
             }
         }
     
@@ -153,15 +146,15 @@ $alignments: (
         #{$selector-group} {
             @include flex.grow(0);
             @include flex.shrink(0);
-            @include flex.basis(var(--#{prefix.$prefix}column-media-width));
-            @include size.width(null, null, var(--#{prefix.$prefix}column-media-width));
+            @include flex.basis(var(--#{$prefix}column-media-width));
+            @include size.width(null, null, var(--#{$prefix}column-media-width));
         }
 
         @each $key, $value in $breakpoints {
             @media (min-width: map.get($breakpoints, $key)) {
                 @for $i from 1 through $divisions {
                     &-#{$key}-#{$i} {
-                        --#{prefix.$prefix}column-media-width: #{math.percentage(math.div($i, $divisions))};
+                        --#{$prefix}column-media-width: #{math.percentage(math.div($i, $divisions))};
 
                     }
                 }
@@ -175,7 +168,7 @@ $alignments: (
 // * --
 
 @if store.$enable-column-offset-class {
-    .#{prefix.$prefix}offset {
+    .#{$prefix}offset {
         @for $i from 1 through $divisions {
             &-#{$i} {
                 margin-left: math.percentage(math.div($i, $divisions));
@@ -200,7 +193,7 @@ $alignments: (
 // * --
 
 @if store.$enable-column-shift-class {
-    .#{prefix.$prefix} {
+    .#{$prefix} {
         &shift {
             margin-right: 100%;
             @for $i from 1 through $divisions {

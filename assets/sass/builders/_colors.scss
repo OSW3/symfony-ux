@@ -14,7 +14,8 @@
 @use './../storages/colors' as store;
 @use './../functions/color' as fnColor;
 @use './../functions/collection' as fnCollection;
-// @include banner.header('Colors');
+@include banner.header('Colors');
+$prefix: prefix.$prefix;
 
 
 // * Retrieve stored data
@@ -43,7 +44,7 @@
 // :root {
 //     @each $color-name, $color-value in $colors {
 
-//         --#{prefix.$prefix}#{$color-name}: #{$color-value};
+//         --#{$prefix}#{$color-name}: #{$color-value};
 
 //         @each $declination-name, $declination-rules in $declinations {
 //             @if $color-name == $declination-name {
@@ -55,12 +56,12 @@
 //                     @if $mode == tint {
 //                         $color: fnColor.tint($color-value, $value);
 //                         // $color: fnColor.rgb-to-hex($color);
-//                         --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+//                         --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
 //                     }
 //                     @else {
 //                         $color: fnColor.shade($color-value, $value);
 //                         // $color: fnColor.rgb-to-hex($color);
-//                         --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+//                         --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
 //                     }
 
 //                 }

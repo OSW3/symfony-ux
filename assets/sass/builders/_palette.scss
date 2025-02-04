@@ -11,7 +11,8 @@
 @use './../storages/palette' as store;
 @use './../functions/color' as fnColor;
 @use './../functions/collection' as fnCollection;
-// @include banner.header('Palette');
+@include banner.header('Palette');
+$prefix: prefix.$prefix;
 
 
 // * Retrieve stored data
@@ -35,12 +36,12 @@ $declinations: store.$declinations;
         @if $mode == tint {
             $color: fnColor.tint($base, $value);
             // $color: fnColor.rgb-to-hex($color);
-            --#{prefix.$prefix}#{$palette-name}-#{$declination-name}: #{$color};
+            --#{$prefix}#{$palette-name}-#{$declination-name}: #{$color};
         }
         @else {
             $color: fnColor.shade($base, $value);
             // $color: fnColor.rgb-to-hex($color);
-            --#{prefix.$prefix}#{$palette-name}-#{$declination-name}: #{$color};
+            --#{$prefix}#{$palette-name}-#{$declination-name}: #{$color};
         }
     }
 }
@@ -66,7 +67,7 @@ $declinations: store.$declinations;
         // Main color
         // --
 
-        --#{prefix.$prefix}#{$palette-name}: #{$palette-color};
+        --#{$prefix}#{$palette-name}: #{$palette-color};
 
 
         // Properties declination
@@ -88,6 +89,6 @@ $declinations: store.$declinations;
             @include declination($palette-name, $palette-color, $declination-properties);
         }
 
-        --#{prefix.$prefix}#{$palette-name}-bw-contrast: #{fnColor.bwContrast($palette-color)};
+        --#{$prefix}#{$palette-name}-bw-contrast: #{fnColor.bwContrast($palette-color)};
     }
 }

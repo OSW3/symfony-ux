@@ -12,16 +12,17 @@
 @use './../storages/copyright' as store;
 @use './../components/copyright' ;
 @include banner.header('Component Copyright');
+$prefix: prefix.$prefix;
 
 
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}copyright {
+.#{$prefix}copyright {
 
     display: inline-block;
-    color: var(--#{prefix.$prefix}copyright-color);
-    background-color: var(--#{prefix.$prefix}copyright-bg-color);
+    color: var(--#{$prefix}copyright-color);
+    background-color: var(--#{$prefix}copyright-bg-color);
 
     @if store.$font-family {
         font-family: store.$font-family;
@@ -50,8 +51,8 @@
 
     @if store.$hover {
         &:hover {
-            color: var(--#{prefix.$prefix}copyright-hover-color);
-            background-color: var(--#{prefix.$prefix}copyright-hover-bg-color);
+            color: var(--#{$prefix}copyright-hover-color);
+            background-color: var(--#{$prefix}copyright-hover-bg-color);
         }
     }
 }

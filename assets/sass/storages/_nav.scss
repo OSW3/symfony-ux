@@ -1,0 +1,43 @@
+// * ------------- @osw3/symfony-ux/assets/sass/storages/nav.scss -------------
+// *
+// *    Nav Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/spaces';
+@use './../storages/prefix';
+$prefix: prefix.$prefix;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$cursor          : pointer;
+$padding-x       : spaces.$base * .8;
+$padding-y       : spaces.$base * 1.4;
+$transition      : true;
+$transition-delay: var(--#{$prefix}transition-normal);
+$transition-type : ease-in-out;
+$disabled-opacity: 0.65;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
+
+// Sets the cursor style when hovering over the button.
+// @param {Cursor} $cursor
+@mixin setCursor($cursor) {
+    $cursor: $cursor !global;
+}
+
+// Sets the horizontal padding of the button for different screen sizes.
+// @param {Length} $length.
+@mixin setPaddingX($length) {
+    $padding-x: $length !global;
+}
+
+// Sets the vertical padding of the button for different screen sizes.
+// @param {Length} $length.
+@mixin setPaddingY($length) {
+    $padding-y: $length !global;
+}

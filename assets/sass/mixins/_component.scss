@@ -2,6 +2,7 @@
 @use "sass:meta";
 @use './../builders/palette';
 @use './../storages/prefix';
+$prefix: prefix.$prefix;
 
 
 @mixin palette-declination($function, $properties: ()) {
@@ -18,11 +19,11 @@
                 ));
 
                 @if $isExceptionValue {
-                    --#{prefix.$prefix}#{$property-name}: #{$isExceptionValue};
+                    --#{$prefix}#{$property-name}: #{$isExceptionValue};
                 }
                 @else {
-                    --#{prefix.$prefix}#{$property-name}: var(--#{prefix.$prefix}#{$palette-name});
-                    // --#{prefix.$prefix}#{$property-name}: #{$palette-color};
+                    --#{$prefix}#{$property-name}: var(--#{$prefix}#{$palette-name});
+                    // --#{$prefix}#{$property-name}: #{$palette-color};
                 }
             }
             

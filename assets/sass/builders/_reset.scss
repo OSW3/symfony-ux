@@ -10,6 +10,7 @@
 @use './../storages/fonts' as fonts;
 @use './../storages/prefix';
 @use './../storages/themes';
+$prefix: prefix.$prefix;
 
 // @function palette-declination($palette, $property) {
 //     @return null;
@@ -20,10 +21,10 @@
 // * ---------------------------------------------
 
 $theme-properties: (
-    main-color           : var(--#{prefix.$prefix}gray-800),
-    main-link-color      : inherit, //var(--#{prefix.$prefix}inherit),
-    main-hover-link-color: var(--#{prefix.$prefix}blue),
-    main-bg-color        : var(--#{prefix.$prefix}white),
+    main-color           : var(--#{$prefix}gray-800),
+    main-link-color      : inherit, //var(--#{$prefix}inherit),
+    main-hover-link-color: var(--#{$prefix}blue),
+    main-bg-color        : var(--#{$prefix}white),
 );
 
 @if map.has-key(themes.$themes, themes.$default) {
@@ -38,7 +39,7 @@ $theme-properties: (
 
 :root {
     @each $name, $value in $theme-properties {
-        --#{prefix.$prefix}#{$name}: #{$value};
+        --#{$prefix}#{$name}: #{$value};
     }
 
     // * Redefined themes properties variables
@@ -47,7 +48,7 @@ $theme-properties: (
             &[data-theme=#{$theme-name}] {
                 @each $property-name, $value in $properties {
                     @if map.has-key($theme-properties, $property-name) {
-                        --#{prefix.$prefix}#{$property-name}: #{$value};
+                        --#{$prefix}#{$property-name}: #{$value};
                     }
                 }
             }
@@ -82,11 +83,11 @@ body {
     @include size.width(null, 100vw, null);
     @include size.height(null, 100vh, null);
     // font-family: Arial, sans-serif; // todo: customize
-    font-family: var(--#{prefix.$prefix}font-open-sans);
+    font-family: var(--#{$prefix}font-open-sans);
     font-size: 1rem; // todo: customize
     font-weight: 400; // todo: customize
-    color: var(--#{prefix.$prefix}main-color);
-    background-color: var(--#{prefix.$prefix}main-bg-color);
+    color: var(--#{$prefix}main-color);
+    background-color: var(--#{$prefix}main-bg-color);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -115,13 +116,13 @@ p {
 }
 
 a {
-    color: var(--#{prefix.$prefix}main-link-color);
+    color: var(--#{$prefix}main-link-color);
     text-decoration: none;
 }
 a:hover,
 a:focus {
     text-decoration: underline;
-    color: var(--#{prefix.$prefix}main-hover-link-color);
+    color: var(--#{$prefix}main-hover-link-color);
 }
 
 ul, ol {

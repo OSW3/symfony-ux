@@ -17,14 +17,15 @@
 @use './../storages/callout' as store;
 @use './../components/callout';
 @include banner.header('Component Callout');
+$prefix: prefix.$prefix;
 
 @function palette-declination($palette, $property) {
 
     @if 'callout-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+        @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
     @else if 'callout-bg-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-subtle);
+        @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
     }
 
     @return null;
@@ -35,14 +36,14 @@
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}callout {
+.#{$prefix}callout {
     $parent: &;
 
     // Set layout css variables
     // --
 
     @each $name, $value in callout.$layout-properties {
-        --#{prefix.$prefix}#{$name}: #{$value};
+        --#{$prefix}#{$name}: #{$value};
     }
 
 
@@ -52,19 +53,19 @@
     @include flex.display;
     @include flex.direction(row);
     @include flex.align-items(center);
-    @include spacing.inner(var(--#{prefix.$prefix}callout-padding-x));
-    @include spacing.outer(var(--#{prefix.$prefix}callout-padding-y) 0);
-    background-color: var(--#{prefix.$prefix}callout-bg-color);
-    border-left     : store.$border-width solid var(--#{prefix.$prefix}callout-border-color);
+    @include spacing.inner(var(--#{$prefix}callout-padding-x));
+    @include spacing.outer(var(--#{$prefix}callout-padding-y) 0);
+    background-color: var(--#{$prefix}callout-bg-color);
+    border-left     : store.$border-width solid var(--#{$prefix}callout-border-color);
     border-radius   : store.$border-radius;
-    // color           : var(--#{prefix.$prefix}callout-color);
+    // color           : var(--#{$prefix}callout-color);
 
     @if store.$font-family {
         font-family: store.$font-family;
     }
-    font-size       : var(--#{prefix.$prefix}callout-font-size);
-    font-weight     : var(--#{prefix.$prefix}callout-font-weight);
-    line-height     : var(--#{prefix.$prefix}callout-line-height);
+    font-size       : var(--#{$prefix}callout-font-size);
+    font-weight     : var(--#{$prefix}callout-font-weight);
+    line-height     : var(--#{$prefix}callout-line-height);
     
     box-shadow: store.$box-shadow;
 
@@ -83,7 +84,7 @@
     &-right {
         @include flex.direction(row-reverse);
         border-left: none;
-        border-right     : store.$border-width solid var(--#{prefix.$prefix}callout-border-color);
+        border-right     : store.$border-width solid var(--#{$prefix}callout-border-color);
 
         #{$parent}-icon {
             margin-right: 0;
@@ -96,18 +97,18 @@
     // --
 
     &-small {
-        --#{prefix.$prefix}callout-padding-x  : var(--#{prefix.$prefix}callout-small-padding-x);
-        --#{prefix.$prefix}callout-padding-y  : var(--#{prefix.$prefix}callout-small-padding-y);
-        --#{prefix.$prefix}callout-font-size  : var(--#{prefix.$prefix}callout-small-font-size);
-        --#{prefix.$prefix}callout-font-weight: var(--#{prefix.$prefix}callout-small-font-weight);
-        --#{prefix.$prefix}callout-line-height: var(--#{prefix.$prefix}callout-small-line-height);
+        --#{$prefix}callout-padding-x  : var(--#{$prefix}callout-small-padding-x);
+        --#{$prefix}callout-padding-y  : var(--#{$prefix}callout-small-padding-y);
+        --#{$prefix}callout-font-size  : var(--#{$prefix}callout-small-font-size);
+        --#{$prefix}callout-font-weight: var(--#{$prefix}callout-small-font-weight);
+        --#{$prefix}callout-line-height: var(--#{$prefix}callout-small-line-height);
     }
     &-large {
-        --#{prefix.$prefix}callout-padding-x  : var(--#{prefix.$prefix}callout-large-padding-x);
-        --#{prefix.$prefix}callout-padding-y  : var(--#{prefix.$prefix}callout-large-padding-y);
-        --#{prefix.$prefix}callout-font-size  : var(--#{prefix.$prefix}callout-large-font-size);
-        --#{prefix.$prefix}callout-font-weight: var(--#{prefix.$prefix}callout-large-font-weight);
-        --#{prefix.$prefix}callout-line-height: var(--#{prefix.$prefix}callout-large-line-height);
+        --#{$prefix}callout-padding-x  : var(--#{$prefix}callout-large-padding-x);
+        --#{$prefix}callout-padding-y  : var(--#{$prefix}callout-large-padding-y);
+        --#{$prefix}callout-font-size  : var(--#{$prefix}callout-large-font-size);
+        --#{$prefix}callout-font-weight: var(--#{$prefix}callout-large-font-weight);
+        --#{$prefix}callout-line-height: var(--#{$prefix}callout-large-line-height);
     }
 
     

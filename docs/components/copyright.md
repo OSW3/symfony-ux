@@ -116,7 +116,7 @@ $props: map.merge($props, (
 @include copyright.setPaddingX(0);
 @include copyright.setPaddingY(0); 
 @include copyright.setTransition(false);
-@include copyright.setTransitionDelay(var(--#{prefix.$prefix}transition-normal));
+@include copyright.setTransitionDelay(var(--#{$prefix}transition-normal));
 @include copyright.setTransitionType(ease-in-out);
 @include copyright.setHover(false);
 ```

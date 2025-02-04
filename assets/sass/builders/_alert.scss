@@ -20,6 +20,7 @@
 @use './../storages/alert' as store;
 @use './../components/alert';
 @include banner.header('Component Alert');
+$prefix: prefix.$prefix;
 
 
 $btn-close-size: 24px;
@@ -28,10 +29,10 @@ $btn-close-size: 24px;
 @function palette-declination($palette, $property) {
 
     @if 'alert-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-bw-contrast);
+        @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
     @else if 'alert-bg-color' == map.get($property, name) {
-        @return var(--#{prefix.$prefix}#{map.get( $palette, name )}-subtle);
+        @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
     }
 
     @return null;
@@ -42,13 +43,13 @@ $btn-close-size: 24px;
 // * Component Structure
 // * ---------------------------------------------
 
-.#{prefix.$prefix}alert {
+.#{$prefix}alert {
 
     // Set layout css variables
     // --
 
     @each $name, $value in alert.$layout-properties {
-        --#{prefix.$prefix}#{$name}: #{$value};
+        --#{$prefix}#{$name}: #{$value};
     }
 
 
@@ -59,19 +60,19 @@ $btn-close-size: 24px;
     @include flex.direction(row);
     @include flex.align-items(center);
     // @include position.relative;
-    @include spacing.inner(var(--#{prefix.$prefix}alert-padding-x));
-    @include spacing.outer-y(var(--#{prefix.$prefix}alert-padding-y));
-    background-color: var(--#{prefix.$prefix}alert-bg-color);
-    border: store.$border-width store.$border-style var(--#{prefix.$prefix}alert-border-color);
+    @include spacing.inner(var(--#{$prefix}alert-padding-x));
+    @include spacing.outer-y(var(--#{$prefix}alert-padding-y));
+    background-color: var(--#{$prefix}alert-bg-color);
+    border: store.$border-width store.$border-style var(--#{$prefix}alert-border-color);
     border-radius: store.$border-radius;
-    // color: var(--#{prefix.$prefix}alert-color);
+    // color: var(--#{$prefix}alert-color);
 
     @if store.$font-family {
         font-family: store.$font-family;
     }
-    font-size       : var(--#{prefix.$prefix}alert-font-size);
-    font-weight     : var(--#{prefix.$prefix}alert-font-weight);
-    line-height     : var(--#{prefix.$prefix}alert-line-height);
+    font-size       : var(--#{$prefix}alert-font-size);
+    font-weight     : var(--#{$prefix}alert-font-weight);
+    line-height     : var(--#{$prefix}alert-line-height);
     
     box-shadow: store.$box-shadow;
     
@@ -100,18 +101,18 @@ $btn-close-size: 24px;
     // --
 
     &-small {
-        --#{prefix.$prefix}alert-padding-x  : var(--#{prefix.$prefix}alert-small-padding-x);
-        --#{prefix.$prefix}alert-padding-y  : var(--#{prefix.$prefix}alert-small-padding-y);
-        --#{prefix.$prefix}alert-font-size  : var(--#{prefix.$prefix}alert-small-font-size);
-        --#{prefix.$prefix}alert-font-weight: var(--#{prefix.$prefix}alert-small-font-weight);
-        --#{prefix.$prefix}alert-line-height: var(--#{prefix.$prefix}alert-small-line-height);
+        --#{$prefix}alert-padding-x  : var(--#{$prefix}alert-small-padding-x);
+        --#{$prefix}alert-padding-y  : var(--#{$prefix}alert-small-padding-y);
+        --#{$prefix}alert-font-size  : var(--#{$prefix}alert-small-font-size);
+        --#{$prefix}alert-font-weight: var(--#{$prefix}alert-small-font-weight);
+        --#{$prefix}alert-line-height: var(--#{$prefix}alert-small-line-height);
     }
     &-large {
-        --#{prefix.$prefix}alert-padding-x  : var(--#{prefix.$prefix}alert-large-padding-x);
-        --#{prefix.$prefix}alert-padding-y  : var(--#{prefix.$prefix}alert-large-padding-y);
-        --#{prefix.$prefix}alert-font-size  : var(--#{prefix.$prefix}alert-large-font-size);
-        --#{prefix.$prefix}alert-font-weight: var(--#{prefix.$prefix}alert-large-font-weight);
-        --#{prefix.$prefix}alert-line-height: var(--#{prefix.$prefix}alert-large-line-height);
+        --#{$prefix}alert-padding-x  : var(--#{$prefix}alert-large-padding-x);
+        --#{$prefix}alert-padding-y  : var(--#{$prefix}alert-large-padding-y);
+        --#{$prefix}alert-font-size  : var(--#{$prefix}alert-large-font-size);
+        --#{$prefix}alert-font-weight: var(--#{$prefix}alert-large-font-weight);
+        --#{$prefix}alert-line-height: var(--#{$prefix}alert-large-line-height);
     }
     
 
@@ -127,7 +128,7 @@ $btn-close-size: 24px;
     // Close button
     // --
 
-    & .#{prefix.$prefix}button-close {
+    & .#{$prefix}button-close {
         cursor: pointer;
         display: flex;
         align-items: center;
@@ -142,7 +143,7 @@ $btn-close-size: 24px;
         z-index: 2;
         // padding: 1.25rem 1rem;
         // margin-left: auto;
-        color: var(--#{prefix.$prefix}white);
+        color: var(--#{$prefix}white);
         height: $btn-close-size;
         width: $btn-close-size;
         line-height: math.div($btn-close-size, 1.5);

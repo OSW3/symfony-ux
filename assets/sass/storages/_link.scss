@@ -7,6 +7,7 @@
 @use './../storages/prefix';
 // @use './../storages/fonts';
 // @use './../storages/spaces';
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
@@ -17,7 +18,7 @@ $text-decoration       : underline;
 $text-decoration-hover : underline;
 $text-decoration-active: underline;
 $transition            : true;
-$transition-delay      : var(--#{prefix.$prefix}transition-normal);
+$transition-delay      : var(--#{$prefix}transition-normal);
 $transition-type       : ease-in-out;
 
 

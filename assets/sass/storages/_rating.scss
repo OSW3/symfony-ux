@@ -5,17 +5,18 @@
 // * ---------------------------------------------------------------------------
 
 @use './../storages/prefix';
+$prefix: prefix.$prefix;
 
 
 // * Define storage data
 // * ---------------------------------------------
 
-$symbol-off           : var(--#{prefix.$prefix}icon-rating-off);
-$symbol-on            : var(--#{prefix.$prefix}icon-rating-on);
+$symbol-off           : var(--#{$prefix}icon-rating-off);
+$symbol-on            : var(--#{$prefix}icon-rating-on);
 
 $scale-selected       : false;
 $transition           : true;
-$transition-delay     : var(--#{prefix.$prefix}transition-fast);
+$transition-delay     : var(--#{$prefix}transition-fast);
 $transition-type      : ease-in-out;
 
 

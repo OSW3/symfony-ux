@@ -27,8 +27,10 @@
 @use './../components/callout';
 @use './../components/copyright';
 @use './../components/link';
+@use './../components/nav';
 @use './../components/scroll-to-top';
 @use './../components/toast';
+$prefix: prefix.$prefix;
 
 
 $base-radius: 6px; // todo; move this definition
@@ -63,6 +65,7 @@ $themes: fnMap.merge-multiple(
     callout.$theme-properties, 
     copyright.$theme-properties, 
     link.$theme-properties, 
+    nav.$theme-properties, 
     scroll-to-top.$theme-properties, 
     toast.$theme-properties, 
     map.get(themes.$themes, themes.$default)
@@ -73,18 +76,18 @@ $themes: fnMap.merge-multiple(
 // * ---------------------------------------------
 
 :root {
-    // --#{prefix.$prefix}inherit: inherit;
+    // --#{$prefix}inherit: inherit;
 
     // Border Radius
     // --
 
-    --#{prefix.$prefix}border-radius-none       : 0px;
-    --#{prefix.$prefix}border-radius-small      : #{$base-radius * 0.5};
-    --#{prefix.$prefix}border-radius-normal     : #{$base-radius * 1};
-    --#{prefix.$prefix}border-radius-large      : #{$base-radius * 2};
-    --#{prefix.$prefix}border-radius-pill       : 50%;
-    --#{prefix.$prefix}border-radius-half-pill  : 9999px;
-    --#{prefix.$prefix}border-radius-half-circle: 9999px 0;
+    --#{$prefix}border-radius-none       : 0px;
+    --#{$prefix}border-radius-small      : #{$base-radius * 0.5};
+    --#{$prefix}border-radius-normal     : #{$base-radius * 1};
+    --#{$prefix}border-radius-large      : #{$base-radius * 2};
+    --#{$prefix}border-radius-pill       : 50%;
+    --#{$prefix}border-radius-half-pill  : 9999px;
+    --#{$prefix}border-radius-half-circle: 9999px 0;
 
 
     // Colors
@@ -92,7 +95,7 @@ $themes: fnMap.merge-multiple(
 
     @each $color-name, $color-value in $colors {
 
-        --#{prefix.$prefix}#{$color-name}: #{$color-value};
+        --#{$prefix}#{$color-name}: #{$color-value};
 
         @each $declination-name, $declination-rules in colors.$declinations {
             @if $color-name == $declination-name {
@@ -104,12 +107,12 @@ $themes: fnMap.merge-multiple(
                     @if $mode == tint {
                         $color: fnColor.tint($color-value, $value);
                         // $color: fnColor.rgb-to-hex($color);
-                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+                        --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
                     }
                     @else {
                         $color: fnColor.shade($color-value, $value);
                         // $color: fnColor.rgb-to-hex($color);
-                        --#{prefix.$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+                        --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
                     }
 
                 }
@@ -123,7 +126,7 @@ $themes: fnMap.merge-multiple(
 
     @each $transition-name, $transition-value in transitions.$transitions {
         $delay: $transition-value * transitions.$base;
-        --#{prefix.$prefix}transition-#{$transition-name}: #{$delay};
+        --#{$prefix}transition-#{$transition-name}: #{$delay};
     }
 
 
@@ -131,7 +134,7 @@ $themes: fnMap.merge-multiple(
     // --
 
     @each $font-name, $font-properties in fonts.$fonts {
-        --#{prefix.$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
+        --#{$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
     }
 
 
@@ -139,7 +142,7 @@ $themes: fnMap.merge-multiple(
     // -- 
 
     @each $name, $value in icons.$icons {
-        --#{prefix.$prefix}icon-#{$name}: #{$value};
+        --#{$prefix}icon-#{$name}: #{$value};
     }
 
 
@@ -149,7 +152,7 @@ $themes: fnMap.merge-multiple(
     // * Default components themes
     @each $name, $value in $themes {
         @if $value {
-            --#{prefix.$prefix}#{$name}: #{$value};
+            --#{$prefix}#{$name}: #{$value};
         }
     }
 
@@ -160,7 +163,7 @@ $themes: fnMap.merge-multiple(
                 @each $property-name, $value in $properties {
     
                     @if map.has-key($themes, $property-name) and $value {
-                        --#{prefix.$prefix}#{$property-name}: #{$value};
+                        --#{$prefix}#{$property-name}: #{$value};
                     }
     
                 }

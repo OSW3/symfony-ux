@@ -9,16 +9,17 @@
 // * ---------------------------------------------------------------------------
 
 @use './../storages/prefix';
+$prefix: prefix.$prefix;
 
 
 // * Default theme properties
 // * ---------------------------------------------
 
 $theme-properties: (
-    announcement-color             : var(--#{prefix.$prefix}gray-500),
-    announcement-hover-color       : var(--#{prefix.$prefix}white),
-    announcement-bg-color          : var(--#{prefix.$prefix}gray-800),
-    announcement-hover-bg-color    : var(--#{prefix.$prefix}gray-900),
+    announcement-color             : var(--#{$prefix}gray-500),
+    announcement-hover-color       : var(--#{$prefix}white),
+    announcement-bg-color          : var(--#{$prefix}gray-800),
+    announcement-hover-bg-color    : var(--#{$prefix}gray-900),
     announcement-border-color      : null,
     announcement-hover-border-color: null,
 );
