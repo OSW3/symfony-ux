@@ -15,10 +15,14 @@ $prefix: prefix.$prefix;
 $cursor          : pointer;
 $padding-x       : spaces.$base * .8;
 $padding-y       : spaces.$base * 1.4;
+
 $transition      : true;
 $transition-delay: var(--#{$prefix}transition-normal);
 $transition-type : ease-in-out;
 $disabled-opacity: 0.65;
+
+$sub-width: 280px;
+$sub-min-width: 100%;
 
 
 // * Storage Mixins definition

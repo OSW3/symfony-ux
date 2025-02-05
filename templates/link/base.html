@@ -1,6 +1,4 @@
 <a {{ _get_attributes(_attr) }}>
-    {% if icon is not empty %}
-        <i class="{{ icon }}"></i>
-    {% endif %}
+    {% if icon is not empty %}<i class="{{ icon }}"></i>{% endif %}
     {{ label|raw }}
 </a>

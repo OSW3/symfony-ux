@@ -36,7 +36,10 @@ final class Link extends Component
     #[ExposeInTemplate(name: 'isDisabled')]
     public bool $isDisabled;
 
+    #[ExposeInTemplate(getter: 'doNotExpose')]
     public bool $noClassLink;
+    
+    #[ExposeInTemplate(getter: 'doNotExpose')]
     public bool $isActive;
 
     #[PreMount]

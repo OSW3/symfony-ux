@@ -1,0 +1,18 @@
+<ul {{ _get_attributes(_attr) }}>
+{% for item in items %}
+<twig:Component:Nav:Item
+    :label="item.label|default('')"
+    :url="item.url|default('')"
+    :route="item.route|default('')"
+    :icon="item.icon|default('')"
+    :target="item.target|default('_self')"
+    :isActive="item.active|default(false)"
+    :isDisabled="item.disabled|default(false)"
+    :children="item.children|default([])"
+    :placement="item.placement|default('')"
+    :alignment="item.alignment|default('')"
+    :class="item.class|default('')"
+    :dataset="item.dataset|default([])" 
+/>
+{% endfor %}
+</ul>

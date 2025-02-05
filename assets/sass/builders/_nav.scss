@@ -4,6 +4,7 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use 'sass:map';
 @use './../mixins/flex';
 @use './../mixins/spacing';
 @use './../builders/banner';
@@ -11,11 +12,13 @@
 @use './../mixins/position';
 @use './../mixins/transition';
 @use './../variables/alignments';
-
+@use './../storages/breakpoints';
 @use './../storages/nav' as store;
 @use './../components/nav';
+
 @include banner.header('Component Nav');
 $prefix: prefix.$prefix;
+$breakpoints: breakpoints.$breakpoints;
 
 
 // * Component Structure
@@ -30,22 +33,20 @@ $prefix: prefix.$prefix;
         --#{$prefix}#{$name}: #{$value};
     }
 
-
-    // Nav
+    // Nav container
     // --
+    // div.nav 
 
-    // border: 5px solid red;
     background-color: var(--#{$prefix}nav-bg-color);
     @include spacing.inner(0);
     @include spacing.outer(0);
 
 
-    // Items
+    // Nav Items (ul)
     // --
+    // div.nav > ul.nav-items
 
-    // Items <ul>
     &-items {
-        // border: 5px solid green;
         list-style: none;
         @include flex.display;
         @include flex.direction(row);
@@ -53,39 +54,56 @@ $prefix: prefix.$prefix;
         @include spacing.outer(0);
     }
 
-    // Alignments nav
+
+    // Vertical Nav
+    // --
+    // div.nav.nav-vertical > ul.nav-items
+
+    &-vertical &-items { 
+        @include flex.direction(column, true);
+    }
+
+
+    // Nav Items alignments
+    // --
+    // div.nav.nav-fill > ul.nav-items
+    // div.nav.nav-center > ul.nav-items
+    // div.nav.nav-end > ul.nav-items ...
     @each $name, $value in alignments.$flex-alignments {
         &-#{$name} &-items {
             @include flex.justify-content($value, true);
         }
     }
-
     &-fill &-item {
         @include flex.grow(1);
     }
 
-    // Vertical nav
-    &-vertical &-items { 
-        @include flex.direction(column);
-    }
-
     
-    // Item
+    // Nav Item (li)
     // --
+    // div.nav > ul.nav-items > li.nav-item
 
     &-item {
-        // border: 10px solid pink;
         @include position.relative;
         @include spacing.outer(0);
+
+        // &:hover > .#{$prefix}nav-link {
+        //     background-color: var(--#{$prefix}nav-item-hover-bg-color);
+        //     color: var(--#{$prefix}nav-item-hover-color);
+        // }
     }
+
 
     
     // Link
     // --
+    // div.nav > ul.nav-items > li.nav-item > a.nav-link
+    // div.nav > ul.nav-items > li.nav-item > span.nav-link
 
     &-link {
         cursor: store.$cursor;
-        display: flex;
+        @include flex.display;
+        @include flex.direction(row);
         background-color: var(--#{$prefix}nav-item-bg-color);
         color: var(--#{$prefix}nav-item-color);
         z-index: 1;
@@ -105,6 +123,14 @@ $prefix: prefix.$prefix;
             );
         }
 
+        // Link mouse over
+        &:focus,
+        &:hover {
+            background-color: var(--#{$prefix}nav-item-hover-bg-color);
+            color: var(--#{$prefix}nav-item-hover-color);
+        }
+
+        // Link active
         &.active,
         &:active,
         &.active:hover,
@@ -113,53 +139,177 @@ $prefix: prefix.$prefix;
             color: var(--#{$prefix}nav-item-active-color);
             // pointer-events: none;
         }
-        &:focus,
-        &:hover {
-            background-color: var(--#{$prefix}nav-item-hover-bg-color);
-            color: var(--#{$prefix}nav-item-hover-color);
-        }
     }
 
+    // Link content centered when nav alignment is 'fill'
     &-fill &-link {
         @include flex.justify-content(center);
     }
     
+    // Disabled link
+    // --
+    // div.nav > ul.nav-items > li.nav-item > a.nav-link[disabled]
+    // div.nav > ul.nav-items > li.nav-item > span.nav-link[disabled]
+
     &-item[disabled], &-item[inert],
     &-item[disabled] &-link:hover, &-item[inert] &-link:hover {
         cursor: default;
         opacity: store.$disabled-opacity;
-        // background-color: var(--#{$prefix}nav-item-bg-color);
-        // color: var(--#{$prefix}nav-item-color);
         pointer-events: none;
     }
 
 
+    
+    // Sub Nav (ul)
+    // --
+    // div.nav > ul.nav-items > li.nav-item.has-subnav > ul.nav-items
 
-
-
-    .submenu {
+    .#{$prefix}has-subnav > &-items {
         display: none;
         position: absolute;
         top: 100%;
         left: 0;
-        min-width: 100%;
-        width: 280px;
-        background-color: aliceblue;
+        height: fit-content;
+        width: store.$sub-width;
+        min-width: store.$sub-min-width;
+        background-color: var(--#{$prefix}nav-sub-bg-color);
         z-index: 2;
-    }
-    .dropdown-right .submenu,
-    .dropup-right .submenu {
-        left: auto;
-        right: 0;
-    }
-    .dropup .submenu {
-        top: auto;
-        bottom: 100%;
+
+        @if store.$transition {
+            @include transition.set(
+                (color, background-color),
+                var(--#{$prefix}transition-normal),
+                ease-in-out
+            );
+        }
+
+        // Change subnav states on subnav mouse over
+        &:hover {
+            background-color: var(--#{$prefix}nav-sub-hover-bg-color);
+        }
     }
 
-    .dropdown:hover > .submenu,
-    .dropup:hover > .submenu {
+    // Sub nav link (li > a)
+    // --
+    // div.nav > ul.nav-items > li.nav-item.has-subnav > ul.nav-items > li.nav-item > a.nav-link
+
+    .#{$prefix}has-subnav > &-items &-link {
+        background-color: var(--#{$prefix}nav-sub-item-bg-color);
+        color: var(--#{$prefix}nav-sub-item-color);
+
+        // Subnav Link mouse over
+        &:focus,
+        &:hover {
+            background-color: var(--#{$prefix}nav-sub-item-hover-bg-color);
+            color: var(--#{$prefix}nav-sub-item-hover-color);
+        }
+
+        // Subnav Link active
+        &.active,
+        &:active,
+        &.active:hover,
+        &:active:hover {
+            background-color: var(--#{$prefix}nav-sub-item-active-bg-color);
+            color: var(--#{$prefix}nav-sub-item-active-color);
+        }
+    }
+
+
+    // Sub Nav States
+    // --
+
+    // Opening state
+    .#{$prefix}has-subnav:hover > &-items {
         display: block;
     }
 
+    // Opening placement
+    [data-placement=top] > &-items {
+        top: auto;
+        bottom: 100%;
+    }
+    [data-placement=right] > &-items {
+        top: 0;
+        right: auto;
+        left: 100%;
+    }
+    [data-placement=bottom] > &-items {
+        top: 100%;
+        bottom: 0;
+    }
+    [data-placement=left] > &-items {
+        top: 0;
+        right: 100%;
+        left: auto;
+    }
+
+    // Opening alignment
+    [data-alignment=right] > &-items {
+        left: auto;
+        right: 0;
+    }
+    [data-alignment=left] > &-items {
+        left: 0;
+        right: auto;
+    }
+
+    // Sub nav symbole
+    .#{$prefix}has-subnav > &-link::after {
+        margin-left: .5rem;
+    }
+    [data-placement=top] > &-link::after {
+        content: "\25B4";
+    }
+    [data-placement=right] > &-link::after {
+        content: "\25B8";
+    }
+    [data-placement=bottom] > &-link::after {
+        content: "\25BE";
+    }
+    [data-placement=left] > &-link {
+        // @include flex.direction(row-reverse);
+        &::before {
+            content: "\25C2";
+            // margin-left: 0;
+            // margin-right: .5rem;
+            margin-left: calc(var(--ui-nav-item-padding-x) - .5rem);            
+            position: absolute;
+            left: 0;
+        }
+    }
+
+    &:not(&-fill) .#{$prefix}has-subnav > &-items > .#{$prefix}has-subnav > &-link::after {
+        margin-left: auto;
+    }
+
+    &-item:hover > .#{$prefix}nav-link {
+        background-color: var(--#{$prefix}nav-item-hover-bg-color);
+        color: var(--#{$prefix}nav-item-hover-color);
+    }
+
+
+
+    @each $key, $value in $breakpoints {
+        @media (max-width: map.get($breakpoints, $key)) {
+            &-#{$key} &-items { 
+                @include flex.direction(column);
+            }
+            &-#{$key} .#{$prefix}has-subnav > &-items {
+                top: 100%;
+                right: auto;
+                bottom: 0;
+                left: 0;
+            }
+
+            &-#{$key} .#{$prefix}has-subnav > &-link::after {
+                content: "\25BE";
+                margin-left: auto;
+
+            }
+            &-#{$key} .#{$prefix}has-subnav > &-link::before {
+                content: "";
+                display: none;
+            }
+        }
+    }
 }

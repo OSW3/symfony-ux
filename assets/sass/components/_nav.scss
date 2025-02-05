@@ -30,6 +30,17 @@ $theme-properties: (
     nav-item-bg-color       : inherit,
     nav-item-hover-bg-color : var(--#{$prefix}gray-900),
     nav-item-active-bg-color: var(--#{$prefix}gray-600),
+
+
+    nav-sub-bg-color       : var(--#{$prefix}gray-600),
+    nav-sub-hover-bg-color : var(--#{$prefix}gray-700),
+
+    nav-sub-item-color          : var(--#{$prefix}gray-500),
+    nav-sub-item-hover-color    : var(--#{$prefix}white),
+    nav-sub-item-active-color   : var(--#{$prefix}white),
+    nav-sub-item-bg-color       : inherit,
+    nav-sub-item-hover-bg-color : var(--#{$prefix}gray-900),
+    nav-sub-item-active-bg-color: var(--#{$prefix}gray-600),
 );
 
 

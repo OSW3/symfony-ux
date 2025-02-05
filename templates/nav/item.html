@@ -1,0 +1,25 @@
+<li {{ _get_attributes(_attr) }}>
+{% if children is not empty %}
+    <span class="{{ classname('nav-link') }}">
+        {% if icon is not empty %}<i class="{{ icon }}"></i>{% endif %}
+        {{ label|raw }}
+    </span>
+    <twig:Component:Nav:Items 
+        :items="children"
+    />
+{% else %}
+    <twig:Component:Link 
+        :label="label"
+        :icon="icon"
+        :url="url"
+        :target="target"
+        :isDisabled="isDisabled"
+        :isActive="isActive"
+        :class="classname('nav-link')"
+        noClassLink
+    />
+{# :children="item.children|default([])" #}
+{# :class="item.class|default('')" #}
+{# :dataset="item.dataset|default([])"  #}
+{% endif %}
+</li>
