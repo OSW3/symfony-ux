@@ -23,7 +23,7 @@ $prefix: prefix.$prefix;
     @include flex.display;
 
     overflow  : hidden;
-    min-height: store.$min-height;
+    // min-height: store.$min-height;
     min-width : 100%;
     height    : store.$height;
 

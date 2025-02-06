@@ -9,6 +9,7 @@
 // * ---------------------------------------------------------------------------
 "use strict";
 
+import { getCssClass } from "../utils/CssClassMap";
 import { getPrefix, getData } from "../utils/generated";
 
 /** Component name
@@ -22,6 +23,9 @@ const NAME = 'rating';
  * @var string 
  */
 const SELECTOR = `[rel=js-${getPrefix()}${NAME}]`;
+
+const CLASS_COUNTER = getCssClass(`${getPrefix()}${NAME}-counter`);
+const CLASS_LEGEND = getCssClass(`${getPrefix()}${NAME}-legend`);
 
 export default class RatingComponent {
     #value;
@@ -40,8 +44,8 @@ export default class RatingComponent {
         this.#selectors   = Array.from(node.querySelectorAll('label'));
         this.#inputs      = Array.from(node.querySelectorAll('input'));
         this.#selected    = node.querySelector('input[checked]');
-        this.#counterNode = node.querySelector(`.${getPrefix()}${NAME}-counter`);
-        this.#legendNode  = node.querySelector(`.${getPrefix()}${NAME}-legend`);
+        this.#counterNode = node.querySelector(`.${CLASS_COUNTER}`);
+        this.#legendNode  = node.querySelector(`.${CLASS_LEGEND}`);
         
         this.#selectors.forEach(label => label.onmouseover = this.#onMouseOver.bind(this));
         this.#inputs.forEach(input => input.onchange = this.#onChange.bind(this));
@@ -85,7 +89,7 @@ export default class RatingComponent {
         if (this.#legendNode) {
             this.#legendNode.textContent = this.#legends[0].name;
             this.#legends.forEach(evaluation => {
-                console.log(evaluation, this.#rating);
+                // console.log(evaluation, this.#rating);
                 if (evaluation.value <= this.#rating) {
                     this.#legendNode.textContent = evaluation.label;
                 }

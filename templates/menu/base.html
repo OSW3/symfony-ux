@@ -1,4 +1,14 @@
-<nav {{ attributes }}>
-{# <nav {{ _get_attributes(_attr) }}> #}
-    <twig:Component:Menu:Items :items="items" />
-</nav>
+<div {{ _get_attributes(_attr) }}>
+{% for section in schema %}
+    {% if section.type == 'nav' %}
+        <twig:Component:Nav 
+            :items="section.items" 
+            :order="section.order"
+        />
+    {% else %}
+        <twig:Component:Search 
+            :order="section.order"
+        />
+    {% endif %}
+{% endfor %}
+</div>

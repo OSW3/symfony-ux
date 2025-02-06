@@ -21,10 +21,14 @@ $prefix: prefix.$prefix;
 // @include banner.section('Grid gaps');
 @if store.$enable-gaps-class {
 
+    $selector-group : '';
+
     .#{$prefix}gap {
         @each $key, $value in stored-spaces.$spaces {
             // $margin: calc(-1 * $value);
             $padding: $value;
+            $selector-group: $selector-group + '#{&}-#{$key}, ';
+
         
             &-#{$key}, &-x-#{$key} {
                 --#{$prefix}gap-x: #{$padding};
@@ -35,7 +39,7 @@ $prefix: prefix.$prefix;
         }
     }
 
-    [class*=#{$prefix}gap-] {
+    #{$selector-group} {
         margin-left: calc(var(--#{$prefix}gap-x) * -1);
         margin-right: calc(var(--#{$prefix}gap-x) * -1);
     }

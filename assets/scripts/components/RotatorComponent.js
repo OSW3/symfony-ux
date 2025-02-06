@@ -5,6 +5,7 @@
 // ************************************************************************** //
 "use strict";
 
+import { getCssClass } from "../utils/CssClassMap";
 import { getPrefix } from "../utils/generated";
 import { parseBoolean } from "../utils/parseBoolean";
 import Animate from "../utils/Animate";
@@ -19,10 +20,10 @@ const PREFIX = getPrefix();
 const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
 
 /** @var string Component element classname; inner wrapper */
-const CLASS_TICKER_INNER = `${PREFIX}${NAME}-inner`;
+const CLASS_TICKER_INNER = getCssClass(`${PREFIX}${NAME}-inner`);
 
 /** @var string Component element classname; Item wrapper */
-const CLASS_TICKER_ITEM = `${PREFIX}${NAME}-item`;
+const CLASS_TICKER_ITEM = getCssClass(`${PREFIX}${NAME}-item`);
 
 /** @var number Delay before playing next message */
 const DELAY = 3000;

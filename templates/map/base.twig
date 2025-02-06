@@ -3,54 +3,21 @@
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
 {% if provider == 'google' %}
-    {% set template = '@SymfonyUx/map/google.html' %}
+    {% set view = '@SymfonyUx/map/google.html' %}
 {% elseif provider == 'osm' or provider == 'open-street-map' %}
-    {% set template = '@SymfonyUx/map/open-street-map.html' %}
+    {% set view = '@SymfonyUx/map/open-street-map.html' %}
 {% elseif provider == 'map-box' %}
-    {% set template = '@SymfonyUx/map/map-box.html' %}
+    {% set view = '@SymfonyUx/map/map-box.html' %}
 {% elseif provider == 'here' %}
-    {% set template = '@SymfonyUx/map/here.html' %}
+    {% set view = '@SymfonyUx/map/here.html' %}
 {% elseif provider == 'bing' %}
-    {% set template = '@SymfonyUx/map/bing.html' %}
+    {% set view = '@SymfonyUx/map/bing.html' %}
 {% elseif provider == 'tom-tom' %}
-    {% set template = '@SymfonyUx/map/tom-tom.html' %}
+    {% set view = '@SymfonyUx/map/tom-tom.html' %}
 {% elseif provider == 'maptiler' %}
-    {% set template = '@SymfonyUx/map/maptiler.html' %}
+    {% set view = '@SymfonyUx/map/maptiler.html' %}
 {% else %}
-    {% set template = '@SymfonyUx/map/base.html' %}
+    {% set view = '@SymfonyUx/map/base.html' %}
 {% endif %}
-{% extends template %}
 
-
-{# {{ dump({
-    provider: provider,
-    href: href,
-    src: src|replace({'%zoom%': zoom}),
-    zoom: zoom,
-}) }} #}
-
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
-{% set _attr = attr|default({}) %}
-
-
-{# -- Render component attributes --------------- #}
-{# ---------------------------------------------- #}
-
-{# Set the ID attribute #}
-{% set _attr = _add_attribute(_attr, 'id', id) %}
-
-{# Set the Class attribute #}
-{% set _attr = _add_attribute(_attr, 'class', class) %}
-
-{# Set the data-xxx attributes #}
-{% for _property, _value in dataset %}
-    {% set _attr = _add_attribute(_attr, _property, _value) %}
-{% endfor %}
-
-{# -- Render other attributes ------------------- #}
-{# ---------------------------------------------- #}
-
-{% for name, value in attributes %}
-    {% set _attr = _add_attribute(_attr, name, value) %}
-{% endfor %}
+{% extends '@SymfonyUx/base.twig' %}

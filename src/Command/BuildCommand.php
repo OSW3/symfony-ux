@@ -86,6 +86,7 @@ class BuildCommand extends Command
         foreach ($this->options['components'] as $name => $value) match ($name) {
             'accordions'    => $this->accordions($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
+            'menu'          => $this->menu($sassVariables, $value),
             'offcanvas'     => $this->offcanvas($sassVariables, $value),
             'rating'        => $this->rating($scriptVariables, $value),
             'search_box'    => $this->searchBox($scriptVariables, $value),
@@ -312,6 +313,13 @@ class BuildCommand extends Command
             $brandBreakpoint = array_keys($options['logo']);
         }
         $vars[] = "\$brand-breakpoints: ('".implode("','", $brandBreakpoint)."');";
+    }
+
+    private function menu(array &$sassVariables, $options)
+    {
+        if ($options['expandAt']) {
+            $sassVariables[] = "\$menu-expand-at: {$options['expandAt']};";
+        }
     }
 
     private function offcanvas(array &$vars, $options)

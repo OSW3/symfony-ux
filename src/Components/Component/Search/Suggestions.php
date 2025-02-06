@@ -1,5 +1,5 @@
 <?php 
-namespace OSW3\UX\Components\Component\SearchOld;
+namespace OSW3\UX\Components\Component\Search;
 
 use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Components\Component;

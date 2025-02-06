@@ -2,7 +2,9 @@
 {# - Component : Navigation                     - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends '@SymfonyUx/navigation/base.html' %}
+{% set view = '@SymfonyUx/navigation/base.html' %}
+{% extends '@SymfonyUx/base.twig' %}
+{# {% extends '@SymfonyUx/navigation/base.html' %} #}
 
 
 {# ---------------------------------------------- #}
@@ -29,22 +31,3 @@
     action: 'hide',
     target: id
 } %}
-
-
-
-{# -- Render component attributes --------------- #}
-{# ---------------------------------------------- #}
-
-{% set _attr = _add_attribute(_attr, 'id', id) %}
-{% set _attr = _add_attribute(_attr, 'class', class) %}
-{% for _property, _value in dataset %}
-    {% set _attr = _add_attribute(_attr, _property, _value) %}
-{% endfor %}
-
-
-{# -- Render other attributes ------------------- #}
-{# ---------------------------------------------- #}
-
-{% for name, value in attributes %}
-    {% set _attr = _add_attribute(_attr, name, value) %}
-{% endfor %}

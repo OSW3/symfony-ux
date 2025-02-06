@@ -5,6 +5,7 @@
 // ************************************************************************** //
 "use strict";
 
+import { getCssClass } from "../utils/CssClassMap";
 import Animate from "../utils/Animate";
 import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
@@ -16,9 +17,11 @@ const NAME = 'alert';
 /** @var string Components prefix */
 const PREFIX = getPrefix();
 
-/** @var string Component selector */
-const SELECTOR = `.${PREFIX}${NAME}[data-dismissible]`;
+const CLASS_ALERT = getCssClass(`${PREFIX}${NAME}`);
+const CLASS_BTN_CLOSE = getCssClass(`${PREFIX}button-close`);
 
+/** @var string Component selector */
+const SELECTOR = `.${CLASS_ALERT}[data-dismissible]`;
 
 export default class AlertComponent
 {
@@ -32,7 +35,7 @@ export default class AlertComponent
         // Close button
         // --
 
-        this.#button = this.#node.querySelector(`.${PREFIX}button-close`);
+        this.#button = this.#node.querySelector(`.${CLASS_BTN_CLOSE}`);
 
         if (this.#button) {
             let button = new ButtonComponent(this.#button);

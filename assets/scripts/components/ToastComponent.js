@@ -9,8 +9,17 @@
 // ************************************************************************** //
 "use strict";
 
+import { getCssClass } from "../utils/CssClassMap";
 import { getPrefix, getConst } from "../utils/generated";
 import { isEmoji, isCSSVariable, isVarFunction, isBase64Image, isBase64ImageURL, isImageURL, isImageURLWithURLFunction } from "../utils/String";
+
+
+/** @var string Component classname */
+const NAME = 'toast';
+
+/** @var string Components prefix */
+const PREFIX = getPrefix();
+
 
 export default class ToastComponent {
     #options;
@@ -57,7 +66,7 @@ export default class ToastComponent {
 
         if (!this.#container) {
             const container = document.createElement('div');
-                  container.classList.add(`${getPrefix()}toast-container`);
+                  container.classList.add(getCssClass(`${PREFIX}${NAME}-container`));
                   container.setAttribute('rel', `js-${getPrefix()}toast`);
             document.body.append(container);
             this.#container = container;
@@ -78,15 +87,15 @@ export default class ToastComponent {
 
             let toast = document.createElement('div');
                 toast.setAttribute('role', 'alert');
-                toast.classList.add(`${getPrefix()}toast-item`);
-                if (this.#options.hover) toast.classList.add(`${getPrefix()}toast-item-effect`);
-                if (palette) toast.classList.add(`${getPrefix()}toast-${palette}`);
+                toast.classList.add(getCssClass(`${PREFIX}${NAME}-item`));
+                if (this.#options.hover) toast.classList.add(getCssClass(`${PREFIX}${NAME}-item-effect`));
+                if (palette) toast.classList.add(getCssClass(`${PREFIX}${NAME}-${palette}`));
                 if (styles.length) toast.style = styles.join(';');
             
             // Icon
             if (this.#options.icon?.length) {
                 let icon = document.createElement('div');
-                    icon.classList.add(`${getPrefix()}toast-icon`);
+                    icon.classList.add(getCssClass(`${PREFIX}${NAME}-icon`));
                 
                 if (isCSSVariable(this.#options.icon)) {
                     icon.style = `background-image: var(${this.#options.icon})`;
@@ -106,25 +115,25 @@ export default class ToastComponent {
 
             // Content
             let content = document.createElement('div');
-                content.classList.add(`${getPrefix()}toast-content`);
+                content.classList.add(getCssClass(`${PREFIX}${NAME}-content`));
             toast.append(content);
 
             if (this.#options.title) {
                 let title = document.createElement('div');
-                    title.classList.add(`${getPrefix()}toast-title`);
+                    title.classList.add(getCssClass(`${PREFIX}${NAME}-title`));
                     title.textContent = this.#options.title;
                     content.append(title);
             }
 
             let message = document.createElement('div');
-                message.classList.add(`${getPrefix()}toast-message`);
+                message.classList.add(getCssClass(`${PREFIX}${NAME}-message`));
                 message.innerHTML = this.#options.message;
                 content.append(message);
 
             // Close button
             if (this.#options.dismissible) {
                 let dismissible = document.createElement('button');
-                dismissible.classList.add(`${getPrefix()}toast-button-close`);
+                dismissible.classList.add(getCssClass(`${PREFIX}${NAME}-button-close`));
                 dismissible.type = "button";
                 dismissible.innerHTML = "&times;";
                 dismissible.onclick = event => this.#hide(event.target.parentNode);
@@ -134,7 +143,7 @@ export default class ToastComponent {
             // Progress
             if (this.#options.duration > 0) {
                 let progress = document.createElement('div');
-                    progress.classList.add(`${getPrefix()}toast-progress`);
+                    progress.classList.add(getCssClass(`${PREFIX}${NAME}-progress`));
                 toast.append(progress);
             }
                  
@@ -149,7 +158,7 @@ export default class ToastComponent {
     }
 
     #show() {
-        this.#item.classList.add('show');
+        this.#item.classList.add(getCssClass('show'));
 
         // Hide toast
         if (this.#options.duration > 0) {
@@ -159,12 +168,12 @@ export default class ToastComponent {
     }
 
     #hide(target) {
-        target.classList.remove('show');
+        target.classList.remove(getCssClass('show'));
         setTimeout(() => this.#destroy(target), this.#options.delay);
     }
 
     #destroy(target) {
-        target.classList.add('destroy');
+        target.classList.add(getCssClass('destroy'));
         setTimeout(() => target.remove(), this.#options.delay);
     }
 

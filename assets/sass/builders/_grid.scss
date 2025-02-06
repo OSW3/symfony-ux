@@ -100,7 +100,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 
 @if store.$enable-column-sizes-class {
     .#{$prefix}column {
-
+        content: '';
         $selector-group : '';
 
         @for $i from 1 through $divisions {

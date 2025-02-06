@@ -1,0 +1,50 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/menu.scss -----------
+// *
+// *    Builder for Menu component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/menu.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/menu';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // menu-color             : var(--#{$prefix}red),
+    // menu-hover-color       : inherit, //var(--#{$prefix}inherit),
+    menu-bg-color          : green, //var(--#{$prefix}gray-800),
+    // menu-hover-bg-color    : var(--#{$prefix}cyan),
+    // menu-border-color      : var(--#{$prefix}red),
+    // menu-hover-border-color: var(--#{$prefix}red),
+
+    // menu-item-color          : var(--#{$prefix}gray-500),
+    // menu-item-hover-color    : var(--#{$prefix}white),
+    // menu-item-active-color   : var(--#{$prefix}white),
+    // menu-item-bg-color       : inherit,
+    // menu-item-hover-bg-color : var(--#{$prefix}gray-900),
+    // menu-item-active-bg-color: var(--#{$prefix}gray-600),
+
+
+    // menu-sub-bg-color       : var(--#{$prefix}gray-600),
+    // menu-sub-hover-bg-color : var(--#{$prefix}gray-700),
+
+    // menu-sub-item-color          : var(--#{$prefix}gray-500),
+    // menu-sub-item-hover-color    : var(--#{$prefix}white),
+    // menu-sub-item-active-color   : var(--#{$prefix}white),
+    // menu-sub-item-bg-color       : inherit,
+    // menu-sub-item-hover-bg-color : var(--#{$prefix}gray-900),
+    // menu-sub-item-active-bg-color: var(--#{$prefix}gray-600),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

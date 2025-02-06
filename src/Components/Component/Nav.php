@@ -9,6 +9,7 @@ use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
 use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeAriaTrait;
+use OSW3\UX\Trait\AttributeStyleTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -23,6 +24,7 @@ final class Nav extends Component {
     use AttributeClassTrait;
     use AttributeDatasetTrait;
     use AttributeAriaTrait;
+    use AttributeStyleTrait;
 
     #[ExposeInTemplate(name: 'orientation')]
     public string $orientation;
@@ -35,6 +37,9 @@ final class Nav extends Component {
 
     #[ExposeInTemplate(name: 'items')]
     public array $items;
+
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public array $order;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -61,6 +66,9 @@ final class Nav extends Component {
 
         $resolver->setDefault('items', []);
         $resolver->setAllowedTypes('items', ['array']);
+
+        $resolver->setDefault('order', []);
+        $resolver->setAllowedTypes('order', ['array']);
 
         return $resolver->resolve($data) + $data;
     }
@@ -98,5 +106,20 @@ final class Nav extends Component {
         }
 
         return $aria;
+    }
+
+    public function fetchStyle(): string {
+        $options = [];
+        $style = '';
+
+        foreach ($this->order as $property => $value) {
+            $options["--{$this->prefix}menu-section-order-{$property}"] = $value;
+        }
+        
+        foreach ($options as $property => $value) {
+            $style.= "{$property}:{$value};";
+        }
+
+        return $style;
     }
 }

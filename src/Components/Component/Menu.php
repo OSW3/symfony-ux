@@ -14,24 +14,22 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
 #[AsTwigComponent(template: '@SymfonyUx/menu/base.twig')]
-final class Menu extends Component
-{
+final class Menu extends Component {
+    public const NAME = "menu";
+
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
 
-    #[ExposeInTemplate(name: 'orientation')]
+    #[ExposeInTemplate(getter: 'doNotExpose')]
     public string $orientation;
 
-    #[ExposeInTemplate(name: 'justify', getter: 'doNotExpose')]
+    #[ExposeInTemplate(getter: 'doNotExpose')]
     public string $justify;
 
-    #[ExposeInTemplate(name: 'label', getter: 'fetchLabel')]
-    public string $label;
-
-    #[ExposeInTemplate(name: 'items')]
-    public array $items;
+    #[ExposeInTemplate(name: 'schema')]
+    public array $schema;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -53,27 +51,13 @@ final class Menu extends Component
         $resolver->setAllowedTypes('justify', ['string']);
         $resolver->setAllowedValues('justify', Justify::toArray());
 
-        $resolver->setDefault('label', "");
-        $resolver->setAllowedTypes('label', ['string']);
-
-        $resolver->setDefault('items', []);
-        $resolver->setAllowedTypes('items', ['array']);
+        $resolver->setDefault('schema', []);
+        $resolver->setAllowedTypes('schema', ['array']);
 
         return $resolver->resolve($data) + $data;
     }
 
-    public function getComponentClassname(): string 
-    {
-        return "{$this->prefix}menu";
-    }
-
-    public function fetchLabel(): string 
-    {
-        return trim($this->label);
-    }
-
-    public function fetchClass(): string
-    {
+    public function fetchClass(): string {
         $classList = $this->classList();
 
         if (in_array($this->justify, Justify::toArray()) && $this->justify != Justify::START->value)

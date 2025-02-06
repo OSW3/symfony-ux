@@ -2,39 +2,5 @@
 {# - Component : Scroll To Top                  - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends '@SymfonyUx/scroll-to-top/base.html' %}
-
-
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
-{% set _attr = attr|default({}) %}
-
-
-{# -- Render component attributes --------------- #}
-{# ---------------------------------------------- #}
-
-{# Set the ID attribute #}
-{% set _attr = _add_attribute(_attr, 'id', id) %}
-
-{# Set the Class attribute #}
-{% set _attr = _add_attribute(_attr, 'class', class) %}
-
-{# Set the title attribute #}
-{% set _attr = _add_attribute(_attr, 'title', title) %}
-
-{# Set the data-xxx attributes #}
-{% for _property, _value in dataset %}
-{% set _attr = _add_attribute(_attr, _property, _value) %}
-{% endfor %}
-
-{# Set the rel attribute to trigger javascript events on the component #}
-{% set _attr = _add_attribute(_attr, 'rel', rel) %}
-{# {% set _attr = _add_attribute(_attr, 'style', "var(--"~ symbol ~")") %} #}
-
-
-{# -- Render other attributes ------------------- #}
-{# ---------------------------------------------- #}
-
-{% for name, value in attributes %}
-{% set _attr = _add_attribute(_attr, name, value) %}
-{% endfor %}
+{% set view = '@SymfonyUx/scroll-to-top/base.html' %}
+{% extends '@SymfonyUx/base.twig' %}

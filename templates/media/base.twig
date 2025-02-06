@@ -2,29 +2,8 @@
 {# - Component : Media                          - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends figure ? '@SymfonyUx/media/figure.html' : '@SymfonyUx/media/media.html' %}
-
-
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
-{% set _attr = attr|default({}) %}
-
-
-{# -- Render component attributes --------------- #}
-{# ---------------------------------------------- #}
-
-{% set _attr = _add_attribute(_attr, 'id', id) %}
-{% set _attr = _add_attribute(_attr, 'class', class) %}
-{% set _attr = _add_attribute(_attr, 'style', style) %}
-
-{% for _property, _value in dataset %}
-    {% set _attr = _add_attribute(_attr, _property, _value) %}
-{% endfor %}
-
-
-{# -- Render other attributes ------------------- #}
-{# ---------------------------------------------- #}
-
-{% for name, value in attributes %}
-    {% set _attr = _add_attribute(_attr, name, value) %}
-{% endfor %}
+{% set view = figure 
+    ? '@SymfonyUx/media/figure.html' 
+    : '@SymfonyUx/media/media.html' 
+%}
+{% extends '@SymfonyUx/base.twig' %}

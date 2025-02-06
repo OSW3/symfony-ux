@@ -2,29 +2,13 @@
 {# - Component : Modal                          - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% extends '@SymfonyUx/modal/base.html' %}
-
-
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
-{% set _attr = attr|default({}) %}
+{% set view = '@SymfonyUx/modal/base.html' %}
+{% extends '@SymfonyUx/base.twig' %}
 
 
 {# -- Render component attributes --------------- #}
 {# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
 
-{% set _attr = _add_attribute(_attr, 'id', id) %}
-{% set _attr = _add_attribute(_attr, 'class', class) %}
 {% set _attr = _add_attribute(_attr, 'rel', rel) %}
 {% set _attr = _add_attribute(_attr, 'role', 'dialog') %}
-{% for _property, _value in dataset %}
-    {% set _attr = _add_attribute(_attr, _property, _value) %}
-{% endfor %}
-
-
-{# -- Render other attributes ------------------- #}
-{# ---------------------------------------------- #}
-
-{% for name, value in attributes %}
-    {% set _attr = _add_attribute(_attr, name, value) %}
-{% endfor %}

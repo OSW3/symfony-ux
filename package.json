@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@lottiefiles/lottie-player": "^2.0.12"
+    "@lottiefiles/lottie-player": "^2.0.12",
+    "dotenv": "^16.4.7"
   }
 }

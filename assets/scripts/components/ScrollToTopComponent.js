@@ -9,6 +9,7 @@
 // * ---------------------------------------------------------------------------
 "use strict";
 
+import { getCssClass } from "../utils/CssClassMap";
 import { getPrefix } from "../utils/generated";
 
 /** Component name
@@ -56,7 +57,7 @@ export default class ScrollToTopComponent {
         const toggleAt = this.node.dataset.toggleAt ?? TOGGLE_AT;
         const toggleShow = document.body.scrollTop > toggleAt || document.documentElement.scrollTop > toggleAt;
 
-        this.node.classList.toggle('show', toggleShow);
+        this.node.classList.toggle(getCssClass('show'), toggleShow);
     }
 }
 

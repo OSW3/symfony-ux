@@ -1,0 +1,92 @@
+// * -------------- @osw3/symfony-ux/assets/sass/builder/menu.scss -------------
+// *
+// *    Builder for Menu component
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:map';
+@use './../mixins/flex';
+@use './../mixins/spacing';
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/position';
+@use './../mixins/transition';
+@use './../variables/alignments';
+@use './../storages/breakpoints';
+@use './../storages/menu' as store;
+@use './../components/menu';
+
+@include banner.header('Component Menu');
+$prefix: prefix.$prefix;
+$breakpoints: breakpoints.$breakpoints;
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}menu {
+
+    // Set layout css variables
+    // --
+
+    @each $name, $value in menu.$layout-properties {
+        --#{$prefix}#{$name}: #{$value};
+    }
+    --#{$prefix}menu-section-order: var(--#{$prefix}menu-section-order-default);
+
+
+    // Menu container
+    // --
+    // div.menu 
+
+    // border: 3px solid red;
+    background-color: var(--#{$prefix}menu-bg-color);
+    @include flex.display;
+    @include flex.direction(column);
+    @include spacing.inner(0);
+    @include spacing.outer(0);
+    
+    // Menu vertical
+    // --
+
+    // Menu > nav items
+    & .#{$prefix}nav-items { 
+        @include flex.direction(column);
+    }
+
+
+    // Menu section order
+    // -- 
+
+    & > * {
+        order: var(--#{$prefix}menu-section-order-default);
+    }
+    
+
+    // Menu Items alignments
+    // --
+    
+    @each $name, $value in alignments.$flex-alignments {
+        &-#{$name} {
+            @include flex.justify-content($value, true);
+        }
+    }
+    &-fill > * {
+        @include flex.grow(1);
+    }
+
+
+    @if store.$expand-at {
+        @media (min-width: map.get($breakpoints, store.$expand-at)) {
+            & > * {
+                order: var(--#{$prefix}menu-section-order-expand);
+            }
+
+            &:not(&-vertical), 
+            &:not(&-vertical) .#{$prefix}nav-items { 
+                @include flex.direction(row);
+            }
+        }
+    }
+
+}

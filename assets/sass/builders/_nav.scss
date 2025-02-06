@@ -40,6 +40,8 @@ $breakpoints: breakpoints.$breakpoints;
     background-color: var(--#{$prefix}nav-bg-color);
     @include spacing.inner(0);
     @include spacing.outer(0);
+    // overflow: hidden;
+    // position: relative; 
 
 
     // Nav Items (ul)
@@ -52,6 +54,9 @@ $breakpoints: breakpoints.$breakpoints;
         @include flex.direction(row);
         @include spacing.inner(0);
         @include spacing.outer(0);
+
+        white-space: nowrap;
+        // overflow: hidden; 
     }
 
 
@@ -106,6 +111,7 @@ $breakpoints: breakpoints.$breakpoints;
         @include flex.direction(row);
         background-color: var(--#{$prefix}nav-item-bg-color);
         color: var(--#{$prefix}nav-item-color);
+        white-space: nowrap;
         z-index: 1;
 
         @include spacing.inner( 
