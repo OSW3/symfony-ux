@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" hidden>
+{% for symbol in symbols %}
+    <symbol id="{{ symbol.id }}" viewBox="{{ symbol.viewbox }}">
+        {{ symbol.content|raw }}
+    </symbol>
+{% endfor %}
+</svg>

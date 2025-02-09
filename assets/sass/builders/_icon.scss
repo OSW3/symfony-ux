@@ -1,0 +1,40 @@
+// * -------------- @osw3/symfony-ux/assets/sass/builder/icon.scss -------------
+// *
+// *    Builder for Icon component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+
+// @use './../storages/icon' as store;
+// @use './../components/icon' ;
+
+
+@include banner.header('Component Icon');
+$prefix: prefix.$prefix;
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}icon {
+    display: inline-flex;
+    max-width: 32px;
+    max-height: 32px;
+
+    &:has(i) {
+        display: inline-block;
+    }
+
+    & i {
+    }
+
+    & img {
+        object-fit: contain;
+    }
+
+    & svg {
+        fill: transparent;
+    }
+}

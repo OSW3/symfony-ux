@@ -19,6 +19,7 @@
     },
     "require": {
         "symfony/twig-bundle": "*",
+        "symfony/dom-crawler": "*",
         "symfony/options-resolver": "*",
         "symfony/ux-twig-component": "*",
         "symfony/webpack-encore-bundle": "*"

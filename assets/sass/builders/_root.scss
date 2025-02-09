@@ -15,7 +15,6 @@
 @use './../functions/map' as fnMap;
 @use './../storages/fonts';
 @use './../storages/colors';
-@use './../storages/icons';
 @use './../storages/prefix';
 @use './../storages/themes';
 @use './../storages/transitions';
@@ -23,6 +22,7 @@
 @use './../components/alert';
 @use './../components/announcement';
 @use './../components/brand';
+@use './../components/breadcrumb';
 @use './../components/button';
 @use './../components/callout';
 @use './../components/copyright';
@@ -62,6 +62,7 @@ $themes: fnMap.merge-multiple(
     alert.$theme-properties, 
     announcement.$theme-properties, 
     brand.$theme-properties, 
+    breadcrumb.$theme-properties, 
     button.$theme-properties, 
     callout.$theme-properties, 
     copyright.$theme-properties, 
@@ -137,14 +138,6 @@ $themes: fnMap.merge-multiple(
 
     @each $font-name, $font-properties in fonts.$fonts {
         --#{$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
-    }
-
-
-    // Icons
-    // -- 
-
-    @each $name, $value in icons.$icons {
-        --#{$prefix}icon-#{$name}: #{$value};
     }
 
 

@@ -1,0 +1,26 @@
+// * ---------- @osw3/symfony-ux/assets/sass/storages/breadcrumb.scss ----------
+// *
+// *    Breadcrumb Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+// @use './../storages/fonts';
+// @use './../storages/spaces';
+$prefix: prefix.$prefix;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+$separator-symbol: "›";
+
+$transition           : true;
+$transition-delay     : var(--#{$prefix}transition-normal);
+$transition-type      : ease-in-out;
+
+
+
+ 
+// * Storage Mixins definition
+// * ---------------------------------------------

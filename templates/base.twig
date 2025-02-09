@@ -12,15 +12,15 @@
 {# ---------------------------------------------- #}
 
 {# Set the ID attribute #}
-{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'id', id|default()) %}
 
 {# Set the Class attribute #}
-{% set _attr = _add_attribute(_attr, 'class', class) %}
+{% set _attr = _add_attribute(_attr, 'class', class|default()) %}
 
 {% set _attr = _add_attribute(_attr, 'rel', rel|default()) %}
 
 {# Set the Class attribute #}
-{% set _attr = _add_attribute(_attr, 'style', style|default('')) %}
+{% set _attr = _add_attribute(_attr, 'style', style|default()) %}
 
 {# Set the data-xxx attributes #}
 {% for _property, _value in dataset|default([]) %}

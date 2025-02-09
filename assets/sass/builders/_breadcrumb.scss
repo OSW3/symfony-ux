@@ -1,0 +1,71 @@
+// * ----------- @osw3/symfony-ux/assets/sass/builder/breadcrumb.scss ----------
+// *
+// *    Builder for Breadcrumb component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+// @use './../mixins/flex';
+@use './../builders/banner';
+// @use './../mixins/spacing';
+@use './../storages/prefix';
+// @use './../mixins/position';
+// @use './../storages/spaces';
+// @use './../mixins/component';
+@use './../mixins/transition';
+
+@use './../storages/breadcrumb' as store;
+// @use './../components/breadcrumb';
+@include banner.header('Component Breadcrumb');
+$prefix: prefix.$prefix;
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}breadcrumb {
+
+    & ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        font-size: .9rem;
+    }
+
+    & li {
+        margin: 0 10px 0 0;
+        font-size: 1em;
+    }
+
+    & li:not(:last-child)::after {
+        content: store.$separator-symbol;
+        margin: 0 0 0 10px;
+        color: var(--#{$prefix}breadcrumb-separator-color);
+    }
+
+    & a {
+        text-decoration: none;
+        color: var(--#{$prefix}breadcrumb-color);
+
+        @if store.$transition {
+            @include transition.set(
+                (color),
+                store.$transition-delay,
+                store.$transition-type,
+            );
+        }
+
+        &:hover {
+            color: var(--#{$prefix}breadcrumb-hover-color);
+        }
+    }
+
+    & .active {
+        font-weight: bold;
+        color: var(--#{$prefix}breadcrumb-active-color);
+    }
+}
+

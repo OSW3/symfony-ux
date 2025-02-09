@@ -1,0 +1,9 @@
+<span {{ _get_attributes(_attr) }}>
+{% if type == 'font' %}
+    <i class="{{ value}}"></i>
+{% elseif type == 'symbol' %}
+    <svg><use href="#{{ value }}"></use></svg>
+{% elseif type == 'img' %}
+    <img src="{{ asset(value) }}" alt="icon" />
+{% endif %}
+</span>

@@ -4,32 +4,37 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use './icon';
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/spacing';
 @use './../mixins/transition';
 // @use './../mixins/icon';
 
-@use './../storages/icons';
 @use './../storages/link' as store;
 @use './../components/link' ;
 @include banner.header('Component Link');
+
 $prefix: prefix.$prefix;
 
+
+// $font-size: 4rem;
 
 // * Component Structure
 // * ---------------------------------------------
 
 .#{$prefix}link {
-
     display: inline-flex;
+    align-items: center; 
+    width: fit-content;
+    line-height: inherit;
+    font-size: inherit;
 
     cursor: store.$cursor;
     color: var(--#{$prefix}link-color);
     background-color: var(--#{$prefix}link-bg-color);
     text-decoration: store.$text-decoration;
     text-decoration-color: var(--#{$prefix}link-text-decoration-color);
-    width: fit-content;
 
     @if store.$text-decoration == underline {
         text-decoration-thickness: 2px;
@@ -87,34 +92,26 @@ $prefix: prefix.$prefix;
     }
 
 
-    &[target]:not([target=_self],[target=_parent]) {
-        align-items: center;
-        &::after {
-            content: "";
-            display: inline-block;
-            margin-left: 4px;
-            margin-bottom: .5rem;
-            width: .6em;
-            height: .6em;
-            mask: var(--ux-icon-external-link) no-repeat;
-            background-color: currentColor;
-            -webkit-mask: var(--ux-icon-external-link) no-repeat;
-            -webkit-mask-size: contain;
+    & .#{$prefix}icon {
+        height: 1em;
+        display: inline-flex;
+        vertical-align: baseline;
+        // fill: transparent;
+        @include transition.set(
+            (fill, stroke),
+            store.$transition-delay,
+            store.$transition-type,
+        );
+
+        &:has(img), &:has(svg) {
+            width: 1em;
         }
     }
-    &[download] {
-        align-items: center;
-        &::before {
-            content: "";
-            // display: inline-block;
-            margin-right: 4px;
-            // margin-top: 4px;
-            width: .6em;
-            height: .6em;
-            mask: var(--ux-icon-download) no-repeat;
-            background-color: currentColor;
-            -webkit-mask: var(--ux-icon-download) no-repeat;
-            -webkit-mask-size: contain;
-        }
+
+    &:has(.#{$prefix}icon:first-child) .#{$prefix}icon {
+        margin-right: 3px;
+    }
+    &:has(.#{$prefix}icon:last-child) .#{$prefix}icon {
+        margin-left: 3px;
     }
 }

@@ -1,0 +1,17 @@
+<nav {{ _get_attributes(_attr) }}>
+    <ul>
+    {% for item in items %}
+        {% if loop.index != items|length %}<li>{% else %}<li class="active">{% endif %}
+        {% if item.url and loop.index != items|length %}
+            <twig:Component:Link 
+                :label="item.label" 
+                :url="item.url" 
+                :icon="item.icon" 
+            />
+        {% else %}
+        {{ item.label }}
+        {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+</nav>

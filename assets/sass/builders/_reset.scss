@@ -319,6 +319,8 @@ textarea {
 template,
 [hidden] {
     display: none !important;
+    height: 0;
+    width: 0;
 }
 
 ::selection {

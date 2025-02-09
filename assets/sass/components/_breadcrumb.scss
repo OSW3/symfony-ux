@@ -1,0 +1,32 @@
+// * --------- @osw3/symfony-ux/assets/sass/components/breadcrumb.scss ---------
+// *
+// *    Default variables for Breadcrumb component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/breadcrumb.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:map';
+@use './../storages/prefix';
+@use './../storages/breadcrumb';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    'breadcrumb-separator-color'             : var(--#{$prefix}gray-600),
+
+    'breadcrumb-color'                       : var(--#{$prefix}gray-600),
+    'breadcrumb-hover-color'                 : var(--#{$prefix}gray-900),
+    'breadcrumb-active-color'                : var(--#{$prefix}black),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

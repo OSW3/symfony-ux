@@ -1,0 +1,39 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/icon.scss ------------
+// *
+// *    Default variables for Icon component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/icon.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:map';
+@use './../storages/prefix';
+@use './../storages/icon';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+//     'icon-color'                       : var(--#{$prefix}blue),
+//     'icon-hover-color'                 : var(--#{$prefix}green),
+//     'icon-active-color'                : var(--#{$prefix}orange),
+//     'icon-disabled-color'              : var(--#{$prefix}gray-600),
+//     'icon-text-decoration-color'       : var(--#{$prefix}blue),
+//     'icon-text-decoration-hover-color' : var(--#{$prefix}green),
+//     'icon-text-decoration-active-color': var(--#{$prefix}orange),
+//     'icon-bg-color'                    : initial,
+//     'icon-hover-bg-color'              : initial,
+//     'icon-active-bg-color'             : initial,
+//     // 'icon-border-color'      : var(--#{$prefix}gray-600),
+//     // 'icon-hover-border-color': var(--#{$prefix}gray-700),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

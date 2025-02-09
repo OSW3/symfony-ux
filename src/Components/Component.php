@@ -25,7 +25,11 @@ abstract class Component
 
     protected function getConfig(): array 
     {
-        return $this->config['components'][static::NAME];
+        return $this->config['components'][static::NAME] ?? [];
+    }
+
+    protected function getRootDir(): string {
+        return $this->container->get('kernel')->getProjectDir();
     }
 
     protected function getComponentClassname(): string 
