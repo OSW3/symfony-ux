@@ -60,9 +60,10 @@ class Label extends Component
         $classList = [];
         $classList[] = "{$this->getComponentClassname()}-label";
 
-        if ($this->required) {
-            $classList[] = "required";
-        }
+        // TODO: remove commented code
+        // if ($this->required) {
+        //     $classList[] = "required";
+        // }
 
         return implode(" ", $classList);
     }

@@ -10,7 +10,7 @@
 
 @use 'sass:map';
 @use './../storages/prefix';
-@use './../storages/form';
+@use './../storages/form-widget';
 $prefix: prefix.$prefix;
 
 

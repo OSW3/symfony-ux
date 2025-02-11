@@ -9,7 +9,7 @@
 @use './../mixins/spacing';
 @use './../mixins/transition';
 
-@use './../storages/form' as store;
+@use './../storages/form-widget' as store;
 @use './../components/form' ;
 @include banner.header('Component Form Widget');
 $prefix: prefix.$prefix;
@@ -21,18 +21,37 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 .#{$prefix}form-widget {
-    border: 10px solid red;
+    border: 5px solid red;
 
+    &-required &-label::after {
+        content: store.$required--symbol;
+    //         color: var(--#{$prefix}form-widget--required--color);
+    //         padding-left: .1rem;
+    }
     &-label {
-        border: 10px solid blue;
+        border: 5px solid blue;
     }
 
     &-control {
-        border: 10px solid green;
+        border: 5px solid green;
     }
 
     &-group {
-        border: 10px solid greenyellow;
+        border: 5px solid greenyellow;
+    }
+
+    &-description {
+        border: 5px solid orange;
+
+        // TODO: adapter la marge selon la variable sizing
+        // TODO: utiliser la mixin pour les marges
+        margin: .25rem 0 0 0;
+
+        // TODO: adapter la fontsize selon la variable sizing
+        font-size: .875em;
+
+        // TODO: Ajouter la variable css de custom color
+        // color: var(xxx);
     }
 }
 

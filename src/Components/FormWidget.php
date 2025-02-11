@@ -177,6 +177,10 @@ class FormWidget extends Component
             $classList[] = "{$this->getComponentClassname()}-inline";
         }
 
+        if ($this->required) {
+            $classList[] = "{$this->getComponentClassname()}-required";
+        }
+
         if(!empty($this->class)) {
             $classList[] = $this->class;
         }

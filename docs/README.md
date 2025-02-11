@@ -30,6 +30,10 @@ Add many UX Components to your app.
 <!-- - [Rotators](./components/rotator.md) -->
 - [Scroll to top](./components/scroll-to-top.md)
 - [Tickers](./components/ticker.md)
+
+## Forms
+  - [Widget](./forms/widgets.md)
+
 <br>
 
 ## How UX Components works ?

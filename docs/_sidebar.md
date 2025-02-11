@@ -30,4 +30,4 @@
   - [Scroll to top](./components/scroll-to-top.md)
   - [Tickers](./components/ticker.md)
 - Forms
-  - [Introduction](./components//README.md)
+  - [Widget](./forms/widgets.md)
