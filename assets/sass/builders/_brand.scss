@@ -39,7 +39,7 @@ $prefix: prefix.$prefix;
     white-space    : nowrap;
     height         : fit-content;
 
-    color          : var(--#{$prefix}brand-color);
+    color          : var(--#{$prefix}brand--color);
 
     @if store.$primary-font-family {
         font-family: store.$primary-font-family;
@@ -52,7 +52,7 @@ $prefix: prefix.$prefix;
     // --
 
     &-link {
-        color          : var(--#{$prefix}brand-color);
+        color          : var(--#{$prefix}brand--color);
         display        : table;
         text-decoration: none;
 
@@ -66,7 +66,7 @@ $prefix: prefix.$prefix;
         );
 
         &:hover {
-            color: var(--#{$prefix}brand-hover-color);
+            color: var(--#{$prefix}brand--color--hover);
         }
     }
 

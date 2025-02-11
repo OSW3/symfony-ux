@@ -36,6 +36,7 @@ $prefix: prefix.$prefix;
     }
 
     & li {
+        display: inline-flex;
         margin: 0 10px 0 0;
         font-size: 1em;
     }
@@ -43,12 +44,12 @@ $prefix: prefix.$prefix;
     & li:not(:last-child)::after {
         content: store.$separator-symbol;
         margin: 0 0 0 10px;
-        color: var(--#{$prefix}breadcrumb-separator-color);
+        color: var(--#{$prefix}breadcrumb-separator--color);
     }
 
     & a {
         text-decoration: none;
-        color: var(--#{$prefix}breadcrumb-color);
+        color: var(--#{$prefix}breadcrumb--color);
 
         @if store.$transition {
             @include transition.set(
@@ -59,13 +60,14 @@ $prefix: prefix.$prefix;
         }
 
         &:hover {
-            color: var(--#{$prefix}breadcrumb-hover-color);
+            text-decoration: none;
+            color: var(--#{$prefix}breadcrumb--color--hover);
         }
     }
 
     & .active {
         font-weight: bold;
-        color: var(--#{$prefix}breadcrumb-active-color);
+        color: var(--#{$prefix}breadcrumb--color--active);
     }
 }
 

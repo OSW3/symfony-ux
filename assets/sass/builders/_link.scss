@@ -31,10 +31,10 @@ $prefix: prefix.$prefix;
     font-size: inherit;
 
     cursor: store.$cursor;
-    color: var(--#{$prefix}link-color);
-    background-color: var(--#{$prefix}link-bg-color);
+    color: var(--#{$prefix}link--color);
+    background-color: var(--#{$prefix}link--bg-color);
     text-decoration: store.$text-decoration;
-    text-decoration-color: var(--#{$prefix}link-text-decoration-color);
+    text-decoration-color: var(--#{$prefix}link-text-decoration--color);
 
     @if store.$text-decoration == underline {
         text-decoration-thickness: 2px;
@@ -50,10 +50,10 @@ $prefix: prefix.$prefix;
     );
 
     &:hover {
-        color: var(--#{$prefix}link-hover-color) !important;
-        background-color: var(--#{$prefix}link-hover-bg-color);
-        text-decoration: store.$text-decoration-hover !important;
-        text-decoration-color: var(--#{$prefix}link-text-decoration-hover-color) !important;
+        color: var(--#{$prefix}link--color--hover);
+        background-color: var(--#{$prefix}link--bg-color--hover);
+        text-decoration: store.$text-decoration-hover;
+        text-decoration-color: var(--#{$prefix}link-text-decoration--color--hover);
 
         @if store.$text-decoration == underline {
             text-decoration-thickness: 2px;
@@ -67,10 +67,10 @@ $prefix: prefix.$prefix;
     &.active,
     &:active:hover, 
     &.active:hover {
-        color: var(--#{$prefix}link-active-color) !important;
-        background-color: var(--#{$prefix}link-active-bg-color);
-        text-decoration: store.$text-decoration-active !important;
-        text-decoration-color: var(--#{$prefix}link-text-decoration-active-color) !important;
+        color: var(--#{$prefix}link--color--active);
+        background-color: var(--#{$prefix}link--bg-color--active);
+        text-decoration: store.$text-decoration-active;
+        text-decoration-color: var(--#{$prefix}link-text-decoration--color--active);
 
         @if store.$text-decoration == underline {
             text-decoration-thickness: 2px;
@@ -86,7 +86,7 @@ $prefix: prefix.$prefix;
     &[disabled]:hover, 
     &[disabled]:active:hover, 
     &[disabled].active:hover {
-        color: var(--#{$prefix}link-disabled-color) !important;
+        color: var(--#{$prefix}link--disabled--color) !important;
         cursor: default !important;
         text-decoration: none !important;
     }

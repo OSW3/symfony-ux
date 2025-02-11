@@ -112,7 +112,7 @@ symfony_ux:
 
 $props: map.merge($props, (
     example-color: var(--#{$prefix}dark),
-    example-hover-color: inherit,
+    example--color--hover: inherit,
 ));
 ```
 

@@ -102,11 +102,11 @@ symfony_ux:
 
 $props: map.merge($props, (
     scroll-to-top-color             : var(--#{$prefix}red),
-    scroll-to-top-hover-color       : var(--#{$prefix}pink),
-    scroll-to-top-bg-color          : var(--#{$prefix}green),
-    scroll-to-top-hover-bg-color    : var(--#{$prefix}yellow),
-    scroll-to-top-border-color      : var(--#{$prefix}gray-600),
-    scroll-to-top-hover-border-color: var(--#{$prefix}gray-700),
+    scroll-to-top--color--hover       : var(--#{$prefix}pink),
+    scroll-to-top--bg-color          : var(--#{$prefix}green),
+    scroll-to-top--bg-color--hover    : var(--#{$prefix}yellow),
+    scroll-to-top--border-color      : var(--#{$prefix}gray-600),
+    scroll-to-top--border-color--hover: var(--#{$prefix}gray-700),
 ));
 ```
 

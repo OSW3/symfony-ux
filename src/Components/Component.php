@@ -14,7 +14,8 @@ abstract class Component
     protected string $prefix;
 
     public function __construct(
-        #[Autowire(service: 'service_container')] private ContainerInterface $container,
+        #[Autowire(service: 'service_container')] 
+        private ContainerInterface $container,
         protected UrlGeneratorInterface $urlGenerator,
         protected Environment $environment
     )

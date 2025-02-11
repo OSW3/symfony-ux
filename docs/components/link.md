@@ -90,16 +90,16 @@ symfony_ux:
 @use './../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
-    'link-color'                       : var(--#{$prefix}blue),
-    'link-hover-color'                 : var(--#{$prefix}green),
-    'link-active-color'                : var(--#{$prefix}orange),
-    'link-disabled-color'              : var(--#{$prefix}gray-600),
-    'link-text-decoration-color'       : var(--#{$prefix}blue),
-    'link-text-decoration-hover-color' : var(--#{$prefix}green),
-    'link-text-decoration-active-color': var(--#{$prefix}orange),
-    'link-bg-color'                    : initial,
-    'link-hover-bg-color'              : initial,
-    'link-active-bg-color'             : initial,
+    'link--color'                       : var(--#{$prefix}blue),
+    'link--color--hover'                 : var(--#{$prefix}green),
+    'link--color--active'                : var(--#{$prefix}orange),
+    'link--disabled--color'              : var(--#{$prefix}gray-600),
+    'link-text-decoration--color'       : var(--#{$prefix}blue),
+    'link-text-decoration--color--hover' : var(--#{$prefix}green),
+    'link-text-decoration--color--active': var(--#{$prefix}orange),
+    'link--bg-color'                    : initial,
+    'link--bg-color--hover'              : initial,
+    'link--bg-color--active'             : initial,
 ));
 ```
 

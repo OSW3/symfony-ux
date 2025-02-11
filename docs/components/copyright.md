@@ -96,9 +96,9 @@ symfony_ux:
 
 $props: map.merge($props, (
     example-color             : inherit,
-    example-hover-color       : inherit,
-    example-bg-color          : inherit,
-    example-hover-bg-color    : inherit,
+    example--color--hover       : inherit,
+    example--bg-color          : inherit,
+    example--bg-color--hover    : inherit,
 ));
 ```
 

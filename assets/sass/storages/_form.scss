@@ -1,0 +1,82 @@
+// * ------------ @osw3/symfony-ux/assets/sass/forms/fonts.scss ------------
+// *
+// *    Fonts Form
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use './../storages/prefix';
+@use './../variables/fonts' as default;
+$prefix: prefix.$prefix;
+
+
+// * Define form data
+// * ---------------------------------------------
+
+$required--symbol: '*';
+
+
+// Widget settings
+
+$widget-padding      : 0;
+$widget-border-width : 0;
+$widget-border-radius: var(--#{$prefix}border-radius-none);
+
+
+// Label settings
+
+$label-padding      : 0;
+$label-border-width : 0;
+$label-border-radius: var(--#{$prefix}border-radius-none);
+
+
+// Control settings
+
+$control--padding-x       : .75rem;
+$control--padding-y       : .375rem;
+$control--padding-x--small: .25rem;
+$control--padding-y--small: .5rem;
+$control--padding-x--large: .5rem;
+$control--padding-y--large: 1rem;
+$control--border-width    : 1px;
+$control--border-radius   : var(--#{$prefix}border-radius-normal);
+
+
+// $disabled-opacity : 0.65;
+
+$transition           : true;
+$transition-delay     : var(--#{$prefix}transition-normal);
+$transition-type      : ease-in-out;
+
+
+// * Form Mixins definition
+// * ---------------------------------------------
+
+
+@mixin setRequiredSymbol($symbol) {
+    $required--symbol: $symbol !global;
+}
+
+
+@mixin setWidgetPadding($space) {
+    $widget-padding: $space !global;
+}
+
+@mixin setWidgetBorderRadius($width) {
+    $widget-border-width: $width !global;
+}
+@mixin setWidgetBorderRadius($radius) {
+    $widget-border-radius: $radius !global;
+}
+
+
+@mixin setLabelPadding($space) {
+    $label-padding: $space !global;
+}
+
+@mixin setLabelBorderRadius($width) {
+    $label-border-width: $width !global;
+}
+@mixin setLabelBorderRadius($radius) {
+    $label-border-radius: $radius !global;
+}

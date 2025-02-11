@@ -18,29 +18,29 @@ $prefix: prefix.$prefix;
 
 $theme-properties: (
     // menu-color             : var(--#{$prefix}red),
-    // menu-hover-color       : inherit, //var(--#{$prefix}inherit),
-    menu-bg-color          : green, //var(--#{$prefix}gray-800),
-    // menu-hover-bg-color    : var(--#{$prefix}cyan),
-    // menu-border-color      : var(--#{$prefix}red),
-    // menu-hover-border-color: var(--#{$prefix}red),
+    // menu--color--hover       : inherit, //var(--#{$prefix}inherit),
+    menu--bg-color          : green, //var(--#{$prefix}gray-800),
+    // menu--bg-color--hover    : var(--#{$prefix}cyan),
+    // menu--border-color      : var(--#{$prefix}red),
+    // menu--border-color--hover: var(--#{$prefix}red),
 
     // menu-item-color          : var(--#{$prefix}gray-500),
-    // menu-item-hover-color    : var(--#{$prefix}white),
-    // menu-item-active-color   : var(--#{$prefix}white),
-    // menu-item-bg-color       : inherit,
-    // menu-item-hover-bg-color : var(--#{$prefix}gray-900),
-    // menu-item-active-bg-color: var(--#{$prefix}gray-600),
+    // menu-item--color--hover    : var(--#{$prefix}white),
+    // menu-item--color--active   : var(--#{$prefix}white),
+    // menu-item--bg-color       : inherit,
+    // menu-item--bg-color--hover : var(--#{$prefix}gray-900),
+    // menu-item--bg-color--active: var(--#{$prefix}gray-600),
 
 
-    // menu-sub-bg-color       : var(--#{$prefix}gray-600),
-    // menu-sub-hover-bg-color : var(--#{$prefix}gray-700),
+    // menu-sub--bg-color       : var(--#{$prefix}gray-600),
+    // menu-sub--bg-color--hover : var(--#{$prefix}gray-700),
 
     // menu-sub-item-color          : var(--#{$prefix}gray-500),
-    // menu-sub-item-hover-color    : var(--#{$prefix}white),
-    // menu-sub-item-active-color   : var(--#{$prefix}white),
-    // menu-sub-item-bg-color       : inherit,
-    // menu-sub-item-hover-bg-color : var(--#{$prefix}gray-900),
-    // menu-sub-item-active-bg-color: var(--#{$prefix}gray-600),
+    // menu-sub-item--color--hover    : var(--#{$prefix}white),
+    // menu-sub-item--color--active   : var(--#{$prefix}white),
+    // menu-sub-item--bg-color       : inherit,
+    // menu-sub-item--bg-color--hover : var(--#{$prefix}gray-900),
+    // menu-sub-item--bg-color--active: var(--#{$prefix}gray-600),
 );
 
 

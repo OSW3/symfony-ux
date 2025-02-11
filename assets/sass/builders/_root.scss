@@ -26,6 +26,7 @@
 @use './../components/button';
 @use './../components/callout';
 @use './../components/copyright';
+@use './../components/form';
 @use './../components/link';
 @use './../components/menu';
 @use './../components/nav';
@@ -66,6 +67,7 @@ $themes: fnMap.merge-multiple(
     button.$theme-properties, 
     callout.$theme-properties, 
     copyright.$theme-properties, 
+    form.$theme-properties, 
     link.$theme-properties, 
     menu.$theme-properties, 
     nav.$theme-properties, 

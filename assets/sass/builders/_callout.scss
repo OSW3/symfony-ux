@@ -24,7 +24,7 @@ $prefix: prefix.$prefix;
     @if 'callout-color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
-    @else if 'callout-bg-color' == map.get($property, name) {
+    @else if 'callout--bg-color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
     }
 
@@ -55,8 +55,8 @@ $prefix: prefix.$prefix;
     @include flex.align-items(center);
     @include spacing.inner(var(--#{$prefix}callout-padding-x));
     @include spacing.outer(var(--#{$prefix}callout-padding-y) 0);
-    background-color: var(--#{$prefix}callout-bg-color);
-    border-left     : store.$border-width solid var(--#{$prefix}callout-border-color);
+    background-color: var(--#{$prefix}callout--bg-color);
+    border-left     : store.$border-width solid var(--#{$prefix}callout--border-color);
     border-radius   : store.$border-radius;
     // color           : var(--#{$prefix}callout-color);
 
@@ -84,7 +84,7 @@ $prefix: prefix.$prefix;
     &-right {
         @include flex.direction(row-reverse);
         border-left: none;
-        border-right     : store.$border-width solid var(--#{$prefix}callout-border-color);
+        border-right     : store.$border-width solid var(--#{$prefix}callout--border-color);
 
         #{$parent}-icon {
             margin-right: 0;

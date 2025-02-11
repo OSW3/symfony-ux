@@ -22,16 +22,16 @@ $prefix: prefix.$prefix;
 
 @function palette-declination($palette, $property) {
 
-    @if 'button-color' == map.get($property, name) {
+    @if 'button--color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
-    @else if 'button-hover-color' == map.get($property, name) {
+    @else if 'button--color--hover' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
-    @else if 'button-hover-bg-color' == map.get($property, name) {
+    @else if 'button--bg-color--hover' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-emphasis);
     }
-    @else if 'button-hover-border-color' == map.get($property, name) {
+    @else if 'button--border-color--hover' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-emphasis);
     }
 
@@ -57,10 +57,10 @@ $prefix: prefix.$prefix;
     // --
 
     display         : inline-block;
-    background-color: var(--#{$prefix}button-bg-color);
-    border          : store.$border-width solid var(--#{$prefix}button-border-color);
+    background-color: var(--#{$prefix}button--bg-color);
+    border          : store.$border-width solid var(--#{$prefix}button--border-color);
     border-radius   : store.$border-radius;
-    color           : var(--#{$prefix}button-color);
+    color           : var(--#{$prefix}button--color);
 
     @if store.$font-family {
         font-family: store.$font-family;
@@ -95,9 +95,9 @@ $prefix: prefix.$prefix;
     // --
 
     &:hover {
-        color           : var(--#{$prefix}button-hover-color);
-        background-color: var(--#{$prefix}button-hover-bg-color);
-        border-color    : var(--#{$prefix}button-hover-border-color);
+        color           : var(--#{$prefix}button--color--hover);
+        background-color: var(--#{$prefix}button--bg-color--hover);
+        border-color    : var(--#{$prefix}button--border-color--hover);
     }
 
     
@@ -126,9 +126,9 @@ $prefix: prefix.$prefix;
         opacity         : store.$disabled-opacity;
         
         // force the disabled button to not change colors on mouseover
-        color           : var(--#{$prefix}button-color);
-        background-color: var(--#{$prefix}button-bg-color);
-        border-color    : var(--#{$prefix}button-border-color);
+        color           : var(--#{$prefix}button--color);
+        background-color: var(--#{$prefix}button--bg-color);
+        border-color    : var(--#{$prefix}button--border-color);
     }
 
     &-no-border {
@@ -138,8 +138,8 @@ $prefix: prefix.$prefix;
     &-outline,&-outline[disabled] {
         border-style: solid;
         border-width: 2px;
-        color: var(--#{$prefix}button-bg-color);
-        border-color: var(--#{$prefix}button-bg-color);
+        color: var(--#{$prefix}button--bg-color);
+        border-color: var(--#{$prefix}button--bg-color);
         background-color: transparent;
     }
 

@@ -1,0 +1,192 @@
+// * ----------- @osw3/symfony-ux/assets/sass/builder/form.scss -----------
+// *
+// *    Builder for Form component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/spacing';
+@use './../mixins/transition';
+
+@use './../storages/form' as store;
+@use './../components/form' ;
+@include banner.header('Component Form Widget');
+$prefix: prefix.$prefix;
+
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}form-widget {
+    border: 10px solid red;
+
+    &-label {
+        border: 10px solid blue;
+    }
+
+    &-control {
+        border: 10px solid green;
+    }
+
+    &-group {
+        border: 10px solid greenyellow;
+    }
+}
+
+.#{$prefix}form-widget {
+    // display         : flex;
+    // flex-direction  : column;
+    // padding         : store.$widget-padding;
+    // background-color: var(--#{$prefix}form-widget--bg-color);
+    // border          : store.$widget-border-width solid var(--#{$prefix}form-widget--border-color);
+    // border-radius   : store.$widget-border-radius;
+    // color           : var(--#{$prefix}form-widget--color);
+
+    // @if store.$transition {
+    //     @include transition.set(
+    //         (color, background-color, border-color),
+    //         store.$transition-delay,
+    //         store.$transition-type,
+    //     );
+    // }
+
+
+    // // Widget state
+
+    // &:hover {
+    //     // background-color: var(--#{$prefix}form-widget-control--bg-color--hover);
+    //     // border-color: var(--#{$prefix}form-widget-control--border-color--hover);
+
+    //     color: var(--#{$prefix}form-widget--color--hover);
+    // }
+
+    // &:has(:focus) {
+    //     color: var(--#{$prefix}form-widget--color--active);
+    // }
+    
+
+
+
+    // Widget Label
+    // --
+
+    // &-label {
+    //     padding         : store.$label-padding;
+    //     background-color: var(--#{$prefix}form-widget-label--bg-color);
+    //     border          : store.$label-border-width solid var(--#{$prefix}form-widget-label--border-color);
+    //     border-radius   : store.$label-border-radius;
+    //     color           : var(--#{$prefix}form-widget-label--color);
+    //     display         : inline-block;
+    //     margin-bottom   : .5rem;
+    //     margin-right    : 0;
+
+    //     &[hidden] {
+    //         display: none !important;
+    //     }
+
+    //     &.required::after {
+    //         content: store.$required--symbol;
+    //         color: var(--#{$prefix}form-widget--required--color);
+    //         padding-left: .1rem;
+    //     }
+    // }
+
+
+    // Widget Control
+    // --
+
+    // &-control {
+    //     // border: 3px solid yellow;
+
+    //     display: block;
+    //     width: 100%;
+
+    //     padding: store.$control--padding-y store.$control--padding-x;
+    //     margin: 0;
+    //     background-color: var(--#{$prefix}form-widget-control--bg-color);
+    //     border: store.$control--border-width solid var(--#{$prefix}form-widget-control--border-color);
+    //     border-radius: store.$control--border-radius;
+
+    //     @if store.$transition {
+    //         @include transition.set(
+    //             (color, background-color, border-color),
+    //             store.$transition-delay,
+    //             store.$transition-type,
+    //         );
+    //     }
+
+    //     // Control states
+
+    //     &:hover {
+    //         background-color: var(--#{$prefix}form-widget-control--bg-color--hover);
+    //         border-color: var(--#{$prefix}form-widget-control--border-color--hover);
+    //     }
+
+    //     &:focus {
+    //         background-color: var(--#{$prefix}form-widget-control--bg-color--active);
+    //         border-color: var(--#{$prefix}form-widget-control--border-color--active);
+    //     }
+
+    //     &:disabled {
+    //         background-color: var(--#{$prefix}form-widget-control--bg-color--readonly);
+    //     //     border-color: $form-widget--control---border-color--disabled;
+    //         &:not([readonly]) {
+    //             background-color: var(--#{$prefix}form-widget-control--bg-color--disabled);
+    //     //         color: $form-widget--control--text-color--disabled;
+    //         }
+    //     }
+
+
+    //     // Input Color
+
+    //     &[type=color] {
+    //         width: 3rem;
+    //         height: 2.5rem;
+    //         padding: .375rem;
+    //     }
+
+
+    //     // Input Radio / Checkbox
+
+    //     &[type=checkbox],
+    //     &[type=radio] {
+    //         display: inline-block;
+    //         width: auto;
+    //     }
+    // }
+
+
+    // Widget Group
+    // --
+
+    // &-group {
+    //     position: relative;
+    //     display: flex;
+    //     flex-direction: row;
+    //     flex-wrap: wrap;
+    //     align-items: stretch;
+    //     width: 100%;
+    // }
+
+
+
+    // Inline widget
+    // --
+
+    // &-inline {
+    //     flex-direction: row;
+    //     align-items: center;
+    // }
+    // &-inline &-label {
+    //     margin-bottom: 0;
+    //     margin-right: .5rem;
+    // }
+    // &-inline &-group {
+    //     flex-direction: row;
+    //     align-items: center;
+    //     flex-grow: 1;
+    // }
+}

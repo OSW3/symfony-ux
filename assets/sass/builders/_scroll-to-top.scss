@@ -327,7 +327,7 @@ $background-position: center;
 
     cursor: store.$cursor;
     color: var(--#{$prefix}scroll-to-top-color);
-    background-color: var(--#{$prefix}scroll-to-top-bg-color);
+    background-color: var(--#{$prefix}scroll-to-top--bg-color);
     width: store.$size;
     height: store.$size;
     opacity: 0;
@@ -509,8 +509,8 @@ $background-position: center;
     // -- 
 
     &:hover {
-        color           : var(--#{$prefix}scroll-to-top-hover-color);
-        background-color: var(--#{$prefix}scroll-to-top-hover-bg-color);
-        border-color    : var(--#{$prefix}scroll-to-top-hover-border-color);
+        color           : var(--#{$prefix}scroll-to-top--color--hover);
+        background-color: var(--#{$prefix}scroll-to-top--bg-color--hover);
+        border-color    : var(--#{$prefix}scroll-to-top--border-color--hover);
     }
 }

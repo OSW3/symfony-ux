@@ -131,11 +131,11 @@ symfony_ux:
 
 $props: map.merge($props, (
     example-color             : var(--#{$prefix}black),
-    example-hover-color       : var(--#{$prefix}orange),
-    example-bg-color          : var(--#{$prefix}yellow),
-    example-hover-bg-color    : var(--#{$prefix}green),
-    example-border-color      : var(--#{$prefix}gray-600),
-    example-hover-border-color: var(--#{$prefix}gray-700),
+    example--color--hover       : var(--#{$prefix}orange),
+    example--bg-color          : var(--#{$prefix}yellow),
+    example--bg-color--hover    : var(--#{$prefix}green),
+    example--border-color      : var(--#{$prefix}gray-600),
+    example--border-color--hover: var(--#{$prefix}gray-700),
 ));
 ``` -->
 

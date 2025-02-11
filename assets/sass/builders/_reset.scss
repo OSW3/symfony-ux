@@ -22,9 +22,9 @@ $prefix: prefix.$prefix;
 
 $theme-properties: (
     main-color           : var(--#{$prefix}gray-800),
-    main-link-color      : inherit, //var(--#{$prefix}inherit),
-    main-hover-link-color: var(--#{$prefix}blue),
-    main-bg-color        : var(--#{$prefix}white),
+    main-link--color      : inherit, //var(--#{$prefix}inherit),
+    main-hover-link--color: var(--#{$prefix}blue),
+    main--bg-color        : var(--#{$prefix}white),
 );
 
 @if map.has-key(themes.$themes, themes.$default) {
@@ -87,7 +87,7 @@ body {
     font-size: 1rem; // todo: customize
     font-weight: 400; // todo: customize
     color: var(--#{$prefix}main-color);
-    background-color: var(--#{$prefix}main-bg-color);
+    background-color: var(--#{$prefix}main--bg-color);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }
@@ -116,13 +116,13 @@ p {
 }
 
 a {
-    color: var(--#{$prefix}main-link-color);
+    color: var(--#{$prefix}main-link--color);
     text-decoration: none;
 }
 a:hover,
 a:focus {
     text-decoration: underline;
-    color: var(--#{$prefix}main-hover-link-color);
+    color: var(--#{$prefix}main-hover-link--color);
 }
 
 ul, ol {
@@ -197,8 +197,8 @@ button, input, select, textarea {
     font: inherit;
     color: inherit;
     background: none;
-    border: none;
-    outline: none;
+    // border: none;
+    // outline: none;
     box-sizing: border-box;
 }
 

@@ -18,11 +18,11 @@ $prefix: prefix.$prefix;
 
 $theme-properties: (
     // media-color             : var(--#{$prefix}red),
-    // media-hover-color       : inherit, //var(--#{$prefix}inherit),
-    // media-bg-color          : var(--#{$prefix}cyan),
-    // media-hover-bg-color    : var(--#{$prefix}cyan),
-    // media-border-color      : var(--#{$prefix}red),
-    // media-hover-border-color: var(--#{$prefix}red),
+    // media--color--hover       : inherit, //var(--#{$prefix}inherit),
+    // media--bg-color          : var(--#{$prefix}cyan),
+    // media--bg-color--hover    : var(--#{$prefix}cyan),
+    // media--border-color      : var(--#{$prefix}red),
+    // media--border-color--hover: var(--#{$prefix}red),
 );
 
 

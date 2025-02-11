@@ -127,10 +127,10 @@ $primary--background-color--hover : #6f42c1, //var(--purple);
 $primary--background-color--active: #6f42c1, //var(--purple);
 $primary--background-color--muted : #6f42c1, //var(--purple);
 
-$primary--border-color            : var(--gray-800);
-$primary--border-color--hover     : var(--gray-800);
-$primary--border-color--active    : var(--gray-800);
-$primary--border-color--muted     : var(--gray-800);
+$primary---border-color            : var(--gray-800);
+$primary---border-color--hover     : var(--gray-800);
+$primary---border-color--active    : var(--gray-800);
+$primary---border-color--muted     : var(--gray-800);
 
 
 // * =============================================
@@ -149,10 +149,10 @@ $secondary--background-color--hover : var(--orange);
 $secondary--background-color--active: var(--orange);
 $secondary--background-color--muted : var(--orange);
 
-$secondary--border-color            : var(--gray-800);
-$secondary--border-color--hover     : var(--gray-800);
-$secondary--border-color--active    : var(--gray-800);
-$secondary--border-color--muted     : var(--gray-800);
+$secondary---border-color            : var(--gray-800);
+$secondary---border-color--hover     : var(--gray-800);
+$secondary---border-color--active    : var(--gray-800);
+$secondary---border-color--muted     : var(--gray-800);
 ```
 
 ### 4. Components & layout elements properties
@@ -172,7 +172,7 @@ You can adapt it to other components by following the documentation specific to 
 @use './../abstracts/palette';
 
 $properties: map.merge($properties, (
-    accordion--item--border-color                 : palette.$primary--border-color,         // You can user Palette definition
+    accordion--item---border-color                 : palette.$primary---border-color,         // You can user Palette definition
     accordion--item--header--text-color           : var(--black),                           // Or CSS variable
     accordion--item--header--background-color     : #6610f2,                                // Or HTML colors    
     

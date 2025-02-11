@@ -37,7 +37,7 @@ $breakpoints: breakpoints.$breakpoints;
     // --
     // div.nav 
 
-    background-color: var(--#{$prefix}nav-bg-color);
+    background-color: var(--#{$prefix}nav--bg-color);
     @include spacing.inner(0);
     @include spacing.outer(0);
     // overflow: hidden;
@@ -93,8 +93,8 @@ $breakpoints: breakpoints.$breakpoints;
         @include spacing.outer(0);
 
         // &:hover > .#{$prefix}nav-link {
-        //     background-color: var(--#{$prefix}nav-item-hover-bg-color);
-        //     color: var(--#{$prefix}nav-item-hover-color);
+        //     background-color: var(--#{$prefix}nav-item--bg-color--hover);
+        //     color: var(--#{$prefix}nav-item--color--hover);
         // }
     }
 
@@ -109,7 +109,7 @@ $breakpoints: breakpoints.$breakpoints;
         cursor: store.$cursor;
         @include flex.display;
         @include flex.direction(row);
-        background-color: var(--#{$prefix}nav-item-bg-color);
+        background-color: var(--#{$prefix}nav-item--bg-color);
         color: var(--#{$prefix}nav-item-color);
         white-space: nowrap;
         z-index: 1;
@@ -132,8 +132,8 @@ $breakpoints: breakpoints.$breakpoints;
         // Link mouse over
         &:focus,
         &:hover {
-            background-color: var(--#{$prefix}nav-item-hover-bg-color);
-            color: var(--#{$prefix}nav-item-hover-color);
+            background-color: var(--#{$prefix}nav-item--bg-color--hover);
+            color: var(--#{$prefix}nav-item--color--hover);
         }
 
         // Link active
@@ -141,8 +141,8 @@ $breakpoints: breakpoints.$breakpoints;
         &:active,
         &.active:hover,
         &:active:hover {
-            background-color: var(--#{$prefix}nav-item-active-bg-color);
-            color: var(--#{$prefix}nav-item-active-color);
+            background-color: var(--#{$prefix}nav-item--bg-color--active);
+            color: var(--#{$prefix}nav-item--color--active);
             // pointer-events: none;
         }
     }
@@ -178,7 +178,7 @@ $breakpoints: breakpoints.$breakpoints;
         height: fit-content;
         width: store.$sub-width;
         min-width: store.$sub-min-width;
-        background-color: var(--#{$prefix}nav-sub-bg-color);
+        background-color: var(--#{$prefix}nav-sub--bg-color);
         z-index: 2;
 
         @if store.$transition {
@@ -191,7 +191,7 @@ $breakpoints: breakpoints.$breakpoints;
 
         // Change subnav states on subnav mouse over
         &:hover {
-            background-color: var(--#{$prefix}nav-sub-hover-bg-color);
+            background-color: var(--#{$prefix}nav-sub--bg-color--hover);
         }
     }
 
@@ -200,14 +200,14 @@ $breakpoints: breakpoints.$breakpoints;
     // div.nav > ul.nav-items > li.nav-item.has-subnav > ul.nav-items > li.nav-item > a.nav-link
 
     .#{$prefix}has-subnav > &-items &-link {
-        background-color: var(--#{$prefix}nav-sub-item-bg-color);
+        background-color: var(--#{$prefix}nav-sub-item--bg-color);
         color: var(--#{$prefix}nav-sub-item-color);
 
         // Subnav Link mouse over
         &:focus,
         &:hover {
-            background-color: var(--#{$prefix}nav-sub-item-hover-bg-color);
-            color: var(--#{$prefix}nav-sub-item-hover-color);
+            background-color: var(--#{$prefix}nav-sub-item--bg-color--hover);
+            color: var(--#{$prefix}nav-sub-item--color--hover);
         }
 
         // Subnav Link active
@@ -215,8 +215,8 @@ $breakpoints: breakpoints.$breakpoints;
         &:active,
         &.active:hover,
         &:active:hover {
-            background-color: var(--#{$prefix}nav-sub-item-active-bg-color);
-            color: var(--#{$prefix}nav-sub-item-active-color);
+            background-color: var(--#{$prefix}nav-sub-item--bg-color--active);
+            color: var(--#{$prefix}nav-sub-item--color--active);
         }
     }
 
@@ -289,8 +289,8 @@ $breakpoints: breakpoints.$breakpoints;
     }
 
     &-item:hover > .#{$prefix}nav-link {
-        background-color: var(--#{$prefix}nav-item-hover-bg-color);
-        color: var(--#{$prefix}nav-item-hover-color);
+        background-color: var(--#{$prefix}nav-item--bg-color--hover);
+        color: var(--#{$prefix}nav-item--color--hover);
     }
 
 

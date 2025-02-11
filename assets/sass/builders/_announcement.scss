@@ -31,13 +31,13 @@ $prefix: prefix.$prefix;
     @include size.height(null, store.$min-height, null);
     @include size.width(null, 100%, null);
 
-    color: var(--#{$prefix}announcement-color);
-    background-color: var(--#{$prefix}announcement-bg-color);
-    border: store.$border-width solid var(--#{$prefix}announcement-border-color);
+    color: var(--#{$prefix}announcement--color);
+    background-color: var(--#{$prefix}announcement--bg-color);
+    border: store.$border-width solid var(--#{$prefix}announcement--border-color);
     border-radius: store.$border-radius;
 
     & a {
-        color: var(--#{$prefix}announcement-color);
+        color: var(--#{$prefix}announcement--color);
         text-decoration: underline;
     }
 
@@ -50,12 +50,12 @@ $prefix: prefix.$prefix;
     }
 
     &:hover {
-        color: var(--#{$prefix}announcement-hover-color);
-        background-color: var(--#{$prefix}announcement-hover-bg-color);
-        border-color: var(--#{$prefix}announcement-hover-border-color);
+        color: var(--#{$prefix}announcement--color--hover);
+        background-color: var(--#{$prefix}announcement--bg-color--hover);
+        border-color: var(--#{$prefix}announcement--border-color--hover);
 
         & a {
-            color: var(--#{$prefix}announcement-hover-color);
+            color: var(--#{$prefix}announcement--color--hover);
             text-decoration: underline;
         }
     }

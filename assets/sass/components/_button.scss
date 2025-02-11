@@ -17,12 +17,12 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    button-color             : var(--#{$prefix}black),
-    button-hover-color       : inherit, //var(--#{$prefix}inherit),
-    button-bg-color          : var(--#{$prefix}gray-400),
-    button-hover-bg-color    : var(--#{$prefix}gray-500),
-    button-border-color      : var(--#{$prefix}gray-600),
-    button-hover-border-color: var(--#{$prefix}gray-700),
+    button--color             : var(--#{$prefix}black),
+    button--color--hover       : inherit, //var(--#{$prefix}inherit),
+    button--bg-color          : var(--#{$prefix}gray-400),
+    button--bg-color--hover    : var(--#{$prefix}gray-500),
+    button--border-color      : var(--#{$prefix}gray-600),
+    button--border-color--hover: var(--#{$prefix}gray-700),
 );
 
 

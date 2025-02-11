@@ -18,11 +18,11 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    'breadcrumb-separator-color'             : var(--#{$prefix}gray-600),
+    'breadcrumb-separator--color'             : var(--#{$prefix}gray-600),
 
-    'breadcrumb-color'                       : var(--#{$prefix}gray-600),
-    'breadcrumb-hover-color'                 : var(--#{$prefix}gray-900),
-    'breadcrumb-active-color'                : var(--#{$prefix}black),
+    'breadcrumb--color'                       : var(--#{$prefix}gray-600),
+    'breadcrumb--color--hover'                 : var(--#{$prefix}gray-900),
+    'breadcrumb--color--active'                : var(--#{$prefix}black),
 );
 
 

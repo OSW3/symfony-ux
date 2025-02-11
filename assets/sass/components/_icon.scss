@@ -19,17 +19,17 @@ $prefix: prefix.$prefix;
 
 $theme-properties: (
 //     'icon-color'                       : var(--#{$prefix}blue),
-//     'icon-hover-color'                 : var(--#{$prefix}green),
-//     'icon-active-color'                : var(--#{$prefix}orange),
+//     'icon--color--hover'                 : var(--#{$prefix}green),
+//     'icon--color--active'                : var(--#{$prefix}orange),
 //     'icon-disabled-color'              : var(--#{$prefix}gray-600),
 //     'icon-text-decoration-color'       : var(--#{$prefix}blue),
-//     'icon-text-decoration-hover-color' : var(--#{$prefix}green),
-//     'icon-text-decoration-active-color': var(--#{$prefix}orange),
-//     'icon-bg-color'                    : initial,
-//     'icon-hover-bg-color'              : initial,
-//     'icon-active-bg-color'             : initial,
-//     // 'icon-border-color'      : var(--#{$prefix}gray-600),
-//     // 'icon-hover-border-color': var(--#{$prefix}gray-700),
+//     'icon-text-decoration--color--hover' : var(--#{$prefix}green),
+//     'icon-text-decoration--color--active': var(--#{$prefix}orange),
+//     'icon--bg-color'                    : initial,
+//     'icon--bg-color--hover'              : initial,
+//     'icon--bg-color--active'             : initial,
+//     // 'icon--border-color'      : var(--#{$prefix}gray-600),
+//     // 'icon--border-color--hover': var(--#{$prefix}gray-700),
 );
 
 

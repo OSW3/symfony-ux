@@ -28,10 +28,10 @@ $btn-close-size: 24px;
 
 @function palette-declination($palette, $property) {
 
-    @if 'alert-color' == map.get($property, name) {
+    @if 'alert--color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
-    @else if 'alert-bg-color' == map.get($property, name) {
+    @else if 'alert--bg-color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
     }
 
@@ -62,10 +62,10 @@ $btn-close-size: 24px;
     // @include position.relative;
     @include spacing.inner(var(--#{$prefix}alert-padding-x));
     @include spacing.outer-y(var(--#{$prefix}alert-padding-y));
-    background-color: var(--#{$prefix}alert-bg-color);
-    border: store.$border-width store.$border-style var(--#{$prefix}alert-border-color);
+    background-color: var(--#{$prefix}alert--bg-color);
+    border: store.$border-width store.$border-style var(--#{$prefix}alert--border-color);
     border-radius: store.$border-radius;
-    // color: var(--#{$prefix}alert-color);
+    // color: var(--#{$prefix}alert--color);
 
     @if store.$font-family {
         font-family: store.$font-family;

@@ -22,10 +22,10 @@ $prefix: prefix.$prefix;
 
 @function palette-declination($palette, $property) {
 
-    @if 'toast-color' == map.get($property, name) or 'toast-progress-color' == map.get($property, name) or 'toast-hover-progress-color' == map.get($property, name) {
+    @if 'toast--color' == map.get($property, name) or 'toast-progress--color' == map.get($property, name) or 'toast-progress--color--hover' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
-    // @else if 'toast-bg-color' == map.get($property, name) {
+    // @else if 'toast--bg-color' == map.get($property, name) {
     //     @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
     // }
 
@@ -167,11 +167,11 @@ $btn-close-size: 24px;
         opacity: 0;
         transform: $item-transform;
 
-        color: var(--#{$prefix}toast-color);
-        background-color: var(--#{$prefix}toast-bg-color);
+        color: var(--#{$prefix}toast--color);
+        background-color: var(--#{$prefix}toast--bg-color);
         border-radius: store.$border-radius;
         @if store.$border-width {
-            border: store.$border-width solid var(--#{$prefix}toast-border-color);
+            border: store.$border-width solid var(--#{$prefix}toast--border-color);
         }
 
         backdrop-filter: blur(5px);
@@ -196,10 +196,10 @@ $btn-close-size: 24px;
         }
 
         &-effect:hover {
-            color: var(--#{$prefix}toast-hover-color);
-            background-color: var(--#{$prefix}toast-hover-bg-color);
+            color: var(--#{$prefix}toast--color--hover);
+            background-color: var(--#{$prefix}toast--bg-color--hover);
             @if store.$border-width {
-                border-color: var(--#{$prefix}toast-hover-border-color);
+                border-color: var(--#{$prefix}toast--border-color--hover);
             }
         }
     }
@@ -272,7 +272,7 @@ $btn-close-size: 24px;
         opacity: .5;
         transform: scaleX(0);
         transform-origin: left;
-        background-color: var(--#{$prefix}toast-progress-color);
+        background-color: var(--#{$prefix}toast-progress--color);
         animation: var(--#{$prefix}toast-duration, store.$duration) #{$prefix}toast-progress var(--#{$prefix}toast-delay, store.$delay) linear;
 
 
@@ -286,7 +286,7 @@ $btn-close-size: 24px;
     }
     &-item:hover &-progress {
         opacity: 1;
-        background-color: var(--#{$prefix}toast-hover-progress-color);
+        background-color: var(--#{$prefix}toast-progress--color--hover);
     }
 
 

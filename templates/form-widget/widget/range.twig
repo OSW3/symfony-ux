@@ -32,8 +32,10 @@
         value     : value,
         spellcheck: true,
     } only %}
-
-    - output
+    {% include "@SymfonyUx/form-widget/tag/output/tag.twig" with {
+        id          : id,
+        value       : value,
+    } only %}
     
 {% endblock controls %}{% endembed %}
 {% include "@SymfonyUx/form-widget/tag/description/tag.twig" with {

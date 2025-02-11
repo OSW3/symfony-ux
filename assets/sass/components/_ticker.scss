@@ -17,11 +17,11 @@ $prefix: prefix.$prefix;
 
 $theme-properties: (
     // ticker-color             : var(--#{$prefix}red),
-    // ticker-hover-color       : inherit, //var(--#{$prefix}inherit),
-    // ticker-bg-color          : var(--#{$prefix}cyan),
-    // ticker-hover-bg-color    : var(--#{$prefix}cyan),
-    // ticker-border-color      : var(--#{$prefix}red),
-    // ticker-hover-border-color: var(--#{$prefix}red),
+    // ticker--color--hover       : inherit, //var(--#{$prefix}inherit),
+    // ticker--bg-color          : var(--#{$prefix}cyan),
+    // ticker--bg-color--hover    : var(--#{$prefix}cyan),
+    // ticker--border-color      : var(--#{$prefix}red),
+    // ticker--border-color--hover: var(--#{$prefix}red),
 );
 
 

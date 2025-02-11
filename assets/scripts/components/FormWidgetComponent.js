@@ -36,11 +36,14 @@ export default class FormWidgetComponent
         this.#description      = document.querySelector(`#${this.#input.getAttribute('aria-describedby')}`);
 
         this.#input.onblur     = this.#onBlur.bind(this);
-        this.#input.onchange   = this.#onChange.bind(this);
+        // this.#input.onload   = this.#onChange.bind(this);
+        this.#input.oninput   = this.#onChange.bind(this);
         this.#input.onclick    = this.#onClick.bind(this);
         this.#input.onkeyup    = this.#onKeyup.bind(this);
         this.#input.onkeypress = this.#onKeypress.bind(this);
         this.#input.onfocus    = this.#onFocus.bind(this);
+
+        this.#writeOutputValue();
     }
 
     get label()
@@ -57,6 +60,11 @@ export default class FormWidgetComponent
         return !!document.querySelector(`#${this.#input.getAttribute('aria-describedby')}`);
     }
     
+    #writeOutputValue() {
+        if (this.#output) {
+            this.#output.textContent = this.#input?.value;
+        }
+    }
 
     #onBlur(event)
     {
@@ -68,7 +76,8 @@ export default class FormWidgetComponent
     {
         // console.log(`Change: ${this.#input.id}`);
         // console.log(`Change: ${event.target.id}`);
-        this.#output.textContent = this.#input.value;
+        // this.#output.textContent = this.#input.value;
+        this.#writeOutputValue();
     }
 
     #onClick(event)
