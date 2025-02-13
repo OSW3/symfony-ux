@@ -225,6 +225,7 @@ fieldset, legend {
 }
 
 label {
+    // cursor: auto;
     cursor: pointer;
 }
 
@@ -292,10 +293,13 @@ main {
 
 
 
-// a:focus, button:focus, input:focus, select:focus, textarea:focus {
-//     outline: 2px solid #005fcc;
-//     outline-offset: 2px;
-// }
+a:focus, button:focus, input:focus, select:focus, textarea:focus {
+    // outline: 2px solid #005fcc;
+    // outline-offset: 2px;
+    outline-offset: 0;
+    outline: none;
+
+}
 
 a:focus:not(:focus-visible), 
 button:focus:not(:focus-visible), 

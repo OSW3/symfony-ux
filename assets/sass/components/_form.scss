@@ -23,76 +23,89 @@ $theme-properties: (
 
     // Form Widget
 
-    'form-widget--color'                 : red, // inherit
-    'form-widget--color--hover'          : yellow,
-    'form-widget--color--active'         : green,
-    'form-widget--color--disabled'       : initial,
-    'form-widget--color--readonly'       : initial,
-    'form-widget--color--error'          : initial,
-    'form-widget--color--success'        : initial,
+    'form-widget--color'                 : inherit, // inherit
+    'form-widget--color--hover'          : inherit,
+    'form-widget--color--active'         : inherit,
+    // 'form-widget--color--disabled'       : initial,
+    // 'form-widget--color--readonly'       : initial,
+    // 'form-widget--color--error'          : initial,
+    // 'form-widget--color--success'        : initial,
 
     'form-widget--bg-color'              : initial, //var(--#{$prefix}gray-100),
     'form-widget--bg-color--hover'       : initial,
-    'form-widget--bg-color--disabled'    : initial,
-    'form-widget--bg-color--readonly'    : initial,
-    'form-widget--bg-color--error'       : initial,
-    'form-widget--bg-color--success'     : initial,
+    'form-widget--bg-color--active'      : initial,
+    // 'form-widget--bg-color--disabled'    : initial,
+    // 'form-widget--bg-color--readonly'    : initial,
+    // 'form-widget--bg-color--error'       : initial,
+    // 'form-widget--bg-color--success'     : initial,
 
     'form-widget--border-color'          : initial, //initial,
     'form-widget--border-color--hover'   : initial,
-    'form-widget--border-color--disabled': initial,
-    'form-widget--border-color--readonly': initial,
-    'form-widget--border-color--error'   : initial,
-    'form-widget--border-color--success' : initial,
+    'form-widget--border-color--active'  : initial,
+    // 'form-widget--border-color--disabled': initial,
+    // 'form-widget--border-color--readonly': initial,
+    // 'form-widget--border-color--error'   : initial,
+    // 'form-widget--border-color--success' : initial,
 
 
     // Form Widget > Label
 
-    'form-widget-label--color'                 : inherit, // inherit
-    'form-widget-label--color--hover'          : initial,
-    'form-widget-label--color--disabled'       : initial,
-    'form-widget-label--color--readonly'       : initial,
-    'form-widget-label--color--error'          : initial,
-    'form-widget-label--color--success'        : initial,
+    'form-widget-label--color'                 : inherit, // override form-widget--color
+    // // 'form-widget-label--color--hover'          : initial,
+    // // 'form-widget-label--color--active'         : initial,
+    // // 'form-widget-label--color--disabled'       : initial,
+    // // 'form-widget-label--color--readonly'       : initial,
+    // // 'form-widget-label--color--error'          : initial,
+    // // 'form-widget-label--color--success'        : initial,
 
     'form-widget-label--bg-color'              : initial, //initial,
-    'form-widget-label--bg-color--hover'       : initial,
-    'form-widget-label--bg-color--disabled'    : initial,
-    'form-widget-label--bg-color--readonly'    : initial,
-    'form-widget-label--bg-color--error'       : initial,
-    'form-widget-label--bg-color--success'     : initial,
+    // // 'form-widget-label--bg-color--hover'       : initial,
+    // // 'form-widget-label--bg-color--active'      : initial,
+    // // 'form-widget-label--bg-color--disabled'    : initial,
+    // // 'form-widget-label--bg-color--readonly'    : initial,
+    // // 'form-widget-label--bg-color--error'       : initial,
+    // // 'form-widget-label--bg-color--success'     : initial,
 
     'form-widget-label--border-color'          : initial, //initial,
     'form-widget-label--border-color--hover'   : initial,
-    'form-widget-label--border-color--disabled': initial,
-    'form-widget-label--border-color--readonly': initial,
-    'form-widget-label--border-color--error'   : initial,
-    'form-widget-label--border-color--success' : initial,
+    'form-widget-label--border-color--active'  : initial,
+    // 'form-widget-label--border-color--disabled': initial,
+    // 'form-widget-label--border-color--readonly': initial,
+    // 'form-widget-label--border-color--error'   : initial,
+    // 'form-widget-label--border-color--success' : initial,
+
 
     // Form Widget > Control
 
     'form-widget-control--color'                 : inherit,
     'form-widget-control--color--hover'          : initial,
-    'form-widget-control--color--disabled'       : initial,
-    'form-widget-control--color--readonly'       : initial,
-    'form-widget-control--color--error'          : initial,
-    'form-widget-control--color--success'        : initial,
+    'form-widget-control--color--active'         : initial,
+    // 'form-widget-control--color--disabled'       : initial,
+    // 'form-widget-control--color--readonly'       : initial,
+    // 'form-widget-control--color--error'          : initial,
+    // 'form-widget-control--color--success'        : initial,
 
     'form-widget-control--bg-color'              : var(--#{$prefix}white), 
-    'form-widget-control--bg-color--hover'       : var(--#{$prefix}gray-100), 
-    'form-widget-control--bg-color--active'      : var(--#{$prefix}gray-100),
-    'form-widget-control--bg-color--disabled'    : purple,
-    'form-widget-control--bg-color--readonly'    : var(--#{$prefix}form-widget-control--bg-color--disabled),
-    'form-widget-control--bg-color--error'       : initial,
-    'form-widget-control--bg-color--success'     : initial,
+    'form-widget-control--bg-color--hover'       : var(--#{$prefix}white), 
+    'form-widget-control--bg-color--active'      : var(--#{$prefix}white),
+    // 'form-widget-control--bg-color--disabled'    : purple,
+    // 'form-widget-control--bg-color--readonly'    : var(--#{$prefix}form-widget-control--bg-color--disabled),
+    // 'form-widget-control--bg-color--error'       : initial,
+    // 'form-widget-control--bg-color--success'     : initial,
 
     'form-widget-control--border-color'          : var(--#{$prefix}gray-300),
-    'form-widget-control--border-color--hover'   : var(--#{$prefix}gray-500),
-    'form-widget-control--border-color--active'  : var(--#{$prefix}gray-500),
-    'form-widget-control--border-color--disabled': var(--#{$prefix}gray-300),
-    'form-widget-control--border-color--readonly': initial,
-    'form-widget-control--border-color--error'   : initial,
-    'form-widget-control--border-color--success' : initial,
+    'form-widget-control--border-color--hover'   : var(--#{$prefix}gray-300),
+    'form-widget-control--border-color--active'  : var(--#{$prefix}gray-300),
+    // 'form-widget-control--border-color--disabled': var(--#{$prefix}gray-300),
+    // 'form-widget-control--border-color--readonly': initial,
+    // 'form-widget-control--border-color--error'   : initial,
+    // 'form-widget-control--border-color--success' : initial,
+
+
+    // Form Widget > Description
+
+    'form-widget-description--color'             : var(--#{$prefix}gray-600), // override form-widget--color
+    'form-widget-description--bg-color'          : inherit,
 
 );
 

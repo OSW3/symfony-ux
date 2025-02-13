@@ -2,12 +2,16 @@
 @use './../functions/icon';
 @use './../functions//utils';
 
-@mixin get($name, $icon, $color) {
 
-    $icon: utils.str-replace($icon, '<', '%3c');
-    $icon: utils.str-replace($icon, '>', '%3e');
-    $icon: utils.str-replace($icon, 'fill-color', $color);
-    
-    /* #{$icon} */
-    --icon-#{$name}: url(#{icon.get('#{$icon}', var(--link--text-color))});
+/**
+ * 
+ */
+@mixin toFontSize() {
+    height: 1em;
+    display: inline-flex;
+    vertical-align: baseline;
+
+    &:has(img), &:has(svg) {
+        width: 1em;
+    }
 }

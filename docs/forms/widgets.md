@@ -58,11 +58,19 @@ import './../../../vendor/osw3/symfony-ux/assets/scripts/components/FormWidgetCo
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
-| `description` | `string` | Set the text of the `description` tag  | no |  |
-| `label` | `string` | Set the text of the `label` tag  | no |  |
-| `title` | `string` | Set the text of the `title` attribute of the input  | no |  |
-| `required` | `boolean` | Make the widget required  | no | false |
-| `type` | `string` | Define the type of the widget (See [type values](#typevalues))  | no |  |
+| `autofocus` | `boolean` | Apply `autofocus` attribute to the widget | no | false |
+| `description` | `string` | Set the text of the `description` tag | no | null |
+| `descriptionIcon` | `string` | Set the icon of the `description` | no | null |
+| `descriptionTag` | `string` | Set the tag type of the `description` tag | no | 'p' |
+| `inline` | `boolean` | Make inline widget | no | false |
+| `label` | `string` | Set the text of the `label` tag | no | null |
+| `labelHidden` | `boolean` | Apply the hidden attribute to the `label` tag | no | false |
+| `labelIcon` | `string` | Set the icon of the `description` | no | null |
+| `placeholder` | `string` | Set the placeholder. | no | null |
+| `required` | `boolean` | Make the widget required | no | false |
+| `title` | `string` | Set the text of the `title` attribute of the input | no | null |
+| `type` | `string` | Define the type of the widget (See [type values](#typevalues)) | no | text |
+| `value` | `string, array` | Set the value of the widget. `array` for `choice` or `select` | no | null |
 
 
 #### `type`values
@@ -113,6 +121,43 @@ import './../../../vendor/osw3/symfony-ux/assets/scripts/components/FormWidgetCo
 <!-- tabs:start -->
 ### **Theme**
 
+These properties allow you to define the theme of widgets.
+
+```css 
+@use './../../../../bundle/assets/sass/storages/prefix';
+
+$props: map.merge($props, (
+    /* Required Symbol */
+    'form-widget--required--color'      : var(--#{$prefix}red),
+    /* Widget layout */
+    'form-widget--color'                : initial,
+    'form-widget--color--hover'         : initial,
+    'form-widget--color--active'        : initial,
+    'form-widget--bg-color'             : initial,
+    'form-widget--bg-color--hover'      : initial,
+    'form-widget--bg-color--active'     : initial,
+    'form-widget--border-color'         : initial,
+    'form-widget--border-color--hover'  : initial,
+    'form-widget--border-color--active' : initial,
+    /* Widget label */
+    'form-widget-label--color'          : initial, // override form-widget--color
+    'form-widget-label--bg-color'       : initial,
+    /* Widget control */
+    'form-widget-control--color'                 : inherit,
+    'form-widget-control--color--hover'          : initial,
+    'form-widget-control--color--active'         : initial,
+    'form-widget-control--bg-color'              : var(--#{$prefix}white), 
+    'form-widget-control--bg-color--hover'       : var(--#{$prefix}white), 
+    'form-widget-control--bg-color--active'      : var(--#{$prefix}white), 
+    'form-widget-control--border-color'          : var(--#{$prefix}gray-300),
+    'form-widget-control--border-color--hover'   : var(--#{$prefix}gray-300),
+    'form-widget-control--border-color--active'  : var(--#{$prefix}gray-300),
+    /* Widget description */
+    'form-widget-description--color'    : initial, // override form-widget--color
+    'form-widget-description--bg-color' : initial, // override form-widget--color
+));
+```
+
 ### **Layout**
 #### Custom file example
 
@@ -120,6 +165,29 @@ import './../../../vendor/osw3/symfony-ux/assets/scripts/components/FormWidgetCo
 @use './../../../vendor/osw3/symfony-ux/assets/sass/storage/form-widget' as widget;
 
 @include widget.setRequiredSymbol('*');
+
+/* Widget layout */
+@include widget.setWidgetPaddingX(0);
+@include widget.setWidgetPaddingY(0);
+@include widget.setWidgetBorderWidth(0);
+@include widget.setWidgetBorderRadius(var(--#{$prefix}border-radius-normal));
+
+/* Widget label */
+@include widget.setLabelInlineWidth(auto);
+@include widget.setLabelPaddingX(0);
+@include widget.setLabelPaddingY(0);
+@include widget.setLabelBorderRadius(var(--#{$prefix}border-radius-normal));
+
+/* Widget control */
+@include widget.setControlPaddingX(.75rem);
+@include widget.setControlPaddingY(.375rem);
+@include widget.setControlBorderWidth(1px);
+@include widget.setControlBorderRadius(var(--#{$prefix}border-radius-normal));
+
+/* Widget description */
+@include widget.setDescriptionPaddingX(0);
+@include widget.setDescriptionPaddingY(0);
+@include widget.setDescriptionBorderRadius(var(--#{$prefix}border-radius-normal));
 ```
 
 <hr>
@@ -132,6 +200,73 @@ Customize the symbol of required widget.
 
 ```css 
 @include widget.setRequiredSymbol( {String} $symbol );
+```
+
+##### `setWidgetPaddingX` and `setWidgetPaddingY`
+
+Customize the widget container padding.
+
+```css 
+@include widget.setWidgetPaddingX( {Length} $length );
+@include widget.setWidgetPaddingY( {Length} $length );
+```
+
+##### `setWidgetBorderWidth`
+
+xxxxxxxx
+
+```css 
+@include widget.setWidgetBorderWidth( {Length} $width );
+```
+
+##### `setWidgetBorderRadius`
+
+xxxxxxxx
+
+```css 
+@include widget.setWidgetBorderRadius( {Length} $radius );
+```
+
+##### `setLabelInlineWidth`
+
+xxxxxxxx
+
+```css 
+@include widget.setLabelInlineWidth( {Length} $width );
+```
+
+##### `setLabelPaddingX` and `setLabelPaddingY`
+
+Customize the widget label padding.
+
+```css 
+@include widget.setLabelPaddingX( {Length} $length );
+@include widget.setLabelPaddingY( {Length} $length );
+```
+
+##### `setLabelBorderRadius`
+
+xxxxxxxx
+
+```css 
+@include widget.setLabelBorderRadius( {Length} $width );
+```
+
+##### `setDescriptionPaddingX` and `setDescriptionPaddingY`
+
+Customize the widget description padding.
+
+```css 
+@include widget.setDescriptionPaddingX( {Length} $length );
+@include widget.setDescriptionPaddingY( {Length} $length );
+```
+
+##### `setDescriptionBorderRadius`
+
+xxxxxxxx
+
+```css 
+@include widget.setDescriptionBorderRadius( {Length} $width );
 ```
 
 <!-- tabs:end -->

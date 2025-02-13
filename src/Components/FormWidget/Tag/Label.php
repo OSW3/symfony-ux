@@ -6,6 +6,7 @@ use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\FormWidget\LabelTrait;
 use OSW3\UX\Trait\FormWidget\RenderTrait;
 use OSW3\UX\Trait\FormWidget\RequiredTrait;
+use OSW3\UX\Trait\FormWidget\TitleTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -20,6 +21,7 @@ class Label extends Component
     use LabelTrait;
     use RequiredTrait;
     use RenderTrait;
+    use TitleTrait;
     
     #[ExposeInTemplate(name: 'for')]
     public string|null $for;
@@ -30,10 +32,15 @@ class Label extends Component
     #[ExposeInTemplate(name: 'icon', getter: 'fetchIcon')]
     public string|null $icon;
 
+    #[ExposeInTemplate(name: 'iconType')]
+    public string|null $iconType = null;
+
+    #[ExposeInTemplate(name: 'iconValue')]
+    public string|null $iconValue = null;
+
     #[PreMount]
     public function preMount(array $data): array
     {
-        // $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -68,8 +75,13 @@ class Label extends Component
         return implode(" ", $classList);
     }
 
-    public function fetchIcon()
-    {
+    public function fetchIcon(): string|null {
+        if ($this->icon) {
+            preg_match('/^([^:]+):(.*)$/', $this->icon, $matches);
+            $this->iconType = $matches[1] ?? 'font';
+            $this->iconValue = $matches[2] ?? $this->icon;
+        }
+
         return $this->icon;
     }
 

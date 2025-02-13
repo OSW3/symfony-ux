@@ -23,11 +23,20 @@ class Description extends Component
     use RenderTrait;
 
     #[ExposeInTemplate(name: 'tag')]
-    public string $tag = 'p';
+    public string $tag;
+
+    #[ExposeInTemplate(name: 'icon', getter: 'fetchIcon')]
+    public string|null $icon = null;
+
+    #[ExposeInTemplate(name: 'iconType')]
+    public string|null $iconType = null;
+
+    #[ExposeInTemplate(name: 'iconValue')]
+    public string|null $iconValue = null;
 
     #[PreMount]
-    public function preMount(array $data): array
-    {
+    public function preMount(array $data): array {
+
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -39,16 +48,30 @@ class Description extends Component
         $resolver->setDefault('tag', 'p');
         $resolver->setAllowedTypes('tag', ['string']);
 
+        $resolver->setDefault('icon', null);
+        $resolver->setAllowedTypes('icon', ['string','null']);
+
         return $resolver->resolve($data) + $data;
     }
 
-    public function fetchClass(): string
-    {
+    public function fetchClass(): string {
         return "{$this->getComponentClassname()}-description";
     }
 
-    public function fetchRender(): bool 
-    {
+    /**
+     * Don't render the Description if Message is empty
+     */
+    public function fetchRender(): bool {
         return !empty($this->message);
+    }
+
+    public function fetchIcon(): string|null {
+        if ($this->icon) {
+            preg_match('/^([^:]+):(.*)$/', $this->icon, $matches);
+            $this->iconType = $matches[1] ?? 'font';
+            $this->iconValue = $matches[2] ?? $this->icon;
+        }
+
+        return $this->icon;
     }
 }

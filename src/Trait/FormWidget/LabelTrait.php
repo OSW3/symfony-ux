@@ -14,6 +14,9 @@ trait LabelTrait
     #[ExposeInTemplate(name: 'labelIcon', getter: 'fetchLabelIcon')]
     public string|null $labelIcon = null;
 
+    #[ExposeInTemplate(name: 'labelTitle', getter: 'fetchLabelTitle')]
+    public string|null $labelTitle = null;
+
     private function labelResolver(&$resolver): static
     {
         $resolver->setDefault('label', null);
@@ -25,21 +28,25 @@ trait LabelTrait
         $resolver->setDefault('labelIcon', null);
         $resolver->setAllowedTypes('labelIcon', ['string','null']);
 
+        $resolver->setDefault('labelTitle', null);
+        $resolver->setAllowedTypes('labelTitle', ['string','null']);
+
         return $this;
     }
 
-    public function fetchLabel(): ?string
-    {
+    public function fetchLabel(): ?string {
         return $this->label;
     }
 
-    public function fetchLabelHidden(): bool
-    {
+    public function fetchLabelHidden(): bool {
         return $this->labelHidden;
     }
 
-    public function fetchLabelIcon(): ?string
-    {
+    public function fetchLabelIcon(): ?string {
         return $this->labelIcon;
+    }
+
+    public function fetchLabelTitle(): ?string {
+        return $this->labelTitle;
     }
 }

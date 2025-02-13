@@ -12,7 +12,7 @@ trait DescriptionTrait
     public string|null $descriptionIcon = null;
 
     #[ExposeInTemplate(name: 'descriptionTag', getter: 'fetchDescriptionTag')]
-    public string $descriptionTag = "p";
+    public string $descriptionTag;
 
     #[ExposeInTemplate(name: 'descriptionId', getter: 'fetchDescriptionId')]
     private string|null $descriptionId = null;

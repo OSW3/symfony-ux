@@ -1,4 +1,4 @@
 {% if render %}<label {{ _get_attributes(_attr) }}>
-    {% if icon is not empty %}<twig:Component:Icon type="symbol" :value="icon" />{% endif %}
+    {% if icon is not empty %}<twig:Component:Icon :type="iconType" :value="iconValue" />{% endif %}
     {{ label|raw }}
 </label>{% endif %}

@@ -17,28 +17,37 @@ $prefix: prefix.$prefix;
 $required--symbol: '*';
 
 
-// Widget settings
+// Widget container
 
-$widget-padding      : 0;
-$widget-border-width : 0;
-$widget-border-radius: var(--#{$prefix}border-radius-none);
-
-
-// Label settings
-
-$label-padding      : 0;
-$label-border-width : 0;
-$label-border-radius: var(--#{$prefix}border-radius-none);
+$widget--padding-x    : 0;
+$widget--padding-y    : 0;
+$widget--border-width : 0;
+$widget--border-radius: var(--#{$prefix}border-radius-none);
 
 
-// Control settings
+// Widget Label
+
+$label--inline-width : auto; // applied when inline widget
+$label--padding-x    : 0;
+$label--padding-y    : 0;
+$label--border-radius: var(--#{$prefix}border-radius-none);
+
+
+// Widget Description
+
+$description--padding-x    : 0;
+$description--padding-y    : 0;
+$description--border-radius: var(--#{$prefix}border-radius-none);
+
+
+// Widget Control
 
 $control--padding-x       : .75rem;
 $control--padding-y       : .375rem;
-$control--padding-x--small: .25rem;
-$control--padding-y--small: .5rem;
-$control--padding-x--large: .5rem;
-$control--padding-y--large: 1rem;
+// $control--padding-x--small: .25rem;
+// $control--padding-y--small: .5rem;
+// $control--padding-x--large: .5rem;
+// $control--padding-y--large: 1rem;
 $control--border-width    : 1px;
 $control--border-radius   : var(--#{$prefix}border-radius-normal);
 
@@ -59,25 +68,63 @@ $transition-type      : ease-in-out;
 }
 
 
-@mixin setWidgetPadding($space) {
-    $widget-padding: $space !global;
-}
 
-@mixin setWidgetBorderRadius($width) {
-    $widget-border-width: $width !global;
+@mixin setWidgetPaddingX($space) {
+    $widget--padding-x: $space !global;
+}
+@mixin setWidgetPaddingY($space) {
+    $widget--padding-y: $space !global;
+}
+@mixin setWidgetBorderWidth($width) {
+    $widget--border-width: $width !global;
 }
 @mixin setWidgetBorderRadius($radius) {
-    $widget-border-radius: $radius !global;
+    $widget--border-radius: $radius !global;
 }
 
 
-@mixin setLabelPadding($space) {
-    $label-padding: $space !global;
-}
 
-@mixin setLabelBorderRadius($width) {
-    $label-border-width: $width !global;
+@mixin setLabelInlineWidth($width) {
+    $label--inline-width: $width !global;
+}
+@mixin setLabelPaddingX($space) {
+    $label--padding-x: $space !global;
+}
+@mixin setLabelPaddingY($space) {
+    $label--padding-y: $space !global;
 }
 @mixin setLabelBorderRadius($radius) {
-    $label-border-radius: $radius !global;
+    $label--border-radius: $radius !global;
 }
+
+
+
+@mixin setControlPaddingX($space) {
+    $control--padding-x: $space !global;
+}
+@mixin setControlPaddingY($space) {
+    $control--padding-y: $space !global;
+}
+@mixin setControlBorderWidth($width) {
+    $control--border-width: $width !global;
+}
+@mixin setControlBorderRadius($radius) {
+    $control--border-radius: $radius !global;
+}
+
+
+
+
+@mixin setDescriptionPaddingX($space) {
+    $description--padding-x: $space !global;
+}
+@mixin setDescriptionPaddingY($space) {
+    $description--padding-y: $space !global;
+}
+@mixin setDescriptionBorderRadius($radius) {
+    $description--border-radius: $radius !global;
+}
+
+
+
+

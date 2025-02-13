@@ -7,6 +7,7 @@
 @use './icon';
 @use './../builders/banner';
 @use './../storages/prefix';
+@use './../mixins/icon' as iconMixins;
 @use './../mixins/spacing';
 @use './../mixins/transition';
 // @use './../mixins/icon';
@@ -93,19 +94,12 @@ $prefix: prefix.$prefix;
 
 
     & .#{$prefix}icon {
-        height: 1em;
-        display: inline-flex;
-        vertical-align: baseline;
-        // fill: transparent;
+        @include iconMixins.toFontSize;
         @include transition.set(
             (fill, stroke),
             store.$transition-delay,
             store.$transition-type,
         );
-
-        &:has(img), &:has(svg) {
-            width: 1em;
-        }
     }
 
     &:has(.#{$prefix}icon:first-child) .#{$prefix}icon {
