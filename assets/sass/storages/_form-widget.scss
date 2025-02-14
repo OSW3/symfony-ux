@@ -52,6 +52,11 @@ $control--border-width    : 1px;
 $control--border-radius   : var(--#{$prefix}border-radius-normal);
 
 
+// Widget Group
+
+// $group--separator-width: 1px;
+
+
 // $disabled-opacity : 0.65;
 
 $transition           : true;
@@ -128,3 +133,6 @@ $transition-type      : ease-in-out;
 
 
 
+// @mixin setGroupSeparatorWidth($width) {
+//     $group--separator-width: $width !global;
+// }

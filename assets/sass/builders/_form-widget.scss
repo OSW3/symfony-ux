@@ -7,6 +7,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/icon' as iconMixin;
+@use './../mixins/corner';
 @use './../mixins/flex';
 @use './../mixins/spacing';
 @use './../mixins/transition';
@@ -19,6 +20,64 @@ $prefix: prefix.$prefix;
 
 
 
+// * Component Mixin & Functions
+// * ---------------------------------------------
+
+@mixin control-border {
+    @if store.$control--border-width > 0 {
+
+        border: store.$control--border-width solid var(--#{$prefix}form-widget-control--border-color);
+
+        &:first-child {
+            @include corner.start(store.$control--border-radius);
+        }
+        &:last-child {
+            @include corner.end(store.$control--border-radius);
+        }
+        &:not(:first-child) {
+            margin-left: store.$control--border-width * -1;
+        }
+    }
+}
+
+@mixin control-padding {
+    @if store.$control--padding-x == store.$control--padding-y {
+        @if store.$control--padding-x > 0 {
+            @include spacing.inner(store.$control--padding-x);
+        }
+    } @else {
+        @include spacing.inner-x(store.$control--padding-x);
+        @include spacing.inner-y(store.$control--padding-y);
+    }
+}
+
+@mixin transition {
+    @if store.$transition {
+        @include transition.set(
+            (color, background-color, border-color),
+            store.$transition-delay,
+            store.$transition-type,
+        );
+    }
+}
+
+@mixin spacing-inner($x, $y) {
+    @if $x == $y {
+        @if $x > 0 {
+            @include spacing.inner($x);
+        }
+    } @else {
+        @include spacing.inner-x($x);
+        @include spacing.inner-y($y);
+    }
+}
+
+@mixin theme($color, $bg-color, $border-color: null) {
+    color           : $color;
+    background-color: $bg-color;
+    border-color    : $border-color;
+}
+
 // * Component Structure
 // * ---------------------------------------------
 
@@ -28,49 +87,41 @@ $prefix: prefix.$prefix;
     // --
 
     @include flex.display;
-    flex-direction: column;
-    flex-wrap     : wrap;
-    @if store.$widget--padding-x == store.$widget--padding-y {
-        @include spacing.inner(store.$widget--padding-x);
-    } @else {
-        @include spacing.inner-x(store.$widget--padding-x);
-        @include spacing.inner-y(store.$widget--padding-y);
-    }
-    color           : var(--#{$prefix}form-widget--color);
-    background-color: var(--#{$prefix}form-widget--bg-color);
+    @include flex.direction(column);
+    @include flex.wrap(wrap);
+    @include transition;
+    @include spacing-inner(
+        store.$widget--padding-x, 
+        store.$widget--padding-y
+    );
+    @include theme(
+        var(--#{$prefix}form-widget--color),
+        var(--#{$prefix}form-widget--bg-color),
+        var(--#{$prefix}form-widget--border-color)
+    );
     @if store.$widget--border-width > 0 {
-        border      : store.$widget--border-width solid var(--#{$prefix}form-widget--border-color);
+        border-width: store.$widget--border-width;
+        border-style: solid;
     }
-    border-radius   : store.$widget--border-radius;
+    border-radius: store.$widget--border-radius;
 
-    @if store.$transition {
-        @include transition.set(
-            (color, background-color, border-color),
-            store.$transition-delay,
-            store.$transition-type,
-        );
-    }
 
     // Widget label
     &-label {
-        // border: 5px solid blue;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        // position: relative;
 
-        color: var(--#{$prefix}form-widget-label--color);
-        background-color: var(--#{$prefix}form-widget-label--bg-color);
+        @include theme(
+            var(--#{$prefix}form-widget-label--color),
+            var(--#{$prefix}form-widget-label--bg-color),
+        );
 
-        @if store.$label--padding-x == store.$label--padding-y {
-            @if store.$label--padding-x > 0 {
-                @include spacing.inner(store.$label--padding-x);
-            }
-        } @else {
-            @include spacing.inner-x(store.$label--padding-x);
-            @include spacing.inner-y(store.$label--padding-y);
-        }
-        border-radius   : store.$label--border-radius;
+        @include spacing-inner(
+            store.$label--padding-x, 
+            store.$label--padding-y
+        );
+        border-radius: store.$label--border-radius;
     }
 
     // Required symbol
@@ -78,72 +129,63 @@ $prefix: prefix.$prefix;
         content: store.$required--symbol;
         color: var(--#{$prefix}form-widget--required--color) !important;
         padding-left: .1rem;
-
-        // position: absolute;
-        // right: 0;
-        // padding-left: 5px;
     }
 
     // Widget control
     &-control {
-        // border: 5px solid green;
-
-        flex-grow: 1;
-
-        color: var(--#{$prefix}form-widget-control--color);
-        background-color: var(--#{$prefix}form-widget-control--bg-color);
-
-        @if store.$control--padding-x == store.$control--padding-y {
-            @if store.$control--padding-x > 0 {
-                @include spacing.inner(store.$control--padding-x);
-            }
-        } @else {
-            @include spacing.inner-x(store.$control--padding-x);
-            @include spacing.inner-y(store.$control--padding-y);
-        }
-
-        @if store.$control--border-width > 0 {
-            border      : store.$control--border-width solid var(--#{$prefix}form-widget-control--border-color);
-        }
-        border-radius   : store.$control--border-radius;
-
-
-        @if store.$transition {
-            @include transition.set(
-                (color, background-color, border-color),
-                store.$transition-delay,
-                store.$transition-type,
-            );
-        }
-
-
-        &:hover {
-            color: var(--#{$prefix}form-widget-control--color--hover);
-            background-color: var(--#{$prefix}form-widget-control--bg-color--hover);
-            border-color: var(--#{$prefix}form-widget-control--border-color--hover);
-        }
-
-        &:focus {
-            color: var(--#{$prefix}form-widget-control--color--active);
-            background-color: var(--#{$prefix}form-widget-control--bg-color--active);
-            border-color: var(--#{$prefix}form-widget-control--border-color--active);
-            // outline: 20px solid #fc00eb;
-            // outline-offset: 20px;
-        }
+        @include flex.grow(1);
+        @include control-padding;
+        @include control-border;
+        @include transition;
+        @include theme(
+            var(--#{$prefix}form-widget-control--color),
+            var(--#{$prefix}form-widget-control--bg-color),
+        );
     }
 
     // Widget group
     &-group {
-        border: 5px solid greenyellow;
-
+        // border: 5px soli
         @include flex.display;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: stretch;
-        flex-grow: 1;
+        @include flex.direction(row);
+        @include flex.wrap(wrap);
+        @include flex.align-items(stretch);
+        @include flex.grow(1);
 
-        &-text {
-            border: 3px solid red;
+        &-text,
+        & output {
+            cursor: pointer;
+            @include flex.display;
+            @include flex.direction(row);
+            @include flex.align-items(center);
+            @include control-padding;
+            @include control-border;
+            @include theme(
+                var(--#{$prefix}form-widget-group--color),
+                var(--#{$prefix}form-widget-group--bg-color),
+            );
+        }
+    }
+
+    // &-group,
+    &-control:not(&-group &-control)  {
+        @include control-border;
+        @include corner.rounded(store.$control--border-radius);
+
+        &:hover {
+            @include theme(
+                var(--#{$prefix}form-widget-control--color--hover),
+                var(--#{$prefix}form-widget-control--bg-color--hover),
+                var(--#{$prefix}form-widget-control--border-color--hover)
+            );
+        }
+
+        &:focus {
+            @include theme(
+                var(--#{$prefix}form-widget-control--color--active),
+                var(--#{$prefix}form-widget-control--bg-color--active),
+                var(--#{$prefix}form-widget-control--border-color--active)
+            );
         }
     }
 
@@ -158,20 +200,19 @@ $prefix: prefix.$prefix;
         // TODO: adapter la fontsize selon la variable sizing
         font-size: .875em;
 
-        color: var(--#{$prefix}form-widget-description--color);
-        background-color: var(--#{$prefix}form-widget-description--bg-color);
-
+        @include theme(
+            var(--#{$prefix}form-widget-description--color),
+            var(--#{$prefix}form-widget-description--bg-color),
+        );
         flex-basis: 100%;
         width: 100%;
 
-        @if store.$description--padding-x == store.$description--padding-y {
-            @if store.$description--padding-x > 0 {
-                @include spacing.inner(store.$description--padding-x);
-            }
-        } @else {
-            @include spacing.inner-x(store.$description--padding-x);
-            @include spacing.inner-y(store.$description--padding-y);
-        }
+
+
+        @include spacing-inner(
+            store.$description--padding-x, 
+            store.$description--padding-y
+        );
         border-radius   : store.$description--border-radius;
     }
 
@@ -181,9 +222,11 @@ $prefix: prefix.$prefix;
     // --
 
     &:hover {
-        color: var(--#{$prefix}form-widget--color--hover);
-        background-color: var(--#{$prefix}form-widget--bg-color--hover);
-        border-color: var(--#{$prefix}form-widget--border-color--hover);
+        @include theme(
+            var(--#{$prefix}form-widget--color--hover),
+            var(--#{$prefix}form-widget--bg-color--hover),
+            var(--#{$prefix}form-widget--border-color--hover)
+        );
     }
 
     
@@ -192,9 +235,11 @@ $prefix: prefix.$prefix;
     // --
 
     &:has(&-control:focus) {
-        color: var(--#{$prefix}form-widget--color--active);
-        background-color: var(--#{$prefix}form-widget--bg-color--active);
-        border-color: var(--#{$prefix}form-widget--border-color--active);
+        @include theme(
+            var(--#{$prefix}form-widget--color--active),
+            var(--#{$prefix}form-widget--bg-color--active),
+            var(--#{$prefix}form-widget--border-color--active)
+        );
     }
 
     
@@ -204,8 +249,8 @@ $prefix: prefix.$prefix;
 
     $label-margin-right: .5rem;
     &-inline {
-        flex-direction: row;
-        align-items: center;
+        @include flex.direction(row);
+        @include flex.align-items(center);
     }
     &-inline &-label {
         margin-bottom: 0;
@@ -216,7 +261,7 @@ $prefix: prefix.$prefix;
         }
     }
     &-inline &-control {
-        // // flex-grow: 1;
+        // // @include flex.grow(1);
     }
     &-inline &-description {
         @if store.$label--inline-width != auto {
@@ -224,9 +269,9 @@ $prefix: prefix.$prefix;
         }
     }
     &-inline &-group {
-        // // flex-direction: row;
-        // // align-items: center;
-        // // flex-grow: 1;
+        // // @include flex.direction(row);
+        // // @include flex.align-items(center);
+        // // @include flex.grow(1);
     }
 
     
@@ -235,6 +280,7 @@ $prefix: prefix.$prefix;
     // --
 
     &-label > .#{$prefix}icon,
+    &-group-text > .#{$prefix}icon,
     &-description > .#{$prefix}icon {
         @include iconMixin.toFontSize;
         @include transition.set(
@@ -242,6 +288,28 @@ $prefix: prefix.$prefix;
             store.$transition-delay,
             store.$transition-type,
         );
+    }
+
+
+    // Widget checkbox / radio Exceptions
+    // --
+
+    & [type=checkbox],
+    & [type=radio] {
+        display: inline-block;
+        width: fit-content;
+    }
+
+
+    // Widget color Exceptions
+    // --
+
+    &-color &-group {
+        width: fit-content;
+    }
+    &-color &-control {
+        width: 4rem;
+        height: inherit;
     }
 }
 
@@ -281,13 +349,6 @@ $prefix: prefix.$prefix;
     //     border: store.$control--border-width solid var(--#{$prefix}form-widget-control--border-color);
     //     border-radius: store.$control--border-radius;
 
-    //     @if store.$transition {
-    //         @include transition.set(
-    //             (color, background-color, border-color),
-    //             store.$transition-delay,
-    //             store.$transition-type,
-    //         );
-    //     }
 
     //     // Control states
 
@@ -311,15 +372,6 @@ $prefix: prefix.$prefix;
     //     }
 
 
-    //     // Input Color
-
-    //     &[type=color] {
-    //         width: 3rem;
-    //         height: 2.5rem;
-    //         padding: .375rem;
-    //     }
-
-
     //     // Input Radio / Checkbox
 
     //     &[type=checkbox],
@@ -327,19 +379,6 @@ $prefix: prefix.$prefix;
     //         display: inline-block;
     //         width: auto;
     //     }
-    // }
-
-
-    // Widget Group
-    // --
-
-    // &-group {
-    //     position: relative;
-    //     display: flex;
-    //     flex-direction: row;
-    //     flex-wrap: wrap;
-    //     align-items: stretch;
-    //     width: 100%;
     // }
 
 

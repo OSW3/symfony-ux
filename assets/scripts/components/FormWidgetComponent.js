@@ -26,6 +26,7 @@ export default class FormWidgetComponent
     #input;
     #label;
     #output;
+    #group;
     #description;
     
     constructor(node)
@@ -33,30 +34,43 @@ export default class FormWidgetComponent
         this.#input            = node;
         this.#label            = document.querySelector(`label[for=${this.#input.id}]`);
         this.#output           = document.querySelector(`output[for=${this.#input.id}]`);
+        this.#group            = document.querySelector(`[data-widget-id=${this.#input.id}] .${getPrefix()}form-widget-group-text`);
         this.#description      = document.querySelector(`#${this.#input.getAttribute('aria-describedby')}`);
 
         this.#input.onblur     = this.#onBlur.bind(this);
-        // this.#input.onload   = this.#onChange.bind(this);
-        this.#input.oninput   = this.#onChange.bind(this);
+        // this.#input.onload  = this.#onChange.bind(this);
+        this.#input.oninput    = this.#onChange.bind(this);
         this.#input.onclick    = this.#onClick.bind(this);
         this.#input.onkeyup    = this.#onKeyup.bind(this);
         this.#input.onkeypress = this.#onKeypress.bind(this);
         this.#input.onfocus    = this.#onFocus.bind(this);
 
         this.#writeOutputValue();
+
+        // Set focus on <output> click
+        if (this.#output) {
+            this.#output.onclick = () => {
+                if (this.#input.getAttribute('type') == 'color') {
+                    this.#input.click();
+                }
+            }
+        }
+
+        if (this.#group) {
+            this.#group.onclick = () => {
+                this.#input.focus();
+            }
+        }
     }
 
-    get label()
-    {
+    get label() {
         return document.querySelector(`label[for=${this.#input.id}]`)?.textContent;
     }
-    get hasLabel()
-    {
+    get hasLabel() {
         return !!this.label;
     }
 
-    get hasDescription()
-    {
+    get hasDescription() {
         return !!document.querySelector(`#${this.#input.getAttribute('aria-describedby')}`);
     }
     

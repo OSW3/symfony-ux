@@ -21,7 +21,7 @@ $theme-properties: (
     'form-widget--required--color'       : var(--#{$prefix}red),
 
 
-    // Form Widget
+    // Widget layout
 
     'form-widget--color'                 : inherit, // inherit
     'form-widget--color--hover'          : inherit,
@@ -48,7 +48,7 @@ $theme-properties: (
     // 'form-widget--border-color--success' : initial,
 
 
-    // Form Widget > Label
+    // Widget Label
 
     'form-widget-label--color'                 : inherit, // override form-widget--color
     // // 'form-widget-label--color--hover'          : initial,
@@ -75,7 +75,7 @@ $theme-properties: (
     // 'form-widget-label--border-color--success' : initial,
 
 
-    // Form Widget > Control
+    // Widget Control
 
     'form-widget-control--color'                 : inherit,
     'form-widget-control--color--hover'          : initial,
@@ -102,10 +102,17 @@ $theme-properties: (
     // 'form-widget-control--border-color--success' : initial,
 
 
-    // Form Widget > Description
+    // Widget Description
 
     'form-widget-description--color'             : var(--#{$prefix}gray-600), // override form-widget--color
     'form-widget-description--bg-color'          : inherit,
+
+
+    // Widget group
+
+    'form-widget-group--color'                 : inherit,
+    'form-widget-group--bg-color'              : var(--#{$prefix}gray-100),
+
 
 );
 

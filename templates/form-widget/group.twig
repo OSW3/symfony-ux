@@ -1,5 +1,5 @@
 {# group start #}{% if isGroup is not empty %}<div class="{{ classname('form-widget-group') }}">{% endif %}
-{# icon at start #}{% if icon is not empty and iconPosition == 'start' %}<span class="{{ classname('form-widget-group-text') }}"><i class="{{ icon }}"></i></span>{% endif %}
+{# icon at start #}{% if icon is not empty and iconPosition == 'start' %}<span class="{{ classname('form-widget-group-text') }}"><twig:Component:Icon :type="iconType" :value="icon"/></span>{% endif %}
 {% block controls %}{% endblock %}
-{# icon at end #}{% if icon is not empty and iconPosition == 'end' %}<span class="{{ classname('form-widget-group-text') }}"><i class="{{ icon }}"></i></span>{% endif %}
+{# icon at end #}{% if icon is not empty and iconPosition == 'end' %}<span class="{{ classname('form-widget-group-text') }}"><twig:Component:Icon :type="iconType" :value="icon"/></span>{% endif %}
 {# group end #}{% if isGroup is not empty %}</div>{% endif %}

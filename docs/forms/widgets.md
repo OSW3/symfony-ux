@@ -188,6 +188,9 @@ $props: map.merge($props, (
 @include widget.setDescriptionPaddingX(0);
 @include widget.setDescriptionPaddingY(0);
 @include widget.setDescriptionBorderRadius(var(--#{$prefix}border-radius-normal));
+
+/* Widget group */
+@include widget.setGroupSeparatorWidth(1px);
 ```
 
 <hr>

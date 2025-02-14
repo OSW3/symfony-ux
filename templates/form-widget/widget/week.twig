@@ -12,7 +12,8 @@
 {% embed "@SymfonyUx/form-widget/group.twig" with {
     isGroup     : isGroup,
     icon        : icon,
-    iconPosition: iconPosition
+    iconPosition: iconPosition,
+    iconType    : iconType,
 } %}{% block controls %}
 
     {% include "@SymfonyUx/form-widget/tag/input/tag.twig" with {

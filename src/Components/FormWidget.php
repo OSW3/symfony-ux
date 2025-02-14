@@ -131,7 +131,7 @@ class FormWidget extends Component
             ->formatResolver($resolver)
             ->formResolver($resolver)
             ->groupResolver($resolver)
-            ->iconResolver($resolver)
+        /* done */ ->iconResolver($resolver)
         /* done */ ->inlineResolver($resolver)
             ->idResolver($resolver)
         /* done */ ->labelResolver($resolver)
@@ -164,9 +164,10 @@ class FormWidget extends Component
         return $resolver->resolve($data) + $data;
     }
 
-    public function fetchId()
-    {
-        return empty($this->id) ? $this->defaultId : $this->id;
+    public function fetchId() {
+        $id = empty($this->id) ? $this->defaultId : $this->id;
+        // dump($id);
+        return $id;
     }
 
     public function fetchClass(): string {
@@ -175,6 +176,10 @@ class FormWidget extends Component
         
         if ($this->inline) {
             $classList[] = "{$this->getComponentClassname()}-inline";
+        }
+
+        if ($this->type == 'color') {
+            $classList[] = "{$this->getComponentClassname()}-color";
         }
 
         if ($this->required) {
@@ -198,5 +203,14 @@ class FormWidget extends Component
         }
 
         return $isGroup;
+    }
+
+    public function fetchValue(): string|array|null {
+
+        if ($this->type == 'color' && !$this->value) {
+            $this->value = '#000000';
+        }
+
+        return $this->value;
     }
 }
