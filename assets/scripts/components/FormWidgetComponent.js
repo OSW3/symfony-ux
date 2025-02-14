@@ -58,7 +58,12 @@ export default class FormWidgetComponent
 
         if (this.#group) {
             this.#group.onclick = () => {
-                this.#input.focus();
+                if (this.#input.getAttribute('type') == 'file') {
+                    this.#input.click();
+                }
+                else {
+                    this.#input.focus();
+                }
             }
         }
     }

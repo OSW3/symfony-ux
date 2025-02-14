@@ -58,14 +58,23 @@ import './../../../vendor/osw3/symfony-ux/assets/scripts/components/FormWidgetCo
 
 | Parameter | Type | Description | Required | Default |
 |-|-|-|-|-|
+| `autocomplete` | `boolean, string` | Apply `autocomplete` attribute to the widget (`null`,`true`,`false`,`on`,`off`) | no | null |
 | `autofocus` | `boolean` | Apply `autofocus` attribute to the widget | no | false |
+| `class` | `string` | Additional widget class | no | null |
+| `dirname` | `boolean` | Send direction + value to the server (attribute `name` required) | no | false |
+| `disabled` | `boolean` | Apply `disabled` attribute to the widget | no | false |
 | `description` | `string` | Set the text of the `description` tag | no | null |
 | `descriptionIcon` | `string` | Set the icon of the `description` | no | null |
 | `descriptionTag` | `string` | Set the tag type of the `description` tag | no | 'p' |
+| `icon` | `string` | Apply icon to the widget | no | null |
+| `iconType` | `string` | Define the type of the icon (`font`,`img`,`symbol`) | no | `font` |
+| `iconPosition` | `string` | Set the position of the icon relative to the control (`start`, `end`) | no | `start` |
 | `inline` | `boolean` | Make inline widget | no | false |
 | `label` | `string` | Set the text of the `label` tag | no | null |
+| `labelEllipsis` | `boolean` | Apply ellipsis to long `label` tag value | no | true |
 | `labelHidden` | `boolean` | Apply the hidden attribute to the `label` tag | no | false |
 | `labelIcon` | `string` | Set the icon of the `description` | no | null |
+| `name` | `string` | Set the name of the `widget` | no | null |
 | `placeholder` | `string` | Set the placeholder. | no | null |
 | `required` | `boolean` | Make the widget required | no | false |
 | `title` | `string` | Set the text of the `title` attribute of the input | no | null |

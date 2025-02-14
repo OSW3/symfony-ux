@@ -81,6 +81,8 @@ $prefix: prefix.$prefix;
 // * Component Structure
 // * ---------------------------------------------
 
+
+// TODO: Disable (label cursor, label color?, group cursor, control color)
 .#{$prefix}form-widget {
 
     // Widget layout
@@ -108,20 +110,21 @@ $prefix: prefix.$prefix;
 
     // Widget label
     &-label {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-
         @include theme(
             var(--#{$prefix}form-widget-label--color),
             var(--#{$prefix}form-widget-label--bg-color),
         );
-
         @include spacing-inner(
             store.$label--padding-x, 
             store.$label--padding-y
         );
         border-radius: store.$label--border-radius;
+
+        &-ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
     }
 
     // Required symbol
@@ -311,76 +314,4 @@ $prefix: prefix.$prefix;
         width: 4rem;
         height: inherit;
     }
-}
-
-.#{$prefix}form-widget {
-
-
-    // // Widget state
-
-    // &:hover {
-    //     // background-color: var(--#{$prefix}form-widget-control--bg-color--hover);
-    //     // border-color: var(--#{$prefix}form-widget-control--border-color--hover);
-
-    //     color: var(--#{$prefix}form-widget--color--hover);
-    // }
-
-    // &:has(:focus) {
-    //     color: var(--#{$prefix}form-widget--color--active);
-    // }
-    
-
-
-
-
-
-    // Widget Control
-    // --
-
-    // &-control {
-    //     // border: 3px solid yellow;
-
-    //     display: block;
-    //     width: 100%;
-
-    //     padding: store.$control--padding-y store.$control--padding-x;
-    //     margin: 0;
-    //     background-color: var(--#{$prefix}form-widget-control--bg-color);
-    //     border: store.$control--border-width solid var(--#{$prefix}form-widget-control--border-color);
-    //     border-radius: store.$control--border-radius;
-
-
-    //     // Control states
-
-    //     &:hover {
-    //         background-color: var(--#{$prefix}form-widget-control--bg-color--hover);
-    //         border-color: var(--#{$prefix}form-widget-control--border-color--hover);
-    //     }
-
-    //     &:focus {
-    //         background-color: var(--#{$prefix}form-widget-control--bg-color--active);
-    //         border-color: var(--#{$prefix}form-widget-control--border-color--active);
-    //     }
-
-    //     &:disabled {
-    //         background-color: var(--#{$prefix}form-widget-control--bg-color--readonly);
-    //     //     border-color: $form-widget--control---border-color--disabled;
-    //         &:not([readonly]) {
-    //             background-color: var(--#{$prefix}form-widget-control--bg-color--disabled);
-    //     //         color: $form-widget--control--text-color--disabled;
-    //         }
-    //     }
-
-
-    //     // Input Radio / Checkbox
-
-    //     &[type=checkbox],
-    //     &[type=radio] {
-    //         display: inline-block;
-    //         width: auto;
-    //     }
-    // }
-
-
-
 }

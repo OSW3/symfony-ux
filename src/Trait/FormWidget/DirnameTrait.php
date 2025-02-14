@@ -19,13 +19,11 @@ trait DirnameTrait
         return $this;
     }
 
-    public function fetchDirname(): bool
-    {
+    public function fetchDirname(): bool {
         return $this->dirname;
     }
 
-    public function fetchDirnameValue(): string|null
-    {
+    public function fetchDirnameValue(): string|null {
         $value = null;
 
         if ($this->dirname && $this->name) {

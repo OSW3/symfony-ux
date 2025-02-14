@@ -26,6 +26,9 @@ class Label extends Component
     #[ExposeInTemplate(name: 'for')]
     public string|null $for;
 
+    #[ExposeInTemplate(name: 'ellipsis')]
+    public bool $ellipsis;
+
     #[ExposeInTemplate(name: 'hidden')]
     public bool $hidden;
 
@@ -53,6 +56,9 @@ class Label extends Component
         $resolver->setDefault('for', null);
         $resolver->setAllowedTypes('for', ['string', 'null']);
 
+        $resolver->setDefault('ellipsis', true);
+        $resolver->setAllowedTypes('ellipsis', ['bool']);
+
         $resolver->setDefault('hidden', false);
         $resolver->setAllowedTypes('hidden', ['bool']);
 
@@ -67,10 +73,9 @@ class Label extends Component
         $classList = [];
         $classList[] = "{$this->getComponentClassname()}-label";
 
-        // TODO: remove commented code
-        // if ($this->required) {
-        //     $classList[] = "required";
-        // }
+        if ($this->ellipsis) {
+            $classList[] = "{$this->getComponentClassname()}-label-ellipsis";
+        }
 
         return implode(" ", $classList);
     }
