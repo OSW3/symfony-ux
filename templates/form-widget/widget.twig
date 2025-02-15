@@ -1,8 +1,7 @@
 {# ---------------------------------------------- #}
 {# - Component : Form Control                   - #}
-{# - Part : Base                               - #}
+{# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{# {{ dump(type) }} #}
 {% extends '@SymfonyUx/form-widget/widget/'~ type ~'.twig' %}
 
 {# ---------------------------------------------- #}
@@ -14,6 +13,12 @@
 {# ---------------------------------------------- #}
 
 {% set _attr = _add_attribute(_attr, 'class', class) %}
+
+{# Set the data-xxx attributes #}
+{% for _property, _value in dataset|default([]) %}
+    {% set _attr = _add_attribute(_attr, _property, _value) %}
+{% endfor %}
+
 
 
 {# -- Shared data ------------------------------- #}

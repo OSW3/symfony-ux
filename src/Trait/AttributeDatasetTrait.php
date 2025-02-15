@@ -6,7 +6,7 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 trait AttributeDatasetTrait
 {
     #[ExposeInTemplate(name: 'dataset', getter: 'fetchDataset')]
-    public array $dataset;
+    public array $dataset = [];
 
     private function datasetResolver(&$resolver): static
     {

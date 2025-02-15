@@ -82,7 +82,6 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 
-// TODO: Disable (label cursor, label color?, group cursor, control color)
 .#{$prefix}form-widget {
 
     // Widget layout
@@ -128,7 +127,7 @@ $prefix: prefix.$prefix;
     }
 
     // Required symbol
-    &-required &-label::after {
+    [data-#{$prefix}widget-required] &-label::after {
         content: store.$required--symbol;
         color: var(--#{$prefix}form-widget--required--color) !important;
         padding-left: .1rem;
@@ -144,6 +143,24 @@ $prefix: prefix.$prefix;
             var(--#{$prefix}form-widget-control--color),
             var(--#{$prefix}form-widget-control--bg-color),
         );
+
+        // TODO: Disable (label cursor, label color?, group cursor, control color)
+
+        &:focus {
+            @include theme(
+                var(--#{$prefix}form-widget-control--color--active),
+                var(--#{$prefix}form-widget-control--bg-color--active),
+                var(--#{$prefix}form-widget-control--border-color--active),
+            );
+        }
+
+        &:disabled {
+            background-color: var(--#{$prefix}form-widget-control--bg-color--disabled);
+            border-color: var(--#{$prefix}form-widget-control--border-color--disabled);
+            &:not([readonly]) {
+                color: var(--#{$prefix}form-widget-control--color--disabled);
+            }
+        }
     }
 
     // Widget group

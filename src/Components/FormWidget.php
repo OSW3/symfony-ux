@@ -4,6 +4,7 @@ namespace OSW3\UX\Components;
 use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
+use OSW3\UX\Trait\AttributeDatasetTrait;
 use OSW3\UX\Trait\FormWidget\MaxTrait;
 use OSW3\UX\Trait\FormWidget\MinTrait;
 use OSW3\UX\Trait\FormWidget\FormTrait;
@@ -57,6 +58,7 @@ class FormWidget extends Component
     use ContainerTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
+    use AttributeDatasetTrait;
 
     // Label
     use LabelTrait;
@@ -165,9 +167,8 @@ class FormWidget extends Component
     }
 
     public function fetchId() {
-        $id = empty($this->id) ? $this->defaultId : $this->id;
-        // dump($id);
-        return $id;
+        $this->id = empty($this->id) ? $this->defaultId : $this->id;
+        return $this->id;
     }
 
     public function fetchClass(): string {
@@ -182,10 +183,6 @@ class FormWidget extends Component
             $classList[] = "{$this->getComponentClassname()}-color";
         }
 
-        if ($this->required) {
-            $classList[] = "{$this->getComponentClassname()}-required";
-        }
-
         if(!empty($this->class)) {
             $classList[] = $this->class;
         }
@@ -193,6 +190,25 @@ class FormWidget extends Component
         $classList = array_unique($classList);
         
         return implode(" ", $classList);
+    }
+
+
+    public function fetchDataset(): array
+    {
+        $dataset = [];
+
+        $dataset["{$this->prefix}widget-id"]   = $this->id;
+        $dataset["{$this->prefix}widget-type"] = $this->type;
+        $dataset["{$this->prefix}widget-disabled"] = $this->disabled;
+        $dataset["{$this->prefix}widget-readonly"] = $this->readonly;
+        $dataset["{$this->prefix}widget-required"] = $this->required;
+        
+        foreach ($dataset as $property => $value) {
+            $dataset["data-{$property}"] = $value;
+            unset($dataset[$property]);
+        }
+
+        return $dataset;
     }
 
     public function fetchGroup(): bool {

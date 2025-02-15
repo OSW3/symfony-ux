@@ -23,6 +23,7 @@
         :label="null"
         :container="false"
         :choices="phoneCodeChoices"
+        :name="name~'[index]'"
     />
     {% endif %}
     {% include "@SymfonyUx/form-widget/tag/input/tag.twig" with {
@@ -34,7 +35,7 @@
         id          : id,
         maxlength   : maxlength,
         minlength   : minlength,
-        name        : name,
+        name        : name~'[number]',
         pattern     : pattern,
         placeholder : placeholder,
         readonly    : readonly,
