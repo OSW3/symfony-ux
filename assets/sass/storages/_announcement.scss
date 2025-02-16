@@ -14,6 +14,7 @@ $prefix: prefix.$prefix;
 $min-height      : 48px;
 $border-width    : 0;
 $border-radius   : 0;
+$hover           : true;
 $transition      : true;
 $transition-delay: var(--#{$prefix}transition-normal);
 $transition-type : ease-in-out;
@@ -31,6 +32,10 @@ $transition-type : ease-in-out;
 }
 @mixin setBorderRadius($radius) {
     $border-radius: $radius !global;
+}
+
+@mixin setHover($enabled) {
+    $hover: $enabled !global;
 }
 
 // Enables or disables transitions for the brand's elements.

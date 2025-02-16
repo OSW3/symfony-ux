@@ -49,14 +49,16 @@ $prefix: prefix.$prefix;
         );
     }
 
-    &:hover {
-        color: var(--#{$prefix}announcement--color--hover);
-        background-color: var(--#{$prefix}announcement--bg-color--hover);
-        border-color: var(--#{$prefix}announcement--border-color--hover);
-
-        & a {
+    @if store.$hover {
+        &:hover {
             color: var(--#{$prefix}announcement--color--hover);
-            text-decoration: underline;
+            background-color: var(--#{$prefix}announcement--bg-color--hover);
+            border-color: var(--#{$prefix}announcement--border-color--hover);
+    
+            & a {
+                color: var(--#{$prefix}announcement--color--hover);
+                text-decoration: underline;
+            }
         }
     }
 }

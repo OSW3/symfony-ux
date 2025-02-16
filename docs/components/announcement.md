@@ -76,6 +76,7 @@ symfony_ux:
 |-|-|-|-|-|
 | `messages` | `array` | List of messages | no | [] |
 | `animation` • | `enum` | Set the animation type `ticker`,`rotator`,`none` | no | `ticker` |
+| `pauseHover` | `boolean` | Set pause hover to the ticker or rotator | no | `true` |
 
 > Note: Parameters with • override the YAML configuration.
 
@@ -131,6 +132,7 @@ $prefix: prefix.$prefix;
 @include announcement.setMinHeight(48px);
 @include announcement.setBorderWidth(0);
 @include announcement.setBorderRadius(var(--#{$prefix}border-radius-none));
+@include announcement.setHover(true);
 @include announcement.setTransition(true);
 @include announcement.setTransitionDelay(var(--#{$prefix}transition-normal));
 @include announcement.setTransitionType(ease-in-out);
@@ -164,12 +166,20 @@ xxxx
 @include announcement.setBorderRadius( {Length} $radius  );
 ```
 
+##### `setHover`
+
+xxxx
+
+```css 
+@include announcement.setHover( {Boolean} $enabled  );
+```
+
 ##### `setTransition`
 
 xxxx
 
 ```css 
-@include announcement.setTransition( {Boolean} $transition  );
+@include announcement.setTransition( {Boolean} $enabled  );
 ```
 
 ##### `setTransitionDelay`

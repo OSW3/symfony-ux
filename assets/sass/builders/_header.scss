@@ -1,0 +1,395 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/header.scss ------------
+// *
+// *    Builder for Header component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+
+// @use './../storages/announcement' as store;
+// @use './../components/announcement';
+@include banner.header('Component Announcement');
+$prefix: prefix.$prefix;
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}header {
+
+    &-v0 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        // padding: 15px 20px;
+        background-color: #333;
+        color: white;
+        
+        .#{$prefix}brand {
+            margin-right: 3rem;
+        }
+        
+        .#{$prefix}menu {
+            flex-grow: 1;
+            background-color: transparent;
+        }
+    }
+
+    &-v1 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #333;
+        color: white;
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+    }
+
+
+    &-v2 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background-color: #333;
+        color: white;
+        
+        & nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        & nav ul li {
+            margin-left: 20px;
+        }
+        & nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        & nav ul li a:hover {
+            text-decoration: underline;
+        }
+    }
+
+
+    &-v3 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background-color: #333;
+        color: white;
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        .search-bar input {
+            padding: 7px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+        .search-bar button {
+            margin-left: 5px;
+            padding: 7px 12px;
+            border: none;
+            background-color: #ff6600;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .search-bar button:hover {
+            background-color: #e65c00;
+        }
+
+    }
+
+
+    &-v4 {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background-color: #333;
+        color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-left: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+        .content {
+            padding: 20px;
+            height: 2000px; /* Pour simuler une longue page et voir l'effet sticky */
+        }
+
+    }
+
+
+    &-v5 {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background-color: #333;
+        color: white;
+        
+        .menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: #444;
+            width: 200px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            display: block;
+        }
+        .menu a:hover {
+            background-color: #555;
+        }
+        .burger {
+            display: block;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        @media (min-width: 768px) {
+            .menu {
+                display: flex;
+                position: static;
+                flex-direction: row;
+                background: none;
+                box-shadow: none;
+                width: auto;
+            }
+            .menu a {
+                padding: 10px 15px;
+            }
+            .burger {
+                display: none;
+            }
+        }
+
+    }
+
+
+    &-v6 {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        background: url('https://source.unsplash.com/1600x900/?nature,mountain') no-repeat center center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+
+        .header-content {
+            background: rgba(0, 0, 0, 0.5); /* Assombrit légèrement pour améliorer la lisibilité */
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 36px;
+        }
+        p {
+            font-size: 18px;
+        }
+    }
+
+
+    &-v7 {
+        text-align: center;
+        padding: 20px;
+        background-color: #333;
+        color: white;
+     
+        /* Navigation */
+        nav {
+            background-color: #222;
+            padding: 10px 0;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+    }
+
+
+    &-v8 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px;
+        background-color: #333;
+        color: white;
+        
+        .top-bar {
+            background-color: #444;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            font-size: 14px;
+            flex-grow: 1;
+            width: 100%;
+
+            & .contact {
+                display: flex;
+                gap: 15px;
+            }
+            & a {
+                color: white;
+                text-decoration: none;
+                margin-left: 10px;
+            }
+            & a:hover {
+                text-decoration: underline;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background-color: #222;
+            padding: 10px 0;
+            flex-grow: 1;
+            width: 100%;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+    }
+
+
+    &-v9 {
+        background-color: #333;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+
+        /* Navigation horizontale */
+        nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            position: relative;
+        }
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ff6600;
+            transform: scaleX(0);
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        nav ul li a:hover::before {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        nav ul li a:hover {
+            color: #ff6600;
+        }
+
+    }
+}
