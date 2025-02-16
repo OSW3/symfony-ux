@@ -35,14 +35,14 @@ trait AnnouncementTrait
         return $this;
     }
 
-    public function getOrderBy(): ?int
+    public function getOrder(): ?int
     {
-        return $this->orderBy;
+        return $this->order;
     }
 
-    public function setOrderBy(?int $orderBy): static
+    public function setOrder(?int $order): static
     {
-        $this->orderBy = $orderBy;
+        $this->order = $order;
 
         return $this;
     }

@@ -2,8 +2,8 @@
 namespace OSW3\UX\Twig\Runtime;
 
 use Doctrine\Persistence\ManagerRegistry;
-use OSW3\Ux\DependencyInjection\Configuration;
 use Twig\Extension\RuntimeExtensionInterface;
+use OSW3\UX\DependencyInjection\Configuration;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class AnnouncementExtensionRuntime implements RuntimeExtensionInterface
@@ -23,6 +23,14 @@ class AnnouncementExtensionRuntime implements RuntimeExtensionInterface
 
         $repository = $this->doctrine->getRepository($entity);
         $entities   = $repository->findAll();
+
+        usort($entities, function ($a, $b) {
+            $orderA = $a->getOrder();
+            $orderB = $b->getOrder();
+
+            return $orderA <=> $orderB;
+        });
+
         return array_map(fn($entity) => $entity->{'get' . ucfirst('message')}(), $entities);
     }
 }
