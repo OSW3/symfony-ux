@@ -32,6 +32,11 @@ return function (): ArrayNodeDefinition {
             ->defaultValue(500)
         ->end()
 
+        ->booleanNode('pause_hover')
+            ->info("Set whether the ticker/rotator will be paused on mouseover")
+            ->defaultTrue()
+        ->end()
+
         ->scalarNode('entity')
             ->info("Set the entity of announcement message storage.")
             ->defaultNull()

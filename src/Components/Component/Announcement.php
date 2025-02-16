@@ -35,6 +35,9 @@ final class Announcement extends Component
     
     #[ExposeInTemplate(name: 'speed', getter: 'fetchSpeed')]
     public int $speed;
+    
+    #[ExposeInTemplate(name: 'pauseHover')]
+    public bool $pauseHover;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -64,6 +67,9 @@ final class Announcement extends Component
         $resolver->setDefault('speed', $options['speed']);
         $resolver->setAllowedTypes('speed', ['integer']);
 
+        $resolver->setDefault('pauseHover', $options['pause_hover']);
+        $resolver->setAllowedTypes('pauseHover', ['bool']);
+
         return $resolver->resolve($data) + $data;
     }
 
@@ -89,8 +95,7 @@ final class Announcement extends Component
         return $messages;
     }
 
-    public function fetchSpeed()
-    {
+    public function fetchSpeed() {
         return match($this->animation) {
             'ticker' => match($this->speed) {
                 0 => 0,

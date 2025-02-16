@@ -19,7 +19,7 @@ $prefix: prefix.$prefix;
 $theme-properties: (
     // menu-color             : var(--#{$prefix}red),
     // menu--color--hover       : inherit, //var(--#{$prefix}inherit),
-    menu--bg-color          : green, //var(--#{$prefix}gray-800),
+    menu--bg-color          : var(--#{$prefix}gray-300),
     // menu--bg-color--hover    : var(--#{$prefix}cyan),
     // menu--border-color      : var(--#{$prefix}red),
     // menu--border-color--hover: var(--#{$prefix}red),

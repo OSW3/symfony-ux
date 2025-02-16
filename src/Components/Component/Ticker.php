@@ -88,7 +88,7 @@ final class Ticker extends Component
         $dataset['delay'] = $this->delay;
         $dataset['direction'] = $this->direction;
         $dataset['loop'] = $this->loop ? "true" : "false";
-        $dataset['pauseHover'] = $this->pauseHover ? "true" : "false";
+        $dataset['pause-hover'] = $this->pauseHover ? "true" : "false";
 
         $dataset = array_merge($dataset, $this->dataset);
         

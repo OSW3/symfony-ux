@@ -2,10 +2,18 @@
 {% if animated == 'none' %}
     {{ messages[0]|raw }}
 {% else %}
-{% if animation == 'rotator' %}
-    <twig:Component:Rotator :items="messages" :delay="speed" />
-{% else %}
-    <twig:Component:Ticker :items="messages" :speed="speed" />
-{% endif %}
+    {% if animation == 'rotator' %}
+        <twig:Component:Rotator 
+            :items="messages" 
+            :delay="speed" 
+            :pauseHover="pauseHover"
+        />
+    {% else %}
+        <twig:Component:Ticker 
+            :items="messages" 
+            :speed="speed" 
+            :pauseHover="pauseHover"
+        />
+    {% endif %}
 {% endif %}
 </div>

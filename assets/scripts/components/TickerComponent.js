@@ -73,7 +73,7 @@ export default class TickerComponent {
 
         // Option Pause on Hover
         let pauseHover = this.#node.dataset.pauseHover ?? PAUSE_HOVER;
-        this.#pauseHover = parseBoolean(pauseHover, pauseHover);
+        this.#pauseHover = parseBoolean(pauseHover, pauseHover);        
 
         this.#onInit();
     }
