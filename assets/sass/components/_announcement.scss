@@ -16,12 +16,12 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    announcement--color             : var(--#{$prefix}gray-500),
-    announcement--color--hover       : var(--#{$prefix}white),
-    announcement--bg-color          : var(--#{$prefix}gray-800),
-    announcement--bg-color--hover    : var(--#{$prefix}gray-900),
-    announcement--border-color      : null,
-    announcement--border-color--hover: null,
+    'announcement--color'              : var(--#{$prefix}white),
+    'announcement--color--hover'       : var(--#{$prefix}white),
+    'announcement--bg-color'           : var(--#{$prefix}red),
+    'announcement--bg-color--hover'    : var(--#{$prefix}red),
+    'announcement--border-color'       : null,
+    'announcement--border-color--hover': null,
 );
 
 

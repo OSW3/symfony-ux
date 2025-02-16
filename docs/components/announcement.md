@@ -97,3 +97,94 @@ symfony_ux:
 />
 ```
 <!-- tabs:end -->
+
+
+
+## Customize SCSS
+
+<!-- tabs:start -->
+
+### **Theme**
+
+```css 
+@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storages/prefix';
+
+$props: map.merge($props, (
+    'announcement--color'              : var(--#{$prefix}white),
+    'announcement--color--hover'       : var(--#{$prefix}white),
+    'announcement--bg-color'           : var(--#{$prefix}red),
+    'announcement--bg-color--hover'    : var(--#{$prefix}red),
+    'announcement--border-color'       : null,
+    'announcement--border-color--hover': null,
+));
+```
+
+### **Layout**
+
+#### Custom file example
+
+```css 
+@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storage/prefix';
+@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storage/announcement';
+$prefix: prefix.$prefix;
+
+@include announcement.setMinHeight(48px);
+@include announcement.setBorderWidth(0);
+@include announcement.setBorderRadius(var(--#{$prefix}border-radius-none));
+@include announcement.setTransition(true);
+@include announcement.setTransitionDelay(var(--#{$prefix}transition-normal));
+@include announcement.setTransitionType(ease-in-out);
+```
+
+<hr>
+
+#### Available mixins
+
+##### `setMinHeight`
+
+xxxx
+
+```css 
+@include announcement.setMinHeight( {Length} $height  );
+```
+
+##### `setBorderWidth`
+
+xxxx
+
+```css 
+@include announcement.setBorderWidth( {Length} $width  );
+```
+
+##### `setBorderRadius`
+
+xxxx
+
+```css 
+@include announcement.setBorderRadius( {Length} $radius  );
+```
+
+##### `setTransition`
+
+xxxx
+
+```css 
+@include announcement.setTransition( {Boolean} $transition  );
+```
+
+##### `setTransitionDelay`
+
+xxxx
+
+```css 
+@include announcement.setTransitionDelay( {String} $delay  );
+```
+
+##### `setTransitionType`
+
+xxxx
+
+```css 
+@include announcement.setTransitionType( {String} $type  );
+```
+<!-- tabs:end -->
