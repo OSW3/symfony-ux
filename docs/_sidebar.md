@@ -18,7 +18,7 @@
   <!-- - [Accordions](./components/accordion.md) -->
   <!-- - [Alerts](./components/alert.md) -->
   - [Analytics](./components/analytics.md)
-  <!-- - [Announcement](./components/analytics.md) -->
+  - [Announcement](./components/announcement.md)
   - [Brand](./components/brand.md)
   - [Buttons](./components/buttons.md)
   - [Copyright](./components/copyright.md)

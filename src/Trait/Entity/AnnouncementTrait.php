@@ -11,7 +11,7 @@ trait AnnouncementTrait
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name: "message", type: Types::STRING, length: 255, nullable: false)]
+    #[ORM\Column(name: "`message`", type: Types::STRING, length: 255, nullable: false)]
     private ?string $message = null;
 
     #[ORM\Column(name: "`order`", type: Types::INTEGER, nullable: true, options:["unsigned" => true] )]

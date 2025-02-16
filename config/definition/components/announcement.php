@@ -31,6 +31,12 @@ return function (): ArrayNodeDefinition {
             ->min(0)
             ->defaultValue(500)
         ->end()
+
+        ->scalarNode('entity')
+            ->info("Set the entity of announcement message storage.")
+            ->defaultNull()
+        ->end()
+
     ->end();
 
     return $node;
