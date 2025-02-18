@@ -138,12 +138,7 @@
 }
 
 @function contrast-color($color) {
-  // Calculer la luminance de la couleur
   $luminance: luminance($color);
-
-  // Définir un seuil de luminance (généralement 0.5)
   $threshold: 0.5;
-
-  // Choisir la couleur de contraste en fonction de la luminance
   @return if($luminance > $threshold, #000000, #ffffff);
 }

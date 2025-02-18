@@ -1,9 +1,9 @@
 <div {{ _get_attributes(_attr) }}>
-    {% if icon %}
+{% if icon %}
     <span class="{{ classname('alert-icon') }}">{{ icon }}</span>
-    {% endif %}
+{% endif %}
     <p class="{{ classname('alert-message') }}">{{ message|raw }}</p>
-    {% if dismissible is same as true %}
+{% if dismissible is same as true %}
     <twig:Component:Button:Close aria-label="Close" />
-    {% endif %}
+{% endif %}
 </div>

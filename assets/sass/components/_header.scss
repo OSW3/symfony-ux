@@ -1,0 +1,32 @@
+// * ----------- @osw3/symfony-ux/assets/sass/components/header.scss -----------
+// *
+// *    Builder for Header component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/header.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/header';
+@use './../storages/prefix';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // header--color              : inherit,
+    // header--color--hover       : inherit,
+    header--bg-color           : var(--#{$prefix}red),
+    // header--bg-color--hover    : inherit,
+    // header--border-color       : inherit,
+    // header--border-color--hover: inherit,
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

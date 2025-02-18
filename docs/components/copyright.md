@@ -28,7 +28,7 @@ Display a copyright, generally on the website footer.
 Import the builder `_example.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/copyright';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/copyright';
 ```
 <!-- tabs:end -->
 
@@ -107,7 +107,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/copyright';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/copyright';
 
 @include copyright.setCursor(null);
 @include copyright.setFontFamily(null);

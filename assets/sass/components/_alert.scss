@@ -17,12 +17,9 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    alert--color             : var(--#{$prefix}red),
-    alert--color--hover       : inherit, //var(--#{$prefix}inherit),
-    alert--bg-color          : var(--#{$prefix}cyan),
-    alert--bg-color--hover    : var(--#{$prefix}cyan),
-    alert--border-color      : var(--#{$prefix}red),
-    alert--border-color--hover: var(--#{$prefix}red),
+    'alert--color'       : var(--#{$prefix}black),
+    'alert--bg-color'    : var(--#{$prefix}gray-300),
+    'alert--border-color': var(--#{$prefix}black),
 );
 
 
@@ -30,23 +27,23 @@ $theme-properties: (
 // * ---------------------------------------------
 
 $layout-properties: (
-    alert-padding-x        : alert.$padding-x,
-    alert-small-padding-x  : alert.$padding-x-small,
-    alert-large-padding-x  : alert.$padding-x-large,
+    'alert-padding-x'        : alert.$padding-x,
+    'alert-small-padding-x'  : alert.$padding-x-small,
+    'alert-large-padding-x'  : alert.$padding-x-large,
 
-    alert-padding-y        : alert.$padding-y,
-    alert-small-padding-y  : alert.$padding-y-small,
-    alert-large-padding-y  : alert.$padding-y-large,
+    'alert-padding-y'        : alert.$padding-y,
+    'alert-small-padding-y'  : alert.$padding-y-small,
+    'alert-large-padding-y'  : alert.$padding-y-large,
 
-    alert-font-size        : alert.$font-size,
-    alert-small-font-size  : alert.$font-size-small,
-    alert-large-font-size  : alert.$font-size-large,
+    'alert-font-size'        : alert.$font-size,
+    'alert-small-font-size'  : alert.$font-size-small,
+    'alert-large-font-size'  : alert.$font-size-large,
 
-    alert-font-weight      : alert.$font-weight,
-    alert-small-font-weight: alert.$font-weight-small,
-    alert-large-font-weight: alert.$font-weight-large,
+    'alert-font-weight'      : alert.$font-weight,
+    'alert-small-font-weight': alert.$font-weight-small,
+    'alert-large-font-weight': alert.$font-weight-large,
     
-    alert-line-height      : alert.$line-height,
-    alert-small-line-height: alert.$line-height-small,
-    alert-large-line-height: alert.$line-height-large,
+    'alert-line-height'      : alert.$line-height,
+    'alert-small-line-height': alert.$line-height-small,
+    'alert-large-line-height': alert.$line-height-large,
 );

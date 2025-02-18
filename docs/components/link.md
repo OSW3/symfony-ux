@@ -28,7 +28,7 @@ Create an advanced link.
 Import the builder `_example.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/link';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/link';
 ```
 <!-- tabs:end -->
 
@@ -108,8 +108,8 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/prefix';
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/link';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/prefix';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/link';
 
 @include link.setCursor(pointer);
 @include link.setTextDecoration(none, underline, underline);

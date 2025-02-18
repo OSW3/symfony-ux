@@ -35,7 +35,7 @@ Create a simple menu.
 Import the builder `_menu.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/menu';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/menu';
 ```
 
 ### **JavaScript**
@@ -43,6 +43,6 @@ Import the builder `_menu.scss`
 Import the component `ExampleComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/ExampleComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/ExampleComponent';
 ```
 <!-- tabs:end -->

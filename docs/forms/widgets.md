@@ -30,7 +30,7 @@ Create advanced forms elements
 ### **SCSS**
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/form-widget';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/form-widget';
 ```
 
 ### **JavaScript**
@@ -38,7 +38,7 @@ Create advanced forms elements
 Import the component `FormWidgetComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/FormWidgetComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/FormWidgetComponent';
 ```
 <!-- tabs:end -->
 
@@ -171,7 +171,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/form-widget' as widget;
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/form-widget' as widget;
 
 @include widget.setRequiredSymbol('*');
 

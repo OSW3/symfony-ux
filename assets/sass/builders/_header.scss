@@ -4,19 +4,58 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use 'sass:map';
 @use './../builders/banner';
 @use './../storages/prefix';
+@use './../storages/breakpoints';
 
-// @use './../storages/announcement' as store;
-// @use './../components/announcement';
-@include banner.header('Component Announcement');
+@use './../storages/header' as store;
+@use './../components/header';
+@include banner.header('Component Header');
 $prefix: prefix.$prefix;
+$breakpoints: breakpoints.$breakpoints;
 
 
 // * Component Structure
 // * ---------------------------------------------
 
 .#{$prefix}header {
+
+    background-color: var(--#{$prefix}header--bg-color);
+
+
+    position: relative;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+
+
+    // Sticky 
+    // -- 
+
+    &-sticky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+
+    // Header expand at $breakpoint
+    // --
+
+    @if map.has-key($breakpoints, store.$expand-at) {
+        @media (min-width: map.get($breakpoints, store.$expand-at)) {
+            & {
+                // display: none;
+            }
+        }
+    }
+
+
+
+
+
 
     &-v0 {
         display: flex;
@@ -254,7 +293,7 @@ $prefix: prefix.$prefix;
         background-color: #333;
         color: white;
      
-        /* Navigation */
+        /* Header */
         nav {
             background-color: #222;
             padding: 10px 0;
@@ -314,7 +353,7 @@ $prefix: prefix.$prefix;
             }
         }
 
-        /* Navigation */
+        /* Header */
         nav {
             background-color: #222;
             padding: 10px 0;
@@ -349,7 +388,7 @@ $prefix: prefix.$prefix;
         padding: 20px 0;
         text-align: center;
 
-        /* Navigation horizontale */
+        /* Header horizontale */
         nav {
             display: flex;
             justify-content: center;

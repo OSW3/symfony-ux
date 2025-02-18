@@ -8,17 +8,16 @@
 @use "sass:meta";
 @use "sass:math";
 @use './../mixins/flex';
-// @use './../mixins/size';
-@use './../builders/banner';
 @use './../mixins/spacing';
+@use './../storages/alert' as store;
+@use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/position';
 @use './../storages/spaces';
+@use './../components/alert';
 @use './../mixins/component';
 @use './../mixins/transition';
 
-@use './../storages/alert' as store;
-@use './../components/alert';
 @include banner.header('Component Alert');
 $prefix: prefix.$prefix;
 
@@ -26,10 +25,15 @@ $prefix: prefix.$prefix;
 $btn-close-size: 24px;
 
 
+
+// * Component Mixin & Functions
+// * ---------------------------------------------
+
 @function palette-declination($palette, $property) {
 
     @if 'alert--color' == map.get($property, name) {
-        @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
+        @return var(--#{$prefix}black);
+        // @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
     @else if 'alert--bg-color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
@@ -37,6 +41,12 @@ $btn-close-size: 24px;
 
     @return null;
 };
+
+@mixin theme($color, $bg-color, $border-color: null) {
+    color           : $color;
+    background-color: $bg-color;
+    border-color    : $border-color;
+}
 
 
 
@@ -59,13 +69,15 @@ $btn-close-size: 24px;
     @include flex.display;
     @include flex.direction(row);
     @include flex.align-items(center);
-    // @include position.relative;
     @include spacing.inner(var(--#{$prefix}alert-padding-x));
     @include spacing.outer-y(var(--#{$prefix}alert-padding-y));
-    background-color: var(--#{$prefix}alert--bg-color);
+
+    @include theme(
+        var(--#{$prefix}alert--color),
+        var(--#{$prefix}alert--bg-color)
+    );
     border: store.$border-width store.$border-style var(--#{$prefix}alert--border-color);
     border-radius: store.$border-radius;
-    // color: var(--#{$prefix}alert--color);
 
     @if store.$font-family {
         font-family: store.$font-family;
@@ -87,7 +99,6 @@ $btn-close-size: 24px;
         // margin-left: 0;
     }
     &-message {
-        // margin: 0 !important
         @include spacing.outer(0, auto, 0, 0, true);
 
     }
@@ -129,31 +140,36 @@ $btn-close-size: 24px;
     // --
 
     & .#{$prefix}button-close {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        // display: inline-block;
+        cursor: pointer;    
+        @include flex.display;
+        @include flex.align-items(center);
+        @include flex.justify-content(center);
+        @include theme(
+            var(--#{$prefix}alert--color),
+            none
+        );
 
-        background: none;
         border: none;
-        // position: absolute;
-        // top: 0;
-        // right: 0;
         z-index: 2;
-        // padding: 1.25rem 1rem;
-        // margin-left: auto;
-        color: var(--#{$prefix}white);
         height: $btn-close-size;
         width: $btn-close-size;
         line-height: math.div($btn-close-size, 1.5);
         font-size: math.div($btn-close-size, 1.5);
-        opacity: 0.6;
+        opacity: 0;
+        
         
         @include transition.set(
             (opacity), 
             store.$transition-delay, 
             store.$transition-type
         );
+
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+
+    &:hover .#{$prefix}button-close {
+        opacity: .4;
     }
 }

@@ -25,10 +25,8 @@ Example component description.
 
 ### **SCSS**
 
-Import the builder `_example.scss`
-
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/example';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/example';
 ```
 
 ### **JavaScript**
@@ -36,7 +34,7 @@ Import the builder `_example.scss`
 Import the component `ExampleComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/ExampleComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/ExampleComponent';
 ```
 <!-- tabs:end -->
 
@@ -89,7 +87,7 @@ symfony_ux:
 ### **Theme**
 
 ```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
     example--color              : var(--#{$prefix}black),
@@ -106,7 +104,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/example';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/example';
 
 @include example.setPadding(1rem);
 @include example.setTransitionType(ease-in-out);

@@ -23,26 +23,53 @@ class Alert extends Component
     use AttributeClassTrait;
     use AttributeDatasetTrait;
 
-    #[ExposeInTemplate(name: 'icon')]
-    public string|null $icon;
-
-    #[ExposeInTemplate(name: 'message')]
-    public string $message;
+    /**
+     * Delay in seconds before alerts are automatically dismissed.
+     * 
+     * @var int|string|null
+     */
+    #[ExposeInTemplate(name: 'delay')]
+    public int|string|null $delay;
     
-    #[ExposeInTemplate(name: 'type', getter: 'fetchType')]
-    public string $is;
-
-    // #[ExposeInTemplate(getter: 'doNotExpose')]
-    // public string $is;
-
-    #[ExposeInTemplate(getter: 'doNotExpose')]
-    public string $size;
-    
+    /**
+     * Indicates whether the alert can be dismissed by the user.
+     *
+     * @var bool
+     */
     #[ExposeInTemplate(name: 'dismissible')]
     public bool $dismissible;
 
-    #[ExposeInTemplate(name: 'duration')]
-    public int|string|null $duration;
+    /**
+     * Icon associated with the alert.
+     * 
+     * @var string|null
+     */
+    #[ExposeInTemplate(name: 'icon')]
+    public string|null $icon;
+    
+    /**
+     * Type of the alert.
+     * 
+     * @var string
+     */
+    #[ExposeInTemplate(name: 'type', getter: 'fetchType')]
+    public string|null $is;
+
+    /**
+     * Message displayed in the alert.
+     * 
+     * @var string
+     */
+    #[ExposeInTemplate(name: 'message')]
+    public string $message;
+
+    /**
+     * Size of the alert (small, normal, medium, large).
+     * 
+     * @var string
+     */
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public string $size;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -57,25 +84,25 @@ class Alert extends Component
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('icon', null);
-        $resolver->setAllowedTypes('icon', ['string', 'null']);
-
-        $resolver->setRequired('message');
-        $resolver->setAllowedTypes('message', ['string']);
-
-        $resolver->setDefaults(['is' => Palette::SUCCESS->value]);
-        $resolver->setAllowedTypes('is', ['string']);
-        $resolver->setAllowedValues('is', Palette::toArray());
-
-        $resolver->setDefaults(['size' => Size::NORMAL->value]);
-        $resolver->setAllowedTypes('size', 'string');
-        $resolver->setAllowedValues('size', Size::toArray());
+        $resolver->setDefault('delay', $options['delay']);
+        $resolver->setAllowedTypes('delay', ['integer','string', 'null']);
 
         $resolver->setDefault('dismissible', $options['dismissible']);
         $resolver->setAllowedTypes('dismissible', ['bool']);
 
-        $resolver->setDefault('duration', $options['duration']);
-        $resolver->setAllowedTypes('duration', ['integer','string', 'null']);
+        $resolver->setDefault('icon', null);
+        $resolver->setAllowedTypes('icon', ['string', 'null']);
+
+        $resolver->setDefaults(['is' => null]);
+        $resolver->setAllowedTypes('is', ['string','null']);
+        $resolver->setAllowedValues('is', array_merge([null], Palette::toArray()));
+
+        $resolver->setRequired('message');
+        $resolver->setAllowedTypes('message', ['string']);
+
+        $resolver->setDefaults(['size' => Size::NORMAL->value]);
+        $resolver->setAllowedTypes('size', 'string');
+        $resolver->setAllowedValues('size', Size::toArray());
 
         return $resolver->resolve($data) + $data;
     }
@@ -89,10 +116,11 @@ class Alert extends Component
     {
         $classList = $this->classList();
 
-        $classList[] = "{$this->getComponentClassname()}-{$this->fetchType()}";
+        if ($this->fetchType() !== null) {
+            $classList[] = "{$this->getComponentClassname()}-{$this->fetchType()}";
+        }
 
-        if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value)
-        {
+        if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value) {
             $classList[] = "{$this->getComponentClassname()}-{$this->size}";
         }
 
@@ -107,8 +135,8 @@ class Alert extends Component
         if ($this->dismissible) {
             $dataset['dismissible'] = true;
 
-            if ($this->duration) {
-                $dataset['duration'] = $this->duration;
+            if ($this->delay) {
+                $dataset['delay'] = $this->delay;
             }
         }
         
@@ -120,8 +148,7 @@ class Alert extends Component
         return $dataset;
     }
 
-    public function fetchType(): string 
-    {
+    public function fetchType(): string|null {
         return $this->is;
     }
 }

@@ -43,7 +43,7 @@ Create a rating stars component.
 Import the builder `_example.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/rating';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/rating';
 ```
 
 ### **JavaScript**
@@ -51,7 +51,7 @@ Import the builder `_example.scss`
 Import the component `ExampleComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/RatingComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/RatingComponent';
 ```
 <!-- tabs:end -->
 
@@ -144,7 +144,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 <!-- ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/example';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/example';
 
 @include example.setPadding(1rem);
 @include example.setTransitionType(ease-in-out);

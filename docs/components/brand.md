@@ -36,7 +36,7 @@ Create a responsive brand component.
 Import the builder `_brand.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/brand';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/brand';
 ```
 <!-- tabs:end -->
 

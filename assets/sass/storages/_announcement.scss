@@ -8,50 +8,96 @@
 $prefix: prefix.$prefix;
 
 
+
 // * Define storage data
 // * ---------------------------------------------
 
-$min-height      : 48px;
-$border-width    : 0;
-$border-radius   : 0;
-$hover           : true;
-$transition      : true;
+/// Minimum height for the element.
+$min-height: 48px;
+
+/// Width of the border around the element.
+$border-width: 0;
+
+/// Radius of the border corners.
+
+$border-radius: 0;
+
+/// Indicates whether hover effects are enabled.
+$hover: true;
+
+/// Indicates whether transitions are enabled.
+$transition: true;
+
+/// Delay for the transition effect.
 $transition-delay: var(--#{$prefix}transition-normal);
-$transition-type : ease-in-out;
+
+/// Type of transition timing function.
+$transition-type: ease-in-out;
+
 
 
 // * Storage Mixins definition
 // * ---------------------------------------------
 
+/// Sets the minimum height for elements.
+/// @param {Length} $height - The minimum height value to set.
+//
 @mixin setMinHeight($height) {
     $min-height: $height !global;
 }
 
+
+/// Sets the minimum height for elements.
+/// @param {Length} $height - The minimum height value to set.
+//
+@mixin setMinHeight($height) {
+    $min-height: $height !global;
+}
+
+
+/// Sets the border width for elements.
+/// @param {Length} $width - The border width value to set.
+//
 @mixin setBorderWidth($width) {
     $border-width: $width !global;
 }
+
+
+/// Sets the border radius for elements.
+/// @param {Length} $radius - The border radius value to set.
+//
 @mixin setBorderRadius($radius) {
     $border-radius: $radius !global;
 }
 
+
+/// Enables or disables hover effects for elements.
+/// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) hover effects.
+//
 @mixin setHover($enabled) {
     $hover: $enabled !global;
 }
 
-// Enables or disables transitions for the brand's elements.
-// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
+
+/// Enables or disables transitions for the brand's elements.
+/// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
+//
 @mixin setTransition($enabled) {
     $transition: $enabled !global;
 }
 
-// Sets the transition delay for the brand's elements.
-// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+
+/// Sets the transition delay for the brand's elements.
+/// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+//
 @mixin setTransitionDelay($delay) {
     $transition-delay: $delay !global;
 }
 
-// Sets the transition type (easing function) for the brand's elements.
-// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+
+/// Sets the transition type (easing function) for the brand's elements.
+/// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+//
 @mixin setTransitionType($type) {
     $transition-type: $type !global;
 }

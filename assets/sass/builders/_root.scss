@@ -27,6 +27,7 @@
 @use './../components/callout';
 @use './../components/copyright';
 @use './../components/form';
+@use './../components/header';
 @use './../components/link';
 @use './../components/menu';
 @use './../components/nav';
@@ -68,6 +69,7 @@ $themes: fnMap.merge-multiple(
     callout.$theme-properties, 
     copyright.$theme-properties, 
     form.$theme-properties, 
+    header.$theme-properties, 
     link.$theme-properties, 
     menu.$theme-properties, 
     nav.$theme-properties, 

@@ -58,7 +58,7 @@ Create advanced buttons.
 Import the builder `_button.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/button';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/button';
 ```
 <!-- tabs:end -->
 
@@ -166,7 +166,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/button';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/button';
 
 @include button.setBorderWidth( 1px );
 @include button.setBorderRadius( var(--#{$prefix}border-radius-normal) );

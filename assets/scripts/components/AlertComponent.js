@@ -1,8 +1,3 @@
-// ************************************************************************** //
-// *
-// *    Components: Alert
-// *
-// ************************************************************************** //
 "use strict";
 
 import { getCssClass } from "../utils/CssClassMap";
@@ -10,63 +5,70 @@ import Animate from "../utils/Animate";
 import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
 
-
-/** @var string Component classname */
-const NAME = 'alert';
-
-/** @var string Components prefix */
-const PREFIX = getPrefix();
-
-const CLASS_ALERT = getCssClass(`${PREFIX}${NAME}`);
-const CLASS_BTN_CLOSE = getCssClass(`${PREFIX}button-close`);
-
-/** @var string Component selector */
-const SELECTOR = `.${CLASS_ALERT}[data-dismissible]`;
-
-export default class AlertComponent
+export default class AlertComponent 
 {
+    /**
+     * Component Classname
+     * 
+     * @type {string}
+     */
+    static name = "alert";
+
+    /**
+     * Component prefix
+     * 
+     * @type {string}
+     */
+    static prefix = getPrefix();
+
+    /**
+     * Class List
+     * 
+     * @type {object}
+     */
+    static classList = {
+        main    : getCssClass(`${this.prefix}${this.name}`),
+        btnClose: getCssClass(`${this.prefix}button-close`),
+    };
+
+    /**
+     * Component selector
+     * 
+     * @type {string}
+     */
+    static selector = `.${this.classList.main}[data-dismissible]`;
+
+    /**
+     * Main component node
+     * 
+     * @type {HTMLElement}
+     */
     #node;
-    #button;
 
-    constructor(node)
-    {
+    constructor(node) {
         this.#node = node;
-
-        // Close button
-        // --
-
-        this.#button = this.#node.querySelector(`.${CLASS_BTN_CLOSE}`);
-
-        if (this.#button) {
-            let button = new ButtonComponent(this.#button);
-                button.onClick = (event, element) => {
-                    new Animate(
-                        this.#node
-                    ).fadeOut(() => this.#close());
-                };
-        }
-        
-        
-        // Auto close delay
-        // --
-
-        if (this.#node.dataset.duration)
-        {
-            new Animate(
-                this.#node, 
-                this.#node.dataset.duration
-            ).fadeOut(() => this.#close());
-            // new Animate(
-            //     this.#node, 
-            //     this.#node.dataset.duration
-            // ).reduce(() => this.#close());
-        }        
+        this.#initCloseButton();
+        this.#handleAutoClose();      
     }
     
-    #close()
-    {
+    #initCloseButton() {
+        const btn = this.#node.querySelector(`.${this.constructor.classList.btnClose}`);
+
+        new ButtonComponent(btn).onClick = () => {
+            new Animate(
+                this.#node
+            ).fadeOut(() => this.#close());
+        };
+    }
+
+    #handleAutoClose() {
+        const delay = this.#node.dataset.delay;
+        if (delay) new Animate(this.#node, delay).fadeOut(() => this.#close());
+    }
+
+    #close() {
         this.#node.remove();
     }
 }
 
-document.querySelectorAll(SELECTOR).forEach(node => new AlertComponent(node));
+document.querySelectorAll(AlertComponent.selector).forEach(node => new AlertComponent(node));

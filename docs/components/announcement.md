@@ -32,7 +32,7 @@ Create an announcement bar.
 ### **SCSS**
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/announcement';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/announcement';
 ```
 
 ### **JavaScript**
@@ -40,7 +40,7 @@ Create an announcement bar.
 Import the component `AnnouncementComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/AnnouncementComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AnnouncementComponent';
 ```
 <!-- tabs:end -->
 

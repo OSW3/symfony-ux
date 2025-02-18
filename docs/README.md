@@ -17,13 +17,13 @@ Add many UX Components to your app.
 
 ## Components
 <!-- - [Accordions](./components/accordion.md) -->
-<!-- - [Alerts](./components/alert.md) -->
+- [Alerts](./components/alert.md)
 - [Analytics](./components/analytics.md)
 - [Announcement](./components/announcement.md)
 - [Brand](./components/brand.md)
 - [Buttons](./components/buttons.md)
 - [Copyright](./components/copyright.md)
-<!-- - [Copyright](./components/copyright.md) -->
+- [Header](./components/header.md)
 - [Links](./components/link.md)
 - [Menus](./components/menu.md)
 - [Rating](./components/rating.md)

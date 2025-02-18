@@ -12,47 +12,292 @@ $prefix: prefix.$prefix;
 
 // * Define storage data
 // * ---------------------------------------------
+/// Width of the border around the element.
+/// @var length
+//
+$border-width: 1px;
 
-$border-width    : 1px;
-$border-style    : solid;
-$border-radius   : var(--#{$prefix}border-radius-normal);
+/// Style of the border around the element.
+/// @var string
+//
+$border-style: solid;
 
-$padding-x        : spaces.$base * .94;
-$padding-y        : spaces.$base * 1.25;
-$padding-x-small  : spaces.$base * .6;
-$padding-y-small  : spaces.$base * 1;
-$padding-x-large  : spaces.$base * 1;
-$padding-y-large  : spaces.$base * 1.6;
+/// Radius of the border corners, using a CSS variable.
+/// @var length
+//
+$border-radius: var(--#{$prefix}border-radius-normal);
 
-$font-family      : inherit;
-$font-size        : fonts.$scale-base * 1;
-$font-size-small  : fonts.$scale-base * .95;
-$font-size-large  : fonts.$scale-base * 1.2;
-$font-weight      : 400;
+/// Horizontal padding for the element.
+/// @var length
+//
+$padding-x: spaces.$base * .94;
+
+/// Vertical padding for the element.
+/// @var length
+//
+$padding-y: spaces.$base * 1.25;
+
+/// Horizontal padding for small elements.
+/// @var length
+//
+$padding-x-small: spaces.$base * .6;
+
+/// Vertical padding for small elements.
+/// @var length
+//
+$padding-y-small: spaces.$base * 1;
+
+/// Horizontal padding for large elements.
+/// @var length
+//
+$padding-x-large: spaces.$base * 1;
+
+/// Vertical padding for large elements.
+/// @var length
+//
+$padding-y-large: spaces.$base * 1.6;
+
+/// Font family for the text, inheriting from the parent element.
+/// @var string
+//
+$font-family: inherit;
+
+/// Base font size for the text.
+/// @var length
+//
+$font-size: fonts.$scale-base * 1;
+
+/// Font size for small text.
+/// @var length
+//
+$font-size-small: fonts.$scale-base * .95;
+
+/// Font size for large text.
+/// @var length
+//
+$font-size-large: fonts.$scale-base * 1.2;
+
+/// Base font weight for the text.
+/// @var number
+//
+$font-weight: 400;
+
+/// Font weight for small text.
+/// @var number
+//
 $font-weight-small: 400;
+
+/// Font weight for large text.
+/// @var number
+//
 $font-weight-large: 400;
-$line-height      : 1.5;
+
+/// Base line height for the text.
+/// @var number
+//
+$line-height: 1.5;
+
+/// Line height for small text.
+/// @var number
+//
 $line-height-small: 1;
+
+/// Line height for large text.
+/// @var number
+//
 $line-height-large: 1.6;
 
+/// Enables or disables the use of a color palette.
+/// @var boolean
+//
 $enable-palette: true;
 
-$box-shadow       : inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
+/// Box shadow effect for the element.
+/// @var string
+//
+$box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 
-$transition-delay : var(--#{$prefix}transition-normal);
-$transition-type  : ease-in-out;
+/// Delay for the transition effect, using a CSS variable.
+/// @var time
+//
+$transition-delay: var(--#{$prefix}transition-normal);
+
+/// Type of transition timing function.
+/// @var string
+//
+$transition-type: ease-in-out;
+
 
 // * Storage Mixins definition
 // * ---------------------------------------------
 
-// Sets the transition delay for the brand's elements.
-// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+/// Sets the width of the border around the element.
+/// @param {Length} $width - The border width value to set.
+//
+@mixin setBorderWidth($width) {
+    $border-width: $width !global;
+}
+
+
+/// Sets the style of the border around the element.
+/// @param {String} $style - The border style value to set.
+//
+@mixin setBorderStyle($style) {
+    $border-style: $style !global;
+}
+
+
+/// Sets the radius of the border corners, using a CSS variable.
+/// @param {Length} $radius - The border radius value to set.
+//
+@mixin setBorderRadius($radius) {
+    $border-radius: $radius !global;
+}
+
+
+/// Sets the horizontal padding for the element.
+/// @param {Length} $normal - The horizontal padding value to set.
+/// @param {Length} $small - The horizontal small padding value to set.
+/// @param {Length} $large - The horizontal large padding value to set.
+//
+@mixin setPaddingX($normal, $small: null, $large: null) {
+    $padding-x: $normal !global;
+
+    @if $small {
+        $padding-x-small: $small !global;
+    }
+
+    @if $large {
+        $padding-x-large: $large !global;
+    }
+}
+
+
+/// Sets the vertical padding for the element.
+/// @param {Length} $padding - The vertical padding value to set.
+/// @param {Length} $padding - The vertical small padding value to set.
+/// @param {Length} $padding - The vertical large padding value to set.
+//
+@mixin setPaddingY($normal, $small: null, $large: null) {
+    $padding-y: $normal !global;
+
+    @if $small {
+        $padding-y-small: $small !global;
+    }
+
+    @if $large {
+        $padding-y-large: $large !global;
+    }
+}
+
+
+/// Sets the font family for the text.
+/// @param {String} $family - The font family value to set.
+//
+@mixin setFontFamily($family) {
+    $font-family: $family !global;
+}
+
+
+/// Sets the base font size for the text.
+/// @param {Length} $size - The base font size value to set.
+//
+@mixin setFontSize($size) {
+    $font-size: $size !global;
+}
+
+
+/// Sets the font size for small text.
+/// @param {Length} $size - The font size value for small text to set.
+//
+@mixin setFontSizeSmall($size) {
+    $font-size-small: $size !global;
+}
+
+
+/// Sets the font size for large text.
+/// @param {Length} $size - The font size value for large text to set.
+//
+@mixin setFontSizeLarge($size) {
+    $font-size-large: $size !global;
+}
+
+
+/// Sets the base font weight for the text.
+/// @param {Number} $weight - The base font weight value to set.
+//
+@mixin setFontWeight($weight) {
+    $font-weight: $weight !global;
+}
+
+
+/// Sets the font weight for small text.
+/// @param {Number} $weight - The font weight value for small text to set.
+//
+@mixin setFontWeightSmall($weight) {
+    $font-weight-small: $weight !global;
+}
+
+
+/// Sets the font weight for large text.
+/// @param {Number} $weight - The font weight value for large text to set.
+//
+@mixin setFontWeightLarge($weight) {
+    $font-weight-large: $weight !global;
+}
+
+
+/// Sets the base line height for the text.
+/// @param {Number} $height - The base line height value to set.
+//
+@mixin setLineHeight($height) {
+    $line-height: $height !global;
+}
+
+
+/// Sets the line height for small text.
+/// @param {Number} $height - The line height value for small text to set.
+//
+@mixin setLineHeightSmall($height) {
+    $line-height-small: $height !global;
+}
+
+
+/// Sets the line height for large text.
+/// @param {Number} $height - The line height value for large text to set.
+//
+@mixin setLineHeightLarge($height) {
+    $line-height-large: $height !global;
+}
+
+
+/// Enables or disables the use of a color palette.
+/// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) the color palette.
+//
+@mixin setEnablePalette($enabled) {
+    $enable-palette: $enabled !global;
+}
+
+
+/// Sets the box shadow effect for the element.
+/// @param {String} $shadow - The box shadow value to set.
+//
+@mixin setBoxShadow($shadow) {
+    $box-shadow: $shadow !global;
+}
+
+
+/// Sets the transition delay for the brand's elements.
+/// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+//
 @mixin setTransitionDelay($delay) {
     $transition-delay: $delay !global;
 }
 
-// Sets the transition type (easing function) for the brand's elements.
-// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+
+/// Sets the type of transition timing function.
+/// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+//
 @mixin setTransitionType($type) {
     $transition-type: $type !global;
 }

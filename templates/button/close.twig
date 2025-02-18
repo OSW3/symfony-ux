@@ -1,0 +1,13 @@
+{# ---------------------------------------------- #}
+{# - Component : Button                         - #}
+{# - Part : Base                                - #}
+{# ---------------------------------------------- #}
+{% set view = '@SymfonyUx/button/close.html' %}
+{% extends '@SymfonyUx/base.twig' %}
+
+
+{# -- Render component attributes --------------- #}
+{# ---------------------------------------------- #}
+{% set _attr = attr|default({}) %}
+{% set _attr = _add_attribute(_attr, 'type', type) %}
+{% set _attr = _add_attribute(_attr, 'disabled', disabled) %}

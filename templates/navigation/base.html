@@ -1,4 +1,5 @@
-<nav {{ _get_attributes(_attr) }}>
+<{{ tag }} {{ _get_attributes(_attr) }}>
+
     <div class="{{ classname('container-'~ wrapper) }}">
 
         {% if _brand is not empty %}
@@ -28,17 +29,25 @@
                 :dataset="navigation_close_dataset"
             />
 
+
             {# Menu Schema #}
+
+            {# <twig:Component:Menu 
+                :schema="schema" 
+                justify="between"
+            /> #}
             {% for node in schema %}
-                {% if node.type == 'menu' %}
-                <twig:Component:Navigation:Menu :options="node.options" />
-                {% elseif node.type == 'searchbar' %}
-                <twig:Component:Navigation:Searchbar :options="node.options" />
-                {% elseif node.type == 'template' %}
-                <twig:Component:Navigation:Template :template="node.template" :options="node.options" />
-                {% endif %}
+                {{ dump(node) }}
+                {# {% if node.type == 'nav' %} #}
+                {# <twig:Component:Navigation:Menu :options="node.options" /> #}
+                {# <twig:Component:Navigation:Menu :options="node.options" /> #}
+                {# {% elseif node.type == 'searchbar' %} #}
+                {# <twig:Component:Navigation:Searchbar :options="node.options" /> #}
+                {# {% elseif node.type == 'template' %} #}
+                {# <twig:Component:Navigation:Template :template="node.template" :options="node.options" /> #}
+                {# {% endif %} #}
             {% endfor %}
 
         </div>
     </div>
-</nav>
+</{{ tag }}>

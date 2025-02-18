@@ -53,6 +53,20 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent(template: '@SymfonyUx/form-widget/widget.twig')]
 class FormWidget extends Component
 {
+    /**
+     * The base name of the component
+     * 
+     * @var string
+     */
+    public const NAME = "form-widget";
+
+    /**
+     * The default component ID
+     * 
+     * @var string
+     */
+    private string $defaultId;
+
     // Container
     use WidgetTrait;
     use ContainerTrait;
@@ -105,17 +119,12 @@ class FormWidget extends Component
     use WidgetTypeTrait;
     use WrapTrait;
 
-    public const NAME = "form-widget";
-
-    private string $defaultId;
-
     #[PreMount]
-    public function preMount(array $data): array
-    {
-        $this->defaultId = "_".uniqid();
-
+    public function preMount(array $data): array {
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
+
+        $this->defaultId = "_".uniqid();
 
         $this
             ->acceptResolver($resolver)

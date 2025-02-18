@@ -28,7 +28,7 @@ Add a Scroll to top button.
 Import the builder `_scroll-to-top.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/scroll-to-top';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/scroll-to-top';
 ```
 
 ### **JavaScript**
@@ -36,7 +36,7 @@ Import the builder `_scroll-to-top.scss`
 Import the component `ScrollToTopComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/ScrollToTopComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/ScrollToTopComponent';
 ```
 <!-- tabs:end -->
 
@@ -115,7 +115,7 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/example';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/example';
 
 @include scroll-to-top.setCursor(pointer);
 @include scroll-to-top.setShape(square);

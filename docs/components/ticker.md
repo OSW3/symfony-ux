@@ -37,7 +37,7 @@ Create an horizontal text scroll.
 Import the builder `_example.scss`
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/builders/ticker';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/ticker';
 ```
 
 ### **JavaScript**
@@ -45,7 +45,7 @@ Import the builder `_example.scss`
 Import the component `ExampleComponent`
 
 ```js
-import './../../../vendor/osw3/symfony-ux/assets/scripts/components/TickerComponent';
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/TickerComponent';
 ```
 <!-- tabs:end -->
 
@@ -112,7 +112,7 @@ symfony_ux:
 #### Custom file example
 
 ```css 
-@use './../../../vendor/osw3/symfony-ux/assets/sass/storage/ticker';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/ticker';
 
 @include ticker.setHeight(40px);
 ```
