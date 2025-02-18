@@ -13,14 +13,57 @@ $prefix: prefix.$prefix;
 // * Define storage data
 // * ---------------------------------------------
 
-$separator-symbol: "›";
+/// Symbol used as a separator in breadcrumbs or similar UI elements.
+/// @type string
+//
+$separator-symbol: ›;
 
-$transition           : true;
-$transition-delay     : var(--#{$prefix}transition-normal);
-$transition-type      : ease-in-out;
+/// Enables or disables transitions for elements.
+/// @type boolean
+//
+$transition: true;
+
+/// Delay for the transition effect, using a CSS variable.
+/// @type time
+//
+$transition-delay: var(--#{$prefix}transition-normal);
+
+/// Type of transition timing function.
+/// @type string
+//
+$transition-type: ease-in-out;
 
 
-
- 
 // * Storage Mixins definition
 // * ---------------------------------------------
+
+/// Sets the symbol used as a separator in breadcrumbs or similar UI elements.
+/// @param {String} $symbol - The separator symbol to set.
+//
+@mixin setSeparatorSymbol($symbol) {
+    $separator-symbol: $symbol !global;
+}
+
+
+/// Enables or disables transitions for the brand's elements.
+/// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
+//
+@mixin setTransition($enabled) {
+    $transition: $enabled !global;
+}
+
+
+/// Sets the transition delay for the brand's elements.
+/// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+//
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
+}
+
+
+/// Sets the transition type (easing function) for the brand's elements.
+/// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+//
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
+}

@@ -7,44 +7,34 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:math";
-// @use './../mixins/flex';
 @use './../builders/banner';
-// @use './../mixins/spacing';
 @use './../storages/prefix';
-// @use './../mixins/position';
-// @use './../storages/spaces';
-// @use './../mixins/component';
 @use './../mixins/transition';
-
 @use './../storages/breadcrumb' as store;
-// @use './../components/breadcrumb';
+
 @include banner.header('Component Breadcrumb');
 $prefix: prefix.$prefix;
-
-
-// * Component Structure
-// * ---------------------------------------------
 
 .#{$prefix}breadcrumb {
 
     & ul {
         list-style: none;
-        padding: 0;
-        margin: 0;
-        display: flex;
-        font-size: .9rem;
+        padding   : 0;
+        margin    : 0;
+        display   : flex;
+        font-size : .9rem;
     }
 
     & li {
-        display: inline-flex;
-        margin: 0 10px 0 0;
+        display  : inline-flex;
+        margin   : 0 10px 0 0;
         font-size: 1em;
     }
 
     & li:not(:last-child)::after {
         content: store.$separator-symbol;
-        margin: 0 0 0 10px;
-        color: var(--#{$prefix}breadcrumb-separator--color);
+        margin : 0 0 0 10px;
+        color  : var(--#{$prefix}breadcrumb-separator--color);
     }
 
     & a {
@@ -70,4 +60,3 @@ $prefix: prefix.$prefix;
         color: var(--#{$prefix}breadcrumb--color--active);
     }
 }
-

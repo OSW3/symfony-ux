@@ -55,8 +55,8 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AnnouncementComp
 |-|-|-|-|-|
 | `animated` | `enum` | Define if the announcement as animation  `always`, `none`  | no | `always` |
 | `animation` | `enum` | Set the animation type `ticker`,`rotator`,`none` | no | `ticker` |
-| `speed` | `integer` | Set the animation speed `0` to `9` | no | 6 |
-| `entity` | `string` | Define the entity of messages storage | no | null |
+| `speed` | `integer` | Set the animation speed `0` to `9` | no | `6` |
+| `entity` | `string` | Define the entity of messages storage | no | `null` |
 
 ```yaml
 symfony_ux:

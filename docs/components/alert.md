@@ -122,25 +122,25 @@ $props: map.merge($props, (
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/alert';
 
 @include alert.setBorderWidth(1px);
-@include setBorderWidth(1px);
-@include setBorderStyle('solid');
-@include setBorderRadius(var(--border-radius-normal));
-@include setPaddingX(10px, 5px, 15px);
-@include setPaddingY(12px, 8px, 16px);
-@include setFontFamily('Arial, sans-serif');
-@include setFontSize(16px);
-@include setFontSizeSmall(14px);
-@include setFontSizeLarge(18px);
-@include setFontWeight(400);
-@include setFontWeightSmall(300);
-@include setFontWeightLarge(500);
-@include setLineHeight(1.5);
-@include setLineHeightSmall(1.2);
-@include setLineHeightLarge(1.8);
-@include setEnablePalette(true);
-@include setBoxShadow('0 1px 3px rgba(0, 0, 0, 0.1)');
-@include setTransitionDelay(var(--transition-normal));
-@include setTransitionType('ease-in-out');
+@include alert.setBorderWidth(1px);
+@include alert.setBorderStyle('solid');
+@include alert.setBorderRadius(var(--border-radius-normal));
+@include alert.setPaddingX(10px, 5px, 15px);
+@include alert.setPaddingY(12px, 8px, 16px);
+@include alert.setFontFamily('Arial, sans-serif');
+@include alert.setFontSize(16px);
+@include alert.setFontSizeSmall(14px);
+@include alert.setFontSizeLarge(18px);
+@include alert.setFontWeight(400);
+@include alert.setFontWeightSmall(300);
+@include alert.setFontWeightLarge(500);
+@include alert.setLineHeight(1.5);
+@include alert.setLineHeightSmall(1.2);
+@include alert.setLineHeightLarge(1.8);
+@include alert.setEnablePalette(true);
+@include alert.setBoxShadow('0 1px 3px rgba(0, 0, 0, 0.1)');
+@include alert.setTransitionDelay(var(--transition-normal));
+@include alert.setTransitionType('ease-in-out');
 ```
 
 <hr>

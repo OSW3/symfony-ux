@@ -20,6 +20,7 @@
   - [Analytics](./components/analytics.md)
   - [Announcement](./components/announcement.md)
   - [Brand](./components/brand.md)
+  - [Breadcrumb](./components/breadcrumb.md)
   - [Buttons](./components/buttons.md)
   - [Copyright](./components/copyright.md)
   - [Header](./components/header.md)
