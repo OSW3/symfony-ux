@@ -34,9 +34,11 @@ final class Symbols extends Component {
         $options  = $this->getConfig();
 
         $this->symbolsService = new SymbolsService();
-        // dd(P);
         $this->symbolsService->importFormDirectory( Path::join(__DIR__, '..', '..', '..', 'icons') );
-        $this->symbolsService->importFormDirectory( Path::join($this->getRootDir(), $options['path']) );
+
+        if ($options['path']) {
+            $this->symbolsService->importFormDirectory( Path::join($this->getRootDir(), $options['path']) );
+        }
 
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
