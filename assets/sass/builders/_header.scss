@@ -5,12 +5,12 @@
 // * ---------------------------------------------------------------------------
 
 @use 'sass:map';
+@use './../storages/header' as store;
 @use './../builders/banner';
 @use './../storages/prefix';
+@use './../components/header';
 @use './../storages/breakpoints';
 
-@use './../storages/header' as store;
-@use './../components/header';
 @include banner.header('Component Header');
 $prefix: prefix.$prefix;
 $breakpoints: breakpoints.$breakpoints;

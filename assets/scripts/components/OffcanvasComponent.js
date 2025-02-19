@@ -1,40 +1,66 @@
-// ************************************************************************** //
-// *
-// *    Components: Offcanvas
-// *
-// ************************************************************************** //
 "use strict";
 
-import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
-// import OverlayComponent from "./OverlayComponent";
-
-
-/** @var string Component classname */
-const NAME = 'offcanvas';
-
-/** @var string Components prefix */
-const PREFIX = getPrefix();
-
-/** @var string Component selector */
-const SELECTOR = `[rel=js-${PREFIX}${NAME}]`;
-
-/** @var array Allowed actions */
-const ACTIONS = ['open','close','toggle'];
-
-/** @var string State classname */
-const CLASS_OPEN = 'open';
+import { getPrefix } from "../utils/generated";
 
 
 export default class OffcanvasComponent
 {
+    /**
+     * Component Classname
+     * 
+     * @type {string}
+     */
+    static name = "offcanvas";
+
+    /**
+     * Component prefix
+     * 
+     * @type {string}
+     */
+    static prefix = getPrefix();
+
+    /**
+     * Allowed actions
+     *
+     * @type {string[]}
+     */
+    static actions = ['open', 'close', 'toggle'];
+
+    /**
+     * Class List
+     * 
+     * @type {object}
+     */
+    static classList = {
+        open: 'open',
+    };
+
+    /**
+     * Component selector
+     * 
+     * @type {string}
+     */
+    static selector = `[rel=js-${this.prefix}${this.name}]`;
+
+    /**
+     * Main component node
+     * 
+     * @type {HTMLElement}
+     */
     #node;
-    #document;
+
+    /**
+     * Document body element
+     *
+     * @type {HTMLElement}
+     */
+    #body;
     
     constructor(node)
     {
         this.#node = node;
-        this.#document = document.querySelector('body');
+        this.#body = document.querySelector('body');
         
         if (!this.#node.id) {
             return;
@@ -42,7 +68,7 @@ export default class OffcanvasComponent
 
         document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
             new ButtonComponent(trigger).onClick = (event, element) => {
-                if (ACTIONS.includes(event.target.dataset.action)) {
+                if (this.actions.includes(event.target.dataset.action)) {
                     this[event.target.dataset.action]();
                 }
             }
@@ -65,66 +91,25 @@ export default class OffcanvasComponent
         });
         
 
-        if (this.#node.classList.contains(CLASS_OPEN)) {
+        if (this.#node.classList.contains(this.constructor.classList.open)) {
             this.open();
         }
     }
 
     open() {
-        this.#node.style.display = 'flex';
-        this.#document.classList.add(`${PREFIX}no-scroll`);
-        setTimeout(() => this.#node.classList.add(CLASS_OPEN),1);
+        // this.#node.style.display = 'flex';
+        this.#node.style.display = 'block';
+        this.#body.classList.add(`${this.prefix}no-scroll`);
+        setTimeout(() => this.#node.classList.add(this.constructor.classList.open),1);
     }
     close() {
-        this.#document.classList.remove(`${PREFIX}no-scroll`);
-        this.#node.classList.remove(CLASS_OPEN)
+        this.#body.classList.remove(`${this.prefix}no-scroll`);
+        this.#node.classList.remove(this.constructor.classList.open)
         setTimeout(() => this.#node.style.display = 'none', 300);
     }
     toggle() {
-        !this.#node.classList.contains(CLASS_OPEN) ? this.open() : this.close();
+        !this.#node.classList.contains(this.constructor.classList.open) ? this.open() : this.close();
     }
 }
-// export default class OffcanvasComponent
-// {
-//     #node;
-//     #hasBackdrop = true;
-//     #overlay;
-    
-//     constructor(node)
-//     {
-//         this.#node = node;
-//         this.#hasBackdrop = !this.#node.classList.contains(`${PREFIX}${NAME}-no-backdrop`);
-        
-//         if (!this.#node.id) {
-//             return;
-//         }
 
-//         if (this.#hasBackdrop) {
-//             this.#overlay = new OverlayComponent(this.#node);
-//             this.#overlay.onClick(() => this.hide());
-//         }
-
-//         document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
-//             new ButtonComponent(trigger).onClick = (event, element) => {
-//                 if (ACTIONS.includes(event.target.dataset.action)) {
-//                     this[event.target.dataset.action]();
-//                 }
-//             }
-//         })
-//     }
-
-//     show() {
-//         this.#node.classList.add(CLASS_OPEN);
-//         if (this.#hasBackdrop) this.#overlay.show();
-//     }
-//     hide() {
-//         this.#node.classList.remove(CLASS_OPEN);
-//         if (this.#hasBackdrop) this.#overlay.hide();
-//     }
-//     toggle() {
-//         this.#node.classList.toggle(CLASS_OPEN);
-//         if (this.#hasBackdrop) this.#overlay.toggle();
-//     }
-// }
-
-document.querySelectorAll(SELECTOR).forEach(node => new OffcanvasComponent(node));
+document.querySelectorAll(OffcanvasComponent.selector).forEach(node => new OffcanvasComponent(node));

@@ -1,5 +1,5 @@
 <?php 
-namespace OSW3\UX\Components\Component\Navigation;
+namespace OSW3\UX\Components\Component\Header;
 
 use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\DoNotExposeTrait;
@@ -10,10 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@SymfonyUx/navigation/bridge-menu.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/header/bridge-menu.twig')]
 final class Menu 
 {
-    public const NAME = "navigation";
+    public const NAME = "header";
 
     public array $options;
 

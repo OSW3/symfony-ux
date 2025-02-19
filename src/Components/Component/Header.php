@@ -11,15 +11,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@SymfonyUx/navigation/base.twig')]
-final class Navigation extends Component
+#[AsTwigComponent(template: '@SymfonyUx/header/base.twig')]
+final class Header extends Component
 {
     /**
      * The base name of the component
      * 
      * @var string
      */
-    public const NAME = "navigation";
+    public const NAME = "header";
 
     /**
      * The default component ID
@@ -33,11 +33,24 @@ final class Navigation extends Component
     use AttributeClassTrait;
     use AttributeDatasetTrait;
 
+
+    /**
+     * Brand component settings
+     * 
+     * If NULL, try to get the YAML config
+     * 
+     * @var array|bool
+     */
     #[ExposeInTemplate(name: 'brand', getter: 'fetchBrand')]
-    public array|null $brand;
+    public array|bool $brand;
+
+
+
+
+
     
-    #[ExposeInTemplate(name: 'wrapper', getter: 'fetchContainer')]
-    public string $container;
+    #[ExposeInTemplate(name: 'containerClass', getter: 'fetchContainer')]
+    public string|null $container;
 
     // #[ExposeInTemplate(name: 'expandAt', getter: 'doNotExpose')]
     // public string $expandAt = "laptop";
@@ -55,8 +68,8 @@ final class Navigation extends Component
 
 
 
-    #[ExposeInTemplate(name: 'type', getter: 'doNotExpose')]
-    public string $type = "left";
+    #[ExposeInTemplate(name: 'mobileDisplay', getter: 'doNotExpose')]
+    public string $mobileDisplay = "left";
 
     #[PreMount]
     public function preMount(array $data): array {
@@ -71,11 +84,16 @@ final class Navigation extends Component
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('brand', []);
-        $resolver->setAllowedTypes('brand', ['array','null']);
+        $resolver->setDefault('brand', true);
+        $resolver->setAllowedTypes('brand', ['array', 'bool']);
 
-        $resolver->setDefault('container', "fluid");
-        $resolver->setAllowedTypes('container', ['string']);
+
+
+
+
+
+        $resolver->setDefault('container', null);
+        $resolver->setAllowedTypes('container', ['string','null']);
 
         // $resolver->setDefault('expandAt', "laptop");
         // $resolver->setAllowedTypes('expandAt', ['string']);
@@ -93,24 +111,29 @@ final class Navigation extends Component
 
 
 
-        $resolver->setDefault('type', "left");
-        $resolver->setAllowedTypes('type', ['string']);
-        $resolver->setAllowedValues('type', ['left', 'right', 'collapse']);
+        $resolver->setDefault('mobileDisplay', "offcanvas-left");
+        $resolver->setAllowedTypes('mobileDisplay', ['string']);
+        $resolver->setAllowedValues('mobileDisplay', ['offcanvas-left', 'offcanvas-right', 'collapse-top']);
 
 
         return $resolver->resolve($data) + $data;
     }
 
     public function fetchBrand(): array {
-        return !empty($this->brand) 
-            ? $this->brand
-            : $this->config['components']['brand']
-        ;
+        if ($this->brand === true) {
+            return $this->config['components']['brand'];
+        }
+    
+        return is_array($this->brand) ? $this->brand : [];
     }
+
+
+
+
 
     public function fetchClass(): string {
         $classList = $this->classList();
-        $classList[] = "{$this->prefix}navigation-{$this->type}";
+        $classList[] = "{$this->prefix}navigation-{$this->mobileDisplay}";
         // $classList[] = "{$this->prefix}expand-at-{$this->expandAt}";
 
         if ($this->sticky) {
@@ -121,9 +144,10 @@ final class Navigation extends Component
     }
 
     public function fetchContainer(): string {
-        return trim($this->container);
+        $container = trim($this->container);
+        return "container" . (!empty($container) ? "-{$container}" : "");
     }
-
+    
     public function fetchId() {
         $this->id = empty($this->id) ? $this->defaultId : $this->id;
         return $this->id;

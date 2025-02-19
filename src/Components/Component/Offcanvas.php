@@ -23,22 +23,48 @@ final class Offcanvas extends Component
     use AttributeRelTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
-
-    #[ExposeInTemplate(name: 'placement', getter: 'doNotExpose')]
-    public string $placement;
     
-    #[ExposeInTemplate(name: 'show', getter: 'doNotExpose')]
-    public bool $show;
-    
-    #[ExposeInTemplate(name: 'noCloseButton')]
-    public bool $noCloseButton;
-    
+    /**
+     * Indicates whether a backdrop should be displayed behind the offcanvas component
+     * 
+     * @var boolean
+     */
     #[ExposeInTemplate(name: 'backdrop')]
     public bool $backdrop;
+    
+    /**
+     * Specifies whether to hide the close button within the offcanvas component
+     * 
+     * @var boolean
+     */
+    #[ExposeInTemplate(name: 'noCloseButton')]
+    public bool $noCloseButton;
+
+    /**
+     * Defines the position of the offcanvas component. 
+     * Can be 'left' or 'right'.
+     * 
+     * @var string
+     */
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public string $placement;
+    
+    /**
+     * Determines if the component is shown
+     * 
+     * @var boolean
+     */
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public bool $open;
 
 
     // Content Header 
 
+    /**
+     * Header html content
+     * 
+     * @var string
+     */
     #[ExposeInTemplate(name: 'header', getter: 'fetchHeader')]
     public string $header;
     
@@ -51,6 +77,11 @@ final class Offcanvas extends Component
 
     // Content Body 
 
+    /**
+     * Body html content
+     * 
+     * @var string
+     */
     #[ExposeInTemplate(name: 'body', getter: 'fetchBody')]
     public string $body;
     
@@ -63,6 +94,11 @@ final class Offcanvas extends Component
 
     // Content Footer
 
+    /**
+     * Footer html content
+     * 
+     * @var string
+     */
     #[ExposeInTemplate(name: 'footer', getter: 'fetchFooter')]
     public string $footer;
     
@@ -89,6 +125,12 @@ final class Offcanvas extends Component
         $resolver->setRequired('id');
         $resolver->setAllowedTypes('id', ['string']);
 
+        $resolver->setDefault('backdrop', $options['backdrop']);
+        $resolver->setAllowedTypes('backdrop', ['boolean']);
+
+        $resolver->setDefault('noCloseButton', false);
+        $resolver->setAllowedTypes('noCloseButton', ['boolean']);
+
         $resolver->setDefault('placement', $options['placement']);
         $resolver->setAllowedTypes('placement', ['string']);
         $resolver->setAllowedValues('placement', PlacementX::toArray());
@@ -96,11 +138,6 @@ final class Offcanvas extends Component
         $resolver->setDefault('show', $options['is_showed']);
         $resolver->setAllowedTypes('show', ['boolean']);
 
-        $resolver->setDefault('noCloseButton', false);
-        $resolver->setAllowedTypes('noCloseButton', ['boolean']);
-
-        $resolver->setDefault('backdrop', $options['backdrop']);
-        $resolver->setAllowedTypes('backdrop', ['boolean']);
 
 
         $resolver->setDefault('header', "");
@@ -114,6 +151,7 @@ final class Offcanvas extends Component
         $resolver->setAllowedTypes('headerOptions', ['array']);
 
 
+
         $resolver->setDefault('body', "");
         $resolver->setAllowedTypes('body', ['string']);
 
@@ -123,6 +161,7 @@ final class Offcanvas extends Component
 
         $resolver->setDefault('bodyOptions', []);
         $resolver->setAllowedTypes('bodyOptions', ['array']);
+
 
 
         $resolver->setDefault('footer', "");
@@ -147,8 +186,8 @@ final class Offcanvas extends Component
             $classList[] = "{$this->getComponentClassname()}-no-backdrop";
         }
 
-        if ($this->show === true) {
-            $classList[] = 'show';
+        if ($this->open === true) {
+            $classList[] = 'open';
         }
 
         return implode(" ", $classList);

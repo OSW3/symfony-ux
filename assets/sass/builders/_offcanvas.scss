@@ -1,0 +1,137 @@
+// * ----------- @osw3/symfony-ux/assets/sass/builder/offcanvas.scss -----------
+// *
+// *    Builder for Offcanvas component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+@use './../mixins/flex';
+// @use './../mixins/spacing';
+@use './../storages/offcanvas' as store;
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/position';
+// @use './../storages/spaces';
+@use './../components/offcanvas';
+// @use './../mixins/component';
+@use './../mixins/transition';
+
+@include banner.header('Component Offcanvas');
+$prefix: prefix.$prefix;
+
+
+
+// * Component Mixin & Functions
+// * ---------------------------------------------
+
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}offcanvas {
+
+    // Offcanvas container
+    // -- 
+
+    // Default state: close
+    opacity: 0;
+    display: none;
+    z-index: 1000; //  au dessus du menu header // au dessus de scroll to top
+    @include position.fixed(0,0,0,0);
+
+    @include transition.set(
+        (opacity), 
+        store.$transition-delay, 
+        store.$transition-type
+    );
+
+
+    // Offcanvas Backdrop 
+    // --
+
+    &:not(&-no-backdrop) {
+        backdrop-filter: blur(store.$backdrop--blur);
+        &::after {
+            content: "";
+            @include position.absolute(0,0,0,0);
+            background-color: var(--#{$prefix}offcanvas--backdrop--bg-color);
+            opacity: store.$backdrop--opacity;
+
+            z-index: 1;
+        }
+    }
+
+
+    // Offcanvas Open 
+    // --
+
+    &.open {
+        opacity: 1;
+    }
+
+
+
+    // Offcanvas Content
+    // -- 
+
+    &-content {
+        // border: 3px solid green;
+
+        width: store.$width;
+        background-color: var(--#{$prefix}offcanvas--bg-color);
+
+        @include flex.display;
+        @include flex.direction(column);
+
+
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        // left: 0;
+        // right: auto;
+        // left: store.$width * -1;
+        // right: auto;
+        height: 100%;
+
+        z-index: 2;
+
+        @include transition.set(
+            (opacity, left, right, box-shadow), 
+            store.$transition-delay, 
+            store.$transition-type
+        );
+    }
+
+
+    // Offcanvas Positions
+    // -- 
+
+    &-left {
+        .#{$prefix}offcanvas-content { 
+            left: store.$width * -1;
+            right: auto;
+        }
+        &.open {
+            .#{$prefix}offcanvas-content {
+                left: 0;
+            }
+        }
+    }
+
+    &-right {
+        .#{$prefix}offcanvas-content { 
+            left: auto;
+            right: store.$width * -1;
+        }
+        &.open {
+            .#{$prefix}offcanvas-content {
+                right: 0;
+            }
+        }
+    }
+
+}

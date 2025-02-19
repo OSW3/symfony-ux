@@ -31,6 +31,7 @@
 @use './../components/link';
 @use './../components/menu';
 @use './../components/nav';
+@use './../components/offcanvas';
 @use './../components/scroll-to-top';
 @use './../components/toast';
 $prefix: prefix.$prefix;
@@ -73,6 +74,7 @@ $themes: fnMap.merge-multiple(
     link.$theme-properties, 
     menu.$theme-properties, 
     nav.$theme-properties, 
+    offcanvas.$theme-properties, 
     scroll-to-top.$theme-properties, 
     toast.$theme-properties, 
     map.get(themes.$themes, themes.$default)

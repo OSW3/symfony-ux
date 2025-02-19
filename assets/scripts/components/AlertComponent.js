@@ -1,9 +1,9 @@
 "use strict";
 
-import { getCssClass } from "../utils/CssClassMap";
 import Animate from "../utils/Animate";
-import { getPrefix } from "../utils/generated";
 import ButtonComponent from "./ButtonComponent";
+import { getPrefix } from "../utils/generated";
+import { getCssClass } from "../utils/CssClassMap";
 
 export default class AlertComponent 
 {

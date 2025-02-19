@@ -1,4 +1,4 @@
-// Last gen: 2025-02-05 15:34:46
+// Last gen: 2025-02-18 05:16:51
 $prefix: 'ui';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -20,7 +20,6 @@ $breakpoint-name-ultra: 'ultra';
 $breakpoint-ultra: 1600px;
 $container-ultra: 1520px;
 $additional-breakpoints: ('from-yaml': (breakpoint: 1600px, container: 1520px));
-$useless-breakpoints: ('wide');
 $grid-divisions: 12;
 $grid-columns: true;
 $grid-alignments: true;
@@ -70,6 +69,7 @@ $spacer-5: 2;
 $spacer-6: 3;
 $theme-default: 'light';
 $brand-breakpoints: ('laptop','desktop');
+$breadcrumb-separator: ›;
 $menu-expand-at: tablet;
 $scroll-to-top--shape: 'square';
 $scroll-to-top--symbol: 'arrow-up';

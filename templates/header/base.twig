@@ -1,10 +1,10 @@
 {# ---------------------------------------------- #}
-{# - Component : Navigation                     - #}
+{# - Component : Header                     - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% set view = '@SymfonyUx/navigation/base.html' %}
+{% set view = '@SymfonyUx/header/base.html' %}
 {% extends '@SymfonyUx/base.twig' %}
-{# {% extends '@SymfonyUx/navigation/base.html' %} #}
+{# {% extends '@SymfonyUx/header/base.html' %} #}
 
 
 {# ---------------------------------------------- #}
@@ -15,19 +15,19 @@
 {# -------------------------------- #}
 {# SubComponent Brand definition    #}
 {# -------------------------------- #}
-{% if brand is not defined or brand is null %}
+{# {% if brand is not defined or brand is null %}
     {% set _brand = null %}
 {% else %}
 {% set _brand = brand %}
-{% endif %}
+{% endif %} #}
 
-{% set navigation_toggler_classname = classname('navigation-toggler') %}
-{% set navigation_toggler_dataset = {
+{% set header_toggler_classname = classname('header-toggler') %}
+{% set header_toggler_dataset = {
     action: 'toggle',
     target: id
 } %}
-{% set navigation_close_classname = classname('navigation-close') %}
-{% set navigation_close_dataset = {
+{% set header_close_classname = classname('header-close') %}
+{% set header_close_dataset = {
     action: 'hide',
     target: id
 } %}

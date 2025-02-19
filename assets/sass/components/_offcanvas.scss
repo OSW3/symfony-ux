@@ -1,0 +1,36 @@
+// * ------------ @osw3/symfony-ux/assets/sass/components/offcanvas.scss -----------
+// *
+// *    Builder for Offcanvas component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/offcanvas.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+@use './../storages/offcanvas';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    'offcanvas--backdrop--bg-color': var(--#{$prefix}black),
+
+    'offcanvas--bg-color'           : var(--#{$prefix}cyan),
+
+    // offcanvas-color               : var(--#{$prefix}dark),
+    // offcanvas--color--hover       : inherit,                 //var(--#{$prefix}inherit),
+    // offcanvas--bg-color           : var(--#{$prefix}cyan),
+    // offcanvas--bg-color--hover    : var(--#{$prefix}cyan),
+    // offcanvas--border-color       : var(--#{$prefix}red),
+    // offcanvas--border-color--hover: var(--#{$prefix}red),
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

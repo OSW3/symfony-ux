@@ -27,6 +27,7 @@ Add many UX Components to your app.
 - [Header](./components/header.md)
 - [Links](./components/link.md)
 - [Menus](./components/menu.md)
+- [Offcanvas](./components/offcanvas.md)
 - [Rating](./components/rating.md)
 <!-- - [Rotators](./components/rotator.md) -->
 - [Scroll to top](./components/scroll-to-top.md)

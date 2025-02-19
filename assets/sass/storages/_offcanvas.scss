@@ -1,0 +1,38 @@
+// * ----------- @osw3/symfony-ux/assets/sass/storages/offcanvas.scss ----------
+// *
+// *    Offcanvas Storage
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+$prefix: prefix.$prefix;
+
+
+// * Define storage data
+// * ---------------------------------------------
+
+
+$backdrop--blur: 4px;
+$backdrop--opacity: 0.5;
+
+$width: 280px;
+
+
+/// Width of the border around the element.
+/// @type length
+//
+// $border-width: 1px;
+
+/// Delay for the transition effect, using a CSS variable.
+/// @type time
+//
+$transition-delay: var(--#{$prefix}transition-normal);
+
+/// Type of transition timing function.
+/// @type string
+//
+$transition-type: ease-in-out;
+
+
+// * Storage Mixins definition
+// * ---------------------------------------------
