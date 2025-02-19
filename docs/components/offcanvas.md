@@ -11,11 +11,6 @@ Example component description.
 ## Integration
 
 <!-- tabs:start -->
-### **HTML**
-
-```twig
-``` 
-
 ### **Twig**
 
 ```twig
@@ -73,7 +68,7 @@ symfony_ux:
 | `id` | `string` | A unique identifier for the offcanvas component. | yes |  |
 | `placement •` | `string` | Defines the position of the offcanvas component. Can be 'left' or 'right'. | no | `left` |
 | `open •` | `boolean` | Determines if the component is shown. | no | `false` |
-| `noCloseButton` | `boolean` | Specifies whether to hide the close button within the offcanvas component. | no | `false` |
+| `closeButton` | `boolean` | Specifies whether to hide the close button within the offcanvas component. | no | `true` |
 | `header` | `string` | Specifies the HTML content for the offcanvas header. | no | `null` |
 | `headerTemplate` | `string` | Specifies a template to use for rendering the offcanvas header. This takes priority over header. | no |  |
 | `headerOptions` | `array` | An array of options passed to the header template for customization. | no | `[]` |
@@ -89,7 +84,10 @@ symfony_ux:
 ```twig 
 <twig:Component:Offcanvas
     id="my-offcanvas"
+    header="..."
 />
+
+<twig:Component:Button is="primary" label="Open Offcanvas" data-action="open" data-target="my-offcanvas" />
 ```
 <!-- tabs:end -->
 
@@ -120,26 +118,100 @@ $props: map.merge($props, (
 #### Custom file example
 
 ```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/example';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/offcanvas';
 
-@include example.setPadding(1rem);
-@include example.setTransitionType(ease-in-out);
+@include offcanvas.setBackdropBlur(4px);
+@include offcanvas.setBackdropOpacity(0.5);
+@include offcanvas.setOffcanvasWidth(280px);
+@include offcanvas.setOffcanvasLeftWidth(null);
+@include offcanvas.setOffcanvasRightWidth(null);
+@include offcanvas.setPaddingX(spaces.$base * .94);
+@include offcanvas.setPaddingY(spaces.$base * 1.25);
+@include offcanvas.setSeparatorWidth(1px);
+@include offcanvas.setTransitionDelay(var(--#{$prefix}transition-normal));
+@include offcanvas.setTransitionType(ease-in-out);
 ```
 
 <hr>
 
-#### Available mixins
+#### `setBackdropBlur`
 
-##### `xxxx`
+Set the amount of blur applied to the backdrop.
 
-xxxx
-
-```css 
-@xxxx;
+```css
+@include offcanvas.setBackdropBlur({Length} $length);
 ```
+
+#### `setBackdropOpacity`
+
+Set the opacity level of the backdrop.
+
+```css
+@include offcanvas.setBackdropOpacity({Number} $opacity);
+```
+
+#### `setOffcanvasWidth`
+
+Set the default width of the offcanvas component.
+
+```css
+@include offcanvas.setOffcanvasWidth({Length} $width);
+```
+
+#### `setOffcanvasLeftWidth`
+
+Set the custom width for the offcanvas when positioned on the left.
+
+```css
+@include offcanvas.setOffcanvasLeftWidth({Length | Null} $width);
+```
+
+#### `setOffcanvasRightWidth`
+
+Set the custom width for the offcanvas when positioned on the right.
+
+```css
+@include offcanvas.setOffcanvasRightWidth({Length | Null} $width);
+```
+
+#### `setPaddingX`
+
+Set the horizontal padding for the element.
+
+```css
+@include offcanvas.setPaddingX({Length} $padding);
+```
+
+#### `setPaddingY`
+
+Set the vertical padding for the element.
+
+```css
+@include offcanvas.setPaddingY({Length} $padding);
+```
+
+#### `setSeparatorWidth`
+
+Set the width of the separator of the section.
+
+```css
+@include offcanvas.setSeparatorWidth({Length} $width);
+```
+
+#### `setTransitionDelay`
+
+Set the delay for the transition effect.
+
+```css
+@include offcanvas.setTransitionDelay({Time} $delay);
+```
+
+#### `setTransitionType`
+
+Set the type of transition timing function.
+
+```css
+@include offcanvas.setTransitionType({String} $type);
+```
+
 <!-- tabs:end -->
-
-
-
-
-## JavaScript events

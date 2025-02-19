@@ -1,4 +1,5 @@
 <{{tag}} {{ _get_attributes(_attr) }}>
     {# <twig:Component:Offcanvas:Inner :content="content" /> #}
     {{ content|raw }}
+    {% if close %}<twig:Component:Button:Close :dataset="{target: id, action: 'close'}"/>{% endif %}
 </{{tag}}>

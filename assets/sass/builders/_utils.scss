@@ -1,0 +1,14 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/utils.scss -------------
+// *
+// *    Builder for Utils component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/prefix';
+$prefix: prefix.$prefix;
+
+
+.#{$prefix}no-scroll {
+    overflow: hidden;
+    height: 100%;
+}

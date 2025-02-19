@@ -22,7 +22,9 @@ final class Section extends Component
 
     #[ExposeInTemplate(name: 'tag', getter: 'fetchTag')]
     private string $tag;
-
+    
+    #[ExposeInTemplate(name: 'close', getter: 'fetchClose')]
+    public bool $close;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -34,23 +36,28 @@ final class Section extends Component
         $resolver->setAllowedTypes('section', ['string']);
         $resolver->setAllowedValues('section', ['header', 'body', 'footer']);
 
+        $resolver->setDefaults(['close' => false]);
+        $resolver->setAllowedTypes('close', ['boolean']);
+
         return $resolver->resolve($data) + $data;
     }
 
-    public function fetchClass(): string
-    {
+    public function fetchClass(): string {
         $classList = [];
         $classList[] = "{$this->getComponentClassname()}-{$this->section}";
 
         return implode(" ", $classList);
     }
 
-    public function fetchTag()
-    {
+    public function fetchTag(): string {
         return match ($this->section) {
             'header' => "header",
             'footer' => "footer",
             default => "div"
         };
+    }
+
+    public function fetchClose(): bool {
+        return $this->section === 'header';
     }
 }

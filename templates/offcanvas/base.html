@@ -1,10 +1,8 @@
 <div {{ _get_attributes(_attr) }}>
-    <div class="{{ classname('offcanvas-content') }}">
-
-        {# <twig:Component:Button:Close :dataset="{target: id, action: 'hide'}"/> #}
+    <div {{ _get_attributes(_content_attr) }}>
+        {# {% if close %}<twig:Component:Button:Close :dataset="{target: id, action: 'close'}"/>{% endif %} #}
         {% if header is not empty %}<twig:Component:Offcanvas:Section :id="id" section="header" :content="header" />{% endif %}
         {% if body is not empty %}<twig:Component:Offcanvas:Section :id="id" section="body" :content="body" />{% endif %}
         {% if footer is not empty %}<twig:Component:Offcanvas:Section :id="id" section="footer" :content="footer" />{% endif %}
-        
     </div>
 </div>

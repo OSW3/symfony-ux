@@ -4,3 +4,6 @@
 {# ---------------------------------------------- #}
 {% set view = '@SymfonyUx/offcanvas/base.html' %}
 {% extends '@SymfonyUx/base.twig' %}
+
+{% set _content_attr = _content_attr|default({}) %}
+{% set _content_attr = _add_attribute(_content_attr, 'class', classname('offcanvas-content')) %}

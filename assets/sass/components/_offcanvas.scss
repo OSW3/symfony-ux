@@ -17,16 +17,15 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    'offcanvas--backdrop--bg-color': var(--#{$prefix}black),
-
-    'offcanvas--bg-color'           : var(--#{$prefix}cyan),
-
-    // offcanvas-color               : var(--#{$prefix}dark),
-    // offcanvas--color--hover       : inherit,                 //var(--#{$prefix}inherit),
-    // offcanvas--bg-color           : var(--#{$prefix}cyan),
-    // offcanvas--bg-color--hover    : var(--#{$prefix}cyan),
-    // offcanvas--border-color       : var(--#{$prefix}red),
-    // offcanvas--border-color--hover: var(--#{$prefix}red),
+    'offcanvas--backdrop--bg-color'     : var(--#{$prefix}black),
+    'offcanvas--separator--border-color': var(--#{$prefix}gray-200),
+    'offcanvas--bg-color'               : var(--#{$prefix}white),
+    'offcanvas--header--color'          : inherit,
+    'offcanvas--header--bg-color'       : inherit,
+    'offcanvas--body--color'            : inherit,
+    'offcanvas--body--bg-color'         : inherit,
+    'offcanvas--footer--color'          : inherit,
+    'offcanvas--footer--bg-color'       : inherit,
 );
 
 

@@ -62,14 +62,12 @@ export default class OffcanvasComponent
         this.#node = node;
         this.#body = document.querySelector('body');
         
-        if (!this.#node.id) {
-            return;
-        }
+        if (!this.#node.id) return;
 
         document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
             new ButtonComponent(trigger).onClick = (event, element) => {
-                if (this.actions.includes(event.target.dataset.action)) {
-                    this[event.target.dataset.action]();
+                if (this.constructor.actions.includes(trigger.dataset.action)) {
+                    this[trigger.dataset.action]();
                 }
             }
         })
@@ -99,11 +97,11 @@ export default class OffcanvasComponent
     open() {
         // this.#node.style.display = 'flex';
         this.#node.style.display = 'block';
-        this.#body.classList.add(`${this.prefix}no-scroll`);
+        this.#body.classList.add(`${this.constructor.prefix}no-scroll`);
         setTimeout(() => this.#node.classList.add(this.constructor.classList.open),1);
     }
     close() {
-        this.#body.classList.remove(`${this.prefix}no-scroll`);
+        this.#body.classList.remove(`${this.constructor.prefix}no-scroll`);
         this.#node.classList.remove(this.constructor.classList.open)
         setTimeout(() => this.#node.style.display = 'none', 300);
     }

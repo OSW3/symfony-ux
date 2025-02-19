@@ -5,23 +5,56 @@
 // * ---------------------------------------------------------------------------
 
 @use './../storages/prefix';
+@use './../storages/spaces';
 $prefix: prefix.$prefix;
 
 
 // * Define storage data
 // * ---------------------------------------------
 
-
-$backdrop--blur: 4px;
-$backdrop--opacity: 0.5;
-
-$width: 280px;
-
-
-/// Width of the border around the element.
+/// The amount of blur applied to the backdrop.
 /// @type length
 //
-// $border-width: 1px;
+$backdrop--blur: 4px;
+
+/// The opacity level of the backdrop.
+/// @type number
+//
+$backdrop--opacity: 0.5;
+
+
+
+/// Default width of the offcanvas component.
+/// @type length
+//
+$width: 280px;
+
+/// Custom width for the offcanvas when positioned on the left.
+/// @type length | null
+//
+$left-width: null;
+
+/// Custom width for the offcanvas when positioned on the right.
+/// @type length | null
+//
+$right-width: null;
+
+
+
+/// Horizontal padding for the element.
+/// @type length
+//
+$padding-x: spaces.$base * .94;
+
+/// Vertical padding for the element.
+/// @type length
+//
+$padding-y: spaces.$base * 1.25;
+
+/// Width of the separator of the section.
+/// @type length
+//
+$separator-width: 1px;
 
 /// Delay for the transition effect, using a CSS variable.
 /// @type time
@@ -36,3 +69,72 @@ $transition-type: ease-in-out;
 
 // * Storage Mixins definition
 // * ---------------------------------------------
+/// Set the amount of blur applied to the backdrop.
+/// @param {Length} $length
+//
+@mixin setBackdropBlur($length) {
+    $backdrop--blur: $length !global;
+}
+
+/// Set the opacity level of the backdrop.
+/// @param {Number} $opacity
+//
+@mixin setBackdropOpacity($opacity) {
+    $backdrop--opacity: $opacity !global;
+}
+
+/// Set the default width of the offcanvas component.
+/// @param {Length} $width
+//
+@mixin setOffcanvasWidth($width) {
+    $width: $width !global;
+}
+
+/// Set the custom width for the offcanvas when positioned on the left.
+/// @param {Length | Null} $width
+//
+@mixin setOffcanvasLeftWidth($width) {
+    $left-width: $width !global;
+}
+
+/// Set the custom width for the offcanvas when positioned on the right.
+/// @param {Length | Null} $width
+//
+@mixin setOffcanvasRightWidth($width) {
+    $right-width: $width !global;
+}
+
+/// Set the horizontal padding for the element.
+/// @param {Length} $padding
+//
+@mixin setPaddingX($padding) {
+    $padding-x: $padding !global;
+}
+
+/// Set the vertical padding for the element.
+/// @param {Length} $padding
+//
+@mixin setPaddingY($padding) {
+    $padding-y: $padding !global;
+}
+
+/// Set the width of the separator of the section.
+/// @param {Length} $width
+//
+@mixin setSeparatorWidth($width) {
+    $separator-width: $width !global;
+}
+
+/// Set the delay for the transition effect.
+/// @param {Time} $delay
+//
+@mixin setTransitionDelay($delay) {
+    $transition-delay: $delay !global;
+}
+
+/// Set the type of transition timing function.
+/// @param {String} $type
+//
+@mixin setTransitionType($type) {
+    $transition-type: $type !global;
+}

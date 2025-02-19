@@ -8,6 +8,7 @@ use OSW3\UX\Trait\AttributeRelTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
 use OSW3\UX\Components\Component;
+use OSW3\UX\Trait\AttributeStyleTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -22,6 +23,7 @@ final class Offcanvas extends Component
     use AttributeIdTrait;
     use AttributeRelTrait;
     use AttributeClassTrait;
+    use AttributeStyleTrait;
     use AttributeDatasetTrait;
     
     /**
@@ -37,8 +39,8 @@ final class Offcanvas extends Component
      * 
      * @var boolean
      */
-    #[ExposeInTemplate(name: 'noCloseButton')]
-    public bool $noCloseButton;
+    #[ExposeInTemplate(name: 'closeButton')]
+    public bool $closeButton;
 
     /**
      * Defines the position of the offcanvas component. 
@@ -56,6 +58,14 @@ final class Offcanvas extends Component
      */
     #[ExposeInTemplate(getter: 'doNotExpose')]
     public bool $open;
+    
+    /**
+     * Determines the width of the content
+     * 
+     * @var string|null
+     */
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public string|null $width;
 
 
     // Content Header 
@@ -128,15 +138,18 @@ final class Offcanvas extends Component
         $resolver->setDefault('backdrop', $options['backdrop']);
         $resolver->setAllowedTypes('backdrop', ['boolean']);
 
-        $resolver->setDefault('noCloseButton', false);
-        $resolver->setAllowedTypes('noCloseButton', ['boolean']);
+        $resolver->setDefault('closeButton', true);
+        $resolver->setAllowedTypes('closeButton', ['boolean']);
 
         $resolver->setDefault('placement', $options['placement']);
         $resolver->setAllowedTypes('placement', ['string']);
         $resolver->setAllowedValues('placement', PlacementX::toArray());
 
-        $resolver->setDefault('show', $options['is_showed']);
-        $resolver->setAllowedTypes('show', ['boolean']);
+        $resolver->setDefault('open', $options['is_showed']);
+        $resolver->setAllowedTypes('open', ['boolean']);
+
+        $resolver->setDefault('width', null);
+        $resolver->setAllowedTypes('width', ['string','null']);
 
 
 
