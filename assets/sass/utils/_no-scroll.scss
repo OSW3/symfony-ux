@@ -1,0 +1,16 @@
+// * ------------ @osw3/symfony-ux/assets/sass/utils/no-scroll.scss ------------
+// *
+// *    Builder for No-scroll component
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../builders/banner';
+@use './../storages/prefix';
+
+@include banner.header('Utils No Scroll');
+$prefix: prefix.$prefix;
+
+.#{$prefix}no-scroll {
+    overflow: hidden;
+    height: 100%;
+}

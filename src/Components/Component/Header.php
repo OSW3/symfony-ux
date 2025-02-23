@@ -6,6 +6,7 @@ use OSW3\UX\Trait\DoNotExposeTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
 use OSW3\UX\Components\Component;
+use OSW3\UX\Trait\AttributeRelTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -30,9 +31,9 @@ final class Header extends Component
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
+    use AttributeRelTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
-
 
     /**
      * Brand component settings
@@ -43,36 +44,48 @@ final class Header extends Component
      */
     #[ExposeInTemplate(name: 'brand', getter: 'fetchBrand')]
     public array|bool $brand;
-
-
-
-
-
     
-    #[ExposeInTemplate(name: 'containerClass', getter: 'fetchContainer')]
+    #[ExposeInTemplate(name: 'container', getter: 'fetchContainer')]
     public string|null $container;
 
-    // #[ExposeInTemplate(name: 'expandAt', getter: 'doNotExpose')]
-    // public string $expandAt = "laptop";
-
-    #[ExposeInTemplate(name: 'schema')]
-    public array $schema;
+    /**
+     * Defines the mobile placement of the component (left, right, top).
+     * 
+     * @var string
+     */
+    #[ExposeInTemplate(getter: 'fetchPlacement')]
+    public string|null $placement;
     
-    #[ExposeInTemplate(name: 'sticky', getter: 'doNotExpose')]
-    public string $sticky;
+    /**
+     * Indicates whether the component should be sticky
+     * 
+     * @var bool
+     */
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public bool $sticky;
     
+    /**
+     * Defines the tag name of the component
+     * 
+     * @var string
+     */
     #[ExposeInTemplate(name: 'tag', getter: 'fetchTag')]
     public string $tag;
 
+    /**
+     * Header schema
+     * 
+     * @var array
+     */
+    #[ExposeInTemplate(name: 'schema')]
+    public array $schema;
 
-
-
-
-    #[ExposeInTemplate(name: 'mobileDisplay', getter: 'doNotExpose')]
-    public string $mobileDisplay = "left";
+    #[ExposeInTemplate(name: 'justify')]
+    public string $justify;
 
     #[PreMount]
     public function preMount(array $data): array {
+        $options  = $this->getConfig();
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
@@ -87,38 +100,28 @@ final class Header extends Component
         $resolver->setDefault('brand', true);
         $resolver->setAllowedTypes('brand', ['array', 'bool']);
 
-
-
-
-
-
         $resolver->setDefault('container', null);
         $resolver->setAllowedTypes('container', ['string','null']);
 
-        // $resolver->setDefault('expandAt', "laptop");
-        // $resolver->setAllowedTypes('expandAt', ['string']);
+        $resolver->setDefault('placement', $options['placement']);
+        $resolver->setAllowedTypes('placement', ['string', 'null']);
+        $resolver->setAllowedValues('placement', [null, 'left', 'right', 'top']);
 
-        $resolver->setDefault('schema', []);
-        $resolver->setAllowedTypes('schema', ['array']);
-
-        $resolver->setDefault('sticky', false);
+        $resolver->setDefault('sticky', $options['sticky']);
         $resolver->setAllowedTypes('sticky', ['boolean']);
 
         $resolver->setDefault('tag', "header");
         $resolver->setAllowedTypes('tag', ['string']);
 
+        $resolver->setDefault('schema', []);
+        $resolver->setAllowedTypes('schema', ['array']);
 
-
-
-
-        $resolver->setDefault('mobileDisplay', "offcanvas-left");
-        $resolver->setAllowedTypes('mobileDisplay', ['string']);
-        $resolver->setAllowedValues('mobileDisplay', ['offcanvas-left', 'offcanvas-right', 'collapse-top']);
-
+        $resolver->setDefault('justify', "start");
+        $resolver->setAllowedTypes('justify', ['string']);
 
         return $resolver->resolve($data) + $data;
     }
-
+    
     public function fetchBrand(): array {
         if ($this->brand === true) {
             return $this->config['components']['brand'];
@@ -126,31 +129,36 @@ final class Header extends Component
     
         return is_array($this->brand) ? $this->brand : [];
     }
-
-
-
-
-
-    public function fetchClass(): string {
-        $classList = $this->classList();
-        $classList[] = "{$this->prefix}navigation-{$this->mobileDisplay}";
-        // $classList[] = "{$this->prefix}expand-at-{$this->expandAt}";
-
-        if ($this->sticky) {
-            $classList[] = "{$this->prefix}navigation-sticky";
-        }
-
-        return implode(" ", $classList);
-    }
-
-    public function fetchContainer(): string {
-        $container = trim($this->container);
-        return "container" . (!empty($container) ? "-{$container}" : "");
-    }
     
     public function fetchId() {
         $this->id = empty($this->id) ? $this->defaultId : $this->id;
         return $this->id;
+    }
+
+    public function fetchClass(): string {
+        $classList = $this->classList();
+        
+        $classList[] = "{$this->prefix}header-{$this->placement}";
+        
+        // $classList[] = "open";
+
+        if ($this->sticky) {
+            $classList[] = "{$this->prefix}header-sticky";
+        }
+
+        return implode(" ", $classList);
+    }
+    
+    public function fetchContainer(): string {
+        return trim($this->container);
+    }
+
+    public function fetchPlacement(): string|null {
+        $options = $this->getConfig();
+        return $this->placement === null 
+            ? $options['placement'] 
+            : trim($this->placement)
+        ;
     }
 
     public function fetchTag(): string {

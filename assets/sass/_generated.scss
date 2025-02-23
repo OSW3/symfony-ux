@@ -1,4 +1,4 @@
-// Last gen: 2025-02-18 05:16:51
+// Last gen: 2025-02-21 03:56:12
 $prefix: 'ui';
 $varWithDefault: true;
 $breakpoint-name-phone: 'phone';
@@ -68,9 +68,9 @@ $spacer-4: 1.5;
 $spacer-5: 2;
 $spacer-6: 3;
 $theme-default: 'light';
-$brand-breakpoints: ('laptop','desktop');
+$brand-breakpoints: ('tablet','laptop');
 $breadcrumb-separator: ›;
-$menu-expand-at: tablet;
+$menu-expand-at: desktop;
 $scroll-to-top--shape: 'square';
 $scroll-to-top--symbol: 'arrow-up';
 $scroll-to-top--position: 'bottom-right';

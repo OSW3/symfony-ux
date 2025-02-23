@@ -4,15 +4,15 @@ import ButtonComponent from "./ButtonComponent";
 import { getPrefix } from "../utils/generated";
 
 
-export default class OffcanvasComponent
+export default class HeaderComponent
 {
     /**
      * Component Classname
      * 
      * @type {string}
      */
-    static name = "offcanvas";
-
+    static name = "header";
+    
     /**
      * Component prefix
      * 
@@ -28,6 +28,13 @@ export default class OffcanvasComponent
     static actions = ['open', 'close', 'toggle'];
 
     /**
+     * Component selector
+     * 
+     * @type {string}
+     */
+    static selector = `[rel=js-${this.prefix}${this.name}]`;
+
+    /**
      * Class List
      * 
      * @type {object}
@@ -35,13 +42,6 @@ export default class OffcanvasComponent
     static classList = {
         open: 'open',
     };
-
-    /**
-     * Component selector
-     * 
-     * @type {string}
-     */
-    static selector = `[rel=js-${this.prefix}${this.name}]`;
 
     /**
      * Main component node
@@ -56,14 +56,17 @@ export default class OffcanvasComponent
      * @type {HTMLElement}
      */
     #body;
-    
-    constructor(node) {
+
+    constructor(node)
+    {
         this.#node = node;
         this.#body = document.querySelector('body');
-        
+
+        console.log( this.#node );
+                
         if (!this.#node.id) return;
 
-        document.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
+        this.#node.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
             new ButtonComponent(trigger).onClick = (event, element) => {
                 if (this.constructor.actions.includes(trigger.dataset.action)) {
                     this[trigger.dataset.action]();
@@ -73,9 +76,12 @@ export default class OffcanvasComponent
 
         // Click outside the offcanvas
         document.addEventListener('click', event => {
+
+            // console.log( !!this.#node.contains(event.target) );
+            
             if (event.target == this.#node) {
-                event.stopImmediatePropagation();
                 this.close();
+                event.stopImmediatePropagation();
             }
         });
         
@@ -96,19 +102,19 @@ export default class OffcanvasComponent
 
     open() {
         this.#node.style.display = 'block';
-        this.#body.classList.add(`${this.constructor.prefix}no-scroll`);
+        // this.#body.classList.add(`${this.constructor.prefix}no-scroll`);
         setTimeout(() => this.#node.classList.add(this.constructor.classList.open),1);
     }
     close() {
-        this.#body.classList.remove(`${this.constructor.prefix}no-scroll`);
+        // this.#body.classList.remove(`${this.constructor.prefix}no-scroll`);
         document.querySelectorAll(`${this.constructor.selector}.open`).forEach(node => {
             node.classList.remove(this.constructor.classList.open)
-            setTimeout(() => node.style.display = 'none', 300);
         });
     }
     toggle() {
         !this.#node.classList.contains(this.constructor.classList.open) ? this.open() : this.close();
     }
+
 }
 
-document.querySelectorAll(OffcanvasComponent.selector).forEach(node => new OffcanvasComponent(node));
+document.querySelectorAll(HeaderComponent.selector).forEach(node => new HeaderComponent(node));

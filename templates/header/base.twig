@@ -4,12 +4,18 @@
 {# ---------------------------------------------- #}
 {% set view = '@SymfonyUx/header/base.html' %}
 {% extends '@SymfonyUx/base.twig' %}
-{# {% extends '@SymfonyUx/header/base.html' %} #}
 
 
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
-{% set _attr = attr|default({}) %}
+{# Container wrapper #}
+{% if container is empty %}
+    {% set container = classname('container') %}
+{% else %}
+    {% set container = classname('container-' ~container) %}
+{% endif %}
+
+
+
+
 
 
 {# -------------------------------- #}
@@ -23,11 +29,11 @@
 
 {% set header_toggler_classname = classname('header-toggler') %}
 {% set header_toggler_dataset = {
-    action: 'toggle',
+    action: 'open',
     target: id
 } %}
 {% set header_close_classname = classname('header-close') %}
 {% set header_close_dataset = {
-    action: 'hide',
+    action: 'close',
     target: id
 } %}

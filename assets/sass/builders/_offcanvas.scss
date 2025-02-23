@@ -7,7 +7,7 @@
 // @use "sass:map";
 // @use "sass:meta";
 @use "sass:math";
-@use './utils';
+@use './../utils/no-scroll';
 @use './../mixins/flex';
 @use './../mixins/spacing';
 @use './../storages/offcanvas' as store;

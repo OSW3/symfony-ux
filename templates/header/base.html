@@ -1,7 +1,7 @@
 <{{ tag }} {{ _get_attributes(_attr) }}>
+    <div class="{{ container }}">
 
-    <div class="{{ classname(containerClass) }}">
-
+        {# Brand component #}
         {% if brand is not empty %}
         <twig:Component:Brand 
             :name="brand.name|default()"
@@ -14,21 +14,13 @@
         {% endif %}
 
 
-
-
-
-
-
-
-
-
-
         {# Expand button - if menu is not showed on small devices #}
         <twig:Component:Button
             label="Expand"
             :class="header_toggler_classname"
             :dataset="header_toggler_dataset"
         />
+
 
         <div class="{{ classname('header-content') }}">
 
@@ -39,24 +31,11 @@
                 :dataset="header_close_dataset"
             />
 
-
             {# Menu Schema #}
-
-            {# <twig:Component:Menu 
+            <twig:Component:Menu 
                 :schema="schema" 
-                justify="between"
-            /> #}
-            {% for node in schema %}
-                {{ dump(node) }}
-                {# {% if node.type == 'nav' %} #}
-                {# <twig:Component:Header:Menu :options="node.options" /> #}
-                {# <twig:Component:Header:Menu :options="node.options" /> #}
-                {# {% elseif node.type == 'searchbar' %} #}
-                {# <twig:Component:Header:Searchbar :options="node.options" /> #}
-                {# {% elseif node.type == 'template' %} #}
-                {# <twig:Component:Header:Template :template="node.template" :options="node.options" /> #}
-                {# {% endif %} #}
-            {% endfor %}
+                :justify="justify"
+            />
 
         </div>
     </div>

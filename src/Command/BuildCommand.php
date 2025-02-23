@@ -87,6 +87,7 @@ class BuildCommand extends Command
             'accordions'    => $this->accordions($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
             'breadcrumb'    => $this->breadcrumb($sassVariables, $value),
+            'header'        => $this->header($sassVariables, $value),
             'menu'          => $this->menu($sassVariables, $value),
             'offcanvas'     => $this->offcanvas($sassVariables, $value),
             'rating'        => $this->rating($scriptVariables, $value),
@@ -316,9 +317,16 @@ class BuildCommand extends Command
         $vars[] = "\$brand-breakpoints: ('".implode("','", $brandBreakpoint)."');";
     }
 
-    private function breadcrumb(array &$vars, $options)
+    private function breadcrumb(array &$sassVariables, $options)
     {
-        $vars[] = "\$breadcrumb-separator: {$options['separator']};";
+        $sassVariables[] = "\$breadcrumb-separator: {$options['separator']};";
+    }
+
+    private function header(array &$sassVariables, $options)
+    {
+        if ($options['expandAt']) {
+            $sassVariables[] = "\$header-expand-at: {$options['expandAt']};";
+        }
     }
 
     private function menu(array &$sassVariables, $options)

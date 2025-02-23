@@ -5,6 +5,7 @@
 // * ---------------------------------------------------------------------------
 
 @use 'sass:list';
+@use 'sass:meta';
 @use './../storages/breakpoints';
 @use './../storages/fonts';
 @use './../storages/prefix';
@@ -14,17 +15,23 @@
 $prefix: prefix.$prefix;
 
 
+@use './../generated';
+
+
 // * Define storage data
 // * ---------------------------------------------
 
 /// List of breakpoints for responsive design.
 /// @type list
 //
-$breakpoints: ();
+$breakpoints: if(meta.global-variable-exists('brand-breakpoints', $module: generated), generated.$brand-breakpoints, ());
 
-@each $name, $value in breakpoints.$breakpoints {
-    $breakpoints: list.append($breakpoints, $name) !global;
+@if list.length($breakpoints) < 1{
+    @each $name, $value in breakpoints.$breakpoints {
+        $breakpoints: list.append($breakpoints, $name) !global;
+    }
 }
+
 
 /// Primary font family for the text.
 /// @type string|null

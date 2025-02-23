@@ -17,9 +17,11 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
+    'header--backdrop--bg-color'     : var(--#{$prefix}black),
     // header--color              : inherit,
     // header--color--hover       : inherit,
-    header--bg-color           : var(--#{$prefix}red),
+    'header--bg-color'           : var(--#{$prefix}red),
+    'header--expanded--bg-color' : var(--#{$prefix}cyan),
     // header--bg-color--hover    : inherit,
     // header--border-color       : inherit,
     // header--border-color--hover: inherit,

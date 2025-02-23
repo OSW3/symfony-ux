@@ -1,5 +1,11 @@
 <div {{ _get_attributes(_attr) }}>
-    Search
+
+    <twig:FormWidget:Search 
+        icon="symbol:home"
+        label="Search"
+        labelHidden
+    />
+    
     {# <twig:Component:SearchOld:Form 
         :method="method" 
         :param="param" 

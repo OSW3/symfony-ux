@@ -21,10 +21,15 @@ return function (): ArrayNodeDefinition {
                 ->defaultNull()
             ->end()
 
-            ->enumNode('mobileDisplay')
-                ->info("Specifies the display mode on mobile.")
-                ->values(['offcanvas-left', 'offcanvas-right', 'collapse-top'])
-                ->defaultNull('offcanvas-left')
+            ->scalarNode('expandAt')
+                ->info("Specifies the breakpoint to expand or toggle between mobile and desktop views.")
+                ->defaultNull()
+            ->end()
+
+            ->enumNode('placement')
+                ->info("Defines the mobile placement of the component (left, right, top).")
+                ->values(['left', 'right', 'top'])
+                ->defaultValue('left')
             ->end()
 
             ->booleanNode('sticky')

@@ -3,7 +3,7 @@
     {% if section.type == 'nav' %}
         <twig:Component:Nav 
             :items="section.items" 
-            :order="section.order"
+            :order="section.order|default({})"
         />
     {% else %}
         <twig:Component:Search 

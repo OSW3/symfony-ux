@@ -1,0 +1,53 @@
+// * ------------ @osw3/symfony-ux/assets/sass/utils/display.scss ------------
+// *
+// *    Builder for Display component
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:list';
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../storages/breakpoints';
+@use './../functions/collection';
+
+@include banner.header('Utils Display');
+$prefix: prefix.$prefix;
+
+
+// * Data
+// * ---------------------------------------------
+
+// $breakpoints: collection.reverse(breakpoints.$breakpoints);
+$breakpoints: breakpoints.$breakpoints;
+$values     : inline inline-block block grid inline-grid table table-row table-cell flex inline-flex none;
+
+
+// * Display definitions
+// * ---------------------------------------------
+
+.#{$prefix}display {
+    
+    // Display
+    $first-breakpoint: list.nth(list.nth($breakpoints, 1), 1); 
+
+    @each $key in $values {
+        &-#{$key}, &-#{$first-breakpoint}-#{$key} {
+            display: #{$key} !important;
+        }
+    }
+
+    // Responsive display
+    $previous-size: 0;
+    @each $breakpoint, $size in $breakpoints {
+        @if $previous-size > 0 {
+            @media (min-width: $previous-size) {
+                @each $key in $values {
+                    &-#{$breakpoint}-#{$key} {
+                        display: #{$key} !important;
+                    }
+                }
+            }
+        }
+        $previous-size: $size;
+    }
+}

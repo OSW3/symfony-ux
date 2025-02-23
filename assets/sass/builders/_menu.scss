@@ -86,6 +86,7 @@ $breakpoints: breakpoints.$breakpoints;
             &:not(&-vertical), 
             &:not(&-vertical) .#{$prefix}nav-items { 
                 @include flex.direction(row);
+                @include flex.align-items(center);
             }
         }
     }
