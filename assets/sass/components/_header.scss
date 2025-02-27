@@ -20,10 +20,10 @@ $theme-properties: (
     'header--backdrop--bg-color'     : var(--#{$prefix}black),
     // header--color              : inherit,
     // header--color--hover       : inherit,
-    'header--bg-color'           : var(--#{$prefix}red),
-    'header--expanded--bg-color' : var(--#{$prefix}cyan),
+    'header--bg-color'           : var(--#{$prefix}white),
+    'header--expanded--bg-color' : var(--#{$prefix}white),
     // header--bg-color--hover    : inherit,
-    // header--border-color       : inherit,
+    'header--border-color'       : var(--#{$prefix}gray-300),
     // header--border-color--hover: inherit,
 );
 

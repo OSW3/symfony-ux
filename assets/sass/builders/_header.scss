@@ -55,12 +55,16 @@ $breakpoints: breakpoints.$breakpoints;
     }
 
     & .#{$prefix}brand {
-        z-index: -2
+        z-index: -2;
+    }
+
+    & .#{$prefix}menu {
+        background-color: inherit;
     }
 
 
     &-content {
-        background-color: rgb(2, 208, 95);
+        // background-color: rgb(2, 208, 95);
         @include flex.display;
         @include flex.direction(column);
         @include transition.set(
@@ -142,6 +146,7 @@ $breakpoints: breakpoints.$breakpoints;
     @if map.has-key($breakpoints, store.$expand-at) {
         @media (min-width: map.get($breakpoints, store.$expand-at)) {
             & {
+                border-bottom: store.$border-width store.$border-style var(--#{$prefix}header--border-color);
                 background-color: var(--#{$prefix}header--expanded--bg-color);
 
                 & .#{$prefix}brand {
@@ -172,8 +177,8 @@ $breakpoints: breakpoints.$breakpoints;
                 }
 
                 &-left &-content,
-                &-right &-content  {
-                    background-color: rgb(135, 222, 196);
+                &-right &-content {
+                    // background-color: rgb(135, 222, 196);
 
                     position: relative;
                     @include flex.display(true);
