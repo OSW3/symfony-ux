@@ -48,8 +48,13 @@ twig_component:
 ## Dependencies
 
 ```shell
-    composer require symfony/twig-bundle
-    composer require symfony/options-resolver
-    composer require symfony/ux-twig-component
-    composer require symfony/webpack-encore-bundle
+    symfony/options-resolver
+    symfony/twig-bundle
+    symfony/ux-twig-component
+    symfony/webpack-encore-bundle
+
+
+
+        "symfony/css-selector": "*",
+        "symfony/dom-crawler": "*",
 ```

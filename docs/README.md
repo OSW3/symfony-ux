@@ -2,9 +2,11 @@
 
 Add many UX Components to your app.
 
-## Installation
-- [Installation (no comment process)](./install/no-comment.md)
-- [Installation (process explained)](./install/explained.md)
+## Getting started
+- [Installation](./getting-started/installation.md)
+- [Configuration](./getting-started/configuration.md)
+- [SASS Integration](./getting-started/sass-integration.md)
+- [JavaScript Integration](./getting-started/js-integration.md)
 
 ## Layout
 - [Prefix](./layout/prefix.md)
