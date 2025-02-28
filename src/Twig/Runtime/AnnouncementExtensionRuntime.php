@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class AnnouncementExtensionRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
-        private ManagerRegistry $doctrine,
+        private ?ManagerRegistry $doctrine = null,
         private ParameterBagInterface $parameters
     ) {}
 
@@ -17,7 +17,7 @@ class AnnouncementExtensionRuntime implements RuntimeExtensionInterface
     {
         $entity = $this->parameters->get(Configuration::NAME)['components']['announcement']['entity'];
 
-        if ($entity === null) {
+        if ($entity === null && $this->doctrine === null) {
             return [];
         }
 
