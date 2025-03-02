@@ -10,7 +10,7 @@ The prefix will be applied to components such as `ux-component`.
 ```yaml 
 # config/packages/symfony_ux.yaml
 symfony_ux:
-    prefix: "ux"
+    prefix: "ui"
 ```
 
 ## Customize the prefix

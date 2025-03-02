@@ -24,13 +24,13 @@ class AnnouncementExtensionRuntime implements RuntimeExtensionInterface
         $repository = $this->doctrine->getRepository($entity);
         $entities   = $repository->findAll();
 
-        usort($entities, function ($a, $b) {
+        \usort($entities, function ($a, $b) {
             $orderA = $a->getOrder();
             $orderB = $b->getOrder();
 
             return $orderA <=> $orderB;
         });
 
-        return array_map(fn($entity) => $entity->{'get' . ucfirst('message')}(), $entities);
+        return \array_map(fn($entity) => $entity->{'get' . \ucfirst('message')}(), $entities);
     }
 }

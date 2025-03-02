@@ -130,10 +130,12 @@ $btn-close-size: 24px;
     // Palette declinations
     // --
 
-    @include component.palette-declination( 
-        meta.get-function(palette-declination), 
-        alert.$theme-properties
-    );
+    @if store.$enable-palette {
+        @include component.palette-declination( 
+            meta.get-function(palette-declination), 
+            alert.$theme-properties
+        );
+    }
 
     
     // Close button

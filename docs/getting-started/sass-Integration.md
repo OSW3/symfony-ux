@@ -1,16 +1,60 @@
-# How to integrate Symfony UX (SCSS)
+# How to integrate SASS components
 
-## Method 1 - Import all of Symfony UX
+## Install Webpack & SASS support
 
-This method include **Variables**, **Builder** and **Components**, 
+Ensure the `symfony/webpack-encore-bundle` is installed:
 
-Import the `symfony-ux-bundle` to your scss file
-
-```scss
-@import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-bundle';
+```shell
+composer require symfony/webpack-encore-bundle
 ```
 
-## Method 2 - Import Symfony UX groups one by one
+and install NPM dependencies:
+
+```shell
+npm install
+```
+
+Install `sass` and `sass-loader`
+
+```shell
+npm install sass-loader@latest sass --save-dev
+```
+
+## Add your own SCSS file
+
+Create your own SCSS file in `assets/sass/ui.scss` and this file to the Encore Styles entries 
+
+```js 
+Encore
+    // ...
+    .addStyleEntry('ui', './assets/sass/ui.scss');
+    // ...
+;
+```
+
+## Enable SASS support
+
+In the `webpack.config.js`, uncomment the line
+
+```js
+Encore
+    // ...
+    .enableSassLoader()
+    // ...
+;
+```
+
+
+## Build CSS files
+
+```shell
+npm run watch 
+```
+
+
+
+
+
 
 Import the `symfony-ux-bundle` to your scss file
 
@@ -18,15 +62,4 @@ Import the `symfony-ux-bundle` to your scss file
 @import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-variables';
 @import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-builders';
 @import '<path-to-your-vendor>/osw3/symfony-ux/dist/sass/symfony-ux-components';
-```
-
-## Method 3 - Import Symfony UX elements one by one according to your needs
-
-Import the `symfony-ux-bundle` to your scss file.  
-See each component's documentation for variable and builder dependencies.
-
-```scss
-@import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/variables/<variable>';
-@import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/factories/<builder>';
-@import '<path-to-your-vendor>/osw3/symfony-ux/assets/sass/components/<component>';
 ```
