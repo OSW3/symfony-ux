@@ -1,6 +1,8 @@
 // CSS Mapping
-const cssMapping = process.env.CSS_MAPPING || {};
+const isNode = typeof process !== 'undefined';
+const cssMapping = isNode ? process.env.CSS_MAPPING || {} : {};
+const obfuscateCss = isNode ? process.env.OBFUSCATE_CSS_CLASSES : false;
 
 export function getCssClass(className) {
-    return process.env.OBFUSCATE_CSS_CLASSES ? cssMapping[className] || className : className;
+    return obfuscateCss ? cssMapping[className] || className : className;
 }

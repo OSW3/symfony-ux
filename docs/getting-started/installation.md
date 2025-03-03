@@ -45,6 +45,13 @@ twig_component:
         OSW3\UX\Components\: '@SymfonyUx/'
 ```
 
+## Install NPM dependencies
+
+```shell
+npm install sass-loader@latest sass --save-dev
+```
+
+
 ## Dependencies
 
 ```shell
