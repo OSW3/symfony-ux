@@ -8,10 +8,25 @@ Create an alert component
 
 
 
-## Integration
+## Code example
 
 <!-- tabs:start -->
+### **YAML**
+
+```yaml
+# config/packages/symfony_ux.yaml
+symfony_ux:
+    components:
+        alerts:
+            dismissible: true
+            delay: 500
+            palette: true
+            sizes: true
+```
+
 ### **HTML**
+
+#### Example 1
 
 ```twig
 <div class="ui-alert ui-alert-success">
@@ -20,23 +35,56 @@ Create an alert component
 </div>
 ``` 
 
+#### Example 2
+
+```twig
+<div class="{{ classname('alert alert-success') }}">
+    <span class="{{ classname('alert-icon') }}">✅</span>
+    <p class="{{ classname('alert-message') }}">This is an alert message</p>
+</div>
+``` 
+
 ### **Twig**
+
+#### Example 1
 
 ```twig
 <twig:Component:Alert:Success message="..." />
-<twig:Component:Alert:Warning message="..." />
-<twig:Component:Alert:Danger message="..." />
-<twig:Component:Alert:Info message="..." />
-<twig:Component:Alert:Primary message="..." />
-<twig:Component:Alert:Secondary message="..." />
-<twig:Component:Alert:Dark message="..." />
-<twig:Component:Alert:Light message="..." />
-<twig:Component:Alert:Muted message="..." />
+``` 
+
+#### Example 2
+
+```twig
+<twig:Component:Alert is="success" message="..." />
 ``` 
 
 ### **SCSS**
 
+#### Customize layout example
+
 ```css 
+/* assets/sass/components/_alerts.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/alert';
+@include alert.setBorderWidth(1px);
+```
+
+#### Customize theme example
+
+```css 
+/* assets/sass/themes/_light.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
+@include themes.add('light', (
+    'alert--color'       : var(--#{$prefix}black),
+    'alert--bg-color'    : var(--#{$prefix}gray-300),
+    'alert--border-color': var(--#{$prefix}black),
+));
+```
+
+#### Import the component builder
+
+```css 
+/* assets/sass/ui.scss */
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/alert';
 ```
 
@@ -50,100 +98,33 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AlertComponent';
 <!-- tabs:end -->
 
 
-
-## Configuration
+## API
 
 <!-- tabs:start -->
 ### **YAML**
 
-Set default configuration for all Alerts.
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| **`dismissible`** | `boolean` | no | true | Indicates whether the alert can be dismissed by the user. |
+| **`delay`** | `integer` | no |  | Delay in seconds before alerts are automatically dismissed. |
+| **`palette`** | `boolean` | no | true | Indicates to SASS whether the palette is enabled. |
+| **`sizes`** | `boolean` | no | true | Indicates to SASS whether the sizes are available. |
 
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `dismissible` | `boolean` | Indicates whether the alert can be dismissed by the user. | no | true |
-| `delay` | `integer` | Delay in seconds before alerts are automatically dismissed. | no |  |
-
-```yaml
-symfony_ux:
-    components:
-        alerts:
-            dismissible: true
-            delay: 500
-```
 
 ### **Twig**
-
-### Twig configuration
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `delay` | `int,string,null` | Delay in seconds before alerts are automatically dismissed. | no | `0` |
-| `dismissible` | `boolean` | Indicates whether the alert can be dismissed by the user. | no | `false` |
-| `icon` | `string,null` | Icon associated with the alert. | no | `null` |
-| `is` | `string` | Type of the alert (`success`,`warning`,`danger`,`info`,`primary`,`secondary`,`dark`,`light`,`muted`). | no | `null` |
-| `message` | `string` | Message displayed in the alert. | yes |  |
-| `size` | `string` | Size of the alert (`small`, `normal`, `medium`, `large`). | no | `normal` |
-
 > Note: Parameters with • override the YAML configuration.
 
-```twig 
-<twig:Component:Alert:Success
-    dismissible
-    icon="✅"
-    message="..." 
-/>
-```
-<!-- tabs:end -->
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| **`delay•`** | `int,string,null` | no | `0` | Delay in seconds before alerts are automatically dismissed. | 
+| **`dismissible•`** | `boolean` | no | `false` | Indicates whether the alert can be dismissed by the user. | 
+| **`icon`** | `string,null` | no | `null` | Icon associated with the alert. | 
+| **`is`** | `string` | no | `null` | Type of the alert (`success`,`warning`,`danger`,`info`,`primary`,`secondary`,`dark`,`light`,`muted`). | 
+| **`message`** | `string` | yes |  | Message displayed in the alert. | 
+| **`size`** | `string` | no | `normal` | Size of the alert (`small`, `normal`, `medium`, `large`). | 
 
 
-
-
-## Customize SCSS
-
-<!-- tabs:start -->
-
-### **Theme**
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
-
-$props: map.merge($props, (
-    'alert--color'       : var(--#{$prefix}black),
-    'alert--bg-color'    : var(--#{$prefix}gray-300),
-    'alert--border-color': var(--#{$prefix}black),
-));
-```
-
-### **Layout**
-
-#### Custom file example
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/alert';
-
-@include alert.setBorderWidth(1px);
-@include alert.setBorderWidth(1px);
-@include alert.setBorderStyle('solid');
-@include alert.setBorderRadius(var(--border-radius-normal));
-@include alert.setPaddingX(10px, 5px, 15px);
-@include alert.setPaddingY(12px, 8px, 16px);
-@include alert.setFontFamily('Arial, sans-serif');
-@include alert.setFontSize(16px);
-@include alert.setFontSizeSmall(14px);
-@include alert.setFontSizeLarge(18px);
-@include alert.setFontWeight(400);
-@include alert.setFontWeightSmall(300);
-@include alert.setFontWeightLarge(500);
-@include alert.setLineHeight(1.5);
-@include alert.setLineHeightSmall(1.2);
-@include alert.setLineHeightLarge(1.8);
-@include alert.setEnablePalette(true);
-@include alert.setBoxShadow('0 1px 3px rgba(0, 0, 0, 0.1)');
-@include alert.setTransitionDelay(var(--transition-normal));
-@include alert.setTransitionType('ease-in-out');
-```
-
-<hr>
+### **SASS Layout**
 
 #### Available mixins
 
@@ -154,6 +135,7 @@ Sets the width of the border around the element.
 ```css 
 @include alert.setBorderWidth({Length} $width);
 ```
+<hr>
 
 ##### `setBorderWidth`
 
@@ -162,6 +144,7 @@ Sets the width of the border around the element.
 ```css
 @include setBorderWidth({Length} $width);
 ```
+<hr>
 
 ##### `setBorderStyle`
 
@@ -170,6 +153,7 @@ Sets the style of the border around the element.
 ```css
 @include setBorderStyle({String} $style);
 ```
+<hr>
 
 ##### `setBorderRadius`
 
@@ -178,6 +162,7 @@ Sets the radius of the border corners, using a CSS variable.
 ```css
 @include setBorderRadius({Length} $radius);
 ```
+<hr>
 
 ##### `setPaddingX`
 
@@ -186,6 +171,7 @@ Sets the horizontal padding for the element.
 ```css
 @include setPaddingX({Length} $normal, {Length} $small: null, {Length} $large: null);
 ```
+<hr>
 
 ##### `setPaddingY`
 
@@ -194,6 +180,7 @@ Sets the vertical padding for the element.
 ```css
 @include setPaddingY({Length} $normal, {Length} $small: null, {Length} $large: null);
 ```
+<hr>
 
 ##### `setFontFamily`
 
@@ -202,6 +189,7 @@ Sets the font family for the text.
 ```css
 @include setFontFamily({String} $family);
 ```
+<hr>
 
 ##### `setFontSize`
 
@@ -210,6 +198,7 @@ Sets the base font size for the text.
 ```css
 @include setFontSize({Length} $size);
 ```
+<hr>
 
 ##### `setFontSizeSmall`
 
@@ -218,6 +207,7 @@ Sets the font size for small text.
 ```css
 @include setFontSizeSmall({Length} $size);
 ```
+<hr>
 
 ##### `setFontSizeLarge`
 
@@ -226,6 +216,7 @@ Sets the font size for large text.
 ```css
 @include setFontSizeLarge({Length} $size);
 ```
+<hr>
 
 ##### `setFontWeight`
 
@@ -234,6 +225,7 @@ Sets the base font weight for the text.
 ```css
 @include setFontWeight({Number} $weight);
 ```
+<hr>
 
 ##### `setFontWeightSmall`
 
@@ -242,6 +234,7 @@ Sets the font weight for small text.
 ```css
 @include setFontWeightSmall({Number} $weight);
 ```
+<hr>
 
 ##### `setFontWeightLarge`
 
@@ -250,6 +243,7 @@ Sets the font weight for large text.
 ```css
 @include setFontWeightLarge({Number} $weight);
 ```
+<hr>
 
 ##### `setLineHeight`
 
@@ -258,6 +252,7 @@ Sets the base line height for the text.
 ```css
 @include setLineHeight({Number} $height);
 ```
+<hr>
 
 ##### `setLineHeightSmall`
 
@@ -266,6 +261,7 @@ Sets the line height for small text.
 ```css
 @include setLineHeightSmall({Number} $height);
 ```
+<hr>
 
 ##### `setLineHeightLarge`
 
@@ -274,14 +270,16 @@ Sets the line height for large text.
 ```css
 @include setLineHeightLarge({Number} $height);
 ```
+<hr>
 
-##### `setEnablePalette`
+##### `isPaletteEnabled`
 
 Enables or disables the use of a color palette.
 
 ```css
-@include setEnablePalette({Boolean} $enabled);
+@include isPaletteEnabled({Boolean} $enabled);
 ```
+<hr>
 
 ##### `setBoxShadow`
 
@@ -290,6 +288,7 @@ Sets the box shadow effect for the element.
 ```css
 @include setBoxShadow({String} $shadow);
 ```
+<hr>
 
 ##### `setTransitionDelay`
 
@@ -298,6 +297,7 @@ Sets the transition delay for the brand's elements.
 ```css
 @include setTransitionDelay({Length} $delay);
 ```
+<hr>
 
 ##### `setTransitionType`
 
@@ -306,5 +306,19 @@ Sets the type of transition timing function.
 ```css
 @include setTransitionType({String} $type);
 ```
+
+
+### **SASS Theme**
+
+##### `alert--color`
+Defines the text color of the alert. The default value is set to var(--black), ensuring high readability.
+<hr>
+
+##### `alert--bg-color`
+Specifies the background color of the alert. The default value is var(--gray-300), providing a neutral and subtle contrast.
+<hr>
+
+##### `alert--border-color`
+Sets the border color of the alert. The default value is var(--black), ensuring clear visual separation from surrounding elements.
 
 <!-- tabs:end -->

@@ -9,8 +9,8 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 class AnnouncementExtensionRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
+        private ParameterBagInterface $parameters,
         private ?ManagerRegistry $doctrine = null,
-        private ParameterBagInterface $parameters
     ) {}
 
     public function getAnnouncementMessages(): array 

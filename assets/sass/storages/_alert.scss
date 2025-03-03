@@ -4,6 +4,8 @@
 // *
 // * ---------------------------------------------------------------------------
 
+@use 'sass:meta';
+@use './../generated';
 @use './../storages/fonts';
 @use './../storages/spaces';
 @use './../storages/prefix';
@@ -111,7 +113,12 @@ $line-height-large: 1.6;
 /// Enables or disables the use of a color palette.
 /// @type boolean
 //
-$enable-palette: true;
+$enable-palette: if(meta.global-variable-exists('alerts--enable-palette', $module: generated), generated.$alerts--enable-palette, true);
+
+/// Enables or disables the use of sizes.
+/// @type boolean
+//
+$enable-sizes: if(meta.global-variable-exists('alerts--enable-sizes', $module: generated), generated.$alerts--enable-sizes, true);
 
 /// Box shadow effect for the element.
 /// @type string
@@ -275,8 +282,16 @@ $transition-type: ease-in-out;
 /// Enables or disables the use of a color palette.
 /// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) the color palette.
 //
-@mixin setEnablePalette($enabled) {
+@mixin isPaletteEnabled($enabled) {
     $enable-palette: $enabled !global;
+}
+
+
+/// Enables or disables the use of sizes.
+/// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) the sizes.
+//
+@mixin isSizesEnabled($enabled) {
+    $enable-sizes: $enabled !global;
 }
 
 

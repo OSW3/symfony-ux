@@ -23,40 +23,47 @@ You can configure multiple providers like Google Analytics, Clicky, Heap, and ot
 
 
 
-
-## Integration
-
-<!-- tabs:start -->
-### **Twig**
-
-```twig
-<twig:Component:Analytics:Google />
-<twig:Component:Analytics provider="google" />
-``` 
-<!-- tabs:end -->
-
-
-
-## Configuration
+## Code example
 
 <!-- tabs:start -->
 ### **YAML**
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `tracking_id` | `int|string` | Set the tracking ID. | no |  |
-| `tracking_url` | `string` | Set the tracking URL. | no |  |
-| `tracking_domain` | `string` | Set the tracking domain. | no |  |
 
 ```yaml
 symfony_ux:
     components:
         analytics: 
-            <provider>: # replace by the name of the provider
+            google: # replace by the name of the provider
                 tracking_id: 1234
                 tracking_url: https://mysite.provider.url/
                 tracking_domain: mysite.com
 ```
+
+### **Twig**
+
+#### Example 1
+
+```twig
+<twig:Component:Analytics:Google />
+``` 
+
+#### Example 2
+
+```twig 
+<twig:Component:Analytics provider="google" trackingId="1234" />
+```
+<!-- tabs:end -->
+
+
+## API
+
+<!-- tabs:start -->
+### **YAML**
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `tracking_id` | `int|string` | no |  | Set the tracking ID. |
+| `tracking_url` | `string` | no |  | Set the tracking URL. |
+| `tracking_domain` | `string` | no |  | Set the tracking domain. |
 
 ### Required options by provider
 
@@ -72,31 +79,12 @@ symfony_ux:
 | Woopra |  |  | x | 
 
 ### **Twig**
-
-### Twig configuration
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `• tracking_id` | `int|string` | Set the tracking ID. | no |  |
-| `• tracking_url` | `string` | Set the tracking URL. | no |  |
-| `• tracking_domain` | `string` | Set the tracking domain. | no |  |
-
 > Note: Parameters with • override the YAML configuration.
 
-```twig 
-<twig:Component:Analytics:Google />
-```
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `tracking_id•` | `int|string` | no |  | Set the tracking ID. |
+| `tracking_url•` | `string` | no |  | Set the tracking URL. |
+| `tracking_domain•` | `string` | no |  | Set the tracking domain. |
 
-```twig 
-<twig:Component:Analytics 
-    provider="google" 
-/>
-```
-
-```twig 
-<twig:Component:Analytics 
-    provider="google" 
-    trackingId="1234" 
-/>
-```
 <!-- tabs:end -->

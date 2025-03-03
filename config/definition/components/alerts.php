@@ -17,6 +17,16 @@ return function (): ArrayNodeDefinition {
             ->defaultTrue()
         ->end()
 
+        ->booleanNode('palette')
+            ->info("Set whether Alerts palette can be generated.")
+            ->defaultTrue()
+        ->end()
+
+        ->booleanNode('sizes')
+            ->info("Set whether Alerts sizes is enable.")
+            ->defaultTrue()
+        ->end()
+
         ->integerNode('delay')
             ->info("Set the delay (in second) before alerts are automatically dismiss.")
             ->min(0)

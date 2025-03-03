@@ -85,6 +85,7 @@ class BuildCommand extends Command
         
         foreach ($this->options['components'] as $name => $value) match ($name) {
             'accordions'    => $this->accordions($sassVariables, $value),
+            'alerts'        => $this->alerts($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
             'breadcrumb'    => $this->breadcrumb($sassVariables, $value),
             'header'        => $this->header($sassVariables, $value),
@@ -307,6 +308,15 @@ class BuildCommand extends Command
         }
     }
 
+    private function alerts(array &$sassVariables, $options)
+    {
+        $hasPalette = $options['palette'] ? 'true' : 'false';
+        $sassVariables[] = "\$alerts--enable-palette: {$hasPalette};";
+
+        $isSizeEnabled = $options['sizes'] ? 'true' : 'false';
+        $sassVariables[] = "\$alerts--enable-sizes: {$isSizeEnabled};";
+    }
+
     private function brand(array &$vars, $options)
     {
         $brandBreakpoint = [];
@@ -314,12 +324,12 @@ class BuildCommand extends Command
         if (isset($options['logo'])) {
             $brandBreakpoint = array_keys($options['logo']);
         }
-        $vars[] = "\$brand-breakpoints: ('".implode("','", $brandBreakpoint)."');";
+        $vars[] = "\$brand--breakpoints: ('".implode("','", $brandBreakpoint)."');";
     }
 
     private function breadcrumb(array &$sassVariables, $options)
     {
-        $sassVariables[] = "\$breadcrumb-separator: {$options['separator']};";
+        $sassVariables[] = "\$breadcrumb--separator: {$options['separator']};";
     }
 
     private function header(array &$sassVariables, $options)
