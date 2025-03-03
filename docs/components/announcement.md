@@ -8,57 +8,12 @@ Create an announcement bar.
 
 
 
-## Integration
-
-<!-- tabs:start -->
-### **Twig**
-
-```twig
-<twig:Component:Announcement />
-``` 
-
-### **HTML Structure**
-
-```html
-<div class="ui-announcement">
-    <div class="ui-ticker" rel="js-ui-ticker" data-speed="15" data-delay="0" data-direction="rtl" data-loop="true" data-pauseHover="true">
-        <div class="ui-ticker-item">Message.../div>
-        <div class="ui-ticker-item">Message.../div>
-        <div class="ui-ticker-item">Message.../div>
-    </div>
-</div>
-``` 
-
-### **SCSS**
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/announcement';
-```
-
-### **JavaScript**
-
-Import the component `AnnouncementComponent`
-
-```js
-import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AnnouncementComponent';
-```
-<!-- tabs:end -->
-
-
-
-## Configuration
+## Code example
 
 <!-- tabs:start -->
 ### **YAML**
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `animated` | `enum` | Define if the announcement as animation  `always`, `none`  | no | `always` |
-| `animation` | `enum` | Set the animation type `ticker`,`rotator`,`none` | no | `ticker` |
-| `speed` | `integer` | Set the animation speed `0` to `9` | no | `6` |
-| `entity` | `string` | Define the entity of messages storage | no | `null` |
-
 ```yaml
+# config/packages/symfony_ux.yaml
 symfony_ux:
     components:
         announcement:
@@ -68,17 +23,37 @@ symfony_ux:
             entity: App\Entity\Announcement
 ```
 
+### **HTML**
+
+#### Example 1
+
+```html
+<div class="ui-announcement">
+    <div class="ui-ticker" rel="js-ui-ticker" data-speed="15" data-delay="0" data-direction="rtl" data-loop="true" data-pauseHover="true">
+        <div class="ui-ticker-item">Message...</div>
+        <div class="ui-ticker-item">Message...</div>
+        <div class="ui-ticker-item">Message...</div>
+    </div>
+</div>
+``` 
+
+#### Example 2
+
+```html
+<div class="{{ classname('announcement') }}">
+    <div class="{{ classname('ticker') }}" rel="js-ui-ticker" data-speed="15" data-delay="0" data-direction="rtl" data-loop="true" data-pauseHover="true">
+        <div class="{{ classname('ticker-item') }}">Message...</div>
+        <div class="{{ classname('ticker-item') }}">Message...</div>
+        <div class="{{ classname('ticker-item') }}">Message...</div>
+    </div>
+</div>
+``` 
+
 ### **Twig**
 
-### Twig configuration
+#### Example 1
 
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `messages` | `array` | List of messages | no | [] |
-| `animation` • | `enum` | Set the animation type `ticker`,`rotator`,`none` | no | `ticker` |
-| `pauseHover` | `boolean` | Set pause hover to the ticker or rotator | no | `true` |
-
-> Note: Parameters with • override the YAML configuration.
+Messages stored in a twig variable.
 
 ```twig 
 {% set messages = [
@@ -86,115 +61,194 @@ symfony_ux:
     "Message 2",
     "Message 3"
 ] %}
-<twig:Component:Brand 
+<twig:Component:Announcement 
     :messages="messages" 
     animation="ticker" 
 />
 ```
+
+#### Example 2
+
+Messages stored in a database.
+
 ```twig 
-<twig:Component:Brand 
+<twig:Component:Announcement 
     :messages="getAnnouncementMessages()" 
     animation="ticker" 
 />
+```
+
+### **SCSS**
+
+#### Customize layout example
+
+```css 
+/* assets/sass/components/_announcement_.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/announcement';
+@include announcement.setMinHeight(48px);
+// ...
+```
+
+#### Customize theme example
+
+```css 
+/* assets/sass/themes/_light.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
+@include themes.add('light', (
+    'announcement--color': var(--#{$prefix}black),
+    // ...
+));
+```
+
+#### Import the component builder
+
+```css 
+/* assets/sass/ui.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/announcement';
+```
+
+### **JavaScript**
+
+```js
+import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AnnouncementComponent';
 ```
 <!-- tabs:end -->
 
 
 
-## Customize SCSS
+## API
 
 <!-- tabs:start -->
+### **YAML**
 
-### **Theme**
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `animated` | `enum` | no | `always` | Define if the announcement as animation  `always`, `none`  |
+| `animation` | `enum` | no | `ticker` | Set the animation type `ticker`,`rotator`,`none` |
+| `speed` | `integer` | no | `6` | Set the animation speed `0` to `9` |
+| `entity` | `string` | no | `null` | Define the entity of messages storage |
 
-```css 
-@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storages/prefix';
 
-$props: map.merge($props, (
-    'announcement--color'              : var(--#{$prefix}white),
-    'announcement--color--hover'       : var(--#{$prefix}white),
-    'announcement--bg-color'           : var(--#{$prefix}red),
-    'announcement--bg-color--hover'    : var(--#{$prefix}red),
-    'announcement--border-color'       : null,
-    'announcement--border-color--hover': null,
-));
-```
+### **Twig**
+> Note: Parameters with • override the YAML configuration.
 
-### **Layout**
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `messages` | `array` | no | [] | List of messages |
+| `animation•` | `enum` | no | `ticker` | Set the animation type `ticker`,`rotator`,`none` |
+| `pauseHover` | `boolean` | no | `true` | Set pause hover to the ticker or rotator |
 
-#### Custom file example
 
-```css 
-@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storage/prefix';
-@use './<path-to-vendor>/osw3/symfony-ux/assets/sass/storage/announcement';
-$prefix: prefix.$prefix;
+### **SASS Layout**
 
-@include announcement.setMinHeight(48px);
-@include announcement.setBorderWidth(0);
-@include announcement.setBorderRadius(var(--#{$prefix}border-radius-none));
-@include announcement.setHover(true);
-@include announcement.setTransition(true);
-@include announcement.setTransitionDelay(var(--#{$prefix}transition-normal));
-@include announcement.setTransitionType(ease-in-out);
-```
-
-<hr>
-
-#### Available mixins
-
-##### `setMinHeight`
-
-xxxx
+#### `setMinHeight`
+Sets the min height of the component
 
 ```css 
 @include announcement.setMinHeight( {Length} $height  );
 ```
 
-##### `setBorderWidth`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+<hr>
 
+#### `setBorderWidth`
 xxxx
 
 ```css 
 @include announcement.setBorderWidth( {Length} $width  );
 ```
 
-##### `setBorderRadius`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+<hr>
 
+#### `setBorderRadius`
 xxxx
 
 ```css 
 @include announcement.setBorderRadius( {Length} $radius  );
 ```
 
-##### `setHover`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+<hr>
 
+#### `setHover`
 xxxx
 
 ```css 
 @include announcement.setHover( {Boolean} $enabled  );
 ```
 
-##### `setTransition`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+<hr>
 
+#### `setTransition`
 xxxx
 
 ```css 
 @include announcement.setTransition( {Boolean} $enabled  );
 ```
 
-##### `setTransitionDelay`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+<hr>
 
+#### `setTransitionDelay`
 xxxx
 
 ```css 
 @include announcement.setTransitionDelay( {String} $delay  );
 ```
 
-##### `setTransitionType`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+<hr>
 
+#### `setTransitionType`
 xxxx
 
 ```css 
 @include announcement.setTransitionType( {String} $type  );
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
+
+
+### **SASS Theme**
+
+#### `announcement--color`  
+Defines the text color of the announcement. The default value is set to `var(--white)`, ensuring high readability.  
+<hr>  
+
+#### `announcement--color--hover`  
+Specifies the text color of the announcement when hovered. The default value remains `var(--white)`, maintaining consistency.  
+<hr>  
+
+#### `announcement--bg-color`  
+Sets the background color of the announcement. The default value is `var(--red)`, providing a strong visual impact.  
+<hr>  
+
+#### `announcement--bg-color--hover`  
+Defines the background color of the announcement when hovered. The default value remains `var(--red)`, ensuring visual continuity.  
+<hr>  
+
+#### `announcement--border-color`  
+Specifies the border color of the announcement. The default value is `null`, meaning no border is applied by default.  
+<hr>  
+
+#### `announcement--border-color--hover`  
+Sets the border color of the announcement when hovered. The default value is `null`, indicating that no border change occurs on hover.  
+<hr>  
 <!-- tabs:end -->

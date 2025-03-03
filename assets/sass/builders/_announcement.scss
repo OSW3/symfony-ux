@@ -6,16 +6,16 @@
 
 @use "sass:map";
 @use "sass:meta";
-@use './../builders/banner';
-@use './../storages/prefix';
+@use './ticker';
+@use './rotator';
 @use './../mixins/flex';
 @use './../mixins/size';
-// @use './../mixins/spacing';
-// @use './../mixins/support';
+@use './../builders/banner';
+@use './../storages/prefix';
 @use './../mixins/transition';
-
 @use './../storages/announcement' as store;
 @use './../components/announcement';
+
 @include banner.header('Component Announcement');
 $prefix: prefix.$prefix;
 

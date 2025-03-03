@@ -28,7 +28,7 @@ symfony_ux:
 
 #### Example 1
 
-```twig
+```html
 <div class="ui-alert ui-alert-success">
     <span class="ui-alert-icon">✅</span>
     <p class="ui-alert-message">This is an alert message</p>
@@ -37,7 +37,7 @@ symfony_ux:
 
 #### Example 2
 
-```twig
+```html
 <div class="{{ classname('alert alert-success') }}">
     <span class="{{ classname('alert-icon') }}">✅</span>
     <p class="{{ classname('alert-message') }}">This is an alert message</p>
@@ -66,6 +66,7 @@ symfony_ux:
 /* assets/sass/components/_alerts.scss */
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/alert';
 @include alert.setBorderWidth(1px);
+// ...
 ```
 
 #### Customize theme example
@@ -75,9 +76,8 @@ symfony_ux:
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
 @include themes.add('light', (
-    'alert--color'       : var(--#{$prefix}black),
-    'alert--bg-color'    : var(--#{$prefix}gray-300),
-    'alert--border-color': var(--#{$prefix}black),
+    'alert--color': var(--#{$prefix}black),
+    // ...
 ));
 ```
 
@@ -89,8 +89,6 @@ symfony_ux:
 ```
 
 ### **JavaScript**
-
-Import the component `ExampleComponent`
 
 ```js
 import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AlertComponent';
@@ -126,199 +124,279 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AlertComponent';
 
 ### **SASS Layout**
 
-#### Available mixins
-
-##### `setBorderWidth`
-
+#### `setBorderWidth`
 Sets the width of the border around the element.
 
 ```css 
 @include alert.setBorderWidth({Length} $width);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `width` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setBorderWidth`
 
+#### `setBorderWidth`
 Sets the width of the border around the element.
 
 ```css
 @include setBorderWidth({Length} $width);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `width` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setBorderStyle`
 
+#### `setBorderStyle`
 Sets the style of the border around the element.
 
 ```css
 @include setBorderStyle({String} $style);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `style` | `String` | yes | xxx | xxx |
 <hr>
 
-##### `setBorderRadius`
 
+#### `setBorderRadius`
 Sets the radius of the border corners, using a CSS variable.
 
 ```css
 @include setBorderRadius({Length} $radius);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `radius` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setPaddingX`
 
+#### `setPaddingX`
 Sets the horizontal padding for the element.
 
 ```css
 @include setPaddingX({Length} $normal, {Length} $small: null, {Length} $large: null);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setPaddingY`
 
+#### `setPaddingY`
 Sets the vertical padding for the element.
 
 ```css
 @include setPaddingY({Length} $normal, {Length} $small: null, {Length} $large: null);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `normal` | `Length` | yes | xxx | xxx |
+| `small` | `Length` | no | null | xxx |
+| `large` | `Length` | no | null | xxx |
 <hr>
 
-##### `setFontFamily`
 
+#### `setFontFamily`
 Sets the font family for the text.
 
 ```css
 @include setFontFamily({String} $family);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `family` | `String` | yes | xxx | xxx |
 <hr>
 
-##### `setFontSize`
 
+#### `setFontSize`
 Sets the base font size for the text.
 
 ```css
 @include setFontSize({Length} $size);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `size` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setFontSizeSmall`
 
+#### `setFontSizeSmall`
 Sets the font size for small text.
 
 ```css
 @include setFontSizeSmall({Length} $size);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `size` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setFontSizeLarge`
 
+#### `setFontSizeLarge`
 Sets the font size for large text.
 
 ```css
 @include setFontSizeLarge({Length} $size);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `size` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setFontWeight`
 
+#### `setFontWeight`
 Sets the base font weight for the text.
 
 ```css
 @include setFontWeight({Number} $weight);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `weight` | `Number` | yes | xxx | xxx |
 <hr>
 
-##### `setFontWeightSmall`
+
+#### `setFontWeightSmall`
 
 Sets the font weight for small text.
 
 ```css
 @include setFontWeightSmall({Number} $weight);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `weight` | `Number` | yes | xxx | xxx |
 <hr>
 
-##### `setFontWeightLarge`
 
+#### `setFontWeightLarge`
 Sets the font weight for large text.
 
 ```css
 @include setFontWeightLarge({Number} $weight);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `weight` | `Number` | yes | xxx | xxx |
 <hr>
 
-##### `setLineHeight`
 
+#### `setLineHeight`
 Sets the base line height for the text.
 
 ```css
 @include setLineHeight({Number} $height);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Number` | yes | xxx | xxx |
 <hr>
 
-##### `setLineHeightSmall`
 
+#### `setLineHeightSmall`
 Sets the line height for small text.
 
 ```css
 @include setLineHeightSmall({Number} $height);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Number` | yes | xxx | xxx |
 <hr>
 
-##### `setLineHeightLarge`
 
+#### `setLineHeightLarge`
 Sets the line height for large text.
 
 ```css
 @include setLineHeightLarge({Number} $height);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Number` | yes | xxx | xxx |
 <hr>
 
-##### `isPaletteEnabled`
 
+#### `isPaletteEnabled`
 Enables or disables the use of a color palette.
 
 ```css
 @include isPaletteEnabled({Boolean} $enabled);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `enabled` | `Boolean` | yes | xxx | xxx |
 <hr>
 
-##### `setBoxShadow`
 
+#### `setBoxShadow`
 Sets the box shadow effect for the element.
 
 ```css
 @include setBoxShadow({String} $shadow);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `shadow` | `String` | yes | xxx | xxx |
 <hr>
 
-##### `setTransitionDelay`
 
+#### `setTransitionDelay`
 Sets the transition delay for the brand's elements.
 
 ```css
 @include setTransitionDelay({Length} $delay);
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `delay` | `Length` | yes | xxx | xxx |
 <hr>
 
-##### `setTransitionType`
 
+#### `setTransitionType`
 Sets the type of transition timing function.
 
 ```css
 @include setTransitionType({String} $type);
 ```
 
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `type` | `String` | yes | xxx | xxx |
+
 
 ### **SASS Theme**
 
-##### `alert--color`
-Defines the text color of the alert. The default value is set to var(--black), ensuring high readability.
+#### `alert--color`
+Defines the text color of the alert. The default value is set to `var(--black)`, ensuring high readability.
 <hr>
 
-##### `alert--bg-color`
-Specifies the background color of the alert. The default value is var(--gray-300), providing a neutral and subtle contrast.
+#### `alert--bg-color`
+Specifies the background color of the alert. The default value is `var(--gray-300)`, providing a neutral and subtle contrast.
 <hr>
 
-##### `alert--border-color`
-Sets the border color of the alert. The default value is var(--black), ensuring clear visual separation from surrounding elements.
+#### `alert--border-color`
+Sets the border color of the alert. The default value is `var(--black)`, ensuring clear visual separation from surrounding elements.
 
 <!-- tabs:end -->

@@ -61,8 +61,6 @@ export default class HeaderComponent
     {
         this.#node = node;
         this.#body = document.querySelector('body');
-
-        console.log( this.#node );
                 
         if (!this.#node.id) return;
 

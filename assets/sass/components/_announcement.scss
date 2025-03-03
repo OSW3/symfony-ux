@@ -18,8 +18,8 @@ $prefix: prefix.$prefix;
 $theme-properties: (
     'announcement--color'              : var(--#{$prefix}white),
     'announcement--color--hover'       : var(--#{$prefix}white),
-    'announcement--bg-color'           : var(--#{$prefix}red),
-    'announcement--bg-color--hover'    : var(--#{$prefix}red),
+    'announcement--bg-color'           : var(--#{$prefix}gray-300),
+    'announcement--bg-color--hover'    : var(--#{$prefix}gray-400),
     'announcement--border-color'       : null,
     'announcement--border-color--hover': null,
 );

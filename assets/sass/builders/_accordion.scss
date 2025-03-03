@@ -1,0 +1,61 @@
+// * ----------- @osw3/symfony-ux/assets/sass/builder/accordion.scss -----------
+// *
+// *    Builder for Accordion component
+// *
+// * ---------------------------------------------------------------------------
+
+@use "sass:map";
+@use "sass:meta";
+@use "sass:math";
+// @use './../mixins/flex';
+// @use './../mixins/spacing';
+// @use './../storages/accordion' as store;
+@use './../builders/banner';
+@use './../storages/prefix';
+// @use './../mixins/position';
+// @use './../storages/spaces';
+// @use './../components/accordion';
+// @use './../mixins/component';
+// @use './../mixins/transition';
+
+@include banner.header('Component Accordion');
+$prefix: prefix.$prefix;
+
+
+
+// * Component Structure
+// * ---------------------------------------------
+
+.#{$prefix}accordion {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+
+    &-item {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        overflow: hidden;
+
+        &.open .#{$prefix}accordion-content {
+            max-height: auto;
+        }
+    }
+    &-header {
+        background: #007BFF;
+        color: white;
+        padding: 15px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+    &-content {
+        // display: none;
+        padding: 15px;
+        background: #f1f1f1;
+
+
+        max-height: 0;
+        overflow: hidden;
+    }
+
+}
