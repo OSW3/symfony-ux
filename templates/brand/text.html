@@ -1,0 +1,12 @@
+<div {{ _get_attributes(_attr) }}>
+{% if name is not empty %}
+    <twig:Component:Brand:Name 
+        :name="name" 
+    />
+{% endif %}
+{% if tagline is not empty %}
+    <twig:Component:Brand:Tagline 
+        :tagline="tagline" 
+    />
+{% endif %}
+</div>

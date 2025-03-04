@@ -6,110 +6,141 @@
 
 @use 'sass:map';
 @use 'sass:list';
+@use './../storages/brand' as store;
 @use './../mixins/spacing';
 @use './../builders/banner';
+@use './../components/brand';
 @use './../storages/prefix';
 @use './../mixins/transition';
 @use './../storages/breakpoints';
 
-@use './../storages/brand' as store;
-@use './../components/brand';
 @include banner.header('Component Brand');
 $prefix: prefix.$prefix;
 
-
-// * Component Structure
-// * ---------------------------------------------
-
 .#{$prefix}brand {
 
-    // Set layout css variables
-    // --
-
-    // @each $name, $value in brand.$layout-properties {
-    //     --#{$prefix}#{$name}: #{$value};
-    // }
-
-
-    // Brand container
-    // --
-
-    display        : inline-block;
+    display: inline-block;
     text-decoration: none;
-    white-space    : nowrap;
-    height         : fit-content;
-
-    color          : var(--#{$prefix}brand--color);
-
+    white-space: nowrap;
+    height: fit-content;
+    font-size : store.$primary-font-size;
+    font-weight : store.$primary-font-weight;
+    color: var(--#{$prefix}brand--color);
     @if store.$primary-font-family {
         font-family: store.$primary-font-family;
     }
-    font-size      : store.$primary-font-size;
-    font-weight    : store.$primary-font-weight;
-
-
-    // Brand Link
-    // --
 
     &-link {
-        color          : var(--#{$prefix}brand--color);
-        display        : table;
+        display: table;
+        color: inherit;
         text-decoration: none;
-
-        // border: 10px solid green;
-        // padding: 15px;
-
-        @include transition.set(
-            (color),
-            store.$transition-delay,
-            store.$transition-type,
-        );
-
-        &:hover {
-            color: var(--#{$prefix}brand--color--hover);
-        }
     }
 
-
-    // Brand Inner
-    // --
-
     &-inner {
-        // border: 10px solid orange;
+        display: flex;
+        flex-direction: store.$direction;
+        background-color: var(--#{$prefix}brand--bg-color);
 
+        @if store.$border-width > 0 {
+            border: store.$border-width solid var(--#{$prefix}brand--border-color);
+        }
+        @if store.$border-radius > 0 {
+            border-radius: store.$border-radius;
+        }
+        @if store.$direction == row {
+            align-items: center;
+        }
         @include spacing.inner( 
             store.$padding-x,
             store.$padding-y,
             store.$padding-x,
             store.$padding-y,
         );
+        @include transition.set(
+            (background-color, border-color), 
+            store.$transition-delay, 
+            store.$transition-type
+        );
     }
     
+    &-figures {
+        // border: 10px solid rgb(3, 132, 188);
+    }
+    &-figure {
+        display: none;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+    &-figure-main {
+        display: block !important;
+    }
 
-    /// Brand Text
-    /// --
+    $default-breakpoint: '';
+    @each $name in brand.$breakpoints {
+        @if map.has-key(breakpoints.$breakpoints, $name) {
+            // Default brand breakpoint. Displayed when all media queries ar hidden
+            @if $default-breakpoint == '' {
+                $default-breakpoint: $name;
+                &-figure-#{$name} {
+                    display: block;
+                }
+            }
 
+            // Media query fot Available breakpoints
+            @media (min-width: map.get(breakpoints.$breakpoints, $name)) {
+                &-figure {
+                    display: none;
+                }
+                &-figure-#{$name} {
+                    display: block;
+                }
+            }
+        }
+    }
+    
+    &-text {
+        display: none;
+    }
+    &:not(&-hide-text) &-text {
+        display: flex;
+        flex-direction: column;
+        align-items: store.$justify;
+        color: var(--#{$prefix}brand--color);
+        @include transition.set(
+            (color), 
+            store.$transition-delay, 
+            store.$transition-type
+        );
+    }
     &-name {
-        // border: 10px solid green;
         display: block;
         font-size: inherit;
         font-weight: inherit;
+        color: inherit;
     }
-
     &-tagline {
+        display: block;
+        color: inherit;
+        font-size: store.$secondary-font-size;
+        font-weight: store.$secondary-font-weight;
         @include spacing.outer( 0,0,0,0 );
-        display    : block;
-        
         @if store.$secondary-font-family {
             font-family: store.$secondary-font-family;
         }
-        font-size  : store.$secondary-font-size;
-        font-weight: store.$secondary-font-weight;
     }
     &-name + &-tagline {
         @include spacing.outer( store.$tagline-offset ,0,0,0 );
     }
     
+    &-figures + &-text {
+        @if store.$direction == row {
+            margin-left: store.$gap;
+        }
+        @else if store.$direction == row-reverse {
+            margin-right: store.$gap;
+        }
+    }
 
 
     /// Brand Sizes
@@ -130,45 +161,18 @@ $prefix: prefix.$prefix;
     //         }
     //     }
     // }
-
-
-    /// Brand images (logo & icon)
-    /// --
     
-    &-logo {
-        display: none;
-        width: auto;
-        height: auto;
-    }
-    &-logo-main {
-        display: block !important;
-    }
-
-
-    /// Responsive Brand & main logo
-    /// --
     
-    $default-breakpoint: '';
-
-    @each $name in brand.$breakpoints {
-        @if map.has-key(breakpoints.$breakpoints, $name) {
-            // Default brand breakpoint. Displayed when all media queries ar hidden
-            @if $default-breakpoint == '' {
-                $default-breakpoint: $name;
-                &-logo-#{$name} {
-                    display: block;
-                }
-            }
-
-            // Media query fot Available breakpoints
-            @media (min-width: map.get(breakpoints.$breakpoints, $name)) {
-                &-logo {
-                    display: none;
-                }
-                &-logo-#{$name} {
-                    display: block;
-                }
-            }
+    &:hover {
+        &-link {
+            text-decoration: none;
+        }
+        &-inner {
+            background-color: var(--#{$prefix}brand--bg-color--hover);
+            border-color: var(--#{$prefix}brand--border-color--hover);
+        }
+        &-text {
+            color: var(--#{$prefix}brand--color--hover);
         }
     }
 }

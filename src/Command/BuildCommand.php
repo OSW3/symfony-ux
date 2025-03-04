@@ -317,14 +317,15 @@ class BuildCommand extends Command
         $sassVariables[] = "\$alerts--enable-sizes: {$isSizeEnabled};";
     }
 
-    private function brand(array &$vars, $options)
-    {
+    private function brand(array &$sassVariables, $options) {
         $brandBreakpoint = [];
 
-        if (isset($options['logo'])) {
-            $brandBreakpoint = array_keys($options['logo']);
+        if (isset($options['figures'])) {
+            $brandBreakpoint = array_keys($options['figures']);
         }
-        $vars[] = "\$brand--breakpoints: ('".implode("','", $brandBreakpoint)."');";
+        $sassVariables[] = "\$brand--breakpoints: ('".implode("','", $brandBreakpoint)."');";
+        $sassVariables[] = "\$brand--direction: {$options['direction']};";
+        $sassVariables[] = "\$brand--justify: {$options['justify']};";
     }
 
     private function breadcrumb(array &$sassVariables, $options)

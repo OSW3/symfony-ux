@@ -14,14 +14,14 @@ final class Inner extends Component
 {
     use AttributeClassTrait;
 
+    #[ExposeInTemplate(name: 'logo')]
+    public array|string $logo;
+
     #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
     public ?string $name;
 
     #[ExposeInTemplate(name: 'tagline')]
     public ?string $tagline;
-
-    #[ExposeInTemplate(name: 'logo')]
-    public array|string $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -30,14 +30,14 @@ final class Inner extends Component
         $resolver = new OptionsResolver();
         $resolver->setIgnoreUndefined(true);
 
+        $resolver->setDefault('logo', $options['figures']);
+        $resolver->setAllowedTypes('logo', ['array','string']);
+
         $resolver->setDefault('name', $options['name']);
         $resolver->setAllowedTypes('name', ['null', 'string']);
 
         $resolver->setDefault('tagline', $options['tagline']);
         $resolver->setAllowedTypes('tagline', ['null', 'string']);
-
-        $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['array','string']);
 
         return $resolver->resolve($data) + $data;
     }

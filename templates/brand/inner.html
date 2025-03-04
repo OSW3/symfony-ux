@@ -1,10 +1,14 @@
 <div {{ _get_attributes(_attr) }}>
-    {% for breakpoint, figure in logo %}
-    <twig:Component:Brand:Figure :src="figure" :alt="name" :breakpoint="breakpoint" />
-    {% else %}
-    <twig:Component:Brand:Name :name="name" />
-    {% endfor %}
-    {% if tagline is not empty %}
-    <twig:Component:Brand:Tagline :tagline="tagline" />
-    {% endif %}
+{% if figures|length %}
+    <twig:Component:Brand:Picture 
+        :figures="figures" 
+        :name="name" 
+    />
+{% endif %}
+{% if name is not empty or tagline is not empty %}        
+    <twig:Component:Brand:Text 
+        :name="name" 
+        :tagline="tagline"
+    />
+{% endif %}
 </div>

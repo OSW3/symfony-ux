@@ -37,7 +37,7 @@ symfony_ux:
 
 #### Example 2
 
-```html
+```twig
 <div class="{{ classname('alert alert-success') }}">
     <span class="{{ classname('alert-icon') }}">✅</span>
     <p class="{{ classname('alert-message') }}">This is an alert message</p>
@@ -102,7 +102,7 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AlertComponent';
 ### **YAML**
 
 | Parameter | Type | Required | Default | Description |
-|-|:-:|:-:|:-:|-|
+|-|:-:|:-:|:-:|:-|
 | **`dismissible`** | `boolean` | no | true | Indicates whether the alert can be dismissed by the user. |
 | **`delay`** | `integer` | no |  | Delay in seconds before alerts are automatically dismissed. |
 | **`palette`** | `boolean` | no | true | Indicates to SASS whether the palette is enabled. |
@@ -113,7 +113,7 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AlertComponent';
 > Note: Parameters with • override the YAML configuration.
 
 | Parameter | Type | Required | Default | Description |
-|-|:-:|:-:|:-:|-|
+|-|:-:|:-:|:-:|:-|
 | **`delay•`** | `int,string,null` | no | `0` | Delay in seconds before alerts are automatically dismissed. | 
 | **`dismissible•`** | `boolean` | no | `false` | Indicates whether the alert can be dismissed by the user. | 
 | **`icon`** | `string,null` | no | `null` | Icon associated with the alert. | 
@@ -270,7 +270,6 @@ Sets the base font weight for the text.
 
 
 #### `setFontWeightSmall`
-
 Sets the font weight for small text.
 
 ```css

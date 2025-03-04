@@ -19,12 +19,12 @@ $breakpoints: brand.$breakpoints;
 // * ---------------------------------------------
 
 $theme-properties: (
-    brand--color             : var(--#{$prefix}dark),
-    brand--color--hover       : inherit, //var(--#{$prefix}inherit),
-    // brand--bg-color          : var(--#{$prefix}cyan),
-    // brand--bg-color--hover    : var(--#{$prefix}cyan),
-    // brand--border-color      : var(--#{$prefix}red),
-    // brand--border-color--hover: var(--#{$prefix}red),
+    brand--color              : var(--#{$prefix}gray-800),
+    brand--color--hover       : var(--#{$prefix}blue),
+    brand--bg-color           : transparent,
+    brand--bg-color--hover    : transparent,
+    brand--border-color       : var(--#{$prefix}gray-200),
+    brand--border-color--hover: var(--#{$prefix}gray-500),
 );
 
 

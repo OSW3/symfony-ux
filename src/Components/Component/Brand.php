@@ -17,29 +17,39 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 final class Brand extends Component
 {
     public const NAME = "brand";
+    // private bool $isChecked = false;
 
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
     use AttributeDatasetTrait;
+    
+    #[ExposeInTemplate(name: 'figures', getter: 'fetchFigures')]
+    public array|string|null $figures;
+
+    #[ExposeInTemplate(name: 'link', getter: 'fetchLink')]
+    public ?string $link;
+
+    #[ExposeInTemplate(name: 'hasHiddenText')]
+    public bool $hasHiddenText;
+    
+    #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
+    public string|null|false $name;
+
+    #[ExposeInTemplate(getter: 'doNotExpose')]
+    public ?string $route;
 
     #[ExposeInTemplate(getter: 'doNotExpose')]
     public string $size;
     
-    #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
-    public ?string $name;
+    #[ExposeInTemplate(name: 'tag', getter: 'fetchTag')]
+    public ?string $tag;
     
-    #[ExposeInTemplate(name: 'tagline')]
-    public ?string $tagline;
+    #[ExposeInTemplate(name: 'tagline', getter: 'fetchTagline')]
+    public string|null|false $tagline;
     
-    #[ExposeInTemplate(name: 'link', getter: 'fetchLink')]
+    #[ExposeInTemplate(getter: 'doNotExpose')]
     public ?string $url;
-
-    #[ExposeInTemplate(name: 'link', getter: 'fetchLink')]
-    public ?string $route;
-    
-    #[ExposeInTemplate(name: 'logo', getter: 'fetchLogo')]
-    public array|string|null $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -54,58 +64,49 @@ final class Brand extends Component
             ->datasetResolver($resolver)
         ;
 
+        $resolver->setDefault('figures', $options['figures']);
+        $resolver->setAllowedTypes('figures', ['array','string','null']);
+
+        $resolver->setDefault('name', $options['name']);
+        $resolver->setAllowedTypes('name', ['null', 'string', 'bool']);
+
+        $resolver->setDefault('hasHiddenText', $options['hasHiddenText']);
+        $resolver->setAllowedTypes('hasHiddenText', ['bool']);
+
         $resolver->setDefault('size', $options['size']);
         $resolver->setAllowedTypes('size', 'string');
         $resolver->setAllowedValues('size', Size::toArray());
 
-        $resolver->setDefault('name', $options['name']);
-        $resolver->setAllowedTypes('name', ['null', 'string']);
+        $resolver->setDefault('tag', $options['tag']);
+        $resolver->setAllowedTypes('tag', ['string']);
 
         $resolver->setDefault('tagline', $options['tagline']);
-        $resolver->setAllowedTypes('tagline', ['null', 'string']);
-
-        $resolver->setDefault('url', "");
-        $resolver->setAllowedTypes('url', ['null', 'string']);
-
-        $resolver->setDefault('route', "");
-        $resolver->setAllowedTypes('route', ['null', 'string']);
-
-        $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['array','string','null']);
+        $resolver->setAllowedTypes('tagline', ['null', 'string', 'bool']);
 
         return $resolver->resolve($data) + $data;
     }
 
-    public function fetchClass(): string
-    {
+    public function fetchClass(): string {
         $classList = $this->classList();
 
-        if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value)
-        {
+        if (in_array($this->size, Size::toArray()) && $this->size != Size::NORMAL->value) {
             $classList[] = "{$this->getComponentClassname()}-{$this->size}";
+        }
+
+        if ($this->hasHiddenText) {
+            $classList[] = "{$this->getComponentClassname()}-hide-text";
         }
 
         return implode(" ", $classList);
     }
 
-    public function fetchName(): ?string
-    {
-        $options = $this->getConfig();
-        $name = null;
-
-        if (!empty($options['name'])) {
-            $name = $options['name'];
-        }
-
-        if (!empty($this->name)) {
-            $name = $this->name;
-        }
-
-        return trim($name);
+    public function fetchName(): ?string {
+        $name = $this->name !== false ? trim($this->name) : null;
+        $name = !empty($name) ? trim($name) : null;
+        return $name;
     }
 
-    public function fetchLink(): ?string
-    {
+    public function fetchLink(): ?string {
         $options = $this->getConfig();
         $link = null;
         $url = null;
@@ -135,17 +136,26 @@ final class Brand extends Component
         return $link;
     }
 
-    public function fetchLogo(): array|string 
-    {
+    public function fetchFigures(): array|string {
         $options = $this->getConfig();
 
-        $logo = $this->logo;
-        $logo = !empty($logo) ? $logo : $options['logo'];
+        $figures = $this->figures;
+        $figures = !empty($figures) ? $figures : $options['figures'];
 
-        if (gettype($this->logo) === 'string') {
-            $logo = ['main' => $logo];
+        if (gettype($this->figures) === 'string') {
+            $figures = ['main' => $figures];
         }
         
-        return $logo;
+        return $figures;
+    }
+
+    public function fetchTag(): string {
+        return $this->tag;
+    }
+
+    public function fetchTagline(): ?string {
+        $tagline = $this->tagline !== false ? trim($this->tagline) : null;
+        $tagline = !empty($tagline) ? trim($tagline) : null;
+        return $tagline;
     }
 }

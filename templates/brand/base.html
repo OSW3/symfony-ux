@@ -1,16 +1,16 @@
-<div {{ _get_attributes(_attr) }}>
-    {% if link is not empty %}
+<{{ tag }} {{ _get_attributes(_attr) }}>
+{% if link is not empty %}
     <twig:Component:Brand:Link 
-        :logo="logo" 
         :name="name" 
         :tagline="tagline" 
+        :figures="figures" 
         :link="link" 
-        />
-    {% else %}
+    />
+{% else %}
     <twig:Component:Brand:Inner 
-        :logo="logo" 
         :name="name" 
         :tagline="tagline" 
-        />
-    {% endif %}
-</div>
+        :figures="figures" 
+    />
+{% endif %}
+</{{ tag }}>

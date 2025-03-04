@@ -13,13 +13,32 @@ return function (): ArrayNodeDefinition {
         ->info("Parameters settings of the Brand component.")
         ->addDefaultsIfNotSet()->children()
 
+        ->scalarNode('direction')
+            ->info("Sets the flexbox or grid direction globally.")
+            ->defaultValue('row')
+        ->end()
+
+        ->arrayNode('figures')
+            ->useAttributeAsKey('name')
+            ->scalarPrototype() ->end()
+        ->end()
+
+        ->booleanNode('hasHiddenText')
+            ->defaultFalse()
+        ->end()
+
+        ->scalarNode('justify')
+            ->info("Sets the flexbox or grid direction globally.")
+            ->defaultValue('start')
+        ->end()
+
         ->scalarNode('name')
             ->info("Specifies the name of the company")
             ->defaultNull()
         ->end()
 
-        ->scalarNode('tagline')
-            ->info("Specifies the tagline of the company")
+        ->scalarNode('route')
+            ->info("Specifies the route of the brand link")
             ->defaultNull()
         ->end()
 
@@ -29,18 +48,18 @@ return function (): ArrayNodeDefinition {
             ->defaultValue(Size::MEDIUM->value)
         ->end()
 
-        ->arrayNode('logo')
-            ->useAttributeAsKey('name')
-            ->scalarPrototype() 
-        ->end()->end()
+        ->scalarNode('tag')
+            ->info("Specifies the main tag")
+            ->defaultValue('div')
+        ->end()
 
-        ->scalarNode('url')
-            ->info("Specifies the url of the brand link")
+        ->scalarNode('tagline')
+            ->info("Specifies the tagline of the company")
             ->defaultNull()
         ->end()
 
-        ->scalarNode('route')
-            ->info("Specifies the route of the brand link")
+        ->scalarNode('url')
+            ->info("Specifies the url of the brand link")
             ->defaultNull()
         ->end()
     

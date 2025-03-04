@@ -14,6 +14,9 @@ final class Name extends Component
 {
     use AttributeClassTrait;
 
+    #[ExposeInTemplate(name: 'hidden')]
+    public bool $hidden;
+
     #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
     public string $name;
     
@@ -24,6 +27,9 @@ final class Name extends Component
         $resolver->setIgnoreUndefined(true);
 
         $this->classResolver($resolver);
+
+        $resolver->setDefault('hidden', false);
+        $resolver->setAllowedTypes('hidden', ['bool']);
 
         $resolver->setRequired('name');
         $resolver->setAllowedTypes('name', ['string']);
@@ -45,15 +51,12 @@ final class Name extends Component
     {
         $options = $this->getConfig();
         $name = null;
+        
+        // if ($this->name !== false) {
+        //     $name = !empty($this->name) ? trim($this->name) : null;
+        //     $name = $name === null && !empty($options['name']) ? trim($options['name']) : null;
+        // }
 
-        if (!empty($options['name'])) {
-            $name = $options['name'];
-        }
-
-        if (!empty($this->name)) {
-            $name = $this->name;
-        }
-
-        return trim($name);
+        return $this->name;
     }
 }

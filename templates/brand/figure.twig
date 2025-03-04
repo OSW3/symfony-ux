@@ -5,19 +5,9 @@
 {% extends '@SymfonyUx/brand/figure.html' %}
 
 
-{# ---------------------------------------------- #}
-{# ---------------------------------------------- #}
 {% set _attr = attr|default({}) %}
-
-
-{# -- Render component attributes --------------- #}
-{# ---------------------------------------------- #}
-
-{# Set the Class attribute #}
 {% set _attr = _add_attribute(_attr, 'class', class) %}
-
-{# Set the SRC attribute #}
 {% set _attr = _add_attribute(_attr, 'src', src) %}
-
-{# Set the alternative text attribute #}
-{% set _attr = _add_attribute(_attr, 'alt', alt) %}
+{% if alt is not empty %}
+    {% set _attr = _add_attribute(_attr, 'alt', alt) %}
+{% endif %}

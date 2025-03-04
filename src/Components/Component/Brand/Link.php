@@ -14,17 +14,17 @@ final class Link extends Component
 {
     use AttributeClassTrait;
 
+    #[ExposeInTemplate(name: 'figures')]
+    public array|string $figures;
+
+    #[ExposeInTemplate(name: 'link')]
+    public string $link;
+
     #[ExposeInTemplate(name: 'name', getter: 'fetchName')]
     public ?string $name;
 
     #[ExposeInTemplate(name: 'tagline')]
     public ?string $tagline;
-
-    #[ExposeInTemplate(name: 'link')]
-    public string $link;
-
-    #[ExposeInTemplate(name: 'logo')]
-    public array|string $logo;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -35,6 +35,10 @@ final class Link extends Component
 
         $this->classResolver($resolver);
 
+        $resolver->setDefault('figures', $options['figures']);
+        $resolver->setAllowedTypes('figures', ['array','string']);
+
+
         // $resolver->setRequired('name');
         $resolver->setDefault('name', $options['name']);
         $resolver->setAllowedTypes('name', ['null', 'string']);
@@ -43,10 +47,7 @@ final class Link extends Component
         $resolver->setAllowedTypes('tagline', ['null', 'string']);
 
         $resolver->setRequired('link');
-        $resolver->setAllowedTypes('link', ['null', 'string']);
-
-        $resolver->setDefault('logo', $options['logo']);
-        $resolver->setAllowedTypes('logo', ['array','string']);
+        $resolver->setAllowedTypes('link', ['string']);
 
         return $resolver->resolve($data) + $data;
     }

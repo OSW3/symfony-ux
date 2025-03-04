@@ -16,8 +16,6 @@ $prefix: prefix.$prefix;
 
 
 
-
-
 // * Define storage data
 // * ---------------------------------------------
 
@@ -32,6 +30,30 @@ $breakpoints: if(meta.global-variable-exists('brand--breakpoints', $module: gene
     }
 }
 
+/// Brand direction
+/// @type string
+//
+$direction: if(meta.global-variable-exists('brand--direction', $module: generated), generated.$brand--direction, row);
+
+/// Figure + text alignment  (start , end, center)
+/// @type string
+//
+$justify: if(meta.global-variable-exists('brand--justify', $module: generated), generated.$brand--justify, start);
+
+/// Gap between Figures and text when $direction is row or row-reverse
+/// @type Length
+//
+$gap: 1rem;
+
+/// Border width
+/// @type Length
+//
+$border-width: 0;
+
+/// Border radius
+/// @type Length
+//
+$border-radius: 6px;
 
 /// Primary font family for the text.
 /// @type string|null
@@ -94,6 +116,16 @@ $transition-type: ease-in-out;
 $tagline-offset: (spaces.$base * .5) * -1;
 
 
+/// Delay for the transition effect, using a CSS variable.
+/// @type time
+//
+$transition-delay: var(--#{$prefix}transition-normal);
+
+/// Type of transition timing function.
+/// @type string
+//
+$transition-type: ease-in-out;
+
 
 // * Storage Mixins definition
 // * ---------------------------------------------
@@ -114,6 +146,46 @@ $tagline-offset: (spaces.$base * .5) * -1;
             $breakpoints: map-remove($breakpoints, $key) !global;
         }
     }
+}
+
+/// Sets the flexbox or grid direction globally.
+/// Can be used to define `row`, `column`, `row-reverse`, or `column-reverse`.
+/// @param {String} $direction - The desired flex or grid direction (e.g., `row`, `column`).
+//
+@mixin setDirection($direction) {
+    $direction: $direction !global;
+}
+
+/// Sets the justification of flex or grid items globally.
+/// Defines how content is aligned along the main axis.
+/// @param {String} $justify - The desired justification (e.g., `start`, `center`, `end`).
+//
+@mixin setJustify($justify) {
+    $justify: $justify !global;
+}
+
+/// Sets the gap between flex or grid items globally.
+/// Useful for spacing elements without using margins.
+/// @param {Length} $gap - The gap size (e.g., `10px`, `1rem`).
+//
+@mixin setGap($gap) {
+    $gap: $gap !global;
+}
+
+/// Sets the global border width for elements.
+/// Defines the thickness of borders globally.
+/// @param {Length} $length - The border width (e.g., `1px`, `0.5rem`).
+//
+@mixin setBorderWidth($length) {
+    $border-width: $length !global;
+}
+
+/// Sets the global border radius for elements.
+/// Defines the rounding of corners globally.
+/// @param {Length} $length - The border radius (e.g., `5px`, `1rem`, `50%`).
+//
+@mixin setBorderRadius($length) {
+    $border-radius: $length !global;
 }
 
 /// Sets the horizontal padding for the brand's elements.

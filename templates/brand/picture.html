@@ -1,0 +1,9 @@
+<picture {{ _get_attributes(_attr) }}>
+{% for breakpoint, figure in figures %}
+    <twig:Component:Brand:Figure 
+        :src="figure" 
+        :alt="name" 
+        :breakpoint="breakpoint" 
+    />
+{% endfor %}
+</picture>

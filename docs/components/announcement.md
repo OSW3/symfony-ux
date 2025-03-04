@@ -123,7 +123,7 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AnnouncementComp
 ### **YAML**
 
 | Parameter | Type | Required | Default | Description |
-|-|:-:|:-:|:-:|-|
+|-|:-:|:-:|:-:|:-|
 | `animated` | `enum` | no | `always` | Define if the announcement as animation  `always`, `none`  |
 | `animation` | `enum` | no | `ticker` | Set the animation type `ticker`,`rotator`,`none` |
 | `speed` | `integer` | no | `6` | Set the animation speed `0` to `9` |
@@ -134,7 +134,7 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/AnnouncementComp
 > Note: Parameters with • override the YAML configuration.
 
 | Parameter | Type | Required | Default | Description |
-|-|:-:|:-:|:-:|-|
+|-|:-:|:-:|:-:|:-|
 | `messages` | `array` | no | [] | List of messages |
 | `animation•` | `enum` | no | `ticker` | Set the animation type `ticker`,`rotator`,`none` |
 | `pauseHover` | `boolean` | no | `true` | Set pause hover to the ticker or rotator |

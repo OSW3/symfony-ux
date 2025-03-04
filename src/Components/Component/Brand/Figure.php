@@ -21,7 +21,7 @@ final class Figure extends Component
     public string $src;
 
     #[ExposeInTemplate(name: 'alt')]
-    public string $alt;
+    public ?string $alt;
 
     #[PreMount]
     public function preMount(array $data): array
@@ -37,15 +37,15 @@ final class Figure extends Component
         $resolver->setRequired('src');
         $resolver->setAllowedTypes('src', ['string']);
         
-        $resolver->setRequired('alt');
-        $resolver->setAllowedTypes('alt', ['string']);
+        $resolver->setDefault('alt', null);
+        $resolver->setAllowedTypes('alt', ['null','string']);
 
         return $resolver->resolve($data) + $data;
     }
 
     protected function getComponentClassname(): string 
     {
-        return $this->prefix . Brand::NAME . "-logo";
+        return $this->prefix . Brand::NAME . "-figure";
     }
 
     public function fetchClass(): string
