@@ -55,13 +55,10 @@ npm install sass-loader@latest sass --save-dev
 ## Dependencies
 
 ```shell
+    symfony/css-selector
     symfony/dom-crawler
     symfony/twig-bundle
     symfony/options-resolver
     symfony/ux-twig-component
     symfony/webpack-encore-bundle
-
-
-
-        "symfony/css-selector": "*",
 ```
