@@ -83,7 +83,7 @@ Messages stored in a database.
 #### Customize layout example
 
 ```css 
-/* assets/sass/components/_announcement_.scss */
+/* assets/sass/components/announcement.scss */
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/announcement';
 @include announcement.setMinHeight(48px);
 // ...
@@ -162,7 +162,7 @@ xxxx
 ```
 
 | Parameter | Type | Required | Default | Description |
-|-|:-:|:-:|:-:|-|
+|-|:-:|:-:|:-:|:-|
 | `height` | `Length` | yes | xxx | xxx |
 <hr>
 

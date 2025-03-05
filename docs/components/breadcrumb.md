@@ -8,13 +8,43 @@ Make a Breadcrumb.
 
 
 
-## Integration
+## Code example
 
 <!-- tabs:start -->
+### **YAML**
+
+```yaml
+# config/packages/symfony_ux.yaml
+symfony_ux:
+    components:
+        breadcrumb:
+            separator: "›"
+            home:
+                label: 'Home'
+                icon: symbol:home
+                url: "#"
+                route: app_homepage
+```
+      
 ### **HTML**
 
-```twig
+#### Example 1
+
+```html
 <nav class="ui-breadcrumb">
+    <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#">Catégorie</a></li>
+        <li><a href="#">Sous-catégorie</a></li>
+        <li class="active">Produit</li>
+    </ul>
+</nav>
+``` 
+
+#### Example 2
+
+```twig
+<nav class="{{ classname('breadcrumb') }}">
     <ul>
         <li><a href="#">Accueil</a></li>
         <li><a href="#">Catégorie</a></li>
@@ -26,55 +56,11 @@ Make a Breadcrumb.
 
 ### **Twig**
 
+#### Example 1
+
+Breadcrumb items stored in a twig variable.
+
 ```twig
-<twig:Component:Breadcrumb :items="[]"/>
-``` 
-
-### **SCSS**
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/breadcrumb';
-```
-<!-- tabs:end -->
-
-
-
-## Configuration
-
-<!-- tabs:start -->
-### **YAML**
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `separator` | `string` | Symbol used as a separator in the breadcrumb navigation. | no | `›` |
-| `home.label` | `string` | Label displayed for the home link in the breadcrumb. | no | `'null'` |
-| `home.icon` | `string` | Icon associated with the home link, typically in the format `symbol:home`. | no | `null` |
-| `home.url` | `string` | URL for the home link. | no | `"#"` |
-| `home.route` | `string` | Route name for the home link. | no | `null`|
-
-```yaml
-symfony_ux:
-    components:
-        breadcrumb:
-            separator: "›"
-            home:
-                label: 'Home'
-                icon: symbol:home
-                url: "#"
-                route: app_homepage
-```
-
-### **Twig**
-
-### Twig configuration
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `items` | `array` | List of breadcrumb items. Each item should contain a `label` and either a `route` or `url`. | yes |  |
-
-> Note: Parameters with • override the YAML configuration.
-
-```twig 
 {% set items = [
     {
         label: "Category",
@@ -90,75 +76,126 @@ symfony_ux:
     },
 ] %}
 <twig:Component:Breadcrumb :items="items"/>
+``` 
+
+### **SCSS**
+
+#### Customize layout example
+
+```css 
+/* assets/sass/components/breadcrumb.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/breadcrumb';
+@include announcement.setMinHeight(48px);
+// ...
+```
+
+#### Customize theme example
+
+```css 
+/* assets/sass/themes/_light.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
+@include themes.add('light', (
+    'breadcrumb--color': var(--#{$prefix}gray-600),
+    // ...
+));
+```
+
+#### Import the component builder
+
+```css 
+/* assets/sass/ui.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/breadcrumb';
 ```
 <!-- tabs:end -->
 
 
 
-
-## Customize SCSS
+## API
 
 <!-- tabs:start -->
+### **YAML**
 
-### **Theme**
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `separator` | `string` | no | `›` | Symbol used as a separator in the breadcrumb navigation. |
+| `home.label` | `string` | no | `'null'` | Label displayed for the home link in the breadcrumb. |
+| `home.icon` | `string` | no | `null` | Icon associated with the home link, typically in the format `symbol:home`. |
+| `home.url` | `string` | no | `"#"` | URL for the home link. |
+| `home.route` | `string` | no | `null`| Route name for the home link. |
 
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
 
-$props: map.merge($props, (
-    'breadcrumb-separator--color': var(--#{$prefix}gray-600),
-    'breadcrumb--color'          : var(--#{$prefix}gray-600),
-    'breadcrumb--color--hover'   : var(--#{$prefix}gray-900),
-    'breadcrumb--color--active'  : var(--#{$prefix}black),
-));
+### **Twig**
+> Note: Parameters with • override the YAML configuration.
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `items` | `array` | yes |  | List of breadcrumb items. Each item should contain a `label` and either a `route` or `url`. |
+
+### **SASS Layout**
+
+#### `setSeparatorSymbol`  
+Sets the separator symbol for the breadcrumb component.  
+
+```css
+@include breadcrumb.setSeparatorSymbol( {String} $symbol );
 ```
 
-### **Layout**
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `symbol` | `String` | yes | `›` | Defines the visual separator between breadcrumb items. |
+<hr>  
 
-#### Custom file example
+#### `setTransition`  
+Enables or disables the transition effect for breadcrumb items.  
 
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/breadcrumb';
-
-@include breadcrumb.setSeparatorSymbol(›);
-@include breadcrumb.setTransition(true);
-@include breadcrumb.setTransitionDelay(var(--#{$prefix}transition-normal));
-@include breadcrumb.setTransitionType(ease-in-out);
+```css
+@include breadcrumb.setTransition( {Boolean} $enable );
 ```
 
-<hr>
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `enable` | `Boolean` | yes | `true` | Enables (`true`) or disables (`false`) the breadcrumb transition effect. |
+<hr>  
 
-#### Available mixins
+#### `setTransitionDelay`  
+Specifies the delay before the breadcrumb transition starts.  
 
-##### `setSeparatorSymbol`
-
-Sets the symbol used as a separator in breadcrumbs or similar UI elements.
-
-```scss
-@include breadcrumb.setSeparatorSymbol({String} $symbol)
+```css
+@include breadcrumb.setTransitionDelay( {Time} $delay );
 ```
 
-##### `setTransition`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `delay` | `Time` | yes | `var(--transition-normal)` | Defines the delay duration before the transition begins. |
+<hr>  
 
-Enables or disables transitions for the brand's elements.
+#### `setTransitionType`  
+Defines the transition timing function for breadcrumb animations.  
 
-```scss
-@include breadcrumb.setTransition({Boolean} $enabled)
+```css
+@include breadcrumb.setTransitionType( {String} $type );
 ```
 
-##### `setTransitionDelay`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `type` | `String` | yes | `ease-in-out` | Specifies the easing function for the breadcrumb transition. |
+<hr>  
 
-Sets the transition delay for the brand's elements.
+### **SASS Theme**
 
-```scss
-@include breadcrumb.setTransitionDelay({Length} $delay)
-```
+#### `breadcrumb-separator--color`  
+Defines the color of the breadcrumb separator. The default value is set to `var(--gray-600)`, ensuring a subtle visual separation between breadcrumb items.  
+<hr>  
 
-##### `setTransitionType`
+#### `breadcrumb--color`  
+Specifies the default text color of breadcrumb items. The default value is `var(--gray-600)`, providing a neutral and readable appearance.  
+<hr>  
 
-Sets the transition type (easing function) for the brand's elements.
+#### `breadcrumb--color--hover`  
+Determines the text color of breadcrumb items when hovered. The default value is `var(--gray-900)`, enhancing contrast for better visibility on hover.  
+<hr>  
 
-```scss
-@include breadcrumb.setTransitionType({String} $type)
-```
+#### `breadcrumb--color--active`  
+Sets the text color of the active breadcrumb item. The default value is `var(--black)`, ensuring strong emphasis on the current page.  
 <!-- tabs:end -->
