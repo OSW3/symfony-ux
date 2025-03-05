@@ -8,89 +8,104 @@ Create advanced buttons.
 
 
 
-## Integration
+## Code example
 
 <!-- tabs:start -->
 ### **HTML**
 
-```twig
-<button type="button" class="ux-button">My button</button>
-<button type="submit" class="ux-button">My button</button>
-<button type="reset" class="ux-button">My button</button>
-<a href="#" class="ux-button">My button</a>
+#### Example 1
+
+```html
+<button type="button" class="ui-button">My button</button>
+<button type="submit" class="ui-button">My button</button>
+<button type="reset" class="ui-button">My button</button>
+<a href="#" class="ui-button">My button</a>
 ``` 
 
-```twig 
-<button type="button" class="ux-button ux-button-primary">primary</button>
-<button type="button" class="ux-button ux-button-secondary">secondary</button>
-<button type="button" class="ux-button ux-button-success">Success</button>
-<button type="button" class="ux-button ux-button-danger">Danger</button>
-<button type="button" class="ux-button ux-button-warning">Warning</button>
-<button type="button" class="ux-button ux-button-info">Info</button>
-<button type="button" class="ux-button ux-button-light">Light</button>
-<button type="button" class="ux-button ux-button-dark">Dark</button>
-<button type="button" class="ux-button ux-button-my-custom-palette">my-custom-palette</button>
-```
+#### Example 2
+
+```html
+<button type="button" class="{{ classname('button') }}">My button</button>
+<button type="submit" class="{{ classname('button') }}">My button</button>
+<button type="reset" class="{{ classname('button') }}">My button</button>
+<a href="#" class="{{ classname('button') }}">My button</a>
+``` 
+
 
 ### **Twig**
 
+#### Example 1
+
 ```twig
 <twig:Component:Button label="My button" />
-<twig:Component:Button:Submit label="My button" />
-<twig:Component:Button:Reset label="My button" />
-<twig:Component:Button:Link url="#" label="My button" />
 ``` 
+
+#### Example 2
+
+```twig
+<twig:Component:Button:Submit label="My button" />
+``` 
+
+#### Example 3
 
 ```twig 
 <twig:Component:Button is="primary" label="primary" />
-<twig:Component:Button is="secondary" label="secondary" />
-<twig:Component:Button is="success" label="Success" />
-<twig:Component:Button is="danger" label="Danger" />
-<twig:Component:Button is="warning" label="Warning" />
-<twig:Component:Button is="info" label="Info" />
-<twig:Component:Button is="light" label="Light" />
-<twig:Component:Button is="dark" label="Dark" />
-<twig:Component:Button type="button" label="my-custom-palette" />
 ```
 
 ### **SCSS**
 
-Import the builder `_button.scss`
+#### Customize layout example
 
 ```css 
+/* assets/sass/components/button.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/button';
+@include button.setBorderWidth(1px);
+// ...
+```
+
+#### Customize theme example
+
+```css 
+/* assets/sass/themes/_light.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
+@include themes.add('light', (
+    'button--color': var(--#{$prefix}black),
+    // ...
+));
+```
+
+#### Import the component builder
+
+```css 
+/* assets/sass/ui.scss */
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/button';
 ```
 <!-- tabs:end -->
 
 
 
-## Configuration
+## API
 
 <!-- tabs:start -->
-### **YAML**
-
-> This component has no YAML configuration.
-
 ### **Twig**
 
 ### Twig configuration
 
-> Note: Parameters with • override the YAML configuration.
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `id` | `string` | Set the accordion `id` attribute. | no |  |
-| `class` | `string` | Set custom classname. | no |  |
-| `dataset` | `array` | Set list of `data` attributes; | no |  |
-| `type` | `string` | Set the type of the button. | no | `button` |
-| `label` | `string` | Set the label of the button. | no |  |
-| `disabled` | `bool` | If true, the button will disabled. | no | `false` |
-| `url` | `string` | Set the url of the link button. | if type `link` |  |
-| `target` | `string` | Set the target of the link. | no | `_self` |
-| `is` | `string` | Set the palette  style. | no | `primary` |
-| `outline` | `bool` | If true, apply the outline style of the palette. | no | `false` |
-| `size` | `string` | Set the size of the button. | no | `medium` |
-| `block` | `bool` | If true the button will displayed as a block. | no | `false` |
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| **`id`** | `string` | no |  | Set the accordion `id` attribute. |
+| **`class`** | `string` | no |  | Set custom classname. |
+| **`dataset`** | `array` | no |  | Set list of `data` attributes; |
+| **`type`** | `string` | no | `button` | Set the type of the button. |
+| **`label`** | `string` | no |  | Set the label of the button. |
+| **`disabled`** | `bool` | no | `false` | If true, the button will disabled. |
+| **`url`** | `string` | if type `link` |  | Set the url of the link button. |
+| **`target`** | `string` | no | `_self` | Set the target of the link. |
+| **`is`** | `string` | no | `primary` | Set the palette  style. |
+| **`outline`** | `bool` | no | `false` | If true, apply the outline style of the palette. |
+| **`size`** | `string` | no | `medium` | Set the size of the button. |
+| **`block`** | `bool` | no | `false` | If true the button will displayed as a block. |
 
 <hr>
 

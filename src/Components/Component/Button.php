@@ -149,7 +149,7 @@ class Button extends Component
         $classlist = $this->classList();
 
         $classlist[] = $this->outline 
-            ? "{$this->getComponentClassname()}-{$this->is}-outline"
+            ? "{$this->getComponentClassname()}-outline"
             : "{$this->getComponentClassname()}-{$this->is}"
         ;
 

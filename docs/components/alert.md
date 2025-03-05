@@ -63,7 +63,7 @@ symfony_ux:
 #### Customize layout example
 
 ```css 
-/* assets/sass/components/_alerts.scss */
+/* assets/sass/components/alert.scss */
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/alert';
 @include alert.setBorderWidth(1px);
 // ...
