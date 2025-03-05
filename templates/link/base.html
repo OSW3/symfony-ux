@@ -1,17 +1,17 @@
 <a {{ _get_attributes(_attr) }}>
-    <span>
     {% for icon in icons %}
     {% if icon['position'] == 'start' %}
-        <twig:Component:Icon :type="icon['type']" :value="icon['value']" />
+    <twig:Component:Icon :type="icon['type']" :value="icon['value']" />
     {% endif %}
     {% endfor %}
     
+    <span>
         {{ label|raw }}
+    </span>
     
     {% for icon in icons %}
     {% if icon['position'] == 'end' %}
         <twig:Component:Icon :type="icon['type']" :value="icon['value']" />
     {% endif %}
     {% endfor %}
-    </span>
 </a>
