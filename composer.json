@@ -18,6 +18,7 @@
         }
     },
     "require": {
+        "symfony/css-selector": "*",
         "symfony/dom-crawler": "*",
         "symfony/options-resolver": "*",
         "symfony/twig-bundle": "*",
