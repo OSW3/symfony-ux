@@ -14,7 +14,7 @@ return function (): ArrayNodeDefinition {
 
         ->scalarNode('separator')
             ->info("Specifies the separator symbol")
-            ->defaultValue("›")
+            ->defaultValue("'›'")
         ->end()
 
         ->arrayNode('home')
