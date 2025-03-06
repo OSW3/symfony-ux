@@ -8,16 +8,34 @@ Example component description.
 
 
 
-## Integration
+## Code example
 
 <!-- tabs:start -->
+### **YAML**
+```yaml
+# config/packages/symfony_ux.yaml
+symfony_ux:
+    components:
+        xxx:
+```
+
 ### **HTML**
 
-```twig
-<div class="ux-example"></div>
+#### Example 1
+
+```html
+<div class="ui-example"></div>
+``` 
+
+#### Example 2
+
+```html
+<div class="{{ classname('example') }}"></div>
 ``` 
 
 ### **Twig**
+
+#### Example 1
 
 ```twig
 <twig:Component:Example />
@@ -25,13 +43,35 @@ Example component description.
 
 ### **SCSS**
 
+#### Customize layout example
+
 ```css 
+/* assets/sass/components/example.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/example';
+@include example.setMinHeight(48px);
+// ...
+```
+
+#### Customize theme example
+
+```css 
+/* assets/sass/themes/_light.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
+@include themes.add('light', (
+    'example--color': var(--#{$prefix}black),
+    // ...
+));
+```
+
+#### Import the component builder
+
+```css 
+/* assets/sass/ui.scss */
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/example';
 ```
 
 ### **JavaScript**
-
-Import the component `ExampleComponent`
 
 ```js
 import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/ExampleComponent';
@@ -40,90 +80,44 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/ExampleComponent
 
 
 
-## Configuration
+## API
 
 <!-- tabs:start -->
 ### **YAML**
 
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `property_1` | `string` | Description of `property_1`  | yes |  |
-| `property_2` | `string` | Description of `property_1`  | no |  |
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| **`property_1`** | `string` | yes |  | Description of `property_1`|
+| **`property_2`** | `string` | no |  | Description of `property_1`|
 
-```yaml
-symfony_ux:
-    components:
-        example:
-            property_1: value 1
-            property_2: value 2
-```
 
 ### **Twig**
-
-### Twig configuration
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `property_1` | `string` | Description of `property_1`  | yes |  |
-| `property_2` • | `string` | Description of `property_1`  | no |  |
-
 > Note: Parameters with • override the YAML configuration.
 
-```twig 
-<twig:Component:Example 
-    property_1="value 1" 
-    property_2="value 2"
-/>
-```
-<!-- tabs:end -->
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| **`property_1`** | `string` | yes |  | Description of `property_1`|
+| **`property_2•`** | `string` | no |  | Description of `property_1`|
 
 
+### **SASS Layout**
 
-
-## Customize SCSS
-
-<!-- tabs:start -->
-
-### **Theme**
+#### `setValue`
+Set the value of the component
 
 ```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
-
-$props: map.merge($props, (
-    example--color              : var(--#{$prefix}black),
-    example--color--hover       : var(--#{$prefix}orange),
-    example--bg-color           : var(--#{$prefix}yellow),
-    example--bg-color--hover    : var(--#{$prefix}green),
-    example--border-color       : var(--#{$prefix}gray-600),
-    example--border-color--hover: var(--#{$prefix}gray-700),
-));
+@include example.setValue( {Length} $height  );
 ```
 
-### **Layout**
-
-#### Custom file example
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/example';
-
-@include example.setPadding(1rem);
-@include example.setTransitionType(ease-in-out);
-```
-
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `height` | `Length` | yes | xxx | xxx |
 <hr>
-
-#### Available mixins
-
-##### `xxxx`
-
-xxxx
-
-```css 
-@xxxx;
 ```
+
+### **SASS Theme**
+
+#### `example--color`  
+Defines the text color of the example. The default value is set to `var(--white)`, ensuring high readability.  
+<hr>  
 <!-- tabs:end -->
-
-
-
-
-## JavaScript events

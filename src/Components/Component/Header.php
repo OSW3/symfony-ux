@@ -1,12 +1,13 @@
 <?php 
 namespace OSW3\UX\Components\Component;
 
+use OSW3\UX\Enum\PlacementX;
+use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeIdTrait;
 use OSW3\UX\Trait\DoNotExposeTrait;
+use OSW3\UX\Trait\AttributeRelTrait;
 use OSW3\UX\Trait\AttributeClassTrait;
 use OSW3\UX\Trait\AttributeDatasetTrait;
-use OSW3\UX\Components\Component;
-use OSW3\UX\Trait\AttributeRelTrait;
 use Symfony\UX\TwigComponent\Attribute\PreMount;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
@@ -35,6 +36,10 @@ final class Header extends Component
     use AttributeClassTrait;
     use AttributeDatasetTrait;
 
+
+    #[ExposeInTemplate(name: 'backdrop')]
+    public bool $backdrop;
+
     /**
      * Brand component settings
      * 
@@ -54,7 +59,11 @@ final class Header extends Component
      * @var string
      */
     #[ExposeInTemplate(getter: 'fetchPlacement')]
-    public string|null $placement;
+    public string $placement;
+
+
+
+
     
     /**
      * Indicates whether the component should be sticky
@@ -97,15 +106,22 @@ final class Header extends Component
             ->datasetResolver($resolver)
         ;
 
-        $resolver->setDefault('brand', true);
-        $resolver->setAllowedTypes('brand', ['array', 'bool']);
+        $resolver->setDefault('backdrop', $options['backdrop']);
+        $resolver->setAllowedTypes('backdrop', ['bool']);
 
+        $resolver->setDefault('brand', $options['brand']);
+        $resolver->setAllowedTypes('brand', ['array', 'bool']);
+        
         $resolver->setDefault('container', null);
         $resolver->setAllowedTypes('container', ['string','null']);
-
+        
         $resolver->setDefault('placement', $options['placement']);
-        $resolver->setAllowedTypes('placement', ['string', 'null']);
-        $resolver->setAllowedValues('placement', [null, 'left', 'right', 'top']);
+        $resolver->setAllowedTypes('placement', ['string']);
+        $resolver->setAllowedValues('placement', PlacementX::toArray());
+
+
+
+
 
         $resolver->setDefault('sticky', $options['sticky']);
         $resolver->setAllowedTypes('sticky', ['boolean']);

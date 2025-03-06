@@ -1,0 +1,17 @@
+<div {{ _get_attributes(_attr) }}>
+    <div {{ _get_attributes(_content_attr) }}>
+
+        <div class="{{ classname('header-nav-header')}}">
+            My Site
+            <twig:Component:Button:Close :dataset="{target: id, action: 'close'}"/>
+        </div>
+
+        <div class="{{ classname('header-nav-body')}}">
+            <twig:Component:Menu 
+                :schema="schema" 
+                :justify="justify"
+            />
+        </div>
+
+    </div>
+</div>

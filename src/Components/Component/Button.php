@@ -148,7 +148,7 @@ class Button extends Component
     {
         $classlist = $this->classList();
 
-        if ($this->is) {
+        if ($this->is && $this->is != 'none') {
             $classlist[] = "{$this->getComponentClassname()}-{$this->is}";
         }
         if ($this->outline) {

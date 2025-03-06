@@ -1,4 +1,4 @@
-// Last gen: 2025-03-05 01:05:24
+// Last gen: 2025-03-05 17:28:00
 export const PREFIX = 'ui';
 export const RATING_LEGENDS = [{"value":1,"label":"Boff"},{"value":2,"label":"Bad"},{"value":3,"label":"OK"},{"value":4,"label":"Good"},{"value":5,"label":"Excellent"}];
 export const TOAST_DURATION = 5000;

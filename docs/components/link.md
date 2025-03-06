@@ -87,7 +87,7 @@ symfony_ux:
 ### **Theme**
 
 ```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
+@use './../../../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
     'link--color'                       : var(--#{$prefix}blue),

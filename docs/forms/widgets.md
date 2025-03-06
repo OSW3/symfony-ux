@@ -133,7 +133,7 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/FormWidgetCompon
 These properties allow you to define the theme of widgets.
 
 ```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
+@use './../../../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
     /* Required Symbol */

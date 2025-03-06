@@ -1,0 +1,14 @@
+{# ---------------------------------------------- #}
+{# - Component : Header                         - #}
+{# - Part : Nav                                 - #}
+{# ---------------------------------------------- #}
+{% extends '@SymfonyUx/header/nav.html' %}
+
+{% set _attr = attr|default({}) %}
+{% set _attr = _add_attribute(_attr, 'id', id) %}
+{% set _attr = _add_attribute(_attr, 'class', class) %}
+
+{% set _content_attr = _content_attr|default({}) %}
+{% set _content_attr = _add_attribute(_content_attr, 'class', classname('header-nav-content')) %}
+
+

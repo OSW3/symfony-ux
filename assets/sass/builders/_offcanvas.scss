@@ -26,8 +26,6 @@ $prefix: prefix.$prefix;
 $left-width: store.$width;
 $right-width: store.$width;
 
-
-
 @if store.$left-width != null {
     $left-width: store.$left-width;
 }

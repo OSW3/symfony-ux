@@ -13,24 +13,53 @@ $prefix: prefix.$prefix;
 // * Define storage data
 // * ---------------------------------------------
 
-$expand-at  : if(meta.global-variable-exists('header-expand-at', $module: generated), generated.$header-expand-at, false);
+/// Specifies the breakpoint to expand or toggle between mobile and desktop views
+/// @type string
+//
+$expand-at: if(meta.global-variable-exists('header-expand-at', $module: generated), generated.$header-expand-at, false);
 
+/// Toggle `row` and `row-inverse` of the main element
+/// @type Bool
+//
+$is-inverse: false;
 
 /// The amount of blur applied to the backdrop.
 /// @type length
 //
-$backdrop--blur: 4px;
+$backdrop-blur: 4px;
 
 /// The opacity level of the backdrop.
 /// @type number
 //
-$backdrop--opacity: 0.5;
+$backdrop-opacity: 0.5;
+
+/// 
+/// @type length
+//
+$brand-offset: 1rem;
+
+/// 
+/// @type length
+//
+$brand-gap: 3rem;
 
 
-$brand-margin-left: 0;
-$brand-margin-right: 3rem;
+// $offcanvas-width: 380px;
 
-$offcanvas-width: 380px;
+/// Default width of the offcanvas component.
+/// @type length
+//
+$width: 380px;
+
+/// Custom width for the offcanvas when positioned on the left.
+/// @type length | null
+//
+$left-width: null;
+
+/// Custom width for the offcanvas when positioned on the right.
+/// @type length | null
+//
+$right-width: null;
 
 
 
@@ -76,9 +105,34 @@ $transition-delay: var(--#{$prefix}transition-normal);
 //
 $transition-type: ease-in-out;
 
+
+
+
+
+
 // * Storage Mixins definition
 // * ---------------------------------------------
 
 @mixin setExpandAt($breakpoint) {
     $expand-at: $breakpoint !global;
+}
+
+@mixin setRowInverse($inverse) {
+    $is-inverse: $inverse !global;
+}
+
+@mixin setBackdropBlur($length) {
+    $backdrop-blur: $length !global;
+}
+
+@mixin setBackdropOpacity($opacity) {
+    $backdrop-opacity: $opacity !global;
+}
+
+@mixin setBrandOffset($length) {
+    $brand-offset: $length !global;
+}
+
+@mixin setBrandGap($length) {
+    $brand-gap: $length !global;
 }

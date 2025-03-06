@@ -98,7 +98,7 @@ symfony_ux:
 ### **Theme**
 
 ```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
+@use './../../../../../../bundle/assets/sass/storages/prefix';
 
 $props: map.merge($props, (
     scroll-to-top-color             : var(--#{$prefix}red),

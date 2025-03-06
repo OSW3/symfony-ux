@@ -90,7 +90,7 @@ Create advanced buttons.
 <!-- tabs:start -->
 ### **Twig**
 
-### Twig configuration
+#### Twig configuration
 
 | Parameter | Type | Required | Default | Description |
 |-|:-:|:-:|:-:|:-|
@@ -109,7 +109,7 @@ Create advanced buttons.
 
 <hr>
 
-#### `type` values
+##### `type` values
 
 | Value | Description |
 |-|-|
@@ -118,7 +118,7 @@ Create advanced buttons.
 | `reset` | Set a button type Reset |
 | `link` | Set a button as a link |
 
-#### `target` values
+##### `target` values
 
 | Value | Description |
 |-|-|
@@ -127,7 +127,7 @@ Create advanced buttons.
 | `_blank` | Set a link with target _blank |
 | `custom` | Set a link with a custom target |
 
-#### `is` values
+##### `is` values
 
 | Value | Description |
 |-|-|
@@ -142,7 +142,7 @@ Create advanced buttons.
 | `dark` | Set the style `dark` |
 <!-- | `custom` | Set the style of the custom palette | -->
 
-#### `size` values
+##### `size` values
 
 | Value | Description |
 |-|-|
@@ -151,150 +151,186 @@ Create advanced buttons.
 | `medium` | Set the style `medium` |
 | `large` | Set the style `large` |
 
-<!-- tabs:end -->
 
+### **SASS Layout**
 
+#### `setBorderWidth`  
+Sets the border width of the button.  
 
-## Customize SCSS
-
-<!-- tabs:start -->
-
-### **Theme**
-
-These properties allow you to define the theme of buttons that are not associated with a palette.
-
-```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
-
-$props: map.merge($props, (
-    example-color             : var(--#{$prefix}black),
-    example--color--hover       : inherit,
-    example--bg-color          : var(--#{$prefix}yellow),
-    example--bg-color--hover    : var(--#{$prefix}green),
-    example--border-color      : var(--#{$prefix}gray-600),
-    example--border-color--hover: var(--#{$prefix}gray-700),
-));
-```
-
-### **Layout**
-
-#### Custom file example
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/button';
-
-@include button.setBorderWidth( 1px );
-@include button.setBorderRadius( var(--#{$prefix}border-radius-normal) );
-@include button.setCursor( pointer );
-@include button.setFontFamily( inherit );
-@include button.setFontSize(fonts.$scale-base * 1, fonts.$scale-base * .8 , fonts.$scale-base * 1.6 );
-@include button.setFontWeight(100 * 4, 100 * 4, 100 * 7);
-@include button.setLineHeight(1.5, 1, 1.8);
-@include button.setPaddingX(spaces.$base * .6, spaces.$base * .4, spaces.$base * 1);
-@include button.setPaddingY(spaces.$base * 1.4, spaces.$base * 1, spaces.$base * 1.6);
-@include button.setDisabledOpacity( 0.65 );
-@include button.setBoxShadow('inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)');
-@include button.setFocusBoxShadow( 0 0 0 0.25rem );
-```
-
-<hr>
-
-#### Available mixins
-
-##### `setBorderWidth`
-
-Sets the border width of the button.
-
-```css 
+```scss
 @include button.setBorderWidth( {Length} $width );
 ```
 
-##### `setBorderRadius`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `width` | `Length` | yes | `1px` | Defines the width of the button's border. |
+<hr>  
 
-Sets the border radius of the button for rounded corners.
+#### `setBorderRadius`  
+Defines the border radius of the button, controlling its corner rounding.  
 
-```css 
+```scss
 @include button.setBorderRadius( {Length} $radius );
 ```
 
-##### `setCursor`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `radius` | `Length` | yes | `var(--border-radius-normal)` | Specifies the roundness of the button's corners. |
+<hr>  
 
-Sets the cursor style when hovering over the button.
+#### `setCursor`  
+Sets the cursor type when hovering over the button.  
 
-```css 
-@include button.setCursor( {Cursor} $cursor );
+```scss
+@include button.setCursor( {String} $cursor );
 ```
 
-##### `setFontFamily`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `cursor` | `String` | yes | `pointer` | Defines the cursor style when hovering over the button. |
+<hr>  
 
-Sets the font family for the button's text.
+#### `setFontFamily`  
+Specifies the font family used for the button text.  
 
-```css 
-@include button.setFontFamily( {String} $family );
+```scss
+@include button.setFontFamily( {String} $font-family );
 ```
 
-##### `setFontSize`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `font-family` | `String` | yes | `inherit` | Defines the font family, inheriting from the parent element by default. |
+<hr>  
 
-Sets the font size of the button for different screen sizes.
+#### `setFontSize`  
+Sets the font size of the button for different screen sizes.  
 
-```css 
-@include button.setFontSize( {Length} $normal, {Length} $small, {Length} $large );
+```scss
+@include button.setFontSize( {Length} $mobile, {Length} $tablet, {Length} $desktop );
 ```
 
-##### `setFontWeight`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `mobile`  | `Length` | yes | `fonts.$scale-base * 1` | Font size for mobile screens. |
+| `tablet`  | `Length` | yes | `fonts.$scale-base * .8` | Font size for tablet screens. |
+| `desktop` | `Length` | yes | `fonts.$scale-base * 1.6` | Font size for desktop screens. |
+<hr>  
 
-Sets the font weight of the button's text for different screen sizes.
+#### `setFontWeight`  
+Defines the font weight of the button text for different screen sizes.  
 
-```css 
-@include button.setFontWeight( {Number} $normal, {Number} $small, {Number} $large );
+```scss
+@include button.setFontWeight( {Number} $mobile, {Number} $tablet, {Number} $desktop );
 ```
 
-##### `setLineHeight`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `mobile`  | `Number` | yes | `100 * 4` | Font weight for mobile screens. |
+| `tablet`  | `Number` | yes | `100 * 4` | Font weight for tablet screens. |
+| `desktop` | `Number` | yes | `100 * 7` | Font weight for desktop screens. |
+<hr>  
 
-Sets the line height of the button's text for different screen sizes..
+#### `setLineHeight`  
+Specifies the line height for button text across different screen sizes.  
 
-```css 
-@include button.setLineHeight( {Number} $normal, {Number} $small, {Number} $large );
+```scss
+@include button.setLineHeight( {Number} $mobile, {Number} $tablet, {Number} $desktop );
 ```
 
-##### `setPaddingX`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `mobile`  | `Number` | yes | `1.5` | Line height for mobile screens. |
+| `tablet`  | `Number` | yes | `1` | Line height for tablet screens. |
+| `desktop` | `Number` | yes | `1.8` | Line height for desktop screens. |
+<hr>  
 
-Sets the horizontal padding of the button for different screen sizes.
+#### `setPaddingX`  
+Defines the horizontal padding of the button for different screen sizes.  
 
-```css 
-@include button.setPaddingX( {Length} $normal, {Length} $small, {Length} $large );
+```scss
+@include button.setPaddingX( {Length} $mobile, {Length} $tablet, {Length} $desktop );
 ```
 
-##### `setPaddingY`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `mobile`  | `Length` | yes | `spaces.$base * .6` | Horizontal padding for mobile screens. |
+| `tablet`  | `Length` | yes | `spaces.$base * .4` | Horizontal padding for tablet screens. |
+| `desktop` | `Length` | yes | `spaces.$base * 1` | Horizontal padding for desktop screens. |
+<hr>  
 
-Sets the vertical padding of the button for different screen sizes.
+#### `setPaddingY`  
+Defines the vertical padding of the button for different screen sizes.  
 
-```css 
-@include button.setPaddingY( {Length} $normal, {Length} $small, {Length} $large );
+```scss
+@include button.setPaddingY( {Length} $mobile, {Length} $tablet, {Length} $desktop );
 ```
 
-##### `setDisabledOpacity`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `mobile`  | `Length` | yes | `spaces.$base * 1.4` | Vertical padding for mobile screens. |
+| `tablet`  | `Length` | yes | `spaces.$base * 1` | Vertical padding for tablet screens. |
+| `desktop` | `Length` | yes | `spaces.$base * 1.6` | Vertical padding for desktop screens. |
+<hr>  
 
-Sets the opacity for the button when it is in a disabled state.
+#### `setDisabledOpacity`  
+Sets the opacity level for a disabled button.  
 
-```css 
+```scss
 @include button.setDisabledOpacity( {Number} $opacity );
 ```
 
-##### `setBoxShadow`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `opacity` | `Number` | yes | `0.65` | Defines the opacity level when the button is disabled. |
+<hr>  
 
-Sets the box-shadow for the button, often used to create depth or visual emphasis..
+#### `setBoxShadow`  
+Applies a box-shadow effect to the button.  
 
-```css 
+```scss
 @include button.setBoxShadow( {String} $shadow );
 ```
 
-##### `setFocusBoxShadow`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `shadow` | `String` | yes | `'inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)'` | Defines the shadow effect for the button. |
+<hr>  
 
-Sets the focus outline box-shadow for the button, often used for accessibility purposes..
+#### `setFocusBoxShadow`  
+Defines the box-shadow effect when the button is focused.  
 
-```css 
-@include button.setFocusBoxShadow( {String} $shadow );
+```scss
+@include button.setFocusBoxShadow( {Length} $shadow );
 ```
+
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `shadow` | `Length` | yes | `0 0 0 0.25rem` | Specifies the box-shadow applied when the button is focused. |
+<hr>
+
+### **SASS Theme**
+
+#### `button--color`  
+Defines the default text color of the button. The default value is `var(--black)`, ensuring strong readability.  
+<hr>  
+
+#### `button--color--hover`  
+Specifies the text color of the button when hovered. The default value is `inherit`, meaning it will maintain the parent element's text color.  
+<hr>  
+
+#### `button--bg-color`  
+Sets the background color of the button. The default value is `var(--gray-400)`, providing a neutral and balanced appearance.  
+<hr>  
+
+#### `button--bg-color--hover`  
+Defines the background color of the button when hovered. The default value is `var(--gray-500)`, offering a subtle darkening effect for better visual feedback.  
+<hr>  
+
+#### `button--border-color`  
+Specifies the border color of the button. The default value is `var(--gray-600)`, ensuring a clear separation from the background.  
+<hr>  
+
+#### `button--border-color--hover`  
+Sets the border color of the button when hovered. The default value is `var(--gray-700)`, slightly darkening the border for improved contrast and interaction feedback.  
 
 <!-- tabs:end -->

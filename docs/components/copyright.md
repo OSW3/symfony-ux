@@ -8,46 +8,12 @@ Display a copyright, generally on the website footer.
 
 
 
-## Integration
-
-<!-- tabs:start -->
-### **HTML**
-
-```twig
-<div class="ux-copyright">&copy; 2009-2025 • My Company</div>
-``` 
-
-### **Twig**
-
-```twig
-<twig:Component:Copyright />
-``` 
-
-### **SCSS**
-
-Import the builder `_example.scss`
-
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/copyright';
-```
-<!-- tabs:end -->
-
-
-
-## Configuration
+## Code example
 
 <!-- tabs:start -->
 ### **YAML**
-
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `company` | `string` | Set the name of the company. | no |  |
-| `since` | `string` | Set the year since the company has been active. | no | current year  |
-| `symbol` | `string` | Set the copyright symbol to use. | no | \&copy; |
-| `dates_separator` | `string` | Set the separator to use between dates in the display. | no | - |
-| `separator` | `string` | Set the separator to use between elements in the display. | no | • |
-
 ```yaml
+# config/packages/symfony_ux.yaml
 symfony_ux:
     components:
         copyright: 
@@ -58,22 +24,21 @@ symfony_ux:
             separator: " • "
 ```
 
+### **HTML**
+
+```html
+<div class="{{ classname('copyright') }}">&copy; 2009-2025 • My Company</div>
+``` 
+
 ### **Twig**
 
-### Twig configuration
+#### Example 1
 
-| Parameter | Type | Description | Required | Default |
-|-|-|-|-|-|
-| `id` | `string` | Set the accordion `id` attribute. | no |  |
-| `class` | `string` | Set custom classname. | no |  |
-| `dataset` | `array` | Set list of `data` attributes; | no |  |
-| `company` • | `string` | Set the name of the company. | no |  |
-| `since` • | `string` | Set the year since the company has been active. | no | current year  |
-| `symbol` • | `string` | Set the copyright symbol to use. | no | \&copy; |
-| `dates_separator` • | `string` | Set the separator to use between dates in the display. | no | - |
-| `separator` • | `string` | Set the separator to use between elements in the display. | no | • |
+```twig
+<twig:Component:Copyright />
+``` 
 
-> Note: Parameters with • override the YAML configuration.
+#### Example 2
 
 ```twig 
 <twig:Component:Copyright 
@@ -81,127 +46,223 @@ symfony_ux:
     since="2025" 
 />
 ```
+
+### **SCSS**
+
+#### Customize layout example
+
+```css 
+/* assets/sass/components/copyright.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/copyright';
+@include copyright.setCursor(null);
+// ...
+```
+
+#### Customize theme example
+
+```css 
+/* assets/sass/themes/_light.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
+@include themes.add('light', (
+    'copyright--color': var(--#{$prefix}black),
+    // ...
+));
+```
+
+#### Import the component builder
+
+```css 
+/* assets/sass/ui.scss */
+@use '<vendor-path>/osw3/symfony-ux/assets/sass/builders/copyright';
+```
 <!-- tabs:end -->
 
 
 
-## Customize SCSS
+## API
 
 <!-- tabs:start -->
+### **YAML**
 
-### **Theme**
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `company` | `string` | no |  | Set the name of the company. |
+| `since` | `string` | no | current year  | Set the year since the company has been active. |
+| `symbol` | `string` | no | \&copy; | Set the copyright symbol to use. |
+| `dates_separator` | `string` | no | - | Set the separator to use between dates in the display. |
+| `separator` | `string` | no | • | Set the separator to use between elements in the display. |
 
-```css 
-@use './../../../../bundle/assets/sass/storages/prefix';
 
-$props: map.merge($props, (
-    example-color             : inherit,
-    example--color--hover       : inherit,
-    example--bg-color          : inherit,
-    example--bg-color--hover    : inherit,
-));
-```
+### **Twig**
+> Note: Parameters with • override the YAML configuration.
 
-### **Layout**
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|:-|
+| `id` | `string` | no |  | Set the accordion `id` attribute. |
+| `class` | `string` | no |  | Set custom classname. |
+| `dataset` | `array` | no |  | Set list of `data` attributes; |
+| `company` • | `string` | no |  | Set the name of the company. |
+| `since` • | `string` | no | current year  | Set the year since the company has been active. |
+| `symbol` • | `string` | no | \&copy; | Set the copyright symbol to use. |
+| `dates_separator` • | `string` | no | - | Set the separator to use between dates in the display. |
+| `separator` • | `string` | no | • | Set the separator to use between elements in the display. |
 
-#### Custom file example
 
-```css 
-@use '<vendor-path>/osw3/symfony-ux/assets/sass/storage/copyright';
+### **SASS Layout**
 
+#### `setCursor`  
+Sets the cursor style for the copyright component.  
+
+```css
 @include copyright.setCursor(null);
-@include copyright.setFontFamily(null);
-@include copyright.setFontSize(fonts.$scale-base * .8);
-@include copyright.setFontWeight(100 * 4);
-@include copyright.setPaddingX(0);
-@include copyright.setPaddingY(0); 
-@include copyright.setTransition(false);
-@include copyright.setTransitionDelay(var(--#{$prefix}transition-normal));
-@include copyright.setTransitionType(ease-in-out);
-@include copyright.setHover(false);
 ```
+
+| Parameter | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `cursor` | `CSS cursor value` | no | `null` | Defines the cursor type when hovering over the component. |
 
 <hr>
 
-#### Available mixins
+#### `setFontFamily`  
+Sets the font family for the copyright text.  
 
-##### `setCursor`
-
-Sets the cursor style for the copyright element. If null, it defaults to the system or inherited style.
-
-```css 
-@include copyright.setCursor( {Cursor|Null} $cursor );
+```css
+@include copyright.setFontFamily(null);
 ```
 
-##### `setFontFamily`
+| Parameter | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `fontFamily` | `CSS font-family` | no | `null` | Defines the font family used for the text. |
 
-Sets the font family for the copyright element. If null, it defaults to the system or inherited font.
+<hr>
 
-```css 
-@include copyright.setFontFamily( {String|Null} $family );
+#### `setFontSize`  
+Defines the font size of the copyright text.  
+
+```css
+@include copyright.setFontSize(fonts.$scale-base * .8);
 ```
 
-##### `setFontSize`
+| Parameter  | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `size` | `Length` | yes | `fonts.$scale-base * .8` | Sets the font size for the text. |
 
-Sets the font size for the copyright element.
+<hr>
 
-```css 
-@include copyright.setFontSize( {Length} $size );
+#### `setFontWeight`  
+Specifies the font weight of the copyright text.  
+
+```css
+@include copyright.setFontWeight(100 * 4);
 ```
 
-##### `setFontWeight`
+| Parameter  | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `weight`   | `Number` | yes | `100 * 4` | Defines the thickness of the text. |
 
-Sets the font weight for the copyright element.
+<hr>
 
-```css 
-@include copyright.setFontWeight( {Number} $weight );
+#### `setPaddingX`  
+Sets the horizontal padding of the copyright component.  
+
+```css
+@include copyright.setPaddingX(0);
 ```
 
-##### `setPaddingX`
+| Parameter  | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `paddingX` | `Length` | yes | `0` | Defines the left and right padding. |
 
-Sets the horizontal padding for the copyright element.
+<hr>
 
-```css 
-@include copyright.setPaddingX( {Length} $padding );
+#### `setPaddingY`  
+Sets the vertical padding of the copyright component.  
+
+```css
+@include copyright.setPaddingY(0);
 ```
 
-##### `setPaddingY`
+| Parameter  | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `paddingY` | `Length` | yes | `0` | Defines the top and bottom padding. |
 
-Sets the vertical padding for the copyright element.
+<hr>
 
-```css 
-@include copyright.setPaddingY( {Length} $padding ; 
+#### `setTransition`  
+Enables or disables transition effects.  
+
+```css
+@include copyright.setTransition(false);
 ```
 
-##### `setTransition`
+| Parameter | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `enabled` | `Boolean` | yes | `false` | Enables (`true`) or disables (`false`) transitions. |
 
-Enables or disables transitions for the copyright element.
+<hr>
 
-```css 
-@include copyright.setTransition( {Boolean} $enabled );
+#### `setTransitionDelay`  
+Defines the delay before the transition starts.  
+
+```css
+@include copyright.setTransitionDelay(var(--#{$prefix}transition-normal));
 ```
 
-##### `setTransitionDelay`
+| Parameter | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `delay` | `CSS time value` | yes | `var(--transition-normal)` | Specifies the time before the transition begins. |
 
-Sets the transition delay for the copyright element.
+<hr>
 
-```css 
-@include copyright.setTransitionDelay( {Length} $delay );
+#### `setTransitionType`  
+Sets the type of transition easing function.  
+
+```css
+@include copyright.setTransitionType(ease-in-out);
 ```
 
-##### `setTransitionType`
+| Parameter | Type  | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `type` | `CSS easing function` | yes | `ease-in-out` | Determines how the transition progresses. |
 
-Sets the transition type (easing function) for the copyright element.
+<hr>
 
-```css 
-@include copyright.setTransitionType( {String} $type );
+#### `setHover`  
+Enables or disables hover effects.  
+
+```css
+@include copyright.setHover(false);
 ```
 
-##### `setHover`
+| Parameter | Type | Required | Default | Description |
+|-|:-:|:-:|:-:|-|
+| `enabled` | `Boolean` | yes | `false` | Enables (`true`) or disables (`false`) hover styles. |
 
-Enables or disables hover effects for the copyright element.
+<hr>
 
-```css 
-@include copyright.setHover( {Boolean} $enabled );
-```
+### **SASS Theme**
+
+#### `brand--color`  
+Defines the text color of the brand. The default value is set to `var(--gray-800)`, ensuring good readability and contrast.  
+<hr>  
+
+#### `brand--color--hover`  
+Specifies the text color of the brand when hovered. The default value is `var(--blue)`, providing a visual cue for interaction.  
+<hr>  
+
+#### `brand--bg-color`  
+Defines the background color of the brand. The default value is `transparent`, keeping the design clean and adaptable to different layouts.  
+<hr>  
+
+#### `brand--bg-color--hover`  
+Specifies the background color of the brand when hovered. The default value is `transparent`, maintaining consistency with the default state.  
+<hr>  
+
+#### `brand--border-color`  
+Sets the border color of the brand. The default value is `var(--gray-200)`, offering a subtle separation from surrounding elements.  
+<hr>  
+
+#### `brand--border-color--hover`  
+Defines the border color of the brand when hovered. The default value is `var(--gray-500)`, enhancing visibility on interaction.  
 <!-- tabs:end -->

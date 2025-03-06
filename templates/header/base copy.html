@@ -1,5 +1,4 @@
 <{{ tag }} {{ _get_attributes(_attr) }}>
-
     <div class="{{ container }}">
 
         {# Brand component #}
@@ -14,45 +13,31 @@
         />
         {% endif %}
 
+
         {# Expand button - if menu is not showed on small devices #}
         <twig:Component:Button
             label="Expand"
-            :class="togglerClassname"
-            :dataset="{action: 'open', target: contentId}"
+            :class="header_toggler_classname"
+            :dataset="header_toggler_dataset"
         />
 
-        <twig:Component:Header:Content 
-            :backdrop="backdrop"
-            :id="contentId"
-            :placement="placement"
-            :schema="schema" 
-            :justify="justify"
-        />
-            {# body="My body content" #}
 
-        {# <twig:Component:Offcanvas
-            :backdrop="backdrop"
-            :id="contentId"
-            :placement="placement"
-            body="My body content"
-        /> #}
+        <div class="{{ classname('header-content') }}">
 
-        {# <div class="{{ classname('header-content') }}"> #}
-
-
+            
             {# Close button - if menu is showed on small device #}
-            {# <twig:Component:Button
+            <twig:Component:Button
                 label="Close"
                 :class="header_close_classname"
                 :dataset="header_close_dataset"
-            /> #}
+            />
 
             {# Menu Schema #}
-            {# <twig:Component:Menu 
+            <twig:Component:Menu 
                 :schema="schema" 
                 :justify="justify"
-            /> #}
+            />
 
-        {# </div> #}
+        </div>
     </div>
 </{{ tag }}>

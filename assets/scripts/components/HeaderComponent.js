@@ -61,10 +61,11 @@ export default class HeaderComponent
     {
         this.#node = node;
         this.#body = document.querySelector('body');
+        
                 
         if (!this.#node.id) return;
 
-        this.#node.querySelectorAll(`[data-action][data-target=${this.#node.id}]`).forEach(trigger => {
+        this.#node.querySelectorAll(`[data-action][data-target=${this.#node.id}-nav]`).forEach(trigger => {            
             new ButtonComponent(trigger).onClick = (event, element) => {
                 if (this.constructor.actions.includes(trigger.dataset.action)) {
                     this[trigger.dataset.action]();
@@ -73,11 +74,8 @@ export default class HeaderComponent
         })
 
         // Click outside the offcanvas
-        document.addEventListener('click', event => {
-
-            // console.log( !!this.#node.contains(event.target) );
-            
-            if (event.target == this.#node) {
+        document.addEventListener('click', event => {            
+            if (event.target == document.querySelector(`#${this.#node.id}-nav`)) {
                 this.close();
                 event.stopImmediatePropagation();
             }
@@ -93,20 +91,27 @@ export default class HeaderComponent
         });
         
         // Open on load
-        if (this.#node.classList.contains(this.constructor.classList.open)) {
-            this.open();
-        }
+        // if (this.#node.classList.contains(this.constructor.classList.open)) {
+        //     this.open();
+        // }
     }
 
     open() {
-        this.#node.style.display = 'block';
+        // this.#node.style.display = 'block';
+        this.#node.querySelector(`#${this.#node.id}-nav`).style.display = 'block';
+        
         // this.#body.classList.add(`${this.constructor.prefix}no-scroll`);
         setTimeout(() => this.#node.classList.add(this.constructor.classList.open),1);
     }
     close() {
+        const element = this.#node.querySelector(`#${this.#node.id}-nav`);
+        const timeInSeconds = getComputedStyle(element).transitionDuration;
+        const timeInMs = parseFloat(timeInSeconds) * 1000;
+        
         // this.#body.classList.remove(`${this.constructor.prefix}no-scroll`);
         document.querySelectorAll(`${this.constructor.selector}.open`).forEach(node => {
-            node.classList.remove(this.constructor.classList.open)
+            node.classList.remove(this.constructor.classList.open);            
+            setTimeout(() => node.querySelector(`#${node.id}-nav`).style.removeProperty('display'), timeInMs);
         });
     }
     toggle() {

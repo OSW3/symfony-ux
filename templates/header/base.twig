@@ -1,5 +1,5 @@
 {# ---------------------------------------------- #}
-{# - Component : Header                     - #}
+{# - Component : Header                         - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
 {% set view = '@SymfonyUx/header/base.html' %}
@@ -7,13 +7,8 @@
 
 
 {# Container wrapper #}
-{% if container is empty %}
-    {% set container = classname('container') %}
-{% else %}
-    {% set container = classname('container-' ~container) %}
-{% endif %}
-
-
+{% set container = container is empty ? classname('container') : classname('container-' ~container) %}
+{% set contentId = id ~ "-nav" %}
 
 
 
@@ -27,13 +22,14 @@
 {% set _brand = brand %}
 {% endif %} #}
 
-{% set header_toggler_classname = classname('header-toggler') %}
+{% set togglerClassname = classname('header-toggler') %}
+{# 
 {% set header_toggler_dataset = {
     action: 'open',
-    target: id
-} %}
-{% set header_close_classname = classname('header-close') %}
+    target: offcanvasId
+} %} #}
+{# {% set header_close_classname = classname('header-close') %}
 {% set header_close_dataset = {
     action: 'close',
-    target: id
-} %}
+    target: offcanvasId
+} %} #}

@@ -1,5 +1,6 @@
 <?php
 
+use OSW3\UX\Enum\PlacementX;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
@@ -11,9 +12,14 @@ return function (): ArrayNodeDefinition {
         ->info("Parameters settings of the Header component.")
         ->addDefaultsIfNotSet()->children()
 
+            ->variableNode('backdrop')
+                ->info("Indicates whether a blurred background should be displayed when the component is visible.	.")
+                ->defaultTrue()
+            ->end()
+
             ->variableNode('brand')
                 ->info("Specifies the properties of the Brand component.")
-                ->defaultNull()
+                ->defaultTrue()
             ->end()
 
             ->scalarNode('container')
@@ -27,9 +33,9 @@ return function (): ArrayNodeDefinition {
             ->end()
 
             ->enumNode('placement')
-                ->info("Defines the mobile placement of the component (left, right, top).")
-                ->values(['left', 'right', 'top'])
-                ->defaultValue('left')
+                ->info("Specifies the default position of Offcanvas")
+                ->values(PlacementX::toArray())
+                ->defaultValue(PlacementX::LEFT->value)
             ->end()
 
             ->booleanNode('sticky')

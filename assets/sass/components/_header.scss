@@ -17,14 +17,29 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    'header--backdrop--bg-color'     : var(--#{$prefix}black),
+    'header--backdrop--bg-color'  : var(--#{$prefix}black),
+    
+    'header--color'                  : var(--#{$prefix}red),
+    'header-offcanvas--color'        : var(--#{$prefix}header--color),
+    'header-offcanvas--header--color': var(--#{$prefix}header--color),
+    'header-offcanvas--body--color'  : var(--#{$prefix}header--color),
+    'header-offcanvas--footer--color': var(--#{$prefix}header--color),
+    
+    'header--bg-color'                  : var(--#{$prefix}gray-200),
+    'header-offcanvas--bg-color'        : var(--#{$prefix}header--bg-color),
+    'header-offcanvas--header--bg-color': var(--#{$prefix}header--bg-color),
+    'header-offcanvas--body--bg-color'  : var(--#{$prefix}header--bg-color),
+    'header-offcanvas--footer--bg-color': var(--#{$prefix}header--bg-color),
+
+
     // header--color              : inherit,
     // header--color--hover       : inherit,
-    'header--bg-color'           : var(--#{$prefix}white),
-    'header--expanded--bg-color' : var(--#{$prefix}white),
+
+    
     // header--bg-color--hover    : inherit,
     'header--border-color'       : var(--#{$prefix}gray-300),
     // header--border-color--hover: inherit,
+
 );
 
 
