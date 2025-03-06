@@ -167,6 +167,7 @@ $component: header;
         }
         &-body {
             @include flex.grow(1);
+            overflow-y: scroll;
         }
 
 
