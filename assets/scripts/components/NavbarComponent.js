@@ -2,6 +2,7 @@
 
 import ButtonComponent from "./ButtonComponent";
 import { getPrefix } from "../utils/generated";
+import { getCssClass } from "../utils/CssClassMap";
 
 
 export default class NavbarComponent
@@ -40,7 +41,7 @@ export default class NavbarComponent
      * @type {object}
      */
     static classList = {
-        open: 'open',
+        open: getCssClass('open'),
     };
 
     /**
@@ -109,8 +110,8 @@ export default class NavbarComponent
         const timeInMs = parseFloat(timeInSeconds) * 1000;
         
         // this.#body.classList.remove(`${this.constructor.prefix}no-scroll`);
-        document.querySelectorAll(`${this.constructor.selector}.open`).forEach(node => {
-            node.classList.remove(this.constructor.classList.open);            
+        document.querySelectorAll(`${this.constructor.selector}.${this.constructor.classList.open}`).forEach(node => {
+            node.classList.remove(this.constructor.classList.open)
             setTimeout(() => node.querySelector(`#${node.id}-nav`).style.removeProperty('display'), timeInMs);
         });
     }

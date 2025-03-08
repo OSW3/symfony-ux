@@ -7,6 +7,7 @@ Add many UX Components to your app.
 - [Configuration](./getting-started/configuration.md)
 - [SASS Integration](./getting-started/sass-integration.md)
 - [JavaScript Integration](./getting-started/js-integration.md)
+- [Obfuscate CSS](./getting-started/obfuscate-css.md)
 
 ## Layout
 - [Prefix](./layout/prefix.md)

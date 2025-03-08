@@ -2,6 +2,7 @@
 
 import ButtonComponent from "./ButtonComponent";
 import { getPrefix } from "../utils/generated";
+import { getCssClass } from "../utils/CssClassMap";
 
 
 export default class OffcanvasComponent
@@ -33,7 +34,9 @@ export default class OffcanvasComponent
      * @type {object}
      */
     static classList = {
-        open: 'open',
+        // open: 'lb6-mK', //getCssClass('open'),
+        open: getCssClass('open'),
+        noScroll: getCssClass(`${this.prefix}no-scroll`),
     };
 
     /**
@@ -60,6 +63,9 @@ export default class OffcanvasComponent
     constructor(node) {
         this.#node = node;
         this.#body = document.querySelector('body');
+        
+
+        console.log(this.constructor.classList);
         
         if (!this.#node.id) return;
 
@@ -96,12 +102,12 @@ export default class OffcanvasComponent
 
     open() {
         this.#node.style.display = 'block';
-        this.#body.classList.add(`${this.constructor.prefix}no-scroll`);
+        this.#body.classList.add(this.constructor.classList.noScroll);
         setTimeout(() => this.#node.classList.add(this.constructor.classList.open),1);
     }
     close() {
-        this.#body.classList.remove(`${this.constructor.prefix}no-scroll`);
-        document.querySelectorAll(`${this.constructor.selector}.open`).forEach(node => {
+        this.#body.classList.remove(this.constructor.classList.noScroll);
+        document.querySelectorAll(`${this.constructor.selector}.${this.constructor.classList.open}`).forEach(node => {
             node.classList.remove(this.constructor.classList.open)
             setTimeout(() => node.style.display = 'none', 300);
         });
