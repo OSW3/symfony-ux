@@ -88,8 +88,8 @@ class BuildCommand extends Command
             'alerts'        => $this->alerts($sassVariables, $value),
             'brand'         => $this->brand($sassVariables, $value),
             'breadcrumb'    => $this->breadcrumb($sassVariables, $value),
-            'header'        => $this->header($sassVariables, $value),
             'menu'          => $this->menu($sassVariables, $value),
+            'navbar'        => $this->navbar($sassVariables, $value),
             'offcanvas'     => $this->offcanvas($sassVariables, $value),
             'rating'        => $this->rating($scriptVariables, $value),
             'search_box'    => $this->searchBox($scriptVariables, $value),
@@ -333,17 +333,16 @@ class BuildCommand extends Command
         $sassVariables[] = "\$breadcrumb--separator: {$options['separator']};";
     }
 
-    private function header(array &$sassVariables, $options)
-    {
-        if ($options['expandAt']) {
-            $sassVariables[] = "\$header-expand-at: {$options['expandAt']};";
-        }
-    }
-
     private function menu(array &$sassVariables, $options)
     {
         if ($options['expandAt']) {
             $sassVariables[] = "\$menu-expand-at: {$options['expandAt']};";
+        }
+    }
+
+    private function navbar(array &$sassVariables, $options): void {
+        if ($options['expandAt']) {
+            $sassVariables[] = "\$navbar-expand-at: {$options['expandAt']};";
         }
     }
 

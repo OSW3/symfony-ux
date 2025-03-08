@@ -4,14 +4,14 @@ import ButtonComponent from "./ButtonComponent";
 import { getPrefix } from "../utils/generated";
 
 
-export default class HeaderComponent
+export default class NavbarComponent
 {
     /**
      * Component Classname
      * 
      * @type {string}
      */
-    static name = "header";
+    static name = "navbar";
     
     /**
      * Component prefix
@@ -120,4 +120,4 @@ export default class HeaderComponent
 
 }
 
-document.querySelectorAll(HeaderComponent.selector).forEach(node => new HeaderComponent(node));
+document.querySelectorAll(NavbarComponent.selector).forEach(node => new NavbarComponent(node));

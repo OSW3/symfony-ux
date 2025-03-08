@@ -110,7 +110,7 @@ $breakpoints: breakpoints.$breakpoints;
         @include flex.display;
         @include flex.direction(row);
         background-color: var(--#{$prefix}nav-item--bg-color);
-        color: var(--#{$prefix}nav-item-color);
+        color: var(--#{$prefix}nav-item--color);
         white-space: nowrap;
         z-index: 1;
 
@@ -201,7 +201,7 @@ $breakpoints: breakpoints.$breakpoints;
 
     .#{$prefix}has-subnav > &-items &-link {
         background-color: var(--#{$prefix}nav-sub-item--bg-color);
-        color: var(--#{$prefix}nav-sub-item-color);
+        color: var(--#{$prefix}nav-sub-item--color);
 
         // Subnav Link mouse over
         &:focus,

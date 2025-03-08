@@ -5,11 +5,11 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 
 return function (): ArrayNodeDefinition {
-    $builder = new TreeBuilder('header');
+    $builder = new TreeBuilder('navbar');
     $node = $builder->getRootNode();
 
     $node
-        ->info("Parameters settings of the Header component.")
+        ->info("Parameters settings of the Navbar component.")
         ->addDefaultsIfNotSet()->children()
 
             ->variableNode('backdrop')
@@ -18,7 +18,7 @@ return function (): ArrayNodeDefinition {
             ->end()
 
             ->variableNode('brand')
-                ->info("Specifies the properties of the Brand component.")
+                ->info("Defines the properties of the Brand component.")
                 ->defaultTrue()
             ->end()
 
@@ -39,13 +39,13 @@ return function (): ArrayNodeDefinition {
             ->end()
 
             ->booleanNode('sticky')
-                ->info("Specifies wether is the sticky header.")
+                ->info("Specifies wether is the sticky navbar.")
                 ->defaultFalse()
             ->end()
 
             ->scalarNode('tag')
-                ->info("Specifies the header tag type.")
-                ->defaultValue('header')
+                ->info("Specifies the navbar tag type.")
+                ->defaultValue('navbar')
             ->end()
 
         ->end();

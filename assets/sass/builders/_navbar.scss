@@ -1,0 +1,404 @@
+// * ------------- @osw3/symfony-ux/assets/sass/builder/navbar.scss ------------
+// *
+// *    Builder for Navbar component
+// *
+// * ---------------------------------------------------------------------------
+
+@use 'sass:map';
+@use 'sass:math';
+@use './brand';
+@use './menu';
+@use './../mixins/flex';
+@use './../storages/navbar' as store;
+@use './../builders/banner';
+@use './../storages/prefix';
+@use './../mixins/position';
+@use './../mixins/spacing';
+@use './../components/navbar';
+@use './../mixins/transition';
+@use './../storages/breakpoints';
+
+@include banner.header('Component Navbar');
+$prefix: prefix.$prefix;
+$breakpoints: breakpoints.$breakpoints;
+
+
+$left-width: store.$width;
+$right-width: store.$width;
+
+@if store.$left-width != null {
+    $left-width: store.$left-width;
+}
+@if store.$right-width != null {
+    $right-width: store.$right-width;
+}
+
+
+// * Component Structure
+// * ---------------------------------------------
+.#{$prefix}navbar {
+    $root: &;
+
+    // Navbar main element
+    // -- 
+
+    background-color: var(--#{$prefix}navbar--bg-color);
+    position: relative;
+    padding: 0;
+    margin: 0;
+    z-index: 1000;
+
+    @include transition.set(
+        (background-color, border-bottom-color), 
+        store.$transition-delay, 
+        store.$transition-type
+    );
+
+    &:hover {
+        background-color: var(--#{$prefix}navbar--bg-color--hover);
+        z-index: 9999;
+    }
+
+
+
+    // Is Navbar Fixed ?
+    // -- 
+
+    &-sticky {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+    }
+
+
+
+    // Navbar Container
+    // -- 
+
+    & [class^=#{$prefix}container] {
+        $direction: if(store.$is-inverse, row-reverse, row);
+        @include flex.display;
+        @include flex.direction($direction);
+        @include flex.align-items(center);
+        @include flex.justify-content(space-between);
+    }
+
+
+
+    // Brand
+    // --
+
+    & .#{$prefix}brand {
+        @if store.$is-inverse {
+            margin-left: store.$brand-gap;
+            margin-right: store.$brand-offset * -1;
+        }
+        @else {
+            margin-left: store.$brand-offset * -1;
+            margin-right: store.$brand-gap;
+        }
+    }
+
+
+    // Toggle button
+    // --
+
+    &-toggler {
+        border: none;
+        background: none;
+    }
+
+
+
+    // Offcanvas menu
+    // --
+
+    &-nav { // nav is the Offcanvas
+        opacity: 0;
+        display: none;
+        z-index: 1000; //  au dessus du menu navbar // au dessus de scroll to top
+        @include position.fixed(0,0,0,0);
+        @include transition.set(
+            (opacity), 
+            store.$transition-delay, 
+            store.$transition-type
+        );
+
+
+        // Navbar content / Wrapper
+        // --
+
+        &-content {
+            @include flex.display;
+            @include flex.direction(column);
+            background-color: var(--#{$prefix}navbar--offcanvas--bg-color);
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            z-index: 2;
+    
+            @include transition.set(
+                (opacity, left, right, box-shadow), 
+                store.$transition-delay, 
+                store.$transition-type
+            );
+        }
+
+
+        // Navbar Header / Content
+        // --
+        
+        &-header {
+            @include flex.display;
+            @include flex.direction(row);
+            @include flex.align-items(center);
+            @include flex.justify-content(space-between);
+            @include spacing.inner-x(store.$padding-x);
+            @include spacing.inner-y(store.$padding-y);
+            @if store.$separator-width > 0 {
+                border-bottom: store.$separator-width solid var(--#{$prefix}navbar--border-color);
+            }
+        }
+        &-body {
+            @include flex.grow(1);
+            overflow-y: scroll;
+        }
+
+        // Nav close button
+        // --
+    
+        & .#{$prefix}button-close {
+            $btn-close-size: 24px;
+            // position: absolute;
+
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: none;
+            border: none;
+            margin-left: 10px;
+            height: $btn-close-size;
+            width: $btn-close-size;
+            line-height: math.div($btn-close-size, 1.5);
+            font-size: math.div($btn-close-size, 1.5);
+            opacity: 0.4;
+            z-index: 999;
+            
+            @include transition.set(
+                (opacity), 
+                store.$transition-delay, 
+                store.$transition-type
+            );
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+    }
+
+
+
+
+    // Navbar menu / menu items
+    // --
+
+    .#{$prefix}menu,
+    .#{$prefix}nav {
+        background-color: transparent;
+    }
+
+    .#{$prefix}nav {
+        &-link {
+            color: var(--#{$prefix}navbar--color);
+            background-color: var(--#{$prefix}navbar--item--bg-color);
+
+            // Link mouse over
+            &:focus,
+            &:hover {
+                color: var(--#{$prefix}navbar--color--hover);
+                background-color: var(--#{$prefix}navbar--item--bg-color--hover);
+            }
+
+            // Link active
+            &.active,
+            &:active,
+            &.active:hover,
+            &:active:hover {
+                color: var(--#{$prefix}navbar--color--active);
+                background-color: var(--#{$prefix}navbar--item--bg-color--active);
+            }
+        }
+        &-item:hover .#{$prefix}nav-link {
+            color: var(--#{$prefix}navbar--color--hover);
+            background-color: var(--#{$prefix}navbar--item--bg-color--hover);
+        }
+    }
+
+    & .#{$prefix}has-subnav .#{$prefix}nav-items {
+        background-color: var(--#{$prefix}navbar--subnav--bg-color);
+        &:hover {
+            background-color: var(--#{$prefix}navbar--subnav--bg-color--hover);
+        }
+    }
+    & .#{$prefix}has-subnav .#{$prefix}nav-items .#{$prefix}nav-link {
+        background-color: var(--#{$prefix}navbar--subnav-item--bg-color);
+        color: var(--#{$prefix}navbar--subnav-item--color);
+
+        // Subnav Link mouse over
+        &:focus,
+        &:hover {
+            background-color: var(--#{$prefix}navbar--subnav-item--bg-color--hover);
+            color: var(--#{$prefix}navbar--subnav-item--color--hover);
+        }
+
+        // Subnav Link active
+        &.active,
+        &:active,
+        &.active:hover,
+        &:active:hover {
+            background-color: var(--#{$prefix}navbar--subnav-item--bg-color--active);
+            color: var(--#{$prefix}navbar--subnav-item--color--active);
+        }
+    }
+
+
+    // Menu Open
+    // --
+
+    &.open &-nav {
+        opacity: 1;
+        #{$root}-nav-content {
+            box-shadow: store.$box-shadow;
+        }
+    }
+    
+
+
+    // Open from Left
+    // --
+
+    &:not(&-right) {
+        #{$root}-nav-content {
+            width: $left-width;
+            left: math.div($left-width, -1);
+            right: auto;
+        }
+        &.open {
+            #{$root}-nav-content {
+                left: 0;
+            }
+        }
+    }
+    
+
+
+    // Open from Right
+    // --
+
+    &-right {
+        #{$root}-nav-content { 
+            width: $right-width;
+            left: auto;
+            right: math.div($right-width, -1);
+        }
+        &.open {
+            #{$root}-nav-content {
+                right: 0;
+            }
+        }
+    }
+    
+
+
+    // With backdrop
+    // --
+
+    &:not(&-no-backdrop) {
+        #{$root}-nav {
+            backdrop-filter: blur(store.$backdrop-blur);
+            &::after {
+                @include position.absolute(0,0,0,0);
+                content: "";
+                background-color: var(--#{$prefix}navbar--offcanvas--backdrop);
+                opacity: store.$backdrop-opacity;
+                z-index: 1;
+            }
+        }
+    }
+
+
+
+
+
+
+
+    // Navbar expand at $breakpoint
+    // --
+
+    @if map.has-key($breakpoints, store.$expand-at) {
+        @media (min-width: map.get($breakpoints, store.$expand-at)) {
+
+            // Toggle button
+            // --
+
+            &-toggler {
+                display: none;
+            }
+
+
+
+            // Offcanvas menu
+            // --
+
+            &-nav {
+                flex-grow: 1;
+                position: relative;
+                display: block;
+                opacity: 1;
+                backdrop-filter: initial;
+
+
+                // Navbar content / Wrapper
+                // --
+
+                &-content {
+                    @include flex.direction(row);
+                    width: unset !important;
+                    left: unset !important;
+                    right: unset !important;
+                    position: relative;
+                    background-color: transparent;
+                }
+
+
+                // Navbar Header / Content
+                // --
+
+                &-header, // navbar header
+                &::after // navbar backdrop
+                {
+                    display: none;
+                }
+                &-body {
+                    overflow-y: initial;
+                }
+
+                @if store.$sub-nav-max-height > 0 {
+                    & .#{$prefix}has-subnav .#{$prefix}nav-items {
+                        max-height: store.$sub-nav-max-height;
+                        overflow-y: auto;
+                        box-shadow: store.$subnav--box-shadow;
+                        @if store.$sub-nav-border-width > 0 {
+                            border: store.$sub-nav-border-width solid var(--#{$prefix}navbar--subnav--border-color);
+                            border-radius: store.$sub-nav-border-radius;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+}

@@ -15,44 +15,19 @@
         {% endif %}
 
         {# Expand button - if menu is not showed on small devices #}
-        <twig:Component:Button
+        {# <twig:Component:Button
             label="Expand"
             :class="togglerClassname"
             :dataset="{action: 'open', target: contentId}"
-        />
+        /> #}
+        <button class="{{ togglerClassname }}" data-action="open" data-target="{{ contentId }}">exp</button>
 
-        <twig:Component:Header:Content 
+        <twig:Component:Navbar:Content 
             :backdrop="backdrop"
             :id="contentId"
             :placement="placement"
             :schema="schema" 
             :justify="justify"
         />
-            {# body="My body content" #}
-
-        {# <twig:Component:Offcanvas
-            :backdrop="backdrop"
-            :id="contentId"
-            :placement="placement"
-            body="My body content"
-        /> #}
-
-        {# <div class="{{ classname('header-content') }}"> #}
-
-
-            {# Close button - if menu is showed on small device #}
-            {# <twig:Component:Button
-                label="Close"
-                :class="header_close_classname"
-                :dataset="header_close_dataset"
-            /> #}
-
-            {# Menu Schema #}
-            {# <twig:Component:Menu 
-                :schema="schema" 
-                :justify="justify"
-            /> #}
-
-        {# </div> #}
     </div>
 </{{ tag }}>

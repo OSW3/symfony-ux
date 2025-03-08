@@ -24,21 +24,21 @@ $theme-properties: (
     // nav--border-color      : var(--#{$prefix}red),
     // nav--border-color--hover: var(--#{$prefix}red),
 
-    nav-item-color          : var(--#{$prefix}gray-500),
+    nav-item--color           : var(--#{$prefix}gray-500),
     nav-item--color--hover    : var(--#{$prefix}white),
     nav-item--color--active   : var(--#{$prefix}white),
-    nav-item--bg-color       : inherit,
+    nav-item--bg-color        : inherit,
     nav-item--bg-color--hover : var(--#{$prefix}gray-900),
     nav-item--bg-color--active: var(--#{$prefix}gray-600),
 
 
     nav-sub--bg-color       : var(--#{$prefix}gray-600),
-    nav-sub--bg-color--hover : var(--#{$prefix}gray-700),
+    nav-sub--bg-color--hover: var(--#{$prefix}gray-700),
 
-    nav-sub-item-color          : var(--#{$prefix}gray-500),
+    nav-sub-item--color           : var(--#{$prefix}gray-500),
     nav-sub-item--color--hover    : var(--#{$prefix}white),
     nav-sub-item--color--active   : var(--#{$prefix}white),
-    nav-sub-item--bg-color       : inherit,
+    nav-sub-item--bg-color        : inherit,
     nav-sub-item--bg-color--hover : var(--#{$prefix}gray-900),
     nav-sub-item--bg-color--active: var(--#{$prefix}gray-600),
 );

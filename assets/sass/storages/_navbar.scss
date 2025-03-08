@@ -1,37 +1,31 @@
-// * ------------ @osw3/symfony-ux/assets/sass/storages/header.scss ------------
+// * ------------ @osw3/symfony-ux/assets/sass/storages/navbar.scss ------------
 // *
-// *    Header Storage
+// *    Navbar Storage
 // *
 // * ---------------------------------------------------------------------------
 
 @use 'sass:meta';
-@use './../storages/prefix';
 @use './../generated';
+@use './../storages/prefix';
+@use './../storages/spaces';
 $prefix: prefix.$prefix;
 
 
 // * Define storage data
 // * ---------------------------------------------
 
+// Navbar : The Bar
+// -- 
+
 /// Specifies the breakpoint to expand or toggle between mobile and desktop views
 /// @type string
 //
-$expand-at: if(meta.global-variable-exists('header-expand-at', $module: generated), generated.$header-expand-at, false);
+$expand-at: if(meta.global-variable-exists('navbar-expand-at', $module: generated), generated.$navbar-expand-at, false);
 
 /// Toggle `row` and `row-inverse` of the main element
 /// @type Bool
 //
 $is-inverse: false;
-
-/// The amount of blur applied to the backdrop.
-/// @type length
-//
-$backdrop-blur: 4px;
-
-/// The opacity level of the backdrop.
-/// @type number
-//
-$backdrop-opacity: 0.5;
 
 /// 
 /// @type length
@@ -43,8 +37,32 @@ $brand-offset: 1rem;
 //
 $brand-gap: 3rem;
 
+/// Delay for the transition effect, using a CSS variable.
+/// @type time
+//
+$transition-delay: var(--#{$prefix}transition-normal);
 
-// $offcanvas-width: 380px;
+/// Type of transition timing function.
+/// @type string
+//
+$transition-type: ease-in-out;
+
+
+
+
+
+// Navbar : The Offcanvas
+// --
+
+/// The amount of blur applied to the backdrop.
+/// @type length
+//
+$backdrop-blur: 4px;
+
+/// The opacity level of the backdrop.
+/// @type number
+//
+$backdrop-opacity: 0.5;
 
 /// Default width of the offcanvas component.
 /// @type length
@@ -61,12 +79,47 @@ $left-width: null;
 //
 $right-width: null;
 
+/// Offcanvas box shadow
+$box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 
 
-// Border bottom
-$border-width    : 1px;
-$border-style    : solid;
-// $border-radius   : var(--#{$prefix}border-radius-normal);
+/// Horizontal padding for the element.
+/// @type length
+//
+$padding-x: spaces.$base * .94;
+
+/// Vertical padding for the element.
+/// @type length
+//
+$padding-y: spaces.$base * 1.25;
+
+/// Width of the separator of the section.
+/// @type length
+//
+$separator-width: 1px;
+
+
+// Navbar : The SubNav
+// --
+
+
+$sub-nav-max-height: 480px;
+$sub-nav-border-width: 1px;
+$sub-nav-border-radius: var(--#{$prefix}border-radius-normal);
+
+$subnav--box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -91,19 +144,6 @@ $border-style    : solid;
 // $line-height-large: 1.6;
 
 // $enable-palette: true;
-
-// $box-shadow       : inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
-
-
-/// Delay for the transition effect, using a CSS variable.
-/// @type time
-//
-$transition-delay: var(--#{$prefix}transition-normal);
-
-/// Type of transition timing function.
-/// @type string
-//
-$transition-type: ease-in-out;
 
 
 

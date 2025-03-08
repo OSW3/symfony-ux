@@ -13,15 +13,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@SymfonyUx/header/base.twig')]
-final class Header extends Component
+#[AsTwigComponent(template: '@SymfonyUx/navbar/base.twig')]
+final class Navbar extends Component
 {
     /**
      * The base name of the component
      * 
      * @var string
      */
-    public const NAME = "header";
+    public const NAME = "navbar";
 
     /**
      * The default component ID
@@ -109,6 +109,8 @@ final class Header extends Component
         $resolver->setDefault('backdrop', $options['backdrop']);
         $resolver->setAllowedTypes('backdrop', ['bool']);
 
+
+
         $resolver->setDefault('brand', $options['brand']);
         $resolver->setAllowedTypes('brand', ['array', 'bool']);
         
@@ -154,7 +156,11 @@ final class Header extends Component
     public function fetchClass(): string {
         $classList = $this->classList();
         
-        $classList[] = "{$this->prefix}header-{$this->placement}";
+        $classList[] = "{$this->getComponentClassname()}-{$this->placement}";
+
+        if ($this->backdrop === false) {
+            $classList[] = "{$this->getComponentClassname()}-no-backdrop";
+        }
         
         // $classList[] = "open";
 

@@ -1,8 +1,8 @@
 {# ---------------------------------------------- #}
-{# - Component : Header                         - #}
+{# - Component : Navbar                         - #}
 {# - Part : Base                                - #}
 {# ---------------------------------------------- #}
-{% set view = '@SymfonyUx/header/base.html' %}
+{% set view = '@SymfonyUx/navbar/base.html' %}
 {% extends '@SymfonyUx/base.twig' %}
 
 
@@ -22,14 +22,4 @@
 {% set _brand = brand %}
 {% endif %} #}
 
-{% set togglerClassname = classname('header-toggler') %}
-{# 
-{% set header_toggler_dataset = {
-    action: 'open',
-    target: offcanvasId
-} %} #}
-{# {% set header_close_classname = classname('header-close') %}
-{% set header_close_dataset = {
-    action: 'close',
-    target: offcanvasId
-} %} #}
+{% set togglerClassname = classname('navbar-toggler') %}

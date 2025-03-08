@@ -18,12 +18,10 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    'copyright-color'             : inherit,
-    'copyright--color--hover'       : initial,
-    'copyright--bg-color'          : initial,
-    'copyright--bg-color--hover'    : initial,
-    // copyright--border-color      : var(--#{$prefix}gray-600),
-    // copyright--border-color--hover: var(--#{$prefix}gray-700),
+    'copyright-color'           : inherit,
+    'copyright--color--hover'   : initial,
+    'copyright--bg-color'       : initial,
+    'copyright--bg-color--hover': initial,
 );
 
 

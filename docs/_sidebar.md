@@ -23,7 +23,8 @@
   - [Breadcrumb](./components/breadcrumb.md)
   - [Buttons](./components/buttons.md)
   - [Copyright](./components/copyright.md)
-  - [Header](./components/header.md)
+  - [Navbar](./components/navbar.md)
+  
   - [Links](./components/link.md)
   - [Menus](./components/menu.md)
   - [Offcanvas](./components/offcanvas.md)

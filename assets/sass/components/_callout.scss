@@ -17,12 +17,9 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    callout-color             : var(--#{$prefix}black),
-    // callout--color--hover       : inherit, //var(--#{$prefix}inherit),
-    callout--bg-color          : var(--#{$prefix}gray-400),
-    // callout--bg-color--hover    : var(--#{$prefix}gray-500),
-    callout--border-color      : var(--#{$prefix}gray-600),
-    // callout--border-color--hover: var(--#{$prefix}gray-700),
+    'callout-color'        : var(--#{$prefix}black),
+    'callout--bg-color'    : var(--#{$prefix}gray-400),
+    'callout--border-color': var(--#{$prefix}gray-600),
 );
 
 

@@ -1,5 +1,5 @@
 <?php 
-namespace OSW3\UX\Components\Component\Header;
+namespace OSW3\UX\Components\Component\Navbar;
 
 use OSW3\UX\Components\Component;
 use OSW3\UX\Trait\AttributeIdTrait;
@@ -11,10 +11,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 
-#[AsTwigComponent(template: '@SymfonyUx/header/nav.twig')]
+#[AsTwigComponent(template: '@SymfonyUx/navbar/nav.twig')]
 final class Content extends Component {
 
-    public const NAME = "header";
+    public const NAME = "navbar";
     
     use DoNotExposeTrait;
     use AttributeIdTrait;
@@ -23,11 +23,11 @@ final class Content extends Component {
     // use AttributeStyleTrait;
     // use AttributeDatasetTrait;
     
-    #[ExposeInTemplate(name: 'backdrop')]
-    public bool $backdrop;
+    // #[ExposeInTemplate(name: 'backdrop')]
+    // public bool $backdrop;
 
     /**
-     * Header schema
+     * Navbar schema
      * 
      * @var array
      */
@@ -54,8 +54,8 @@ final class Content extends Component {
         $resolver->setRequired('id');
         $resolver->setAllowedTypes('id', ['string']);
 
-        $resolver->setDefault('backdrop', $options['backdrop']);
-        $resolver->setAllowedTypes('backdrop', ['boolean']);
+        // $resolver->setDefault('backdrop', $options['backdrop']);
+        // $resolver->setAllowedTypes('backdrop', ['boolean']);
 
         $resolver->setDefault('schema', []);
         $resolver->setAllowedTypes('schema', ['array']);
@@ -83,7 +83,7 @@ final class Content extends Component {
         // $resolver->setAllowedTypes('body', ['string']);
 
         // $resolver->setDefault('bodyTemplate', "");
-        // // $resolver->setDefault('headerTemplate', $options['body_template']);
+        // // $resolver->setDefault('navbarTemplate', $options['body_template']);
         // $resolver->setAllowedTypes('bodyTemplate', ['string']);
 
         // $resolver->setDefault('bodyOptions', []);
@@ -99,9 +99,9 @@ final class Content extends Component {
         $classList = [];
         $classList[] = "{$this->getComponentClassname()}-nav";
 
-        if ($this->backdrop === false) {
-            $classList[] = "{$this->getComponentClassname()}-no-backdrop";
-        }
+        // if ($this->backdrop === false) {
+        //     $classList[] = "{$this->getComponentClassname()}-no-backdrop";
+        // }
 
         // if ($this->open === true) {
         //     $classList[] = 'open';

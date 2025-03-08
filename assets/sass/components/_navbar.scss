@@ -1,0 +1,66 @@
+// * ----------- @osw3/symfony-ux/assets/sass/components/navbar.scss -----------
+// *
+// *    Builder for Navbar component
+// *
+// *    /!\ this file is used to pre-build and provide : 
+// *    -> 'builder/root.scss'
+// *    -> 'builder/navbar.scss'
+// *
+// * ---------------------------------------------------------------------------
+
+@use './../storages/navbar';
+@use './../storages/prefix';
+$prefix: prefix.$prefix;
+
+
+// * Default theme properties
+// * ---------------------------------------------
+
+$theme-properties: (
+    // All navbar texts and links
+    'navbar--color'           : var(--#{$prefix}gray-800),
+    'navbar--color--hover'    : var(--#{$prefix}black),
+    'navbar--color--active'   : var(--#{$prefix}black),
+
+    // Menu Item
+    'navbar--item--bg-color'            : transparent,
+    'navbar--item--bg-color--hover'     : transparent,
+    'navbar--item--bg-color--active'    : transparent,
+
+    // The bar
+    'navbar--bg-color'           : var(--#{$prefix}gray-100),
+    'navbar--bg-color--hover'    : var(--#{$prefix}gray-200),
+    // 'navbar--border-color'       : var(--#{$prefix}gray-300),
+    // 'navbar--border-color--hover': var(--#{$prefix}gray-300),
+
+
+    // The Offcanvas
+    'navbar--offcanvas--backdrop': var(--#{$prefix}black),
+    'navbar--offcanvas--bg-color': var(--#{$prefix}white),
+
+    // The subnav
+    'navbar--subnav--border-color'         : var(--#{$prefix}gray-300),
+    'navbar--subnav--bg-color'             : var(--#{$prefix}white),
+    'navbar--subnav--bg-color--hover'      : var(--#{$prefix}white),
+    'navbar--subnav-item--color'           : var(--#{$prefix}gray-800),
+    'navbar--subnav-item--color--hover'    : var(--#{$prefix}black),
+    'navbar--subnav-item--color--active'   : var(--#{$prefix}black),
+    'navbar--subnav-item--bg-color'        : transparent,
+    'navbar--subnav-item--bg-color--hover' : var(--#{$prefix}gray-200),
+    'navbar--subnav-item--bg-color--active': var(--#{$prefix}gray-200),
+
+
+
+
+
+    // 'navbar--item--border-color--hover' : transparent,
+    // 'navbar--item--border-color--active': transparent,
+
+
+);
+
+
+// * Default structure properties
+// * ---------------------------------------------
+
+$layout-properties: ();

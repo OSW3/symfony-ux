@@ -1,10 +1,10 @@
-# Header
+# Navbar
 
 
 
 ## What is it about ?
 
-Create the header componet.
+Create the navbar component.
 
 
 
@@ -16,8 +16,9 @@ Create the header componet.
 # config/packages/symfony_ux.yaml
 symfony_ux:
     components:
-        header:
-            brand: brand
+        navbar:
+            backdrop: true
+            brand: true
             container: null
             placement: left
             sticky: false
@@ -85,12 +86,11 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/HeaderComponent'
 | Parameter | Type | Required | Default | Description |
 |-|:-:|:-:|:-:|:-|
 | **`backdrop`** | `bool` | no | `true` | Indicates whether a blurred background should be displayed when the component is visible. |
-| **`brand`** | `array,bool` | no | `true` | Specifies the properties of the Brand component. `false` to no brand, `true` to get the Brand component properties and `array` to define your own properties |
+| **`brand`** | `array,bool` | no | `true` | Defines the properties of the Brand component. Set to `false` to disable the Brand, `true` to use default properties, or provide an `array` to customize the properties. |
 | **`container`** | `string,null` | no | `null` | Specifies the type of the container |
 | **`expandAt`** | `string` | no | null | Specifies the breakpoint to expand or toggle between mobile and desktop views. |
 | **`placement`** | `string` | no | `left` | Defines the mobile placement of the component (left, right). |
 | **`sticky`** | `bool` | no | `false` | Indicates whether the component should be sticky. |
-
 | **`tag`** | `string` | no | `header` | Defines the tag name of the component. |
 
 
