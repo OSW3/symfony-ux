@@ -22,6 +22,8 @@ final Class Template extends Component
     use AttributeStyleTrait;
     
     public string $source;
+
+    #[ExposeInTemplate(name: 'option')]
     public array $options;
 
     #[ExposeInTemplate(getter: 'doNotExpose')]
@@ -38,6 +40,9 @@ final Class Template extends Component
             ->classResolver($resolver)
             // ->datasetResolver($resolver)
         ;
+
+        $resolver->isRequired('source');
+        $resolver->setAllowedTypes('source', ['string']);
 
         $resolver->setDefault('options', []);
         $resolver->setAllowedTypes('options', ['array']);
