@@ -5,8 +5,14 @@
             :items="section.items" 
             :order="section.order|default({})"
         />
-    {% else %}
+    {% elseif section.type == 'search' %}
         <twig:Component:Search 
+            :order="section.order"
+        />
+    {% elseif section.type == 'template' %}
+        <twig:Component:Template 
+            :source="section.source" 
+            :options="section.options"
             :order="section.order"
         />
     {% endif %}

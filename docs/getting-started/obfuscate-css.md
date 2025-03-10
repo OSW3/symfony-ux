@@ -26,9 +26,8 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 
-// Path of the CSS Obfuscation Mapping
-const cssClassMap = path.resolve(__dirname, process.env.CSS_OBFUSCATION_MAPPING);
-
+const cssClassMapPath = path.resolve(__dirname, process.env.CSS_OBFUSCATION_MAPPING);
+const cssClassMap = fs.existsSync(cssClassMapPath) ? JSON.parse(fs.readFileSync(cssClassMapPath, 'utf8')) : {}
 
 Encore 
     // Active le support de PostCSS
@@ -36,10 +35,8 @@ Encore
 
     .addPlugin(
         new webpack.DefinePlugin({
-            'process.env.CSS_OBFUSCATION_ENABLED': process.env.CSS_OBFUSCATION_ENABLED,
-            'process.env.CSS_OBFUSCATION_MAP': JSON.stringify(
-                fs.existsSync(cssClassMap) ? JSON.parse(fs.readFileSync(cssClassMap, 'utf8')) : {}
-            ),
+            'cssObfuscationEnabled': process.env.CSS_OBFUSCATION_ENABLED,
+            'cssObfuscationMap': JSON.stringify(cssClassMap),
         })
     )
 ;

@@ -48,6 +48,12 @@ return function (): ArrayNodeDefinition {
                 ->defaultValue('navbar')
             ->end()
 
+            ->enumNode('justify')
+                ->info("Specifies the schema element justification.")
+                ->values(['start','end','between'])
+                ->defaultValue('between')
+            ->end()
+
         ->end();
 
     return $node;

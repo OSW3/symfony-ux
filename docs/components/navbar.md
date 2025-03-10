@@ -20,22 +20,27 @@ symfony_ux:
             backdrop: true
             brand: true
             container: null
-            placement: left
+            expandAt: laptop
+            placement: right
             sticky: false
             tag: header
+            justify: between
 ```
 
 ### **Twig**
 
 ```twig 
 <twig:Component:Header
-    class="my-custom-class"
+    :backdrop="true"
+    :brand="true"
     container="desktop"
-    id="my-custom-id"
     placement="left"
+    id="my-custom-id"
+    class="my-custom-class"
+    :sticky="false"
     tag="header"
-    sticky
     :schema="[]"
+    justify="between"
 />
 ```
 
@@ -92,6 +97,7 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/HeaderComponent'
 | **`placement`** | `string` | no | `left` | Defines the mobile placement of the component (left, right). |
 | **`sticky`** | `bool` | no | `false` | Indicates whether the component should be sticky. |
 | **`tag`** | `string` | no | `header` | Defines the tag name of the component. |
+| **`justify`** | `string` | no | `between` | . |
 
 
 ### **Twig**
@@ -106,8 +112,9 @@ import '<vendor-path>/osw3/symfony-ux/assets/scripts/components/HeaderComponent'
 | **`container•`** | `string,null` | no | `null` | Specifies the type of the container |
 | **`placement•`** | `string` | no | `left` | Defines the mobile placement of the component (left, right). |
 | **`sticky•`** | `bool` | no | `false` | Indicates whether the component should be sticky. |
-
 | **`tag•`** | `string` | no | `header` | Defines the tag name of the component. |
+| **`schema`** | `array` | no | `[]` | . |
+| **`justify`** | `string` | no | `between` | . |
 
 
 ### **SASS Layout**

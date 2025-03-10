@@ -37,24 +37,32 @@ final class Navbar extends Component
     use AttributeDatasetTrait;
 
 
+    /**
+     * Indicate if a backdrop is apply
+     * 
+     * @var bool
+     */
     #[ExposeInTemplate(name: 'backdrop')]
     public bool $backdrop;
 
     /**
      * Brand component settings
      * 
-     * If NULL, try to get the YAML config
-     * 
      * @var array|bool
      */
     #[ExposeInTemplate(name: 'brand', getter: 'fetchBrand')]
     public array|bool $brand;
     
+    /**
+     * Specify the container class
+     * 
+     * @var string|null
+     */
     #[ExposeInTemplate(name: 'container', getter: 'fetchContainer')]
     public string|null $container;
 
     /**
-     * Defines the mobile placement of the component (left, right, top).
+     * Defines the mobile placement of the component (left, right).
      * 
      * @var string
      */
@@ -109,8 +117,6 @@ final class Navbar extends Component
         $resolver->setDefault('backdrop', $options['backdrop']);
         $resolver->setAllowedTypes('backdrop', ['bool']);
 
-
-
         $resolver->setDefault('brand', $options['brand']);
         $resolver->setAllowedTypes('brand', ['array', 'bool']);
         
@@ -121,10 +127,6 @@ final class Navbar extends Component
         $resolver->setAllowedTypes('placement', ['string']);
         $resolver->setAllowedValues('placement', PlacementX::toArray());
 
-
-
-
-
         $resolver->setDefault('sticky', $options['sticky']);
         $resolver->setAllowedTypes('sticky', ['boolean']);
 
@@ -134,7 +136,7 @@ final class Navbar extends Component
         $resolver->setDefault('schema', []);
         $resolver->setAllowedTypes('schema', ['array']);
 
-        $resolver->setDefault('justify', "start");
+        $resolver->setDefault('justify', $options['justify']);
         $resolver->setAllowedTypes('justify', ['string']);
 
         return $resolver->resolve($data) + $data;
