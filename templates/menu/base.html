@@ -12,7 +12,7 @@
     {% elseif section.type == 'template' %}
         <twig:Component:Template 
             :source="section.source" 
-            :options="section.options"
+            :options="section.options|default({})"
             :order="section.order"
         />
     {% endif %}
