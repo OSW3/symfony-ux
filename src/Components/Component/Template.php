@@ -21,6 +21,7 @@ final Class Template extends Component
     use AttributeClassTrait;
     use AttributeStyleTrait;
     
+    #[ExposeInTemplate(name: 'source')]
     public string $source;
 
     #[ExposeInTemplate(name: 'option')]
