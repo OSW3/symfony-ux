@@ -15,7 +15,7 @@ use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 final Class Template extends Component
 {
     public const NAME = "template";
-    
+
     use DoNotExposeTrait;
     use AttributeIdTrait;
     use AttributeClassTrait;
@@ -38,6 +38,9 @@ final Class Template extends Component
             ->classResolver($resolver)
             // ->datasetResolver($resolver)
         ;
+
+        $resolver->setDefault('options', []);
+        $resolver->setAllowedTypes('options', ['array']);
 
         $resolver->setDefault('order', []);
         $resolver->setAllowedTypes('order', ['array']);
