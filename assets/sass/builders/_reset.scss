@@ -86,8 +86,8 @@ body {
     font-family: var(--#{$prefix}font-open-sans);
     font-size: 1rem; // todo: customize
     font-weight: 400; // todo: customize
-    color: var(--#{$prefix}main-color);
-    background-color: var(--#{$prefix}main--bg-color);
+    color: var(--#{$prefix}black);
+    background-color: var(--#{$prefix}white);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
 }

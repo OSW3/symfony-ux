@@ -43,6 +43,7 @@ final Class Template extends Component
         ;
 
         $resolver->isRequired('source');
+        $resolver->setDefault('source', '');
         $resolver->setAllowedTypes('source', ['string']);
 
         $resolver->setDefault('options', []);
