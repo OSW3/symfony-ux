@@ -5,7 +5,7 @@
 
 Open a command console, enter your project directory and execute the following command to download the latest stable version of this bundle
 
-```console
+```shell
 composer require osw3/symfony-ux
 ```
 
@@ -55,10 +55,10 @@ npm install sass-loader@latest sass --save-dev
 ## Dependencies
 
 ```shell
-    symfony/css-selector
-    symfony/dom-crawler
-    symfony/twig-bundle
-    symfony/options-resolver
-    symfony/ux-twig-component
-    symfony/webpack-encore-bundle
+symfony/css-selector
+symfony/dom-crawler
+symfony/twig-bundle
+symfony/options-resolver
+symfony/ux-twig-component
+symfony/webpack-encore-bundle
 ```

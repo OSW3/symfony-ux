@@ -11,7 +11,7 @@ Symfony UX can be configured in three ways (Twig, SASS and YAML).
 
 ### Configuration file
 
-The configuration file is lacated at `config/packages/symfony_ux.yaml`.
+The configuration file is located at `config/packages/symfony_ux.yaml`.
 
 > **Important**  
 > Don't forget to run the command `php bin/console ux:build` after every change in the symfony_ux.yaml.

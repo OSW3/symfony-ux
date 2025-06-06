@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <link rel="stylesheet" href="https://unpkg.com/docsify-toc@1.0.0/dist/toc.css">
-
 </head>
 <body>
   <div id="app"></div>
@@ -17,6 +16,8 @@
       name: 'Symfony UX Components',
       repo: 'https://github.com/OSW3/symfony-ux',
       loadSidebar: true,
+      auto2top: true,
+      autoHeader: true,
 
       persist: true,
       sync: true,
@@ -25,8 +26,8 @@
 
       toc: {
         scope: '.markdown-section',
-        headings: 'h1, h2',
-        title: 'Table of Contents',
+        headings: 'h2',
+        title: 'Contents',
       },
     }
   </script>
@@ -36,6 +37,5 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1"></script>
   <script src="https://unpkg.com/docsify-toc@1.0.0/dist/toc.js"></script>
-
 </body>
 </html>
