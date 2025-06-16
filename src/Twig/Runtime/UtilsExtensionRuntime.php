@@ -50,7 +50,7 @@ class UtilsExtensionRuntime implements RuntimeExtensionInterface
 
         foreach ($attr as $key => $value)
         {
-            $_value = trim($value);
+            $_value = trim($value ?? '');
 
             if (!empty($_value) || $_value === "0")
             {

@@ -101,8 +101,8 @@ final class Brand extends Component
     }
 
     public function fetchName(): ?string {
-        $name = $this->name !== false ? trim($this->name) : null;
-        $name = !empty($name) ? trim($name) : null;
+        $name = $this->name !== false ? trim($this->name ?? '') : null;
+        $name = !empty($name) ? trim($name ?? '') : null;
         return $name;
     }
 
@@ -154,8 +154,8 @@ final class Brand extends Component
     }
 
     public function fetchTagline(): ?string {
-        $tagline = $this->tagline !== false ? trim($this->tagline) : null;
-        $tagline = !empty($tagline) ? trim($tagline) : null;
+        $tagline = $this->tagline !== false ? trim($this->tagline ?? '') : null;
+        $tagline = !empty($tagline) ? trim($tagline ?? '') : null;
         return $tagline;
     }
 }

@@ -38,6 +38,6 @@ final class Tagline extends Component
 
     public function fetchTagline(): string
     {
-        return trim($this->tagline);
+        return trim($this->tagline ?? '');
     }
 }

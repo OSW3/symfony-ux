@@ -47,8 +47,8 @@ final class Picture extends Component
     }
 
     public function fetchName(): ?string {
-        $name = $this->name !== false ? trim($this->name) : null;
-        $name = !empty($name) ? trim($name) : null;
+        $name = $this->name !== false ? trim($this->name ?? '') : null;
+        $name = !empty($name) ? trim($name ?? '') : null;
         return $name;
     }
 }

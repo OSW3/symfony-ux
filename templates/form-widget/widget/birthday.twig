@@ -17,7 +17,7 @@
     iconType    : iconType,
 } %}{% block controls %}
 
-    <div>B*DAY</div>
+    {# <div>B*DAY</div> #}
     {% for part in formatInput %}{% if _dates[part] is defined %}
     {% include "@SymfonyUx/form-widget/tag/select/tag.twig" with _dates[part] only %}
     {% endif %}{% endfor %}

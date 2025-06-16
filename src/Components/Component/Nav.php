@@ -96,7 +96,7 @@ final class Nav extends Component {
         $aria = [];
         // $aria = array_merge($aria, $this->aria);
 
-        $label = trim($this->label);
+        $label = trim($this->label ?? '');
         if (!empty($label)) { $aria['label'] = $label; }
         
         foreach ($aria as $property => $value)

@@ -65,6 +65,6 @@ final class Inner extends Component
             $name = $this->name;
         }
 
-        return trim($name);
+        return trim($name ?? '');
     }
 }

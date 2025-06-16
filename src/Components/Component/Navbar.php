@@ -174,18 +174,18 @@ final class Navbar extends Component
     }
     
     public function fetchContainer(): string {
-        return trim($this->container);
+        return trim($this->container ?? '');
     }
 
     public function fetchPlacement(): string|null {
         $options = $this->getConfig();
         return $this->placement === null 
             ? $options['placement'] 
-            : trim($this->placement)
+            : trim($this->placement ?? '')
         ;
     }
 
     public function fetchTag(): string {
-        return trim($this->tag);
+        return trim($this->tag ?? '');
     }
 }
