@@ -1,4 +1,6 @@
 
+@use './../functions//utils';
+
 @mixin margin($top: null, $right: null, $bottom: null, $left: null, $important: false) 
 {
   @include _coords('margin', $top, $right, $bottom, $left, $important);
@@ -61,29 +63,35 @@
 /// 
 @mixin _coords($type, $top: null, $right: null, $bottom: null, $left: null, $important: false) 
 {
+  $suffix: utils.is_important($important);
+
   @if $right == $top and $bottom == $right and $left == $bottom and $top == $left {
-    #{$type}: $top  #{if(sass($important), '!important', '')};
+    #{$type}: $top #{$suffix};
   }
   @else if $top == $bottom and $left == $right {
-    #{$type}: $top $left  #{if(sass($important), '!important', '')};
+    #{$type}: $top $left  #{$suffix};
   }
   @else if $top not null and $right not null and $bottom not null and $left not null {
-    #{$type}: $top $right $bottom $left #{if(sass($important), '!important', '')};
+    #{$type}: $top $right $bottom $left #{$suffix};
   }
   @else {
-    @if ($top not null) {#{$type}-top : $top  #{if(sass($important), '!important', '')};}
-    @if ($right not null) {#{$type}-right : $right  #{if(sass($important), '!important', '')};}
-    @if ($bottom not null) {#{$type}-bottom : $bottom  #{if(sass($important), '!important', '')};}
-    @if ($left not null) {#{$type}-left : $left  #{if(sass($important), '!important', '')};}
+    @if ($top not null) {#{$type}-top : $top  #{$suffix};}
+    @if ($right not null) {#{$type}-right : $right  #{$suffix};}
+    @if ($bottom not null) {#{$type}-bottom : $bottom  #{$suffix};}
+    @if ($left not null) {#{$type}-left : $left  #{$suffix};}
   }
 }
 @mixin _coords-x($type, $value: null, $important: false) 
 {
-  #{$type}-right : $value  #{if(sass($important), '!important', '')};
-  #{$type}-left : $value  #{if(sass($important), '!important', '')};
+  $suffix: utils.is_important($important);
+
+  #{$type}-right : $value  #{$suffix};
+  #{$type}-left : $value  #{$suffix};
 }
 @mixin _coords-y($type, $value: null, $important: false) 
 {
-  #{$type}-top : $value  #{if(sass($important), '!important', '')};
-  #{$type}-bottom : $value  #{if(sass($important), '!important', '')};
+  $suffix: utils.is_important($important);
+
+  #{$type}-top : $value  #{$suffix};
+  #{$type}-bottom : $value  #{$suffix};
 }

@@ -25,3 +25,12 @@
 @function px-to-rem($px, $base: 16px) {
     @return calc($px / $base) * 1rem;
 }
+
+
+@function is_important($isImportant) {
+  @if $isImportant {
+    @return "!important";
+  } @else {
+    @return "";
+  }
+}
