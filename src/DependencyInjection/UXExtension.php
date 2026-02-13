@@ -19,7 +19,7 @@ class UXExtension extends Extension implements PrependExtensionInterface
 	 *
 	 * @return void
 	 */
-	public function load(array $configs, ContainerBuilder $container)
+	public function load(array $configs, ContainerBuilder $container): void
     {
 		// Default Config
 		// --
@@ -48,7 +48,7 @@ class UXExtension extends Extension implements PrependExtensionInterface
 	 *
 	 * @return void
 	 */
-	public function prepend(ContainerBuilder $container)
+	public function prepend(ContainerBuilder $container): void
     {
         // Extend Twig configuration
         // --
@@ -68,7 +68,7 @@ class UXExtension extends Extension implements PrependExtensionInterface
 	 * @param string $alias
 	 * @return void
 	 */
-	private function extendsTwigConfig(array &$twigConfig, string $directory, string $alias) 
+	private function extendsTwigConfig(array &$twigConfig, string $directory, string $alias): void
 	{
 		if (is_dir($directory))
 		{
