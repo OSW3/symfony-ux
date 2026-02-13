@@ -14,7 +14,11 @@
 // * ---------------------------------------------
 
 // $base-font-size  : if(meta.global-variable-exists('base-font-size' , $module: generated), generated.$base-font-size , 16px);
-$base-font-size  : if(meta.global-variable-exists('base-font-size', $module: generated), $if-true: generated.$base-font-size, $if-false: 16px);
+// $base-font-size  : if(meta.global-variable-exists('base-font-size', $module: generated), $if-true: generated.$base-font-size, $if-false: 16px);
+$base-font-size: 16px;
+@if meta.global-variable-exists('base-font-size', $module: generated) {
+    $base-font-size: generated.$base-font-size;
+}
 
 $base-line-height: if(meta.global-variable-exists('base-line-height', $module: generated), $if-true: generated.$base-line-height, $if-false: 1.5);
 
