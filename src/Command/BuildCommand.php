@@ -28,10 +28,11 @@ class BuildCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
-            ->setDescription('Export Symfony parameters to SCSS variables');
+            ->setDescription('Export Symfony parameters to SCSS variables')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
