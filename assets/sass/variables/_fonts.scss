@@ -20,15 +20,54 @@ $base-font-size: 16px;
     $base-font-size: generated.$base-font-size;
 }
 
-$base-line-height: if(meta.global-variable-exists('base-line-height', $module: generated), $if-true: generated.$base-line-height, $if-false: 1.5);
+// $base-line-height: if(meta.global-variable-exists('base-line-height', $module: generated), $if-true: generated.$base-line-height, $if-false: 1.5);
+$base-line-height: 1.5;
+@if meta.global-variable-exists('base-line-height', $module: generated) {
+    $base-line-height: generated.$base-line-height;
+}
 
 // * Headings base sizes
 // * ---------------------------------------------
 
-$h1-font-size: if(meta.global-variable-exists('h1-font-size', $module: generated), $if-true: generated.$h1-font-size, $if-false: 2rem);
-$h2-font-size: if(meta.global-variable-exists('h2-font-size', $module: generated), $if-true: generated.$h2-font-size, $if-false: 1.75rem);
-$h3-font-size: if(meta.global-variable-exists('h3-font-size', $module: generated), $if-true: generated.$h3-font-size, $if-false: 1.5rem);
-$h4-font-size: if(meta.global-variable-exists('h4-font-size', $module: generated), $if-true: generated.$h4-font-size, $if-false: 1.25rem);
-$h5-font-size: if(meta.global-variable-exists('h5-font-size', $module: generated), $if-true: generated.$h5-font-size, $if-false: 1rem);
-$h6-font-size: if(meta.global-variable-exists('h6-font-size', $module: generated), $if-true: generated.$h6-font-size, $if-false: 0.875rem);
-$heading-line-height: if(meta.global-variable-exists('heading-line-height', $module: generated), $if-true: generated.$heading-line-height, $if-false: 1.25);
+// $h1-font-size: if(meta.global-variable-exists('h1-font-size', $module: generated), $if-true: generated.$h1-font-size, $if-false: 2rem);
+// $h2-font-size: if(meta.global-variable-exists('h2-font-size', $module: generated), $if-true: generated.$h2-font-size, $if-false: 1.75rem);
+// $h3-font-size: if(meta.global-variable-exists('h3-font-size', $module: generated), $if-true: generated.$h3-font-size, $if-false: 1.5rem);
+// $h4-font-size: if(meta.global-variable-exists('h4-font-size', $module: generated), $if-true: generated.$h4-font-size, $if-false: 1.25rem);
+// $h5-font-size: if(meta.global-variable-exists('h5-font-size', $module: generated), $if-true: generated.$h5-font-size, $if-false: 1rem);
+// $h6-font-size: if(meta.global-variable-exists('h6-font-size', $module: generated), $if-true: generated.$h6-font-size, $if-false: 0.875rem);
+// $heading-line-height: if(meta.global-variable-exists('heading-line-height', $module: generated), $if-true: generated.$heading-line-height, $if-false: 1.25);
+
+$h1-font-size: 2rem;
+@if meta.global-variable-exists('h1-font-size', $module: generated) {
+    $h1-font-size: generated.$h1-font-size;
+}
+
+$h2-font-size: 1.75rem;
+@if meta.global-variable-exists('h2-font-size', $module: generated) {
+    $h2-font-size: generated.$h2-font-size;
+}
+
+$h3-font-size: 1.5rem;
+@if meta.global-variable-exists('h3-font-size', $module: generated) {
+    $h3-font-size: generated.$h3-font-size;
+}
+
+$h4-font-size: 1.25rem;
+@if meta.global-variable-exists('h4-font-size', $module: generated) {
+    $h4-font-size: generated.$h4-font-size;
+}
+
+$h5-font-size: 1rem;
+@if meta.global-variable-exists('h5-font-size', $module: generated) {
+    $h5-font-size: generated.$h5-font-size;
+}
+
+$h6-font-size: 0.875rem;
+@if meta.global-variable-exists('h6-font-size', $module: generated) {
+    $h6-font-size: generated.$h6-font-size;
+}
+
+$heading-line-height: 1.25;
+@if meta.global-variable-exists('heading-line-height', $module: generated) {
+    $heading-line-height: generated.$heading-line-height;
+}
