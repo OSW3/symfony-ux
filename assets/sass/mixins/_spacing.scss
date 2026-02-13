@@ -62,28 +62,28 @@
 @mixin _coords($type, $top: null, $right: null, $bottom: null, $left: null, $important: false) 
 {
   @if $right == $top and $bottom == $right and $left == $bottom and $top == $left {
-    #{$type}: $top  #{if($important, '!important', '')};
+    #{$type}: $top  #{if(sass($important), '!important', '')};
   }
   @else if $top == $bottom and $left == $right {
-    #{$type}: $top $left  #{if($important, '!important', '')};
+    #{$type}: $top $left  #{if(sass($important), '!important', '')};
   }
   @else if $top not null and $right not null and $bottom not null and $left not null {
-    #{$type}: $top $right $bottom $left #{if($important, '!important', '')};
+    #{$type}: $top $right $bottom $left #{if(sass($important), '!important', '')};
   }
   @else {
-    @if ($top not null) {#{$type}-top : $top  #{if($important, '!important', '')};}
-    @if ($right not null) {#{$type}-right : $right  #{if($important, '!important', '')};}
-    @if ($bottom not null) {#{$type}-bottom : $bottom  #{if($important, '!important', '')};}
-    @if ($left not null) {#{$type}-left : $left  #{if($important, '!important', '')};}
+    @if ($top not null) {#{$type}-top : $top  #{if(sass($important), '!important', '')};}
+    @if ($right not null) {#{$type}-right : $right  #{if(sass($important), '!important', '')};}
+    @if ($bottom not null) {#{$type}-bottom : $bottom  #{if(sass($important), '!important', '')};}
+    @if ($left not null) {#{$type}-left : $left  #{if(sass($important), '!important', '')};}
   }
 }
 @mixin _coords-x($type, $value: null, $important: false) 
 {
-  #{$type}-right : $value  #{if($important, '!important', '')};
-  #{$type}-left : $value  #{if($important, '!important', '')};
+  #{$type}-right : $value  #{if(sass($important), '!important', '')};
+  #{$type}-left : $value  #{if(sass($important), '!important', '')};
 }
 @mixin _coords-y($type, $value: null, $important: false) 
 {
-  #{$type}-top : $value  #{if($important, '!important', '')};
-  #{$type}-bottom : $value  #{if($important, '!important', '')};
+  #{$type}-top : $value  #{if(sass($important), '!important', '')};
+  #{$type}-bottom : $value  #{if(sass($important), '!important', '')};
 }
