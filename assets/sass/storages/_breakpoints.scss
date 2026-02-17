@@ -60,12 +60,12 @@ $useless: ();
     $new-containers: ();
   
     @each $key, $value in $breakpoints {
-        $new-key: if(map.has-key($replacements, $key), map.get($replacements, $key), $key);
+        $new-key: if(sass(map.has-key($replacements, $key)): map.get($replacements, $key); else: $key);
         $new-breakpoints: map.merge($new-breakpoints, ($new-key: $value));
     }
   
     @each $key, $value in $containers {
-        $new-key: if(map.has-key($replacements, $key), map.get($replacements, $key), $key);
+        $new-key: if(sass(map.has-key($replacements, $key)): map.get($replacements, $key); else: $key);
         $new-containers: map.merge($new-containers, ($new-key: $value));
     }
   

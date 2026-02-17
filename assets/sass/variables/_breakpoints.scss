@@ -16,38 +16,38 @@
 // * Default breakpoints names
 // * ---------------------------------------------
 
-$breakpoint-name-phone  : if(meta.global-variable-exists('breakpoint-name-phone'    , $module: generated), generated.$breakpoint-name-phone     , 'phone') !default;
-$breakpoint-name-tablet : if(meta.global-variable-exists('breakpoint-name-tablet'   , $module: generated), generated.$breakpoint-name-tablet    , 'tablet') !default;
-$breakpoint-name-laptop : if(meta.global-variable-exists('breakpoint-name-laptop'   , $module: generated), generated.$breakpoint-name-laptop    , 'laptop') !default;
-$breakpoint-name-desktop: if(meta.global-variable-exists('breakpoint-name-desktop'  , $module: generated), generated.$breakpoint-name-desktop   , 'desktop') !default;
-$breakpoint-name-wide   : if(meta.global-variable-exists('breakpoint-name-wide'     , $module: generated), generated.$breakpoint-name-wide      , 'wide') !default;
-$breakpoint-name-ultra  : if(meta.global-variable-exists('breakpoint-name-ultra'    , $module: generated), generated.$breakpoint-name-ultra     , 'ultra') !default;
+$breakpoint-name-phone  : if(sass(meta.global-variable-exists("breakpoint-name-phone"   , $module: generated)): generated.$breakpoint-name-phone;   else: 'phone') !default;
+$breakpoint-name-tablet : if(sass(meta.global-variable-exists("breakpoint-name-tablet"  , $module: generated)): generated.$breakpoint-name-tablet;  else: 'tablet') !default;
+$breakpoint-name-laptop : if(sass(meta.global-variable-exists("breakpoint-name-laptop"  , $module: generated)): generated.$breakpoint-name-laptop;  else: 'laptop') !default;
+$breakpoint-name-desktop: if(sass(meta.global-variable-exists("breakpoint-name-desktop" , $module: generated)): generated.$breakpoint-name-desktop; else: 'desktop') !default;
+$breakpoint-name-wide   : if(sass(meta.global-variable-exists("breakpoint-name-wide"    , $module: generated)): generated.$breakpoint-name-wide;    else: "wide") !default;
+$breakpoint-name-ultra  : if(sass(meta.global-variable-exists("breakpoint-name-ultra"   , $module: generated)): generated.$breakpoint-name-ultra;   else: "ultra") !default;
 
 
 // * Default breakpoints values
 // * ---------------------------------------------
 
-$breakpoint-phone       : if(meta.global-variable-exists('breakpoint-phone'         , $module: generated), generated.$breakpoint-phone          , 576px) !default;
-$breakpoint-tablet      : if(meta.global-variable-exists('breakpoint-tablet'        , $module: generated), generated.$breakpoint-tablet         , 768px) !default;
-$breakpoint-laptop      : if(meta.global-variable-exists('breakpoint-laptop'        , $module: generated), generated.$breakpoint-laptop         , 992px) !default;
-$breakpoint-desktop     : if(meta.global-variable-exists('breakpoint-desktop'       , $module: generated), generated.$breakpoint-desktop        , 1200px) !default;
-$breakpoint-wide        : if(meta.global-variable-exists('breakpoint-wide'          , $module: generated), generated.$breakpoint-wide           , 1400px) !default;
-$breakpoint-ultra       : if(meta.global-variable-exists('breakpoint-ultra'         , $module: generated), generated.$breakpoint-ultra          , 1600px) !default;
+$breakpoint-phone       : if(sass(meta.global-variable-exists('breakpoint-phone'         , $module: generated)): generated.$breakpoint-phone;       else: 576px) !default;
+$breakpoint-tablet      : if(sass(meta.global-variable-exists('breakpoint-tablet'        , $module: generated)): generated.$breakpoint-tablet;      else: 768px) !default;
+$breakpoint-laptop      : if(sass(meta.global-variable-exists('breakpoint-laptop'        , $module: generated)): generated.$breakpoint-laptop;      else: 992px) !default;
+$breakpoint-desktop     : if(sass(meta.global-variable-exists('breakpoint-desktop'       , $module: generated)): generated.$breakpoint-desktop;     else: 1200px) !default;
+$breakpoint-wide        : if(sass(meta.global-variable-exists('breakpoint-wide'          , $module: generated)): generated.$breakpoint-wide;        else: 1400px) !default;
+$breakpoint-ultra       : if(sass(meta.global-variable-exists('breakpoint-ultra'         , $module: generated)): generated.$breakpoint-ultra;       else: 1600px) !default;
 
 
 // * Default containers names
 // * ---------------------------------------------
 
-$container-phone        : if(meta.global-variable-exists('container-phone'          , $module: generated), generated.$container-phone           , 540px) !default;
-$container-tablet       : if(meta.global-variable-exists('container-tablet'         , $module: generated), generated.$container-tablet          , 720px) !default;
-$container-laptop       : if(meta.global-variable-exists('container-laptop'         , $module: generated), generated.$container-laptop          , 960px) !default;
-$container-desktop      : if(meta.global-variable-exists('container-desktop'        , $module: generated), generated.$container-desktop         , 1140px) !default;
-$container-wide         : if(meta.global-variable-exists('container-wide'           , $module: generated), generated.$container-wide            , 1340px) !default;
-$container-ultra        : if(meta.global-variable-exists('container-ultra'          , $module: generated), generated.$container-ultra           , 1520px) !default;
+$container-phone        : if(sass(meta.global-variable-exists('container-phone'          , $module: generated)): generated.$container-phone;        else: 540px) !default;
+$container-tablet       : if(sass(meta.global-variable-exists('container-tablet'         , $module: generated)): generated.$container-tablet;       else: 720px) !default;
+$container-laptop       : if(sass(meta.global-variable-exists('container-laptop'         , $module: generated)): generated.$container-laptop;       else: 960px) !default;
+$container-desktop      : if(sass(meta.global-variable-exists('container-desktop'        , $module: generated)): generated.$container-desktop;      else: 1140px) !default;
+$container-wide         : if(sass(meta.global-variable-exists('container-wide'           , $module: generated)): generated.$container-wide;         else: 1340px) !default;
+$container-ultra        : if(sass(meta.global-variable-exists('container-ultra'          , $module: generated)): generated.$container-ultra;        else: 1520px) !default;
 
 
 // * Additional & Useless breakpoints
 // * ---------------------------------------------
 
-$additional             : if(meta.global-variable-exists('additional-breakpoints'    , $module: generated), generated.$additional-breakpoints    , ()) !default;
-$useless                : if(meta.global-variable-exists('useless-breakpoints'    , $module: generated), generated.$useless-breakpoints    , ()) !default;
+$additional             : if(sass(meta.global-variable-exists('additional-breakpoints'  , $module: generated)): generated.$additional-breakpoints;  else: ()) !default;
+$useless                : if(sass(meta.global-variable-exists('useless-breakpoints'     , $module: generated)): generated.$useless-breakpoints;     else: ()) !default;

@@ -13,14 +13,14 @@
 // * Default grid settings
 // * ---------------------------------------------
 
-$divisions                   : if(meta.global-variable-exists('grid-divisions', $module: generated), generated.$grid-divisions, 12);
-$enable-grid-columns-class   : if(meta.global-variable-exists('grid-columns', $module: generated), generated.$grid-columns, true);
-$enable-grid-alignments-class: if(meta.global-variable-exists('grid-alignments', $module: generated), generated.$grid-alignments, true);
+$divisions                   : if(sass(meta.global-variable-exists('grid-divisions', $module: generated)):  generated.$grid-divisions;  else: 12);
+$enable-grid-columns-class   : if(sass(meta.global-variable-exists('grid-columns', $module: generated)):    generated.$grid-columns;    else: true);
+$enable-grid-alignments-class: if(sass(meta.global-variable-exists('grid-alignments', $module: generated)): generated.$grid-alignments; else: true);
 
 
 // * Default columns settings
 // * ---------------------------------------------
 
-$enable-column-sizes-class   : if(meta.global-variable-exists('columns-sizes', $module: generated), generated.$columns-sizes, true);                                                                                                      // Active .ux-column-XX  
-$enable-column-offset-class  : if(meta.global-variable-exists('columns-offset', $module: generated), generated.$columns-offset, true);                                                                                                      // Active .ux-offset-XX  
-$enable-column-shift-class   : if(meta.global-variable-exists('columns-shift', $module: generated), generated.$columns-shift, true);                                                                                                      // Active .ux-shift-XX  
+$enable-column-sizes-class   : if(sass(meta.global-variable-exists('columns-sizes', $module: generated)):   generated.$columns-sizes;   else: true); // Active .ux-column-XX  
+$enable-column-offset-class  : if(sass(meta.global-variable-exists('columns-offset', $module: generated)):  generated.$columns-offset;  else: true); // Active .ux-offset-XX  
+$enable-column-shift-class   : if(sass(meta.global-variable-exists('columns-shift', $module: generated)):   generated.$columns-shift;   else: true); // Active .ux-shift-XX  
