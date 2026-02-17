@@ -1,15 +1,20 @@
-// * --------- @osw3/symfony-ux/assets/sass/storages/scroll-to-top.scss --------
+// * ===========================================================================
+// *  Scroll to Top Component Storage
+// * ===========================================================================
 // *
-// *    Scroll-to-top Storage
+// *  This file defines the default storage values and mixins for the 
+// *  Scroll-to-top component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use './../storages/prefix';
 @use './../storages/spaces';
 
 
-// * Define storage data
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - Default variables for Scroll-to-top component
+// * ------------------------------------------------------------------------ //
 
 $cursor    : pointer;
 $shape     : square;
@@ -26,14 +31,15 @@ $position-y: spaces.$base *2;
 $offset-x  : 0px;
 $offset-y  : 0px;
 $font-size : 2;
-$z-index   : 99999; //zindex.$z-index--scroll-to-top;
+$z-index   : 99999;
 
+$border-width: 20px;
 $square-radius: 6px;
 
 
-
-// * Storage Mixins definition
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - Storage Mixins definition
+// * ------------------------------------------------------------------------ //
 
 // Sets the cursor style for the scroll-to-top button.
 // @param {Cursor} $cursor - The cursor style, e.g., pointer for clickable elements.
@@ -90,4 +96,10 @@ $square-radius: 6px;
 // @param {Length} $radius - The radius for the button's corners, e.g., 6px.
 @mixin setSquareRadius($radius) {
     $square-radius: $radius !global;
+}
+
+// Sets the border width for the scroll-to-top button.
+// @param {Length} $width - The width of the border, e.g., 20px.
+@mixin setBorderWidth($width) {
+    $border-width: $width !global;
 }
