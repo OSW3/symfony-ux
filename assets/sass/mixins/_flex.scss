@@ -32,7 +32,7 @@
     display: -webkit-box;       // Old Safari, iOS 6.x
     display: -ms-flexbox;       // IE10
     display: -webkit-flex;      // Old Safari
-    display: flex  #{if($important, '!important', '')}; // Modern browsers
+    display: flex  #{if(sass($important): "!important"; else: "")}; // Modern browsers
 }
   
 // Set the flex direction (row, column, etc.)

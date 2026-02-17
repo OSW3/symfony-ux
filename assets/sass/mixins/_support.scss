@@ -13,5 +13,5 @@
   }
 
   // Standard non-prefixed
-  #{$property}: $value #{if($important, '!important', '')};
+  #{$property}: $value #{if(sass($important): "!important"; else: "")};
 }
