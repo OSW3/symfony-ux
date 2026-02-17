@@ -18,29 +18,29 @@
 // * Defaults Black & White & Gray scales values
 // * ---------------------------------------------
 
-$black   : if(meta.global-variable-exists('black'   , $module: generated), generated.$black     , #111111) !default;
-$white   : if(meta.global-variable-exists('white'   , $module: generated), generated.$white     , #ffffff) !default;
-$gray-100: if(meta.global-variable-exists('gray-100', $module: generated), generated.$gray-100  , #f8f9fa) !default;
-$gray-200: if(meta.global-variable-exists('gray-200', $module: generated), generated.$gray-200  , #e9ecef) !default;
-$gray-300: if(meta.global-variable-exists('gray-300', $module: generated), generated.$gray-300  , #dee2e6) !default;
-$gray-400: if(meta.global-variable-exists('gray-400', $module: generated), generated.$gray-400  , #ced4da) !default;
-$gray-500: if(meta.global-variable-exists('gray-500', $module: generated), generated.$gray-500  , #adb5bd) !default;
-$gray-600: if(meta.global-variable-exists('gray-600', $module: generated), generated.$gray-600  , #6c757d) !default;
-$gray-700: if(meta.global-variable-exists('gray-700', $module: generated), generated.$gray-700  , #495057) !default;
-$gray-800: if(meta.global-variable-exists('gray-800', $module: generated), generated.$gray-800  , #343a40) !default;
-$gray-900: if(meta.global-variable-exists('gray-900', $module: generated), generated.$gray-900  , #212529) !default;
+$black   : if(sass(meta.global-variable-exists('black'   , $module: generated)): generated.$black;    else: #111111) !default;
+$white   : if(sass(meta.global-variable-exists('white'   , $module: generated)): generated.$white;    else: #ffffff) !default;
+$gray-100: if(sass(meta.global-variable-exists('gray-100', $module: generated)): generated.$gray-100; else: #f8f9fa) !default;
+$gray-200: if(sass(meta.global-variable-exists('gray-200', $module: generated)): generated.$gray-200; else: #e9ecef) !default;
+$gray-300: if(sass(meta.global-variable-exists('gray-300', $module: generated)): generated.$gray-300; else: #dee2e6) !default;
+$gray-400: if(sass(meta.global-variable-exists('gray-400', $module: generated)): generated.$gray-400; else: #ced4da) !default;
+$gray-500: if(sass(meta.global-variable-exists('gray-500', $module: generated)): generated.$gray-500; else: #adb5bd) !default;
+$gray-600: if(sass(meta.global-variable-exists('gray-600', $module: generated)): generated.$gray-600; else: #6c757d) !default;
+$gray-700: if(sass(meta.global-variable-exists('gray-700', $module: generated)): generated.$gray-700; else: #495057) !default;
+$gray-800: if(sass(meta.global-variable-exists('gray-800', $module: generated)): generated.$gray-800; else: #343a40) !default;
+$gray-900: if(sass(meta.global-variable-exists('gray-900', $module: generated)): generated.$gray-900; else: #212529) !default;
 
 
 // * Defaults Colors values
 // * ---------------------------------------------
 
-$blue  : if(meta.global-variable-exists('blue'      , $module: generated), generated.$blue      , #0d6efd) !default;
-$indigo: if(meta.global-variable-exists('indigo'    , $module: generated), generated.$indigo    , #6610f2) !default;
-$purple: if(meta.global-variable-exists('purple'    , $module: generated), generated.$purple    , #6f42c1) !default;
-$pink  : if(meta.global-variable-exists('pink'      , $module: generated), generated.$pink      , #d63384) !default;
-$red   : if(meta.global-variable-exists('red'       , $module: generated), generated.$red       , #dc3545) !default;
-$orange: if(meta.global-variable-exists('orange'    , $module: generated), generated.$orange    , #fd7e14) !default;
-$yellow: if(meta.global-variable-exists('yellow'    , $module: generated), generated.$yellow    , #ffc107) !default;
-$green : if(meta.global-variable-exists('green'     , $module: generated), generated.$green     , #198754) !default;
-$teal  : if(meta.global-variable-exists('teal'      , $module: generated), generated.$teal      , #20c997) !default;
-$cyan  : if(meta.global-variable-exists('cyan'      , $module: generated), generated.$cyan      , #0dcaf0) !default;
+$blue  : if(sass(meta.global-variable-exists('blue'      , $module: generated)): generated.$blue;     else: #0d6efd) !default;
+$indigo: if(sass(meta.global-variable-exists('indigo'    , $module: generated)): generated.$indigo;   else: #6610f2) !default;
+$purple: if(sass(meta.global-variable-exists('purple'    , $module: generated)): generated.$purple;   else: #6f42c1) !default;
+$pink  : if(sass(meta.global-variable-exists('pink'      , $module: generated)): generated.$pink;     else: #d63384) !default;
+$red   : if(sass(meta.global-variable-exists('red'       , $module: generated)): generated.$red;      else: #dc3545) !default;
+$orange: if(sass(meta.global-variable-exists('orange'    , $module: generated)): generated.$orange;   else: #fd7e14) !default;
+$yellow: if(sass(meta.global-variable-exists('yellow'    , $module: generated)): generated.$yellow;   else: #ffc107) !default;
+$green : if(sass(meta.global-variable-exists('green'     , $module: generated)): generated.$green;    else: #198754) !default;
+$teal  : if(sass(meta.global-variable-exists('teal'      , $module: generated)): generated.$teal;     else: #20c997) !default;
+$cyan  : if(sass(meta.global-variable-exists('cyan'      , $module: generated)): generated.$cyan;     else: #0dcaf0) !default;

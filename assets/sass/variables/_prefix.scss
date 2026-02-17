@@ -11,7 +11,7 @@
 // * Prefix default value
 // * ---------------------------------------------
 
-$prefix: if(meta.global-variable-exists('prefix', $module: generated), generated.$prefix, 'ux');
+$prefix: if(sass(meta.global-variable-exists('prefix', $module: generated)): generated.$prefix; else: 'ux');
 
 
 

@@ -14,10 +14,10 @@
 // * Defaults spaces values
 // * ---------------------------------------------
 
-$base    : if(meta.global-variable-exists('spacer-base'  , $module: generated), generated.$spacer-base   , 1rem) !default;
-$spacer-1: if(meta.global-variable-exists('spacer-1'     , $module: generated), generated.$spacer-1      , 0.25) !default;
-$spacer-2: if(meta.global-variable-exists('spacer-2'     , $module: generated), generated.$spacer-2      , 0.5) !default;
-$spacer-3: if(meta.global-variable-exists('spacer-3'     , $module: generated), generated.$spacer-3      , 1) !default;
-$spacer-4: if(meta.global-variable-exists('spacer-4'     , $module: generated), generated.$spacer-4      , 1.5) !default;
-$spacer-5: if(meta.global-variable-exists('spacer-5'     , $module: generated), generated.$spacer-5      , 2) !default;
-$spacer-6: if(meta.global-variable-exists('spacer-6'     , $module: generated), generated.$spacer-6      , 3) !default;
+$base    : if(sass(meta.global-variable-exists('spacer-base', $module: generated)): generated.$spacer-base; else: 1rem) !default;
+$spacer-1: if(sass(meta.global-variable-exists('spacer-1',    $module: generated)): generated.$spacer-1;    else: 0.25) !default;
+$spacer-2: if(sass(meta.global-variable-exists('spacer-2',    $module: generated)): generated.$spacer-2;    else: 0.5) !default;
+$spacer-3: if(sass(meta.global-variable-exists('spacer-3',    $module: generated)): generated.$spacer-3;    else: 1) !default;
+$spacer-4: if(sass(meta.global-variable-exists('spacer-4',    $module: generated)): generated.$spacer-4;    else: 1.5) !default;
+$spacer-5: if(sass(meta.global-variable-exists('spacer-5',    $module: generated)): generated.$spacer-5;    else: 2) !default;
+$spacer-6: if(sass(meta.global-variable-exists('spacer-6',    $module: generated)): generated.$spacer-6;    else: 3) !default;

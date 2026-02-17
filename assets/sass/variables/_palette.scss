@@ -14,12 +14,11 @@
 // * UI Colors defaults names
 // * ---------------------------------------------
 
-$ui-color-name-success  : if(meta.global-variable-exists('palette-name-success'     , $module: generated), generated.$ui-color-name-success     , 'success') !default;
-$ui-color-name-danger   : if(meta.global-variable-exists('palette-name-danger'      , $module: generated), generated.$ui-color-name-danger      , 'danger') !default;
-$ui-color-name-warning  : if(meta.global-variable-exists('palette-name-warning'     , $module: generated), generated.$ui-color-name-warning     , 'warning') !default;
-$ui-color-name-info     : if(meta.global-variable-exists('palette-name-info'        , $module: generated), generated.$ui-color-name-info        , 'info') !default;
-$ui-color-name-primary  : if(meta.global-variable-exists('palette-name-primary'     , $module: generated), generated.$ui-color-name-primary     , 'primary') !default;
-$ui-color-name-secondary: if(meta.global-variable-exists('palette-name-secondary'   , $module: generated), generated.$ui-color-name-secondary   , 'secondary') !default;
-$ui-color-name-light    : if(meta.global-variable-exists('palette-name-light'       , $module: generated), generated.$ui-color-name-light       , 'light') !default;
-$ui-color-name-dark     : if(meta.global-variable-exists('palette-name-dark'        , $module: generated), generated.$ui-color-name-dark        , 'dark') !default;
-// $ui-color-name-muted    : if(meta.global-variable-exists('palette-name-muted'       , $module: generated), generated.$ui-color-name-muted       , 'muted') !default;
+$ui-color-name-success  : if(sass(meta.global-variable-exists('palette-name-success',   $module: generated)): generated.$ui-color-name-success;   else : 'success') !default;
+$ui-color-name-danger   : if(sass(meta.global-variable-exists('palette-name-danger',    $module: generated)): generated.$ui-color-name-danger;    else : 'danger') !default;
+$ui-color-name-warning  : if(sass(meta.global-variable-exists('palette-name-warning',   $module: generated)): generated.$ui-color-name-warning;   else : 'warning') !default;
+$ui-color-name-info     : if(sass(meta.global-variable-exists('palette-name-info',      $module: generated)): generated.$ui-color-name-info;      else : 'info') !default;
+$ui-color-name-primary  : if(sass(meta.global-variable-exists('palette-name-primary',   $module: generated)): generated.$ui-color-name-primary;   else : 'primary') !default;
+$ui-color-name-secondary: if(sass(meta.global-variable-exists('palette-name-secondary', $module: generated)): generated.$ui-color-name-secondary; else : 'secondary') !default;
+$ui-color-name-light    : if(sass(meta.global-variable-exists('palette-name-light',     $module: generated)): generated.$ui-color-name-light;     else : 'light') !default;
+$ui-color-name-dark     : if(sass(meta.global-variable-exists('palette-name-dark',      $module: generated)): generated.$ui-color-name-dark;      else : 'dark') !default;

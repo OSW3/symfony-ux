@@ -15,19 +15,19 @@
 // * Default transitions base
 // * ---------------------------------------------
 
-$base: if(meta.global-variable-exists('transition-base', $module: generated), generated.$transition-base, '1s') !default;
+$base: if(sass(meta.global-variable-exists('transition-base', $module: generated)): generated.$transition-base; else: '1s') !default;
 
 // * Default transitions names
 // * ---------------------------------------------
 
-$transition-name-slow  : if(meta.global-variable-exists('transition-name-slow'      , $module: generated), generated.$transition-name-slow      , 'slow') !default;
-$transition-name-normal: if(meta.global-variable-exists('transition-name-normal'    , $module: generated), generated.$transition-name-normal    , 'normal') !default;
-$transition-name-fast  : if(meta.global-variable-exists('transition-name-fast'      , $module: generated), generated.$transition-name-fast      , 'fast') !default;
+$transition-name-slow  : if(sass(meta.global-variable-exists('transition-name-slow'      , $module: generated)): generated.$transition-name-slow      ; else: 'slow') !default;
+$transition-name-normal: if(sass(meta.global-variable-exists('transition-name-normal'    , $module: generated)): generated.$transition-name-normal    ; else: 'normal') !default;
+$transition-name-fast  : if(sass(meta.global-variable-exists('transition-name-fast'      , $module: generated)): generated.$transition-name-fast      ; else: 'fast') !default;
 
 
 // * Default transitions values
 // * ---------------------------------------------
 
-$transition-slow       : if(meta.global-variable-exists('transition-slow'           , $module: generated), generated.$transition-slow           , 'slow') !default;
-$transition-normal     : if(meta.global-variable-exists('transition-normal'         , $module: generated), generated.$transition-normal         , 'normal') !default;
-$transition-fast       : if(meta.global-variable-exists('transition-fast'           , $module: generated), generated.$transition-fast           , 'fast') !default;
+$transition-slow       : if(sass(meta.global-variable-exists('transition-slow'           , $module: generated)): generated.$transition-slow           ; else: 'slow') !default;
+$transition-normal     : if(sass(meta.global-variable-exists('transition-normal'         , $module: generated)): generated.$transition-normal         ; else: 'normal') !default;
+$transition-fast       : if(sass(meta.global-variable-exists('transition-fast'           , $module: generated)): generated.$transition-fast           ; else: 'fast') !default;
