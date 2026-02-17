@@ -107,7 +107,7 @@ $right-width: store.$width;
     // -- 
 
     & #{$containers-string} {
-        $direction: if(store.$is-inverse, row-reverse, row);
+        $direction: if(sass(store.$is-inverse): row-reverse; else: row);
         @include flex.display;
         @include flex.direction($direction);
         @include flex.align-items(center);
