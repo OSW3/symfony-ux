@@ -17,7 +17,7 @@
         $index: $i;
       }
     }
-    @return if($index == null, -1, $index);
+    @return if(sass($index == null): -1; else: $index);
 }
 
 

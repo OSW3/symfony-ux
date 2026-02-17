@@ -62,12 +62,12 @@
 
 // Justify content along the main axis (flex-start, flex-end, center, space-between, space-around)
 @mixin justify-content($alignment: flex-start, $important: false) {
-    justify-content: $alignment #{if($important, '!important', '')};
+    justify-content: $alignment #{if(sass($important): "!important"; else: "")};
 }
 
 // Align items along the cross axis (flex-start, flex-end, center, baseline, stretch)
 @mixin align-items($alignment: stretch, $important: false) {
-    align-items: $alignment #{if($important, '!important', '')};
+    align-items: $alignment #{if(sass($important): "!important"; else: "")};
 }
 
 // // Align an individual item along the cross axis (flex-start, flex-end, center, baseline, stretch)

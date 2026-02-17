@@ -121,7 +121,7 @@
 
 
 @function luminance($color) {
-  $color: if(meta.type-of($color) == 'color', $color, color($color));
+  $color: if(sass(meta.type-of($color) == "color"): $color; else: color($color));
   
   // Convertir la couleur en RGB
   $r: red($color) / 255;
@@ -140,5 +140,5 @@
 @function contrast-color($color) {
   $luminance: luminance($color);
   $threshold: 0.5;
-  @return if($luminance > $threshold, #000000, #ffffff);
+  @return if(sass($luminance > $threshold): #000000; else: #ffffff);
 }
