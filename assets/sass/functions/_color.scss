@@ -129,9 +129,9 @@
   $b: blue($color) / 255;
 
   // Appliquer le facteur de correction gamma
-  $r: if($r <= 0.03928, $r / 12.92, pow(($r + 0.055) / 1.055, 2.4));
-  $g: if($g <= 0.03928, $g / 12.92, pow(($g + 0.055) / 1.055, 2.4));
-  $b: if($b <= 0.03928, $b / 12.92, pow(($b + 0.055) / 1.055, 2.4));
+  $r: if(sass($r <= 0.03928): $r / 12.92; else: pow(($r + 0.055) / 1.055, 2.4));
+  $g: if(sass($g <= 0.03928): $g / 12.92; else: pow(($g + 0.055) / 1.055, 2.4));
+  $b: if(sass($b <= 0.03928): $b / 12.92; else: pow(($b + 0.055) / 1.055, 2.4));
 
   // Calculer la luminance relative
   @return ($r * 0.2126 + $g * 0.7152 + $b * 0.0722);
