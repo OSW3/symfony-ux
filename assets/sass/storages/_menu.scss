@@ -14,7 +14,7 @@ $prefix: prefix.$prefix;
 // * Define storage data
 // * ---------------------------------------------
 
-$expand-at  : if(meta.global-variable-exists('menu-expand-at', $module: generated), generated.$menu-expand-at, false);
+$expand-at  : if(sass(meta.global-variable-exists('menu-expand-at', $module: generated)): generated.$menu-expand-at; else: false);
 
 // $cursor          : pointer;
 // $padding-x       : spaces.$base * .8;

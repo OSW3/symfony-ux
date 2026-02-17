@@ -22,7 +22,7 @@ $prefix: prefix.$prefix;
 /// List of breakpoints for responsive design.
 /// @type list
 //
-$breakpoints: if(meta.global-variable-exists('brand--breakpoints', $module: generated), generated.$brand--breakpoints, ());
+$breakpoints: if(sass(meta.global-variable-exists('brand--breakpoints', $module: generated)): generated.$brand--breakpoints; else: ());
 
 @if list.length($breakpoints) < 1{
     @each $name, $value in breakpoints.$breakpoints {
@@ -33,12 +33,12 @@ $breakpoints: if(meta.global-variable-exists('brand--breakpoints', $module: gene
 /// Brand direction
 /// @type string
 //
-$direction: if(meta.global-variable-exists('brand--direction', $module: generated), generated.$brand--direction, row);
+$direction: if(sass(meta.global-variable-exists('brand--direction', $module: generated)): generated.$brand--direction; else: row);
 
 /// Figure + text alignment  (start , end, center)
 /// @type string
 //
-$justify: if(meta.global-variable-exists('brand--justify', $module: generated), generated.$brand--justify, start);
+$justify: if(sass(meta.global-variable-exists('brand--justify', $module: generated)): generated.$brand--justify; else: start);
 
 /// Gap between Figures and text when $direction is row or row-reverse
 /// @type Length

@@ -16,7 +16,7 @@ $prefix: prefix.$prefix;
 /// Symbol used as a separator in breadcrumbs or similar UI elements.
 /// @type string
 //
-$separator-symbol: if(meta.global-variable-exists('breadcrumb--separator', $module: generated), generated.$breadcrumb--separator, '›');
+$separator-symbol: if(sass(meta.global-variable-exists('breadcrumb--separator', $module: generated)): generated.$breadcrumb--separator; else: '›');
 
 /// Enables or disables transitions for elements.
 /// @type boolean

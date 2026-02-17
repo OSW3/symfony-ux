@@ -113,12 +113,12 @@ $line-height-large: 1.6;
 /// Enables or disables the use of a color palette.
 /// @type boolean
 //
-$enable-palette: if(meta.global-variable-exists('alerts--enable-palette', $module: generated), generated.$alerts--enable-palette, true);
+$enable-palette: if(sass(meta.global-variable-exists('alerts--enable-palette', $module: generated)): generated.$alerts--enable-palette; else: true);
 
 /// Enables or disables the use of sizes.
 /// @type boolean
 //
-$enable-sizes: if(meta.global-variable-exists('alerts--enable-sizes', $module: generated), generated.$alerts--enable-sizes, true);
+$enable-sizes: if(sass(meta.global-variable-exists('alerts--enable-sizes', $module: generated)): generated.$alerts--enable-sizes; else: true);
 
 /// Box shadow effect for the element.
 /// @type string

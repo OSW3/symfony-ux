@@ -16,10 +16,10 @@ $prefix: prefix.$prefix;
 // * Define storage data
 // * ---------------------------------------------
 
-$placement        : if(meta.global-variable-exists('toast--placement', $module: generated), generated.$toast--placement, 'top-right') !default;
-$duration         : if(meta.global-variable-exists('toast--duration', $module: generated), generated.$toast--duration, 2.5s) !default;
-$delay            : if(meta.global-variable-exists('toast--delay', $module: generated), generated.$toast--delay, 0.3s) !default;
-$icon-size        : if(meta.global-variable-exists('toast--icon-size', $module: generated), generated.$toast--icon-size, 24px) !default;
+$placement        : if(sass(meta.global-variable-exists('toast--placement', $module: generated)): generated.$toast--placement; else: 'top-right') !default;
+$duration         : if(sass(meta.global-variable-exists('toast--duration', $module: generated)): generated.$toast--duration; else: 2.5s) !default;
+$delay            : if(sass(meta.global-variable-exists('toast--delay', $module: generated)): generated.$toast--delay; else: 0.3s) !default;
+$icon-size        : if(sass(meta.global-variable-exists('toast--icon-size', $module: generated)): generated.$toast--icon-size; else: 24px) !default;
 $width            : 380px;
 $gutter           : 10px;
 $offset           : $gutter;

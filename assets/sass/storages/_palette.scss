@@ -65,7 +65,7 @@ $useless: () !default;
   
     @each $key, $value in $palette {
         $suffix: string.slice($key, last-index($key, ".") + 1);
-        $new-key: if(map.has-key($replacements, $suffix), map.get($replacements, $suffix), $suffix);
+        $new-key: if(sass(map.has-key($replacements, $suffix)): map.get($replacements, $suffix); else: $suffix);
         $new-palette: map.merge($new-palette, ($new-key: $value));
     }
   

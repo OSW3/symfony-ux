@@ -20,7 +20,7 @@ $prefix: prefix.$prefix;
 /// Specifies the breakpoint to expand or toggle between mobile and desktop views
 /// @type string
 //
-$expand-at: if(meta.global-variable-exists('navbar-expand-at', $module: generated), generated.$navbar-expand-at, false);
+$expand-at: if(sass(meta.global-variable-exists('navbar-expand-at', $module: generated)): generated.$navbar-expand-at; else: false);
 
 /// Toggle `row` and `row-inverse` of the main element
 /// @type Bool
