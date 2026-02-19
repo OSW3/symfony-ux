@@ -1,19 +1,21 @@
-// * ------------ @osw3/symfony-ux/assets/sass/components/announcement.scss -----------
+// * ===========================================================================
+// *  VARIABLES: Announcement Component
+// * ===========================================================================
 // *
-// *    Builder for Announcement component
+// *  This file contains the default variable values for the announcement component.
 // *
-// *    /!\ this file is used to pre-build and provide : 
-// *    -> 'builder/root.scss'
-// *    -> 'builder/announcement.scss'
-// *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../storages/prefix';
 $prefix: prefix.$prefix;
 
 
-// * Default theme properties
-// * ---------------------------------------------
+
+// * ------------------------------------------------------------------------ //
+// * - Default theme properties                                             - //
+// * ------------------------------------------------------------------------ //
 
 $theme-properties: (
     'announcement--color'              : var(--#{$prefix}black),
@@ -25,7 +27,9 @@ $theme-properties: (
 );
 
 
-// * Default structure properties
-// * ---------------------------------------------
+
+// * ------------------------------------------------------------------------ //
+// * - Default structure properties                                         - //
+// * ------------------------------------------------------------------------ //
 
 $layout-properties: ();

@@ -1,8 +1,15 @@
-// * ------------ @osw3/symfony-ux/assets/sass/builder/rotator.scss ------------
+// * ===========================================================================
+// *  BUILDER: Rotator Component
+// * ===========================================================================
 // *
-// *    Builder for Rotator component
+// *  This file is the builder for the Rotator component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../builders/banner';
 @use './../storages/prefix';
@@ -15,10 +22,110 @@
 $prefix: prefix.$prefix;
 
 
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Rotator');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the rotator component.
+// -- ---------------------------------------------
+@mixin rotator-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
 // * Component Structure
 // * ---------------------------------------------
 
 .#{$prefix}rotator {
+    @include rotator-structure();
+    @include rotator-layout();
+    @include rotator-typography();
+    @include rotator-spacing();
+    @include rotator-interactions();
+    @include rotator-state();
+    @include rotator-transition();
+    @include rotator-animation();
+    @include rotator-theme();
+    @include rotator-effects();
 
     @include flex.display;
 

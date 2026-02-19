@@ -1,101 +1,160 @@
-// * ----------- @osw3/symfony-ux/assets/sass/storages/copyright.scss ----------
+// * ===========================================================================
+// *  STORAGE: Copyright Component
+// * ===========================================================================
 // *
-// *    Copyright Storage
+// *  This file is the storage for the Copyright component. It defines the 
+// *  default variable values and mixins for the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../storages/prefix';
 @use './../storages/fonts';
 @use './../storages/spaces';
+
 $prefix: prefix.$prefix;
 
 
-// * Define storage data
+
+// * ------------------------------------------------------------------------ //
+// * - Settings Storage                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// * Structure
 // * ---------------------------------------------
 
-$cursor               : null;
+$display: inline-block;
 
-$font-family          : null; //var(--#{$prefix}font-open-sans);
-$font-size            : fonts.$scale-base * .8;
-$font-weight          : 100 * 4;
 
-$padding-x            : spaces.$base * 0;
-$padding-y            : spaces.$base * 0;
-
-$transition           : false;
-$transition-delay     : null;
-$transition-type      : null;
-
-$hover                : false;
-
- 
-// * Storage Mixins definition
+// * Typography
 // * ---------------------------------------------
 
+$font-family: null;
+$font-size: fonts.$scale-base * .8;
+$font-weight: 100 * 4;
 
-// Sets the cursor style for the copyright element. If null, it defaults to the system or inherited style.
-// @param {Cursor|Null} $cursor - The cursor style or null to inherit.
-@mixin setCursor($cursor) {
-    $cursor: $cursor !global;
+
+// * Spacing
+// * ---------------------------------------------
+
+$padding-x: spaces.$base * 0;
+$padding-y: spaces.$base * 0;
+
+
+// * Interaction
+// * ---------------------------------------------
+
+$cursor: null;
+$has-hover-state: false;
+
+
+// * Transition
+// * ---------------------------------------------
+
+$has-transition: false;
+$transition-delay: null;
+$transition-type: null;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Reset Storage.                                                       - //
+// * ------------------------------------------------------------------------ //
+
+@mixin reset() {
+    $display: inline-block !global;
+    $font-family: null !global;
+    $font-size: fonts.$scale-base * .8 !global;
+    $font-weight: 100 * 4 !global;
+    $padding-x: spaces.$base * 0 !global;
+    $padding-y: spaces.$base * 0 !global;
+    $cursor: null !global;
+    $has-hover-state: false !global;
+    $has-transition: false !global;
+    $transition-delay: null !global;
+    $transition-type: null !global;
 }
 
-// Sets the font family for the copyright element. If null, it defaults to the system or inherited font.
-// @param {String|Null} $family - The font family or null to inherit.
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings Storage                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// * Structure
+// * ---------------------------------------------
+
+/// Sets the display property for the copyright component.
+/// @param {Display} $value - The display value to set.
+/// 
+/// Usage example:
+/// @include setDisplay(block);
+/// 
+@mixin setDisplay($value) {
+    $display: $value !global;
+}
+
+
+// * Typography
+// * ---------------------------------------------
+
+/// Sets the font family for the copyright component.
+/// @param {Font Family} $value - The font family value to set.
+/// 
+/// Usage example:
+/// @include setFontFamily('Arial, sans-serif');
+///
 @mixin setFontFamily($value) {
     $font-family: $value !global;
 }
-
-// Sets the font size for the copyright element.
-// @param {Length} $size - The size of the font.
 @mixin setFontSize($value) {
     $font-size: $value !global;
 }
-
-// Sets the font weight for the copyright element.
-// @param {Number} $weight - The weight of the font.
 @mixin setFontWeight($value) {
     $font-weight: $value !global;
 }
 
-// Sets the horizontal padding for the copyright element.
-// @param {Length} $padding - The horizontal padding value.
+
+
+// * Spacing
+// * ---------------------------------------------
+
 @mixin setPaddingX($value) {
     $padding-x: $value !global;
 }
-
-// Sets the vertical padding for the copyright element.
-// @param {Length} $padding - The vertical padding value.
 @mixin setPaddingY($value) {
     $padding-y: $value !global;
 }
 
-// Enables or disables transitions for the copyright element.
-// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
-@mixin setTransition($value) {
-    $transition: $value !global;
 
-    @if $transition and $transition-delay == null {
+// * Interaction
+// * ---------------------------------------------
+
+@mixin setCursor($cursor) {
+    $cursor: $cursor !global;
+}
+@mixin setHasHoverState($enabled) {
+    $has-hover-state: $enabled !global;
+}
+
+
+// * Transition
+// * ---------------------------------------------
+
+@mixin setHasTransition($value) {
+    $has-transition: $value !global;
+
+    @if $has-transition and $transition-delay == null {
         $transition-delay : var(--#{$prefix}transition-normal) !global;
     }
-    @if $transition and $transition-type == null {
+    @if $has-transition and $transition-type == null {
         $transition-type  : ease-in-out !global;
     }
 }
-
-// Sets the transition delay for the copyright element.
-// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
 @mixin setTransitionDelay($value) {
     $transition-delay: $value !global;
 }
-
-// Sets the transition type (easing function) for the copyright element.
-// @param {String} $type - The type of easing, e.g., `ease-in-out`.
 @mixin setTransitionType($value) {
     $transition-type: $value !global;
-}
-
-// Enables or disables hover effects for the copyright element.
-// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) hover effects.
-@mixin setHover($enabled) {
-    $hover: $enabled !global;
 }

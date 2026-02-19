@@ -7,7 +7,7 @@
 @use "sass:math";
 @use "sass:map";
 @use './../mixins/flex';
-@use './../mixins/size';
+@use './../mixins/structure/box-model' as size;
 @use './../storages/grid' as store;
 @use './../mixins/spacing';
 @use './../builders/banner';
@@ -47,7 +47,8 @@ $breakpoints: stored-breakpoints.$breakpoints;
         @include flex.grow(1);
         @include flex.shrink(0);
         @include flex.basis(0%);
-        @include size.width(100%, null, 100%);
+        @include size.width(100%);
+        @include size.max-width(100%);
         @include spacing.inner-x(var(--#{$prefix}gap-x, 0));
         @include spacing.outer-y(var(--#{$prefix}gap-y, 0));
     }
@@ -74,7 +75,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
 
         @for $i from 1 through $divisions {
             &-columns-#{$i}>* {
-                @include size.width(math.percentage(math.div(1,$i)), null, null);
+                @include size.width(math.percentage(math.div(1,$i)));
             }
         }
     }
@@ -111,7 +112,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
             @include flex.grow(0);
             @include flex.shrink(0);
             @include flex.basis(var(--#{$prefix}column-width));
-            @include size.width(null, null, var(--#{$prefix}column-width));
+            @include size.max-width(var(--#{$prefix}column-width));
         }
 
         // .column-xx
@@ -147,7 +148,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
             @include flex.grow(0);
             @include flex.shrink(0);
             @include flex.basis(var(--#{$prefix}column-media-width));
-            @include size.width(null, null, var(--#{$prefix}column-media-width));
+            @include size.max-width(var(--#{$prefix}column-media-width));
         }
 
         @each $key, $value in $breakpoints {

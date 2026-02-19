@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/callout.scss ------------
+// * ===========================================================================
+// *  BUILDER: Callout Component
+// * ===========================================================================
 // *
-// *    Builder for Callout component
+// *  This file is the builder for the Callout component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
@@ -16,8 +23,120 @@
 
 @use './../storages/callout' as store;
 @use './../components/callout';
-@include banner.header('Component Callout');
+
+
+@use './../mixins/structure/display' as display;
+
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Callout');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the callout component.
+// -- ---------------------------------------------
+@mixin callout-structure() {
+    /* Structure */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the callout component.
+// -- ---------------------------------------------
+@mixin callout-layout() {
+    /* Layout */
+    @include display.display-flex();
+
+
+    /* old */ @include flex.direction(row);
+    /* old */ @include flex.align-items(center);
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the callout component.
+// -- ---------------------------------------------
+@mixin callout-typography() {
+    /* Typography */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the callout component.
+// -- ---------------------------------------------
+@mixin callout-spacing() {
+    /* Spacing */
+
+
+    /* old */ @include spacing.inner(var(--#{$prefix}callout-padding-x));
+    /* old */ @include spacing.outer(var(--#{$prefix}callout-padding-y) 0);
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the callout component.
+// -- ---------------------------------------------
+@mixin callout-interactions() {
+    /* Interactions */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the callout component.
+// -- ---------------------------------------------
+@mixin callout-state() {
+    /* State styles */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the callout component.
+// -- ---------------------------------------------
+@mixin callout-transition() {
+    /* Transition effects */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the callout component.
+// -- ---------------------------------------------
+@mixin callout-animation() {
+    /* Animation effects */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the callout component.
+// -- ---------------------------------------------
+@mixin callout-theme() {
+    /* Theme */
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the callout component.
+// -- ---------------------------------------------
+@mixin callout-effects() {
+    /* Effects */
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 @function palette-declination($palette, $property) {
 
@@ -37,6 +156,18 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 .#{$prefix}callout {
+    @include callout-structure();
+    @include callout-layout();
+    @include callout-typography();
+    @include callout-spacing();
+    @include callout-interactions();
+    @include callout-state();
+    @include callout-transition();
+    @include callout-animation();
+    @include callout-theme();
+    @include callout-effects();
+
+
     $parent: &;
 
     // Set layout css variables
@@ -49,12 +180,6 @@ $prefix: prefix.$prefix;
 
     // Callout layout
     // --
-
-    @include flex.display;
-    @include flex.direction(row);
-    @include flex.align-items(center);
-    @include spacing.inner(var(--#{$prefix}callout-padding-x));
-    @include spacing.outer(var(--#{$prefix}callout-padding-y) 0);
     background-color: var(--#{$prefix}callout--bg-color);
     border-left     : store.$border-width solid var(--#{$prefix}callout--border-color);
     border-radius   : store.$border-radius;

@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/alert.scss -------------
+// * ===========================================================================
+// *  BUILDER: Alert Component
+// * ===========================================================================
 // *
-// *    Builder for Alert component
+// *  This file is the builder for the Alert component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
@@ -18,8 +25,97 @@
 @use './../mixins/component';
 @use './../mixins/transition';
 
-@include banner.header('Component Alert');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Alert');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the alert component.
+// -- ---------------------------------------------
+@mixin alert-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the alert component.
+// -- ---------------------------------------------
+@mixin alert-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the alert component.
+// -- ---------------------------------------------
+@mixin alert-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the alert component.
+// -- ---------------------------------------------
+@mixin alert-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the alert component.
+// -- ---------------------------------------------
+@mixin alert-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the alert component.
+// -- ---------------------------------------------
+@mixin alert-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the alert component.
+// -- ---------------------------------------------
+@mixin alert-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the alert component.
+// -- ---------------------------------------------
+@mixin alert-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the alert component.
+// -- ---------------------------------------------
+@mixin alert-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the alert component.
+// -- ---------------------------------------------
+@mixin alert-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 
 $btn-close-size: 24px;
@@ -54,6 +150,16 @@ $btn-close-size: 24px;
 // * ---------------------------------------------
 
 .#{$prefix}alert {
+    @include alert-structure();
+    @include alert-layout();
+    @include alert-typography();
+    @include alert-spacing();
+    @include alert-interactions();
+    @include alert-state();
+    @include alert-transition();
+    @include alert-animation();
+    @include alert-theme();
+    @include alert-effects();
 
     // Set layout css variables
     // --

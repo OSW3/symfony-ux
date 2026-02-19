@@ -12,7 +12,7 @@
 @use './../storages/spaces' as stored-spaces;
 @use './../storages/breakpoints' as store;
 @use './../functions/collection' as fnCollection;
-@use './../mixins/size';
+@use './../mixins/structure/box-model' as size;
 @use './../mixins/spacing';
 
 @include banner.header('Containers');
@@ -88,14 +88,14 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
     // Containers by breakpoints
     @each $key, $value in $containers {
         &-#{$key} {
-            @include size.width(null, null, map.get($containers, $key));
+            @include size.max-width(map.get($containers, $key));
         }
     }
 
     // Responsive containers
     @each $key, $value in $breakpoints {
         @media (min-width: $value) {
-            @include size.width(null, null, map.get($containers, $key));
+            @include size.max-width(map.get($containers, $key));
         }
     }
 }

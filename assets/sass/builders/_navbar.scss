@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/navbar.scss ------------
+// * ===========================================================================
+// *  BUILDER: Navbar Component
+// * ===========================================================================
 // *
-// *    Builder for Navbar component
+// *  This file is the builder for the Navbar component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use 'sass:list';
 @use 'sass:map';
@@ -23,6 +30,96 @@
 
 @include banner.header('Component Navbar');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Navbar');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the navbar component.
+// -- ---------------------------------------------
+@mixin navbar-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 $containers : breakpoints.$containers;
 $breakpoints: breakpoints.$breakpoints;
@@ -68,6 +165,18 @@ $right-width: store.$width;
 // * ---------------------------------------------
 .#{$prefix}navbar {
     $root: &;
+    @include navbar-structure();
+    @include navbar-layout();
+    @include navbar-typography();
+    @include navbar-spacing();
+    @include navbar-interactions();
+    @include navbar-state();
+    @include navbar-transition();
+    @include navbar-animation();
+    @include navbar-theme();
+    @include navbar-effects();
+
+
 
     // Navbar main element
     // -- 

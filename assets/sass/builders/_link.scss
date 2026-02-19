@@ -1,8 +1,15 @@
-// * -------------- @osw3/symfony-ux/assets/sass/builder/link.scss -------------
+// * ===========================================================================
+// *  BUILDER: Link Component
+// * ===========================================================================
 // *
-// *    Builder for Link component
+// *  This file is the builder for the Link component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './icon';
 @use './../builders/banner';
@@ -19,12 +26,114 @@
 $prefix: prefix.$prefix;
 
 
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Link');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the link component.
+// -- ---------------------------------------------
+@mixin link-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the link component.
+// -- ---------------------------------------------
+@mixin link-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the link component.
+// -- ---------------------------------------------
+@mixin link-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the link component.
+// -- ---------------------------------------------
+@mixin link-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the link component.
+// -- ---------------------------------------------
+@mixin link-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the link component.
+// -- ---------------------------------------------
+@mixin link-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the link component.
+// -- ---------------------------------------------
+@mixin link-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the link component.
+// -- ---------------------------------------------
+@mixin link-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the link component.
+// -- ---------------------------------------------
+@mixin link-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the link component.
+// -- ---------------------------------------------
+@mixin link-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
 // $font-size: 4rem;
 
 // * Component Structure
 // * ---------------------------------------------
 
 .#{$prefix}link {
+    @include link-structure();
+    @include link-layout();
+    @include link-typography();
+    @include link-spacing();
+    @include link-interactions();
+    @include link-state();
+    @include link-transition();
+    @include link-animation();
+    @include link-theme();
+    @include link-effects();
+
+
     display: inline-flex;
     align-items: center; 
     width: fit-content;

@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/ticker.scss ------------
+// * ===========================================================================
+// *  BUILDER: Ticker Component
+// * ===========================================================================
 // *
-// *    Builder for Ticker component
+// *  This file is the builder for the Ticker component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../builders/banner';
 @use './../storages/prefix';
@@ -15,10 +22,110 @@
 $prefix: prefix.$prefix;
 
 
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Ticker');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the ticker component.
+// -- ---------------------------------------------
+@mixin ticker-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
 // * Component Structure
 // * ---------------------------------------------
 
 .#{$prefix}ticker {
+    @include ticker-structure();
+    @include ticker-layout();
+    @include ticker-typography();
+    @include ticker-spacing();
+    @include ticker-interactions();
+    @include ticker-state();
+    @include ticker-transition();
+    @include ticker-animation();
+    @include ticker-theme();
+    @include ticker-effects();
 
     @include flex.display;
 

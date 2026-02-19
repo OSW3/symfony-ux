@@ -6,7 +6,7 @@
 
 @use "sass:map";
 @use './../mixins/spacing';
-@use './../mixins/size';
+@use './../mixins/structure/box-model' as size;
 @use './../storages/fonts' as fonts;
 @use './../storages/prefix';
 @use './../storages/themes';
@@ -80,8 +80,8 @@ html {
 body {
     @include spacing.outer(0, 0, 0, 0);
     @include spacing.inner(0, 0, 0, 0);
-    @include size.width(null, 100vw, null);
-    @include size.height(null, 100vh, null);
+    @include size.min-width(100vw);
+    @include size.min-height(100vh);
     // font-family: Arial, sans-serif; // todo: customize
     font-family: var(--#{$prefix}font-open-sans);
     font-size: 1rem; // todo: customize

@@ -33,7 +33,7 @@ $offset-y  : 0px;
 $font-size : 2;
 $z-index   : 99999;
 
-$border-width: 20px;
+$border-width: 1px;
 $square-radius: 6px;
 
 
@@ -99,7 +99,7 @@ $square-radius: 6px;
 }
 
 // Sets the border width for the scroll-to-top button.
-// @param {Length} $width - The width of the border, e.g., 20px.
+// @param {Length} $width - The width of the border, e.g., 1px.
 @mixin setBorderWidth($width) {
     $border-width: $width !global;
 }

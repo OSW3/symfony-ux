@@ -1,31 +1,35 @@
-// * ---------- @osw3/symfony-ux/assets/sass/components/copyright.scss ---------
+// * ===========================================================================
+// *  VARIABLES: Copyright Component
+// * ===========================================================================
 // *
-// *    Default variables for Copyright component
+// *  This file contains the default variable values for the copyright component.
 // *
-// *    /!\ this file is used to pre-build and provide : 
-// *    -> 'builder/root.scss'
-// *    -> 'builder/copyright.scss'
-// *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
-@use 'sass:map';
+@charset 'utf-8';
+
 @use './../storages/prefix';
 @use './../storages/copyright';
 $prefix: prefix.$prefix;
 
 
-// * Default theme properties
-// * ---------------------------------------------
+
+// * ------------------------------------------------------------------------ //
+// * - Default theme properties                                             - //
+// * ------------------------------------------------------------------------ //
 
 $theme-properties: (
-    'copyright-color'           : inherit,
-    'copyright--color--hover'   : initial,
-    'copyright--bg-color'       : initial,
-    'copyright--bg-color--hover': initial,
+    'copyright-color'         : inherit,
+    'copyright-color-hover'   : initial,
+    'copyright-bg-color'      : initial,
+    'copyright-bg-color-hover': initial,
 );
 
 
-// * Default structure properties
-// * ---------------------------------------------
 
-$layout-properties: ();
+// * ------------------------------------------------------------------------ //
+// * - Default structure properties                                         - //
+// * ------------------------------------------------------------------------ //
+
+$layout-properties: (
+);

@@ -1,8 +1,15 @@
-// * ----------- @osw3/symfony-ux/assets/sass/builder/accordion.scss -----------
+// * ===========================================================================
+// *  BUILDER: Accordion Component
+// * ===========================================================================
 // *
-// *    Builder for Accordion component
+// *  This file is the builder for the Accordion component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
@@ -17,16 +24,110 @@
 // @use './../components/accordion';
 // @use './../mixins/component';
 // @use './../mixins/transition';
-
-@include banner.header('Component Accordion');
 $prefix: prefix.$prefix;
 
 
 
-// * Component Structure
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Accordion');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the accordion component.
+// -- ---------------------------------------------
+@mixin accordion-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 .#{$prefix}accordion {
+    @include accordion-structure();
+    @include accordion-layout();
+    @include accordion-typography();
+    @include accordion-spacing();
+    @include accordion-interactions();
+    @include accordion-state();
+    @include accordion-transition();
+    @include accordion-animation();
+    @include accordion-theme();
+    @include accordion-effects();
+
     width: 100%;
     max-width: 600px;
     margin: 20px auto;

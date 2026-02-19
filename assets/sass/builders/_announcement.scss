@@ -1,39 +1,127 @@
-// * ---------- @osw3/symfony-ux/assets/sass/builder/announcement.scss ---------
+// * ===========================================================================
+// *  BUILDER: Announcement Component
+// * ===========================================================================
 // *
-// *    Builder for Announcement component
+// *  This file is the builder for the Announcement component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
 @use './ticker';
 @use './rotator';
 @use './../mixins/flex';
-@use './../mixins/size';
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/transition';
 @use './../storages/announcement' as store;
-@use './../components/announcement';
+// @use './../components/announcement';
 
-@include banner.header('Component Announcement');
+@use './../mixins/structure/display' as d;
+@use './../mixins/structure/box-model' as bm;
+
 $prefix: prefix.$prefix;
 
 
 
-// * Component Structure
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
 
-.#{$prefix}announcement {
-    @include flex.display;
+@include banner.header('Component Announcement');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-structure() {
+    @include d.display-flex();
+
+    // @include flex.display;
+    @include bm.min-height(store.$min-height);
+    @include bm.min-width(100%);
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-layout() {
     @include flex.justify-content(center);
     @include flex.align-items(center);
-    @include size.height(null, store.$min-height, null);
-    @include size.width(null, 100%, null);
 
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-transition() {
+    @if store.$has-transition {
+        @include transition.set(
+            (color, background-color, border-color),
+            store.$transition-delay,
+            store.$transition-type,
+        );
+    }
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-theme() {
     color: var(--#{$prefix}announcement--color);
     background-color: var(--#{$prefix}announcement--bg-color);
-    border: store.$border-width solid var(--#{$prefix}announcement--border-color);
+
+    border-width: store.$border-width;
+    border-style: solid;
+    border-color: var(--#{$prefix}announcement--border-color);
     border-radius: store.$border-radius;
 
     & a {
@@ -41,15 +129,7 @@ $prefix: prefix.$prefix;
         text-decoration: underline;
     }
 
-    @if store.$transition {
-        @include transition.set(
-            (color, background-color, border-color),
-            store.$transition-delay,
-            store.$transition-type,
-        );
-    }
-
-    @if store.$hover {
+    @if store.$has-hover-state {
         &:hover {
             color: var(--#{$prefix}announcement--color--hover);
             background-color: var(--#{$prefix}announcement--bg-color--hover);
@@ -61,4 +141,31 @@ $prefix: prefix.$prefix;
             }
         }
     }
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the announcement component.
+// -- ---------------------------------------------
+@mixin announcement-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+.#{$prefix}announcement {
+    @include announcement-structure();
+    @include announcement-layout();
+    @include announcement-typography();
+    @include announcement-spacing();
+    @include announcement-interactions();
+    @include announcement-state();
+    @include announcement-transition();
+    @include announcement-animation();
+    @include announcement-theme();
+    @include announcement-effects();
 }

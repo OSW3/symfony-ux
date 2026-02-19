@@ -1,8 +1,15 @@
-// * ----------- @osw3/symfony-ux/assets/sass/builder/form.scss -----------
+// * ===========================================================================
+// *  BUILDER: Form Widget Component
+// * ===========================================================================
 // *
-// *    Builder for Form component
+// *  This file is the builder for the Form Widget component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../builders/banner';
 @use './../storages/prefix';
@@ -17,6 +24,96 @@
 @use './../components/form' ;
 @include banner.header('Component Form Widget');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Form-widget');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the form-widget component.
+// -- ---------------------------------------------
+@mixin form-widget-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 
 
@@ -83,6 +180,17 @@ $prefix: prefix.$prefix;
 
 
 .#{$prefix}form-widget {
+    @include form-widget-structure();
+    @include form-widget-layout();
+    @include form-widget-typography();
+    @include form-widget-spacing();
+    @include form-widget-interactions();
+    @include form-widget-state();
+    @include form-widget-transition();
+    @include form-widget-animation();
+    @include form-widget-theme();
+    @include form-widget-effects();
+
 
     // Widget layout
     // --

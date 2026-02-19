@@ -1,0 +1,202 @@
+// * ===========================================================================
+// *  Structural Mixins for the Overflow Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the overflow properties of elements.
+// *  These mixins provide a convenient way to apply overflow values with 
+// *  optional constraints.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:string";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Activer un warning si une valeur inattendue est passée aux mixins overflow*.
+$overflow-warn-on-invalid: true !default;
+
+/// Méthode de masquage des scrollbars pour `overflow-scrollbars-hide`
+/// - "all"      : WebKit + Firefox (scrollbar-width: none) + Edge heuristique
+/// - "webkit"   : uniquement ::-webkit-scrollbar (Chrome/Safari/Edge Chromium)
+/// - "firefox"  : uniquement scrollbar-width
+/// - "minimal"  : essaie d’être discret (Firefox only)
+$overflow-hide-scrollbars-strategy: "all" !default;
+
+/// Active les propriétés modernes liées à la gestion des scrollbars quand dispo.
+$overflow-enable-modern: true !default; // ex: scrollbar-gutter (si tu l’ajoutes plus tard)
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+
+/// Test membership dans une liste (case-insensitive pour strings usuelles)
+@function _in($value, $list) {
+  @if meta.type-of($value) == 'string' {
+    $value: string.to-lower-case($value);
+  }
+  @each $item in $list {
+    $test: $item;
+    @if meta.type-of($test) == 'string' {
+      $test: string.to-lower-case($test);
+    }
+    @if $value == $test { @return true; }
+  }
+  @return false;
+}
+
+/// Écrit une propriété CSS si valeur non-nulle, avec !important optionnel.
+@mixin _prop($name, $value, $important: false) {
+  @if $value != null {
+    @if $important { #{$name}: #{$value} !important; }
+    @else { #{$name}: #{$value}; }
+  }
+}
+
+/// Validation légère pour overflow
+@function _is-valid-overflow($value) {
+  @return _in($value, (visible, hidden, clip, scroll, auto));
+}
+
+/// Validation légère pour visibility
+@function _is-valid-visibility($value) {
+  @return _in($value, (visible, hidden, collapse));
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Overflow API                                                         - //
+// * ------------------------------------------------------------------------ //
+
+/// overflow: visible | hidden | clip | scroll | auto
+@mixin overflow($value, $important: false) {
+  @if $value != null and not _is-valid-overflow($value) and $overflow-warn-on-invalid {
+    @warn "[overflow] Valeur inattendue pour overflow: #{meta.inspect($value)}. Attendu: visible | hidden | clip | scroll | auto.";
+  }
+  @include _prop(overflow, $value, $important);
+  @content;
+}
+
+/// overflow-x: visible | hidden | clip | scroll | auto
+@mixin overflow-x($value, $important: false) {
+  @if $value != null and not _is-valid-overflow($value) and $overflow-warn-on-invalid {
+    @warn "[overflow] Valeur inattendue pour overflow-x: #{meta.inspect($value)}.";
+  }
+  @include _prop(overflow-x, $value, $important);
+  @content;
+}
+
+/// overflow-y: visible | hidden | clip | scroll | auto
+@mixin overflow-y($value, $important: false) {
+  @if $value != null and not _is-valid-overflow($value) and $overflow-warn-on-invalid {
+    @warn "[overflow] Valeur inattendue pour overflow-y: #{meta.inspect($value)}.";
+  }
+  @include _prop(overflow-y, $value, $important);
+  @content;
+}
+
+// Aliases rapides (shorthand)
+@mixin overflow-visible($important: false) { @include overflow(visible, $important) { @content; } }
+@mixin overflow-hidden($important: false)  { @include overflow(hidden, $important)  { @content; } }
+@mixin overflow-clip($important: false)    { @include overflow(clip, $important)    { @content; } }
+@mixin overflow-scroll($important: false)  { @include overflow(scroll, $important)  { @content; } }
+@mixin overflow-auto($important: false)    { @include overflow(auto, $important)    { @content; } }
+
+// Aliases axes (pratiques pour UI modernes en écriture horizontale)
+@mixin overflow-inline($value, $important: false) {
+  // fallback: overflow-x
+  @include overflow-x($value, $important) { @content; }
+}
+@mixin overflow-block($value, $important: false) {
+  // fallback: overflow-y
+  @include overflow-y($value, $important) { @content; }
+}
+
+
+// -----------------------------------------------------------------------------
+// Helpers — Scrollbars (masquage propre cross-browser)
+// -----------------------------------------------------------------------------
+
+/// Masque la scrollbar **sans désactiver** le scroll.
+/// - Stratégie "all" par défaut: Firefox + WebKit.
+/// - N'affecte pas accessibilité clavier (tab/scroll).
+@mixin overflow-scrollbars-hide() {
+  // Firefox
+  @if $overflow-hide-scrollbars-strategy == "all" or $overflow-hide-scrollbars-strategy == "firefox" or $overflow-hide-scrollbars-strategy == "minimal" {
+    scrollbar-width: none; // FF
+  }
+
+  // WebKit (Chrome/Safari/Edge Chromium)
+  @if $overflow-hide-scrollbars-strategy == "all" or $overflow-hide-scrollbars-strategy == "webkit" {
+    &::-webkit-scrollbar { width: 0; height: 0; }
+  }
+
+  // Option minimaliste (ne rien faire de plus que FF)
+  // Ajoute ici d'autres stratégies si nécessaire.
+
+  @content;
+}
+
+/// Ajoute un comportement scroll fluide (souvent global, mais utile localement).
+@mixin overflow-smooth-scroll() {
+  scroll-behavior: smooth;
+  @content;
+}
+
+/// Optimisation du rendu (conteneur de scroll isolé)
+/// combine overflow + contain pour éviter le reflow global.
+@mixin overflow-contain($axis: null) {
+  // contain inline-size/block-size/size/layout | paint | content
+  // Ici, on reste limité au plus utile:
+  contain: content; // isole le sous-arbre (layout/paint/size raisonnable)
+
+  @if $axis == x or $axis == 'x' {
+    @include overflow-x(auto);
+  } @else if $axis == y or $axis == 'y' {
+    @include overflow-y(auto);
+  } @else if $axis == null {
+    @include overflow(auto);
+  } @else {
+    @warn "[overflow] Axis inattendu pour overflow-contain: #{meta.inspect($axis)}. Attendu: x | y | null.";
+    @include overflow(auto);
+  }
+
+  @content;
+}
+
+/// Active un scroll plus “touch-friendly” (utile dans des conteneurs dédiés).
+/// Note: `-webkit-overflow-scrolling: touch;` est historique iOS Safari (encore utile).
+@mixin overflow-touch() {
+  -webkit-overflow-scrolling: touch;
+  @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Visibility API                                                       - //
+// * ------------------------------------------------------------------------ //
+
+/// visibility: visible | hidden | collapse
+@mixin visibility($value, $important: false) {
+  @if $value != null and not _is-valid-visibility($value) and $overflow-warn-on-invalid {
+    @warn "[visibility] Valeur inattendue: #{meta.inspect($value)}. Attendu: visible | hidden | collapse.";
+  }
+  @include _prop(visibility, $value, $important);
+  @content;
+}
+
+// Aliases
+@mixin visibility-visible($important: false)  { @include visibility(visible,  $important) { @content; } }
+@mixin visibility-hidden($important: false)   { @include visibility(hidden,   $important) { @content; } }
+@mixin visibility-collapse($important: false) { @include visibility(collapse, $important) { @content; } }

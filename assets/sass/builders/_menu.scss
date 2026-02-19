@@ -1,8 +1,15 @@
-// * -------------- @osw3/symfony-ux/assets/sass/builder/menu.scss -------------
+// * ===========================================================================
+// *  BUILDER: Menu Component
+// * ===========================================================================
 // *
-// *    Builder for Menu component
+// *  This file is the builder for the Menu component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use 'sass:map';
 @use './nav';
@@ -19,6 +26,96 @@
 
 @include banner.header('Component Menu');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Menu');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the menu component.
+// -- ---------------------------------------------
+@mixin menu-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the menu component.
+// -- ---------------------------------------------
+@mixin menu-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the menu component.
+// -- ---------------------------------------------
+@mixin menu-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the menu component.
+// -- ---------------------------------------------
+@mixin menu-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the menu component.
+// -- ---------------------------------------------
+@mixin menu-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the menu component.
+// -- ---------------------------------------------
+@mixin menu-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the menu component.
+// -- ---------------------------------------------
+@mixin menu-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the menu component.
+// -- ---------------------------------------------
+@mixin menu-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the menu component.
+// -- ---------------------------------------------
+@mixin menu-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the menu component.
+// -- ---------------------------------------------
+@mixin menu-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 $breakpoints: breakpoints.$breakpoints;
 
 
@@ -26,6 +123,16 @@ $breakpoints: breakpoints.$breakpoints;
 // * ---------------------------------------------
 
 .#{$prefix}menu {
+    @include menu-structure();
+    @include menu-layout();
+    @include menu-typography();
+    @include menu-spacing();
+    @include menu-interactions();
+    @include menu-state();
+    @include menu-transition();
+    @include menu-animation();
+    @include menu-theme();
+    @include menu-effects();
 
     // Set layout css variables
     // --

@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/button.scss ------------
+// * ===========================================================================
+// *  BUILDER: Button Component
+// * ===========================================================================
 // *
-// *    Builder for Button component
+// *  This file is the builder for the Button component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
@@ -17,6 +24,96 @@
 @use './../components/button';
 @include banner.header('Component Button');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Button');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the button component.
+// -- ---------------------------------------------
+@mixin button-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the button component.
+// -- ---------------------------------------------
+@mixin button-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the button component.
+// -- ---------------------------------------------
+@mixin button-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the button component.
+// -- ---------------------------------------------
+@mixin button-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the button component.
+// -- ---------------------------------------------
+@mixin button-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the button component.
+// -- ---------------------------------------------
+@mixin button-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the button component.
+// -- ---------------------------------------------
+@mixin button-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the button component.
+// -- ---------------------------------------------
+@mixin button-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the button component.
+// -- ---------------------------------------------
+@mixin button-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the button component.
+// -- ---------------------------------------------
+@mixin button-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 
 
@@ -44,6 +141,16 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 .#{$prefix}button {
+    @include button-structure();
+    @include button-layout();
+    @include button-typography();
+    @include button-spacing();
+    @include button-interactions();
+    @include button-state();
+    @include button-transition();
+    @include button-animation();
+    @include button-theme();
+    @include button-effects();
 
     // Set layout css variables
     // --

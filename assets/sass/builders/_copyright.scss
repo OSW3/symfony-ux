@@ -1,58 +1,161 @@
-// * ----------- @osw3/symfony-ux/assets/sass/builder/copyright.scss -----------
+// * ===========================================================================
+// *  BUILDER: Copyright Component
+// * ===========================================================================
 // *
-// *    Builder for Copyright component
+// *  This file is the builder for the Copyright component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/spacing';
 @use './../mixins/transition';
-
 @use './../storages/copyright' as store;
-@use './../components/copyright' ;
-@include banner.header('Component Copyright');
+// @use './../components/copyright';
+
+@use './../mixins/structure/display' as d;
+
+
 $prefix: prefix.$prefix;
 
 
-// * Component Structure
-// * ---------------------------------------------
 
-.#{$prefix}copyright {
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
 
-    display: inline-block;
-    color: var(--#{$prefix}copyright-color);
-    background-color: var(--#{$prefix}copyright--bg-color);
+@include banner.header('Component Copyright');
 
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-structure() {
+    @include d.display(store.$display, false);
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-typography() {
     @if store.$font-family {
         font-family: store.$font-family;
     }
     font-size: store.$font-size;
     font-weight: store.$font-weight;
+    @content;
+}
 
+// -- ---------------------------------------------
+// -- Define the spacing of the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-spacing() {
     @include spacing.inner( 
         store.$padding-x,
         store.$padding-y,
         store.$padding-x,
         store.$padding-y,
     );
+    
+    @content;
+}
 
+// -- ---------------------------------------------
+// -- Define the interactions for the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-interactions() {
     @if store.$cursor {
         cursor: store.$cursor;
     }
+    
+    @content;
+}
 
-    @if store.$transition {
+// -- ---------------------------------------------
+// -- Define the state styles for the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-transition() {
+    @if store.$has-transition {
         @include transition.set(
             (color, background-color),
             store.$transition-delay,
             store.$transition-type,
         );
     }
+    
+    @content;
+}
 
-    @if store.$hover {
+// -- ---------------------------------------------
+// -- Define the animation effects for the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-theme() {
+    color: var(--#{$prefix}copyright-color);
+    background-color: var(--#{$prefix}copyright-bg-color);
+
+    @if store.$has-hover-state {
         &:hover {
-            color: var(--#{$prefix}copyright--color--hover);
-            background-color: var(--#{$prefix}copyright--bg-color--hover);
+            color: var(--#{$prefix}copyright-color-hover, var(--#{$prefix}copyright-color));
+            background-color: var(--#{$prefix}copyright-bg-color-hover, var(--#{$prefix}copyright-bg-color));
         }
     }
+    
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the copyright component.
+// -- ---------------------------------------------
+@mixin copyright-effects() {
+    @content;
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+.#{$prefix}copyright {
+    @include copyright-structure();
+    @include copyright-layout();
+    @include copyright-typography();
+    @include copyright-spacing();
+    @include copyright-interactions();
+    @include copyright-state();
+    @include copyright-transition();
+    @include copyright-animation();
+    @include copyright-theme();
+    @include copyright-effects();
 }

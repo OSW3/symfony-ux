@@ -1,8 +1,15 @@
-// * ----------- @osw3/symfony-ux/assets/sass/builder/offcanvas.scss -----------
+// * ===========================================================================
+// *  BUILDER: Offcanvas Component
+// * ===========================================================================
 // *
-// *    Builder for Offcanvas component
+// *  This file is the builder for the Offcanvas component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 // @use "sass:map";
 // @use "sass:meta";
@@ -21,6 +28,96 @@
 
 @include banner.header('Component Offcanvas');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Offcanvas');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the offcanvas component.
+// -- ---------------------------------------------
+@mixin offcanvas-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 
 $left-width: store.$width;
@@ -44,6 +141,16 @@ $right-width: store.$width;
 // * ---------------------------------------------
 
 .#{$prefix}offcanvas {
+    @include offcanvas-structure();
+    @include offcanvas-layout();
+    @include offcanvas-typography();
+    @include offcanvas-spacing();
+    @include offcanvas-interactions();
+    @include offcanvas-state();
+    @include offcanvas-transition();
+    @include offcanvas-animation();
+    @include offcanvas-theme();
+    @include offcanvas-effects();
 
     // Offcanvas container
     // -- 

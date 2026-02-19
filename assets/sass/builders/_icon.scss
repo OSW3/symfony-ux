@@ -1,8 +1,15 @@
-// * -------------- @osw3/symfony-ux/assets/sass/builder/icon.scss -------------
+// * ===========================================================================
+// *  BUILDER: Icon Component
+// * ===========================================================================
 // *
-// *    Builder for Icon component
+// *  This file is the builder for the Icon component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../builders/banner';
 @use './../storages/prefix';
@@ -15,10 +22,112 @@
 $prefix: prefix.$prefix;
 
 
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Icon');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the icon component.
+// -- ---------------------------------------------
+@mixin icon-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the icon component.
+// -- ---------------------------------------------
+@mixin icon-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the icon component.
+// -- ---------------------------------------------
+@mixin icon-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the icon component.
+// -- ---------------------------------------------
+@mixin icon-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the icon component.
+// -- ---------------------------------------------
+@mixin icon-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the icon component.
+// -- ---------------------------------------------
+@mixin icon-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the icon component.
+// -- ---------------------------------------------
+@mixin icon-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the icon component.
+// -- ---------------------------------------------
+@mixin icon-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the icon component.
+// -- ---------------------------------------------
+@mixin icon-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the icon component.
+// -- ---------------------------------------------
+@mixin icon-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
 // * Component Structure
 // * ---------------------------------------------
 
 .#{$prefix}icon {
+    @include icon-structure();
+    @include icon-layout();
+    @include icon-typography();
+    @include icon-spacing();
+    @include icon-interactions();
+    @include icon-state();
+    @include icon-transition();
+    @include icon-animation();
+    @include icon-theme();
+    @include icon-effects();
+
+
     display: inline-flex;
     max-width: 32px;
     max-height: 32px;

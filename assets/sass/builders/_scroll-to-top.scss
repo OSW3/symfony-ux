@@ -1,8 +1,15 @@
-// * --------- @osw3/symfony-ux/assets/sass/builder/scroll-to-top.scss ---------
+// * ===========================================================================
+// *  BUILDER: Scroll To Top Component
+// * ===========================================================================
 // *
-// *    Builder for Scroll-to-top component
+// *  This file is the builder for the Scroll To Top component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:list";
 @use "sass:map";
@@ -20,6 +27,96 @@
 @use './../components/scroll-to-top';
 @include banner.header('Component Scroll To Top');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Scroll-to-top');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the scroll-to-top component.
+// -- ---------------------------------------------
+@mixin scroll-to-top-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 
 
@@ -317,6 +414,16 @@ $background-position: center;
 // * ---------------------------------------------
 
 .#{$prefix}scroll-to-top {
+    @include scroll-to-top-structure();
+    @include scroll-to-top-layout();
+    @include scroll-to-top-typography();
+    @include scroll-to-top-spacing();
+    @include scroll-to-top-interactions();
+    @include scroll-to-top-state();
+    @include scroll-to-top-transition();
+    @include scroll-to-top-animation();
+    @include scroll-to-top-theme();
+    @include scroll-to-top-effects();
 
     // Set layout css variables
     // --

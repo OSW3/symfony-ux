@@ -1,8 +1,15 @@
-// * -------------- @osw3/symfony-ux/assets/sass/builder/map.scss -------------
+// * ===========================================================================
+// *  BUILDER: Map Component
+// * ===========================================================================
 // *
-// *    Builder for Map component
+// *  This file is the builder for the Map component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../builders/banner';
 @use './../storages/prefix';
@@ -15,6 +22,96 @@
 $prefix: prefix.$prefix;
 
 
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Map');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the map component.
+// -- ---------------------------------------------
+@mixin map-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the map component.
+// -- ---------------------------------------------
+@mixin map-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the map component.
+// -- ---------------------------------------------
+@mixin map-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the map component.
+// -- ---------------------------------------------
+@mixin map-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the map component.
+// -- ---------------------------------------------
+@mixin map-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the map component.
+// -- ---------------------------------------------
+@mixin map-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the map component.
+// -- ---------------------------------------------
+@mixin map-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the map component.
+// -- ---------------------------------------------
+@mixin map-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the map component.
+// -- ---------------------------------------------
+@mixin map-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the map component.
+// -- ---------------------------------------------
+@mixin map-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
 // $offset_px: 1px * store.$offset;
 $offset_px: store.$offset;
 
@@ -22,6 +119,19 @@ $offset_px: store.$offset;
 // * ---------------------------------------------
 
 .#{$prefix}map {
+    @include map-structure();
+    @include map-layout();
+    @include map-typography();
+    @include map-spacing();
+    @include map-interactions();
+    @include map-state();
+    @include map-transition();
+    @include map-animation();
+    @include map-theme();
+    @include map-effects();
+
+
+
     position  : relative;
     min-width : 100%;
     min-height: 100%;

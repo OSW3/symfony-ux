@@ -1,8 +1,15 @@
-// * -------------- @osw3/symfony-ux/assets/sass/builder/nav.scss -------------
+// * ===========================================================================
+// *  BUILDER: Nav Component
+// * ===========================================================================
 // *
-// *    Builder for Nav component
+// *  This file is the builder for the Nav component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use 'sass:map';
 @use './../mixins/flex';
@@ -18,6 +25,96 @@
 
 @include banner.header('Component Nav');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Nav');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the nav component.
+// -- ---------------------------------------------
+@mixin nav-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the nav component.
+// -- ---------------------------------------------
+@mixin nav-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the nav component.
+// -- ---------------------------------------------
+@mixin nav-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the nav component.
+// -- ---------------------------------------------
+@mixin nav-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the nav component.
+// -- ---------------------------------------------
+@mixin nav-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the nav component.
+// -- ---------------------------------------------
+@mixin nav-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the nav component.
+// -- ---------------------------------------------
+@mixin nav-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the nav component.
+// -- ---------------------------------------------
+@mixin nav-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the nav component.
+// -- ---------------------------------------------
+@mixin nav-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the nav component.
+// -- ---------------------------------------------
+@mixin nav-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 $breakpoints: breakpoints.$breakpoints;
 
 
@@ -25,6 +122,18 @@ $breakpoints: breakpoints.$breakpoints;
 // * ---------------------------------------------
 
 .#{$prefix}nav {
+    @include nav-structure();
+    @include nav-layout();
+    @include nav-typography();
+    @include nav-spacing();
+    @include nav-interactions();
+    @include nav-state();
+    @include nav-transition();
+    @include nav-animation();
+    @include nav-theme();
+    @include nav-effects();
+
+
 
     // Set layout css variables
     // --

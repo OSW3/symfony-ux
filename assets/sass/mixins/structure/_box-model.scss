@@ -1,0 +1,258 @@
+// * ===========================================================================
+// *  Structural Mixins for the Size Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the size properties of elements.
+// *  These mixins provide a convenient way to apply width and height values with 
+// *  optional min and max constraints.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:math";
+@use "sass:string";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Utiliser les unités viewport modernes (dvh/dvw) pour la hauteur/largeur plein écran.
+/// Si true: on émet dvh/dvw + fallback vh/vw (le dernier gagne).
+$use-modern-viewport-units: true !default;
+
+/// Activer un fallback explicite quand $use-modern-viewport-units est true.
+/// Si true: on émet d'abord vh/vw puis dvh/dvw.
+$emit-viewport-fallback: true !default;
+
+/// Unité par défaut pour les nombres **unitless** (ex: 10 -> 10px).
+$box-model-default-unit: px !default; // ex: px | rem
+
+/// Autoriser qu’on passe des nombres **sans unité** (ex: 10) et les normaliser.
+$box-model-accept-unitless: true !default;
+
+/// Afficher un warning quand on normalise une valeur **unitless**.
+$box-model-warn-on-unitless: false !default;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+/// Convertit une unité potentielle en token utilisable (string → identifiant).
+@function _unit-token($u) {
+    @return if(sass(meta.type-of($u) == "string"): string.unquote($u); else: $u)
+}
+
+/// Construit une valeur CSS "10px" **sans espace** (string non-quotée).
+@function _to-value-with-unit($n, $u) {
+  $u: _unit-token($u); // 'px' -> px
+  @return string.unquote("#{ $n }#{$u}"); // → 10px (pas "10 px")
+}
+
+/// Normalise les nombres unitless (hors 0) vers l’unité par défaut.
+/// Accepte aussi les strings CSS (var(), clamp(), calc(), etc.)
+@function _normalize-size($value) {
+  @if $value == null { @return null; }
+
+  @if meta.type-of($value) == 'number' {
+    @if math.is-unitless($value) {
+      @if $value == 0 { @return 0; } // 0 sans unité = OK
+      @if $box-model-accept-unitless {
+        @if $box-model-warn-on-unitless {
+          @warn "[box-model] Valeur unitless détectée (#{$value}). Conversion en #{$value}#{$box-model-default-unit}.";
+        }
+        @return _to-value-with-unit($value, $box-model-default-unit);
+      } @else {
+        @error "[box-model] Valeur unitless interdite: #{meta.inspect($value)}. Passe une unité explicite (ex: 10px, 1rem).";
+      }
+    } @else {
+      @return $value; // number déjà unitaire
+    }
+  } @else if meta.type-of($value) == 'string' {
+    // var(...), clamp(...), calc(...), "10px" si quelqu'un a mis des quotes
+    @return $value;
+  } @else {
+    @warn "[box-model] Type inattendu pour dimension: #{meta.inspect($value)}";
+    @return $value;
+  }
+}
+
+/// Écrit une propriété si $value non null, avec !important optionnel.
+@mixin _prop($name, $value, $important: false) {
+  @if $value != null {
+    @if $important { #{$name}: #{$value} !important; }
+    @else { #{$name}: #{$value}; }
+  }
+}
+
+/// Validation légère d’une dimension (number ou string CSS).
+@function _is-valid-size($value) {
+  @return (
+    $value == auto or
+    $value == min-content or
+    $value == max-content or
+    $value == fit-content or
+    (meta.type-of($value) == 'number') or
+    (meta.type-of($value) == 'string') // ex: "clamp(...)" ou var(--...)
+  );
+}
+
+/// Applique une dimension avec normalisation et garde-fous.
+@mixin _dim($prop, $value, $important: false) {
+  @if $value != null {
+    $normalized: _normalize-size($value);
+
+    @if not _is-valid-size($normalized) {
+      @warn "[box-model] Valeur inattendue pour #{$prop}: #{meta.inspect($value)} (normalisée: #{meta.inspect($normalized)})";
+    }
+
+    @include _prop($prop, $normalized, $important);
+  }
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Width                                                                - //
+// * ------------------------------------------------------------------------ //
+
+@mixin width($value, $important: false)    { @include _dim(width, $value, $important); }
+@mixin min-width($value, $important: false) { @include _dim(min-width, $value, $important); }
+@mixin max-width($value, $important: false) { @include _dim(max-width, $value, $important); }
+
+// Aliases
+@mixin width-auto($important: false)        { @include width(auto, $important); @content;}
+@mixin width-full($important: false)        { @include width(100%, $important); @content; }
+@mixin width-fit($important: false)         { @include width(fit-content, $important); @content; }
+@mixin width-min-content($important: false) { @include width(min-content, $important); @content; }
+@mixin width-max-content($important: false) { @include width(max-content, $important); @content; }
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Height                                                               - //
+// * ------------------------------------------------------------------------ //
+
+@mixin height($value, $important: false)    { @include _dim(height, $value, $important); }
+@mixin min-height($value, $important: false) { @include _dim(min-height, $value, $important); }
+@mixin max-height($value, $important: false) { @include _dim(max-height, $value, $important); }
+
+// Aliases
+@mixin height-auto($important: false)        { @include height(auto, $important); @content; }
+@mixin height-fit($important: false)         { @include height(fit-content, $important); @content; }
+@mixin height-min-content($important: false) { @include height(min-content, $important); @content; }
+@mixin height-max-content($important: false) { @include height(max-content, $important); @content; }
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Viewport                                                             - //
+// * ------------------------------------------------------------------------ //
+
+@mixin viewport($width: null, $height: null, $important: false) {
+    @include width-viewport($width, $important);
+    @include height-viewport($height, $important);
+    @content;
+}
+
+@mixin height-viewport($units: 100, $important: false) {
+    @if $use-modern-viewport-units {
+        @if $emit-viewport-fallback { @include _prop(height, #{ $units }vh, $important); }
+        @include _prop(height, #{ $units }dvh, $important);
+    } @else {
+        @include _prop(height, #{ $units }vh, $important);
+    }
+    @content;
+}
+
+@mixin width-viewport($units: 100, $important: false) {
+    @if $use-modern-viewport-units {
+        @if $emit-viewport-fallback { @include _prop(width, #{ $units }vw, $important); }
+        @include _prop(width, #{ $units }dvw, $important);
+    } @else {
+        @include _prop(width, #{ $units }vw, $important);
+    }
+    @content;
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - Aliases                                                              - //
+// * ------------------------------------------------------------------------ //
+
+@mixin size($width: null, $height: null, $important: false) {
+    @include wwidth($width, $important);
+    @include hheight($height, $important);
+    @content;
+}
+
+@mixin min-size($min-width: null, $min-height: null, $important: false) {
+    @include min-width($min-width, $important);
+    @include min-height($min-height, $important);
+    @content;
+}
+
+@mixin max-size($max-width: null, $max-height: null, $important: false) {
+    @include max-width($max-width, $important);
+    @include max-height($max-height, $important);
+    @content;
+}
+
+@mixin square($size, $important: false) {
+    @include size($size, $size, $important) { @content; }
+}
+
+@mixin intrinsic($important: false) {
+    @include width(max-content, $important);
+    @include height(auto, $important);
+    @content;
+}
+
+@mixin auto($important: false) {
+    @include size(auto, auto, $important) { @content; }
+}
+
+@mixin full($important: false) {
+    @include size(100%, 100%, $important) { @content; }
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Box sizing                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@mixin box-sizing($value: border-box, $important: false) {
+    @if not ($value == border-box or $value == content-box) {
+        @warn "[box-model] box-sizing inattendu: #{meta.inspect($value)} (attendu: border-box | content-box)";
+    }
+    @include _prop(box-sizing, $value, $important);
+    @content;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+// @mixin width($value, $min: null, $max: null) {
+//     width: $value;
+//     @if ($min) {min-width: $min;}
+//     @if ($max) {max-width: $max;}
+// }
+// @mixin height($value, $min: null, $max: null) {
+//     height: $value;
+//     @if ($min) {min-height: $min;}
+//     @if ($max) {max-height: $max;}
+// }

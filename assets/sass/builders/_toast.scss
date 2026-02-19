@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/toast.scss ------------
+// * ===========================================================================
+// *  BUILDER: Toast Component
+// * ===========================================================================
 // *
-// *    Builder for Toast component
+// *  This file is the builder for the Toast component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
@@ -19,6 +26,96 @@
 @use './../components/toast';
 @include banner.header('Component Toast');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Toast');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the toast component.
+// -- ---------------------------------------------
+@mixin toast-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the toast component.
+// -- ---------------------------------------------
+@mixin toast-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the toast component.
+// -- ---------------------------------------------
+@mixin toast-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the toast component.
+// -- ---------------------------------------------
+@mixin toast-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the toast component.
+// -- ---------------------------------------------
+@mixin toast-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the toast component.
+// -- ---------------------------------------------
+@mixin toast-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the toast component.
+// -- ---------------------------------------------
+@mixin toast-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the toast component.
+// -- ---------------------------------------------
+@mixin toast-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the toast component.
+// -- ---------------------------------------------
+@mixin toast-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the toast component.
+// -- ---------------------------------------------
+@mixin toast-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 @function palette-declination($palette, $property) {
 
@@ -129,6 +226,16 @@ $btn-close-size: 24px;
 // * ---------------------------------------------
 
 .#{$prefix}toast {
+    @include toast-structure();
+    @include toast-layout();
+    @include toast-typography();
+    @include toast-spacing();
+    @include toast-interactions();
+    @include toast-state();
+    @include toast-transition();
+    @include toast-animation();
+    @include toast-theme();
+    @include toast-effects();
 
     &-container {
         width: store.$width + (store.$gutter * 2);

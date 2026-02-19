@@ -1,8 +1,15 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builder/brand.scss -------------
+// * ===========================================================================
+// *  BUILDER: Brand Component
+// * ===========================================================================
 // *
-// *    Builder for Brand component
+// *  This file is the builder for the Brand component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use 'sass:map';
 @use 'sass:list';
@@ -17,7 +24,107 @@
 @include banner.header('Component Brand');
 $prefix: prefix.$prefix;
 
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Brand');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the brand component.
+// -- ---------------------------------------------
+@mixin brand-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the brand component.
+// -- ---------------------------------------------
+@mixin brand-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the brand component.
+// -- ---------------------------------------------
+@mixin brand-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the brand component.
+// -- ---------------------------------------------
+@mixin brand-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the brand component.
+// -- ---------------------------------------------
+@mixin brand-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the brand component.
+// -- ---------------------------------------------
+@mixin brand-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the brand component.
+// -- ---------------------------------------------
+@mixin brand-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the brand component.
+// -- ---------------------------------------------
+@mixin brand-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the brand component.
+// -- ---------------------------------------------
+@mixin brand-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the brand component.
+// -- ---------------------------------------------
+@mixin brand-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
 .#{$prefix}brand {
+    @include brand-structure();
+    @include brand-layout();
+    @include brand-typography();
+    @include brand-spacing();
+    @include brand-interactions();
+    @include brand-state();
+    @include brand-transition();
+    @include brand-animation();
+    @include brand-theme();
+    @include brand-effects();
 
     display: inline-block;
     text-decoration: none;

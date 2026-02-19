@@ -1,8 +1,15 @@
-// * ----------- @osw3/symfony-ux/assets/sass/builder/breadcrumb.scss ----------
+// * ===========================================================================
+// *  BUILDER: Breadcrumb Component
+// * ===========================================================================
 // *
-// *    Builder for Breadcrumb component
+// *  This file is the builder for the Breadcrumb component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use "sass:map";
 @use "sass:meta";
@@ -16,7 +23,107 @@
 @include banner.header('Component Breadcrumb');
 $prefix: prefix.$prefix;
 
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Breadcrumb');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the breadcrumb component.
+// -- ---------------------------------------------
+@mixin breadcrumb-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
+
 .#{$prefix}breadcrumb {
+    @include breadcrumb-structure();
+    @include breadcrumb-layout();
+    @include breadcrumb-typography();
+    @include breadcrumb-spacing();
+    @include breadcrumb-interactions();
+    @include breadcrumb-state();
+    @include breadcrumb-transition();
+    @include breadcrumb-animation();
+    @include breadcrumb-theme();
+    @include breadcrumb-effects();
 
     & ul {
         list-style: none;

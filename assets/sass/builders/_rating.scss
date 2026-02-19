@@ -1,8 +1,15 @@
-// * -------------- @osw3/symfony-ux/assets/sass/builder/rating.scss -------------
+// * ===========================================================================
+// *  BUILDER: Rating Component
+// * ===========================================================================
 // *
-// *    Builder for Rating component
+// *  This file is the builder for the Rating component. It defines the 
+// *  default styles and behaviors for the component.
+// *  The builder is responsible for setting up the base styles and properties that
+// *  will be used by the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use 'sass:math';
 @use './../builders/banner';
@@ -13,6 +20,96 @@
 // @use './../components/rating' ;
 @include banner.header('Component Rating');
 $prefix: prefix.$prefix;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Component Rating');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// -- ---------------------------------------------
+// -- Define the structure of the rating component.
+// -- ---------------------------------------------
+@mixin rating-structure() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the layout of the rating component.
+// -- ---------------------------------------------
+@mixin rating-layout() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the typography of the rating component.
+// -- ---------------------------------------------
+@mixin rating-typography() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the spacing of the rating component.
+// -- ---------------------------------------------
+@mixin rating-spacing() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the interactions of the rating component.
+// -- ---------------------------------------------
+@mixin rating-interactions() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the state styles for the rating component.
+// -- ---------------------------------------------
+@mixin rating-state() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the transition effects for the rating component.
+// -- ---------------------------------------------
+@mixin rating-transition() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the animation effects for the rating component.
+// -- ---------------------------------------------
+@mixin rating-animation() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the theme for the rating component.
+// -- ---------------------------------------------
+@mixin rating-theme() {
+    @content;
+}
+
+// -- ---------------------------------------------
+// -- Define the effects for the rating component.
+// -- ---------------------------------------------
+@mixin rating-effects() {
+    @content;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component Styles                                                     - //
+// * ------------------------------------------------------------------------ //
 
 
 // * Component Structure
@@ -27,6 +124,19 @@ $sizes: (
 );
 
 .#{$prefix}rating {
+    @include rating-structure();
+    @include rating-layout();
+    @include rating-typography();
+    @include rating-spacing();
+    @include rating-interactions();
+    @include rating-state();
+    @include rating-transition();
+    @include rating-animation();
+    @include rating-theme();
+    @include rating-effects();
+
+
+
     --#{$prefix}rating-symbol-off: #{store.$symbol-off};
     --#{$prefix}rating-symbol-on: #{store.$symbol-on};
 

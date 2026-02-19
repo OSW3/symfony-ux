@@ -1,9 +1,13 @@
-// * ------------ @osw3/symfony-ux/assets/sass/storages/navbar.scss ------------
+// * ===========================================================================
+// *   Navbar Component Storage
+// * ===========================================================================
 // *
-// *    Navbar Storage
+// *  This file defines the default storage values and mixins for the 
+// *  Navbar component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use 'sass:meta';
 @use './../generated';
 @use './../storages/prefix';
@@ -11,72 +15,46 @@
 $prefix: prefix.$prefix;
 
 
-// * Define storage data
+// * ------------------------------------------------------------------------ //
+// * - Default variables for Navbar component
+// * ------------------------------------------------------------------------ //
+
+// * Global Navbar properties
 // * ---------------------------------------------
 
-// Navbar : The Bar
-// -- 
-
-/// Specifies the breakpoint to expand or toggle between mobile and desktop views
-/// @type string
-//
 $expand-at: if(sass(meta.global-variable-exists('navbar-expand-at', $module: generated)): generated.$navbar-expand-at; else: false);
-
-/// Toggle `row` and `row-inverse` of the main element
-/// @type Bool
-//
 $is-inverse: false;
 
-/// 
-/// @type length
-//
-$brand-offset: 1rem;
 
-/// 
-/// @type length
-//
+// * Navbar Brand properties
+// * ---------------------------------------------
+
+$brand-offset: 1rem;
 $brand-gap: 3rem;
 
-/// Delay for the transition effect, using a CSS variable.
-/// @type time
-//
-$transition-delay: var(--#{$prefix}transition-normal);
 
-/// Type of transition timing function.
-/// @type string
-//
+// * Navbar transition properties
+// * ---------------------------------------------
+
+$transition-delay: var(--#{$prefix}transition-normal);
 $transition-type: ease-in-out;
 
 
+// * Offcanvas Navbar properties
+// * ---------------------------------------------
 
-
-
-// Navbar : The Offcanvas
-// --
-
-/// The amount of blur applied to the backdrop.
-/// @type length
-//
 $backdrop-blur: 4px;
-
-/// The opacity level of the backdrop.
-/// @type number
-//
 $backdrop-opacity: 0.5;
 
-/// Default width of the offcanvas component.
-/// @type length
-//
+
+
+// Default width of the offcanvas component.
 $width: 380px;
 
-/// Custom width for the offcanvas when positioned on the left.
-/// @type length | null
-//
+// width for the offcanvas when positioned on the left.
 $left-width: null;
 
-/// Custom width for the offcanvas when positioned on the right.
-/// @type length | null
-//
+// width for the offcanvas when positioned on the right.
 $right-width: null;
 
 /// Offcanvas box shadow
@@ -99,9 +77,8 @@ $padding-y: spaces.$base * 1.25;
 $separator-width: 1px;
 
 
-// Navbar : The SubNav
-// --
-
+// * Navbar Nav Items properties
+// * ---------------------------------------------
 
 $sub-nav-max-height: 480px;
 $sub-nav-border-width: 1px;

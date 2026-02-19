@@ -1,56 +1,77 @@
-// * --------- @osw3/symfony-ux/assets/sass/storages/announcement.scss ---------
+// * ===========================================================================
+// *  STORAGE:  Announcement Component
+// * ===========================================================================
 // *
-// *    Announcement Storage
+// *  This file is the storage for the Announcement component. It defines the 
+// *  default variable values and mixins for the component.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
+
+@charset 'utf-8';
 
 @use './../storages/prefix';
+
 $prefix: prefix.$prefix;
 
 
 
-// * Define storage data
+// * ------------------------------------------------------------------------ //
+// * - Settings Storage                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// * Structure
 // * ---------------------------------------------
 
-/// Minimum height for the element.
-/// @type length
-//
 $min-height: 48px;
 
-/// Width of the border around the element.
-/// @type length
-//
-$border-width: 0;
 
-/// Radius of the border corners.
-/// @type length
-//
+// * Typography
+// * ---------------------------------------------
+
+
+// * Spacing
+// * ---------------------------------------------
+
+$border-width: 0;
 $border-radius: 0;
 
-/// Indicates whether hover effects are enabled.
-/// @type boolean
-//
-$hover: true;
 
-/// Indicates whether transitions are enabled.
-/// @type boolean
-//
-$transition: true;
+// * Interaction
+// * ---------------------------------------------
 
-/// Delay for the transition effect.
-/// @type time
-//
+$has-hover-state: true;
+
+
+// * Transition
+// * ---------------------------------------------
+
+$has-transition: true;
 $transition-delay: var(--#{$prefix}transition-normal);
-
-/// Type of transition timing function.
-/// @type string
-//
 $transition-type: ease-in-out;
 
 
 
-// * Storage Mixins definition
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - Reset Storage.                                                       - //
+// * ------------------------------------------------------------------------ //
+
+@mixin reset() {
+    $min-height: 48px;
+    $border-width: 0;
+    $border-radius: 0;
+    $has-hover-state: true;
+    $has-transition: true;
+    $transition-delay: var(--#{$prefix}transition-normal);
+    $transition-type: ease-in-out;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings Storage                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
 
 /// Sets the minimum height for elements.
 /// @param {Length} $height - The minimum height value to set.
@@ -88,7 +109,7 @@ $transition-type: ease-in-out;
 /// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) hover effects.
 //
 @mixin setHover($enabled) {
-    $hover: $enabled !global;
+    $has-hover-state: $enabled !global;
 }
 
 
@@ -96,7 +117,7 @@ $transition-type: ease-in-out;
 /// @param {Boolean} $enabled - Whether to enable (`true`) or disable (`false`) transitions.
 //
 @mixin setTransition($enabled) {
-    $transition: $enabled !global;
+    $has-transition: $enabled !global;
 }
 
 
