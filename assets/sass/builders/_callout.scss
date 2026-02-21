@@ -13,8 +13,8 @@
 
 @use "sass:map";
 @use "sass:meta";
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 @use './../mixins/support';
 @use './../builders/banner';
 @use './../storages/prefix';
@@ -25,7 +25,7 @@
 @use './../components/callout';
 
 
-@use './../mixins/structure/display' as display;
+@use './../mixins/display' as *;
 
 $prefix: prefix.$prefix;
 
@@ -56,11 +56,10 @@ $prefix: prefix.$prefix;
 // -- ---------------------------------------------
 @mixin callout-layout() {
     /* Layout */
-    @include display.display-flex();
+    @include display-flex();
 
-
-    /* old */ @include flex.direction(row);
-    /* old */ @include flex.align-items(center);
+    @include flex-direction(row);
+    @include flex-align-items(center);
     @content;
 }
 
@@ -78,9 +77,8 @@ $prefix: prefix.$prefix;
 @mixin callout-spacing() {
     /* Spacing */
 
-
-    /* old */ @include spacing.inner(var(--#{$prefix}callout-padding-x));
-    /* old */ @include spacing.outer(var(--#{$prefix}callout-padding-y) 0);
+    @include padding(var(--#{$prefix}callout-padding-x));
+    @include margin(var(--#{$prefix}callout-padding-y) 0);
     @content;
 }
 
@@ -207,7 +205,7 @@ $prefix: prefix.$prefix;
     }
 
     &-right {
-        @include flex.direction(row-reverse);
+        @include flex-direction(row-reverse);
         border-left: none;
         border-right     : store.$border-width solid var(--#{$prefix}callout--border-color);
 

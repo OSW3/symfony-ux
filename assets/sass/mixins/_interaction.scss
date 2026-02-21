@@ -1,0 +1,174 @@
+// * ===========================================================================
+// *  Structural Mixins for Interactions
+// * ===========================================================================
+// *
+// *  Propriétés gérées :
+// *    - cursor
+// *    - user-select
+// *    - pointer-events
+// *    - touch-action
+// *    - outline (shorthand)
+// *    - outline-offset
+// *
+// *  Caractéristiques :
+// *    - null-safe via _emit()
+// *    - !important optionnel
+// *    - normalisation de longueur pour outline-offset
+// *    - fallbacks optionnels ($enable-css-fallbacks)
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
+
+// Activer les fallbacks legacy (webkit/ms quand pertinent)
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
+}
+
+// Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
+@function _normalize-length($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value; // mots-clés, calc(), var(), etc.
+}
+
+// Convertit varargs en liste séparée par virgules (cursor multi-fallbacks)
+@function _as-comma-list($values) {
+  @if meta.type-of($values) != 'list' { @return $values; }
+  $out: ();
+  @for $i from 1 through list.length($values) {
+    $out: list.append($out, list.nth($values, $i), comma);
+  }
+  @return $out;
+}
+
+// Extrait un booléen final optionnel depuis des varargs
+// Retourne (liste-sans-bool, important-bool)
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), space);
+    }
+    @return ($trimmed, $important);
+  }
+  @return ($values, false);
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// ---------------------------------------------
+// Cursor
+// ---------------------------------------------
+//
+// Supporte plusieurs valeurs séparées par virgules (ex: 'grab, pointer') + bool final.
+//
+@mixin cursor($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('cursor', $v, $important-flag);
+}
+
+
+// ---------------------------------------------
+// User Select
+// ---------------------------------------------
+//
+// Fallbacks: -webkit-user-select, -ms-user-select.
+//
+@mixin user-select($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-user-select', $value, $important);
+    @include _emit('-ms-user-select', $value, $important);
+  }
+  @include _emit('user-select', $value, $important);
+}
+
+
+// ---------------------------------------------
+// Pointer Events
+// ---------------------------------------------
+//
+@mixin pointer-events($value, $important: false) {
+  @include _emit('pointer-events', $value, $important);
+}
+
+
+// ---------------------------------------------
+// Touch Action
+// ---------------------------------------------
+//
+// Fallback: -ms-touch-action (IE/Edge Legacy).
+//
+@mixin touch-action($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-ms-touch-action', $value, $important);
+  }
+  @include _emit('touch-action', $value, $important);
+}
+
+
+// ---------------------------------------------
+// Outline (shorthand)
+// ---------------------------------------------
+//
+// Supporte varargs (ex: '2px solid currentColor') + bool final.
+// On laisse l'ordre tel quel, pas de parsing.
+//
+@mixin outline($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  @include _emit('outline', $vals, $important-flag);
+}
+
+
+// ---------------------------------------------
+// Outline Offset
+// ---------------------------------------------
+//
+// Normalise les nombres unitless -> longueur.
+//
+@mixin outline-offset($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('outline-offset', $v, $important);
+}

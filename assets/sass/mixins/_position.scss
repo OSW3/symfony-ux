@@ -1,109 +1,180 @@
-// ************************************************************************** //
-// *                                                                        * //
-// * Theses mixins of "position" properties.                                * //
-// *                                                                        * //
-// * How to import                                                          * //
-// *  @use 'abstracts/mixins/position' as position;                         * //
-// *                                                                        * //
-// ************************************************************************** //
+// * ===========================================================================
+// *  Structural Mixins for Positioning
+// * ===========================================================================
+// *
+// *  Propriétés gérées :
+// *    - position
+// *    - top / right / bottom / left
+// *    - z-index
+// *    - inset (shorthand optionnel)
+// *
+// *  Caractéristiques :
+// *    - null-safe via _emit()
+// *    - !important optionnel
+// *    - normalisation des longueurs (unitless -> $length-default-unit) pour TRBL
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
 
 
-/// Shorthand mixin for positioning
-/// 
-/// @example @include position.position(10px, 10px, 10px, 10px)
-/// 
-/// @param {String} $top Position from top
-/// @param {String} $right Position from right
-/// @param {String} $bottom Position from bottom
-/// @param {String} $left Position from left
-/// 
-@mixin set($position, $top: null, $right: null, $bottom: null, $left: null) 
-{
-  position: $position;
-  @include top($top);
-  @include right($right);
-  @include bottom($bottom);
-  @include left($left);
-  // @if ($right not null) {right : $right;}
-  // @if ($bottom not null) {bottom : $bottom;}
-  // @if ($left not null) {left : $left;}
-}
-@mixin top($position: null){@if $position != null {top : $position;}}
-@mixin right($position: null){@if $position != null {right : $position;}}
-@mixin bottom($position: null){@if $position != null {bottom : $position;}}
-@mixin left($position: null){@if $position != null {left : $position;}}
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
 
 
-/// Shorthand mixin for static positioning
-/// 
-/// @example @include position.static(10px, 10px, 10px, 10px)
-/// 
-/// @param {String} $top Position from top
-/// @param {String} $right Position from right
-/// @param {String} $bottom Position from bottom
-/// @param {String} $left Position from left
-/// 
-@mixin static($args...) 
-{
-  @include set(static, $args...);
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
 }
 
-
-/// Shorthand mixin for relative positioning
-/// 
-/// @example @include position.relative(10px, 10px, 10px, 10px)
-/// 
-/// @param {String} $top Position from top
-/// @param {String} $right Position from right
-/// @param {String} $bottom Position from bottom
-/// @param {String} $left Position from left
-/// 
-@mixin relative($args...) 
-{
-  @include set(relative, $args...);
+// Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
+@function _normalize-length($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value; // keywords (auto), calc(), var(), etc.
 }
 
-
-/// Shorthand mixin for absolute positioning
-/// 
-/// @example @include position.absolute(10px, 10px, 10px, 10px)
-/// 
-/// @param {String} $top Position from top
-/// @param {String} $right Position from right
-/// @param {String} $bottom Position from bottom
-/// @param {String} $left Position from left
-/// 
-@mixin absolute($args...) 
-{
-  @include set(absolute, $args...);
+// Normalise 1..4 longueurs façon CSS inset (TRBL)
+@function _normalize-inset-list($values, $default-unit: $length-default-unit) {
+  @if meta.type-of($values) == 'list' and list.separator($values) == space {
+    $len: list.length($values);
+    @if $len >= 1 and $len <= 4 {
+      $out: ();
+      @for $i from 1 through $len {
+        $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+      }
+      @return $out;
+    }
+  }
+  @return _normalize-length($values, $default-unit);
 }
 
 
-/// Shorthand mixin for fixed positioning
-/// 
-/// @example @include position.fixed(10px, 10px, 10px, 10px)
-/// 
-/// @param {String} $top  Position from top
-/// @param {String} $right  Position from right
-/// @param {String} $bottom  Position from bottom
-/// @param {String} $left  Position from left
-/// 
-@mixin fixed($args...) 
-{  
-  @include set(fixed, $args...);
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// ---------------------------------------------
+// Position
+// ---------------------------------------------
+
+@mixin position($value, $important: false) {
+  // Ex: static | relative | absolute | fixed | sticky
+  @include _emit('position', $value, $important);
+}
+@mixin position-static($important: false) {
+  @include position(static, $important);
+}
+@mixin position-relative($important: false) {
+  @include position(relative, $important);
+}
+@mixin position-absolute($important: false) {
+  @include position(absolute, $important);
+}
+@mixin position-fixed($important: false) {
+  @include position(fixed, $important);
+}
+@mixin position-sticky($important: false) {
+  @include position(sticky, $important);
 }
 
+// ---------------------------------------------
+// Axes (top / right / bottom / left)
+// ---------------------------------------------
 
-/// Shorthand mixin for sticky positioning
-/// 
-/// @example @include position.sticky(10px, 10px, 10px, 10px)
-/// 
-/// @param {String} $top Position from top
-/// @param {String} $right Position from right
-/// @param {String} $bottom Position from bottom
-/// @param {String} $left Position from left
-/// 
-@mixin sticky($args...) 
-{
-  @include set(sticky, $args...);
+@mixin top($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('top', $v, $important);
 }
+
+@mixin right($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('right', $v, $important);
+}
+
+@mixin bottom($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('bottom', $v, $important);
+}
+
+@mixin left($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('left', $v, $important);
+}
+
+// ---------------------------------------------
+// z-index
+// ---------------------------------------------
+
+@mixin z-index($value, $important: false) {
+  // Accepte nombres, auto, var(), etc. — pas de normalisation d’unités
+  @include _emit('z-index', $value, $important);
+}
+
+// ---------------------------------------------
+// Shorthand (optionnel) : inset
+// ---------------------------------------------
+//
+// CSS moderne : inset: <top> [<right> <bottom> <left>] ;
+// On émet la propriété 'inset' directement (si supportée), ou on peut
+// choisir d’émettre les 4 propriétés TRBL (décommenter plus bas si souhaité).
+//
+// @mixin inset($values..., $important: false) {
+//   // Normalise 1..4 valeurs (nombres unitless -> longueurs)
+//   $norm: _normalize-inset-list($values, $length-default-unit);
+//   @include _emit('inset', $norm, $important);
+
+//   // Alternative : générer TRBL explicitement (si tu préfères une compat totale)
+//   // @if meta.type-of($norm) == 'list' {
+//   //   $len: list.length($norm);
+//   //   @if $len == 1 {
+//   //     @include top(list.nth($norm, 1), $important);
+//   //     @include right(list.nth($norm, 1), $important);
+//   //     @include bottom(list.nth($norm, 1), $important);
+//   //     @include left(list.nth($norm, 1), $important);
+//   //   } @else if $len == 2 {
+//   //     @include top(list.nth($norm, 1), $important);
+//   //     @include right(list.nth($norm, 2), $important);
+//   //     @include bottom(list.nth($norm, 1), $important);
+//   //     @include left(list.nth($norm, 2), $important);
+//   //   } @else if $len == 3 {
+//   //     @include top(list.nth($norm, 1), $important);
+//   //     @include right(list.nth($norm, 2), $important);
+//   //     @include bottom(list.nth($norm, 3), $important);
+//   //     @include left(list.nth($norm, 2), $important);
+//   //   } @else if $len == 4 {
+//   //     @include top(list.nth($norm, 1), $important);
+//   //     @include right(list.nth($norm, 2), $important);
+//   //     @include bottom(list.nth($norm, 3), $important);
+//   //     @include left(list.nth($norm, 4), $important);
+//   //   }
+//   // } @else {
+//   //   // Valeur simple unique
+//   //   @include top($norm, $important);
+//   //   @include right($norm, $important);
+//   //   @include bottom($norm, $important);
+//   //   @include left($norm, $important);
+//   // }
+// }

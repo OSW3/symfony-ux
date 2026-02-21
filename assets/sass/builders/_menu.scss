@@ -13,16 +13,17 @@
 
 @use 'sass:map';
 @use './nav';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/position';
+@use './../mixins/position' as *;
 @use './../mixins/transition';
 @use './../variables/alignments';
 @use './../storages/breakpoints';
 @use './../storages/menu' as store;
 @use './../components/menu';
+@use './../mixins/display' as *;
 
 @include banner.header('Component Menu');
 $prefix: prefix.$prefix;
@@ -149,17 +150,17 @@ $breakpoints: breakpoints.$breakpoints;
 
     // border: 3px solid red;
     background-color: var(--#{$prefix}menu--bg-color);
-    @include flex.display;
-    @include flex.direction(column);
-    @include spacing.inner(0);
-    @include spacing.outer(0);
+    @include display-flex;
+    @include flex-direction(column);
+    @include padding(0);
+    @include margin(0);
     
     // Menu vertical
     // --
 
     // Menu > nav items
     & .#{$prefix}nav-items { 
-        @include flex.direction(column);
+        @include flex-direction(column);
     }
 
 
@@ -176,11 +177,11 @@ $breakpoints: breakpoints.$breakpoints;
     
     @each $name, $value in alignments.$flex-alignments {
         &-#{$name} {
-            @include flex.justify-content($value, true);
+            @include flex-justify-content($value, true);
         }
     }
     &-fill > * {
-        @include flex.grow(1);
+        @include flex-grow(1);
     }
 
 
@@ -192,8 +193,8 @@ $breakpoints: breakpoints.$breakpoints;
 
             &:not(&-vertical), 
             &:not(&-vertical) .#{$prefix}nav-items { 
-                @include flex.direction(row);
-                @include flex.align-items(center);
+                @include flex-direction(row);
+                @include flex-align-items(center);
             }
         }
     }

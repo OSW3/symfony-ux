@@ -1,0 +1,100 @@
+// * ===========================================================================
+// *  Structural Mixins for Scroll Containers (Advanced)
+// * ===========================================================================
+// *
+// *  Propriétés gérées :
+// *    - scrollbar-gutter
+// *    - overscroll-behavior (shorthand + axes)
+// *
+// *  Caractéristiques :
+// *    - null-safe via _emit()
+// *    - !important optionnel sur chaque mixin
+// *    - fallbacks optionnels pour IE/Edge Legacy via $enable-css-fallbacks
+// *      (mapping vers -ms-scroll-chaining)
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Active l’émission de fallbacks quand pertinent
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
+}
+
+// Map overscroll-behavior -> -ms-scroll-chaining (IE/Edge Legacy)
+// auto    -> chained
+// contain -> none
+// none    -> none
+@function _ms-scroll-chaining-map($value) {
+  @if $value == auto    { @return chained; }
+  @if $value == contain { @return none; }
+  @if $value == none    { @return none; }
+  @return null; // unknown keyword -> ne rien émettre en fallback
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// ---------------------------------------------
+// scrollbar-gutter
+// ---------------------------------------------
+//
+// Valeurs usuelles : auto | stable | stable both-edges
+// On passe la valeur telle quelle.
+//
+@mixin scrollbar-gutter($value, $important: false) {
+  @include _emit('scrollbar-gutter', $value, $important);
+}
+
+
+// ---------------------------------------------
+// overscroll-behavior (shorthand)
+// ---------------------------------------------
+//
+// Valeurs : auto | contain | none
+// Supporte aussi deux valeurs (x y) comme en CSS.
+//
+@mixin overscroll-behavior($value, $important: false) {
+  // Fallback IE/Edge Legacy
+  @if $value != null and $enable-css-fallbacks {
+    $ms: _ms-scroll-chaining-map($value);
+    @if $ms != null { @include _emit('-ms-scroll-chaining', $ms, $important); }
+  }
+
+  @include _emit('overscroll-behavior', $value, $important);
+}
+
+// overscroll-behavior-x
+@mixin overscroll-behavior-x($value, $important: false) {
+  // IE/Edge legacy n’a pas d’API axis-based -> on tombe sur le shorthand si besoin
+  @include _emit('overscroll-behavior-x', $value, $important);
+}
+
+// overscroll-behavior-y
+@mixin overscroll-behavior-y($value, $important: false) {
+  // IE/Edge legacy n’a pas d’API axis-based -> on tombe sur le shorthand si besoin
+  @include _emit('overscroll-behavior-y', $value, $important);
+}

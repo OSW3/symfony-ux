@@ -1,8 +1,214 @@
-// ************************************************************************** //
-// *                                                                        * //
-// ************************************************************************** //
+// * ===========================================================================
+// *  Transition Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for applying CSS transitions to elements. 
+// *  These mixins allow you to easily set up transition properties for various 
+// *  CSS attributes, with customizable delay and timing functions.
+// *
+// * ===========================================================================
 
+@charset 'utf-8';
+
+@use "sass:meta";
 @use "sass:list";
+@use "sass:math";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Si true, les valeurs null n’émettent pas de propriété
+$trans-skip-null: true !default;
+
+/// Unité par défaut pour convertir les nombres unitless en temps.
+/// Recommandation: `1ms` pour écrire `150` -> `150ms` naturellement.
+/// (Tu peux mettre `0.001s` si tu préfères des secondes par défaut)
+$transition-time-default-unit: 1ms !default;
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+/// Émet une propriété avec ou sans !important, en respectant $trans-skip-null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $trans-skip-null) {
+    @if $important {
+      #{$prop}: $val !important;
+    } @else {
+      #{$prop}: $val;
+    }
+  }
+}
+
+/// Extrait un booléen final d’une liste varargs
+/// Retourne la paire (liste-sans-bool, important-bool)
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), comma);
+    }
+    @return ($trimmed, $important);
+  }
+
+  @return ($values, false);
+}
+
+/// Normalise un temps (nombre → temps avec unité par défaut)
+/// - 0 reste 0
+/// - nombre unitless → * $transition-time-default-unit
+/// - nombre avec unité, keywords, calc(), variables CSS → inchangés
+@function _normalize-time($value) {
+  @if $value == null { @return null; }
+
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $transition-time-default-unit; }
+    @return $value;
+  }
+
+  @return $value;
+}
+
+/// Applique _normalize-time à une liste séparée par virgules OU à une valeur simple.
+/// Conserve les virgules entre les couches (multi-transitions).
+@function _normalize-time-comma-list($values) {
+  @if meta.type-of($values) != 'list' {
+    @return _normalize-time($values);
+  }
+
+  // Sass peut représenter une "liste de couches" en liste séparée par virgules
+  $out: ();
+  $len: list.length($values);
+  @for $i from 1 through $len {
+    $out: list.append($out, _normalize-time(list.nth($values, $i)), comma);
+  }
+  @return $out;
+}
+
+/// Convertit une liste (varargs) en liste séparée par virgules.
+/// Si ce n’est pas une liste, retourne tel quel.
+/// Utile pour property & timing-function multi-couches.
+@function _as-comma-list($values) {
+  @if meta.type-of($values) != 'list' {
+    @return $values;
+  }
+  $out: ();
+  $len: list.length($values);
+  @for $i from 1 through $len {
+    $out: list.append($out, list.nth($values, $i), comma);
+  }
+  @return $out;
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * transition (shorthand)
+// * ---------------------------------------------
+
+/// Shorthand `transition`. Supporte plusieurs couches séparées par virgules.
+/// API 1 (directe) :
+///   @include transition(opacity .2s ease, transform .2s ease .05s, true);
+/// API 2 (simple) :
+///   @include transition(all 200 ease); // 200 -> 200ms si $transition-time-default-unit: 1ms
+@mixin transition($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  // Laisse l’appelant composer librement (ex: "opacity .2s ease .05s")
+  // Si on veut pointer les durées pour normaliser des nombres unitless, on propose aussi une API dédiée ci-dessous.
+  @include _emit('transition', _as-comma-list($vals), $important-flag);
+}
+
+/// Shorthand "assistée" : propriété + durée (+ timing + délai), avec normalisation auto des temps.
+/// Exemple :
+///   @include transition-ease(opacity, 200, ease, 50); // => "opacity 200ms ease 50ms"
+///   @include transition-ease(all, .2s);               // => "all .2s ease 0s"
+@mixin transition-ease($property, $duration, $timing: ease, $delay: null, $important: false) {
+  $d: _normalize-time($duration);
+  $dl: _normalize-time($delay);
+
+  $val: $property $d;
+  @if $timing != null {
+    $val: $val $timing;
+  }
+  @if $dl != null {
+    $val: $val $dl;
+  }
+
+  @include _emit('transition', $val, $important);
+}
+
+
+
+// * ---------------------------------------------
+// * propriétés unitaires
+// * ---------------------------------------------
+
+// transition-property (comma-list)
+@mixin transition-property($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  @include _emit('transition-property', _as-comma-list($vals), $important-flag);
+}
+
+// transition-duration (normalise les nombres unitless)
+@mixin transition-duration($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  @include _emit('transition-duration', _normalize-time-comma-list(_as-comma-list($vals)), $important-flag);
+}
+
+// transition-delay (normalise les nombres unitless)
+@mixin transition-delay($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  @include _emit('transition-delay', _normalize-time-comma-list(_as-comma-list($vals)), $important-flag);
+}
+
+// transition-timing-function (comma-list)
+@mixin transition-timing-function($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  // Accepte keywords (ease-in, linear, ...), cubic-bezier(), steps(), etc.
+  @include _emit('transition-timing-function', _as-comma-list($vals), $important-flag);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /// Generate a transition property
 /// 

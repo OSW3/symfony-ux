@@ -1,0 +1,586 @@
+// * ===========================================================================
+// *  Structural Mixins for the Size Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the size properties of elements.
+// *  These mixins provide a convenient way to apply width and height values with 
+// *  optional min and max constraints.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:math";
+@use "sass:string";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+$enable-css-fallbacks: true !default;
+
+/// Utiliser les unités viewport modernes (dvh/dvw) pour la hauteur/largeur plein écran.
+/// Si true: on émet dvh/dvw + fallback vh/vw (le dernier gagne).
+$use-modern-viewport-units: true !default;
+
+/// Activer un fallback explicite quand $use-modern-viewport-units est true.
+/// Si true: on émet d'abord vh/vw puis dvh/dvw.
+$emit-viewport-fallback: true !default;
+
+
+$emit-viewport-svh-lvh: false !default; // désactivé par défaut
+
+
+/// Unité par défaut pour les nombres **unitless** (ex: 10 -> 10px).
+$box-model-default-unit: px !default; // ex: px | rem
+
+/// Autoriser qu’on passe des nombres **sans unité** (ex: 10) et les normaliser.
+$box-model-accept-unitless: true !default;
+
+/// Afficher un warning quand on normalise une valeur **unitless**.
+$box-model-warn-on-unitless: false !default;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+/// Convertit une unité potentielle en token utilisable (string → identifiant).
+@function _unit-token($u) {
+
+    @if meta.type-of($u) == 'string' {
+        @return string.unquote($u);
+    } @else {
+        @return $u;
+    }
+}
+
+/// Construit une valeur CSS "10px" **sans espace** (string non-quotée).
+@function _to-value-with-unit($n, $u) {
+  $u: _unit-token($u); // 'px' -> px
+  @return string.unquote("#{ $n }#{$u}"); // → 10px (pas "10 px")
+}
+
+/// Normalise les nombres unitless (hors 0) vers l’unité par défaut.
+/// Accepte aussi les strings CSS (var(), clamp(), calc(), etc.)
+@function _normalize-size($value) {
+  @if $value == null { @return null; }
+
+  @if meta.type-of($value) == 'number' {
+    @if math.is-unitless($value) {
+      @if $value == 0 { @return 0; } // 0 sans unité = OK
+      @if $box-model-accept-unitless {
+        @if $box-model-warn-on-unitless {
+          @warn "[box-model] Valeur unitless détectée (#{$value}). Conversion en #{$value}#{$box-model-default-unit}.";
+        }
+        @return _to-value-with-unit($value, $box-model-default-unit);
+      } @else {
+        @error "[box-model] Valeur unitless interdite: #{meta.inspect($value)}. Passe une unité explicite (ex: 10px, 1rem).";
+      }
+    } @else {
+      @return $value; // number déjà unitaire
+    }
+  } @else if meta.type-of($value) == 'string' {
+    // var(...), clamp(...), calc(...), "10px" si quelqu'un a mis des quotes
+    @return $value;
+  } @else {
+    @warn "[box-model] Type inattendu pour dimension: #{meta.inspect($value)}";
+    @return $value;
+  }
+}
+
+/// Écrit une propriété si $value non null, avec !important optionnel.
+@mixin _prop($name, $value, $important: false) {
+  @if $value != null {
+    @if $important { #{$name}: #{$value} !important; }
+    @else { #{$name}: #{$value}; }
+  }
+}
+
+/// Validation légère d’une dimension (number ou string CSS).
+@function _is-valid-size($value) {
+  @return (
+    $value == auto or
+    $value == min-content or
+    $value == max-content or
+    $value == fit-content or
+    (meta.type-of($value) == 'number') or
+    (meta.type-of($value) == 'string') // ex: "clamp(...)" ou var(--...)
+  );
+}
+
+/// Applique une dimension avec normalisation et garde-fous.
+@mixin _dim($prop, $value, $important: false) {
+  @if $value != null {
+    $normalized: _normalize-size($value);
+
+    @if not _is-valid-size($normalized) {
+      @warn "[box-model] Valeur inattendue pour #{$prop}: #{meta.inspect($value)} (normalisée: #{meta.inspect($normalized)})";
+    }
+
+    @include _prop($prop, $normalized, $important);
+  }
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Width                                                                - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Width (legacy)
+// * ---------------------------------------------
+
+/// Defines the width of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-width)).
+/// 
+/// @param {number|string} $value - The width value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include width(100); // width: 100px;
+///   @include width(100px); // width: 100px;
+///   @include width(100%, true); // width: 100% !important;
+/// 
+@mixin width($value, $important: false) { 
+    @include _dim(width, $value, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+/// Defines the minimum width of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-min-width)).
+/// 
+/// @param {number|string} $value - The minimum width value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include min-width(100); // min-width: 100px;
+///   @include min-width(100px); // min-width: 100px;
+///   @include min-width(100%, true); // min-width: 100% !important
+///
+@mixin min-width($value, $important: false) {
+    @include _dim(min-width, $value, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+/// Defines the maximum width of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-max-width)).
+/// 
+/// @param {number|string} $value - The maximum width value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include max-width(100); // max-width: 100px;
+///   @include max-width(100px); // max-width: 100px;
+///   @include max-width(100%, true); // max-width: 100% !important
+///
+@mixin max-width($value, $important: false) {
+    @include _dim(max-width, $value, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Width (aliases)
+// * ---------------------------------------------
+
+/// Alias for width: auto.
+/// 
+/// Usage:
+///   @include width-auto; // width: auto;
+///   @include width-auto(true); // width: auto !important
+///
+@mixin width-auto($important: false)
+{
+    @include width(auto, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: 100%.
+/// 
+/// Usage:
+///   @include width-full; // width: 100%;
+///   @include width-full(true); // width: 100% !important
+///
+@mixin width-full($important: false)
+{
+    @include width(100%, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: fit-content.
+/// 
+/// Usage:
+///   @include width-fit; // width: fit-content;
+///   @include width-fit(true); // width: fit-content !important
+///
+@mixin width-fit($important: false)
+{
+    @if $enable-css-fallbacks { @include width-full($important); }
+    @include width(fit-content, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: min-content.
+/// 
+/// Usage:
+///   @include width-min-content; // width: min-content;
+///   @include width-min-content(true); // width: min-content !important
+///
+@mixin width-min-content($important: false)
+{
+    @if $enable-css-fallbacks { @include width(auto, $important); }
+    @include width(min-content, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: max-content.
+/// 
+/// Usage:
+///   @include width-max-content; // width: max-content;
+///   @include width-max-content(true); // width: max-content !important
+///
+@mixin width-max-content($important: false)
+{
+    @if $enable-css-fallbacks { @include width-full($important); }
+    @include width(max-content, $important); 
+    @if meta.content-exists() { @content; }
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Height                                                               - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Height (legacy)
+// * ---------------------------------------------
+
+/// Defines the height of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-height)).
+/// 
+/// @param {number|string} $value - The height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include height(100); // height: 100px;
+///   @include height(100px); // height: 100px;
+///   @include height(100%, true); // height: 100% !important
+///
+@mixin height($value, $important: false)
+{
+    @include _dim(height, $value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Defines the minimum height of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-min-height)).
+/// 
+/// @param {number|string} $value - The minimum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include min-height(100); // min-height: 100px;
+///   @include min-height(100px); // min-height: 100px;
+///   @include min-height(100%, true); // min-height: 100% !important
+///
+@mixin min-height($value, $important: false)
+{
+    @include _dim(min-height, $value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Defines the maximum height of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-max-height)).
+/// 
+/// @param {number|string} $value - The maximum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include max-height(100); // max-height: 100px;
+///   @include max-height(100px); // max-height: 100px;
+///   @include max-height(100%, true); // max-height: 100% !important
+///
+@mixin max-height($value, $important: false)
+{
+    @include _dim(max-height, $value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Height (aliases)
+// * ---------------------------------------------
+
+/// Alias for height: auto.
+/// 
+/// Usage:
+///   @include height-auto; // height: auto;
+///   @include height-auto(true); // height: auto !important
+///
+@mixin height-auto($important: false)
+{
+    @include height(auto, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: fit-content.
+/// 
+/// Usage:
+///   @include height-fit; // height: fit-content;
+///   @include height-fit(true); // height: fit-content !important
+///
+@mixin height-fit($important: false)
+{
+    @include height(fit-content, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: min-content.
+/// 
+/// Usage:
+///   @include height-min-content; // height: min-content;
+///   @include height-min-content(true); // height: min-content !important
+///
+@mixin height-min-content($important: false) 
+{
+    @include height(min-content, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: max-content.
+/// 
+/// Usage:
+///   @include height-max-content; // height: max-content;
+///   @include height-max-content(true); // height: max-content !important
+///
+@mixin height-max-content($important: false) 
+{
+    @include height(max-content, $important);
+    @if meta.content-exists() { @content; }
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Viewport                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Sets width and/or height in viewport units (vw/vh or dvw/dvh).
+/// Note: This mixin uses modern viewport units (dvw/dvh) with optional fallback to traditional units (vw/vh) for better compatibility. The $width and $height parameters can be unitless numbers (normalized to a default unit) or CSS strings.
+/// 
+/// @param {number|string} $width - The width in viewport units (e.g., 100 for 100vw, or "var(--my-width)").
+/// @param {number|string} $height - The height in viewport units (e.g., 100 for 100vh, or "var(--my-height)").
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include viewport(100, 100); // width: 100vw; height: 100vh;
+///   @include viewport(100px, 50%); // width: 100px; height: 50%;
+///   @include viewport(100, 100, true); // with !important
+///
+@mixin viewport($width: null, $height: null, $important: false) {
+    @include width-viewport($width, $important);
+    @include height-viewport($height, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets the height of an element in viewport units (vh or dvh).
+/// Note: This mixin uses modern viewport units (dvh) with optional fallback to traditional units (vh) for better compatibility. The $units parameter can be a unitless number (normalized to a default unit) or a CSS string.
+/// 
+/// @param {number|string} $units - The height in viewport units (e.g., 100 for 100vh, or "var(--my-height)").
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include height-viewport(100); // height: 100vh;
+///   @include height-viewport(100px); // height: 100px;
+///   @include height-viewport(100%, true); // height: 100% !important
+///
+@mixin height-viewport($units: 100, $important: false) {
+    @if $use-modern-viewport-units {
+        @if $emit-viewport-fallback { 
+            @include _prop(height, #{$units}vh, $important); 
+        }
+        @if $emit-viewport-svh-lvh {
+            @include _prop(height, #{$units}svh, $important);
+            @include _prop(height, #{$units}lvh, $important);
+        }
+        @include _prop(height, #{$units}dvh, $important);
+    } @else {
+        @include _prop(height, #{$units}vh, $important);
+    }
+
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets the width of an element in viewport units (vw or dvw).
+/// Note: This mixin uses modern viewport units (dvw) with optional fallback to traditional units (vw) for better compatibility. The $units parameter can be a unitless number (normalized to a default unit) or a CSS string.
+/// 
+/// @param {number|string} $units - The width in viewport units (e.g., 100 for 100vw, or "var(--my-width)").
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include width-viewport(100); // width: 100vw;
+///   @include width-viewport(100px); // width: 100px;
+///   @include width-viewport(100%, true); // width: 100% !important
+///
+@mixin width-viewport($units: 100, $important: false) {
+    @if $use-modern-viewport-units {
+        @if $emit-viewport-fallback { 
+            @include _prop(width, #{$units}vw, $important); 
+        }
+        @if $emit-viewport-svh-lvh {
+            @include _prop(width, #{$units}svw, $important);
+            @include _prop(width, #{$units}lvw, $important);
+        }
+        @include _prop(width, #{$units}dvw, $important);
+    } @else {
+        @include _prop(width, #{$units}vw, $important);
+    }
+
+    @if meta.content-exists() { @content; }
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - Aliases                                                              - //
+// * ------------------------------------------------------------------------ //
+
+/// Sets both width and height of an element in one declaration.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for both width and height values.
+/// 
+/// @param {number|string} $width - The width value (e.g., 100px, 50%, auto).
+/// @param {number|string} $height - The height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include size(100, 200); // width: 100px; height: 200px;
+///   @include size(100px, 50%); // width: 100px; height: 50%;
+///   @include size(100, 200, true); // width: 100px; height: 200px; with !important
+///
+@mixin size($width: null, $height: null, $important: false) {
+    @include width($width, $important);
+    @include height($height, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets both min-width and min-height of an element in one declaration.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for both min-width and min-height values.
+/// 
+/// @param {number|string} $min-width - The minimum width value (e.g., 100px, 50%, auto).
+/// @param {number|string} $min-height - The minimum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include min-size(100, 200); // min-width: 100px; min-height: 200px;
+///   @include min-size(100px, 50%); // min-width: 100px; min-height: 50%;
+///   @include min-size(100, 200, true); // min-width: 100px; min-height: 200px; with !important
+///
+@mixin min-size($min-width: null, $min-height: null, $important: false) {
+    @include min-width($min-width, $important);
+    @include min-height($min-height, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets both max-width and max-height of an element in one declaration.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for both max-width and max-height values.
+/// 
+/// @param {number|string} $max-width - The maximum width value (e.g., 100px, 50%, auto).
+/// @param {number|string} $max-height - The maximum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include max-size(100, 200); // max-width: 100px; max-height: 200px;
+///   @include max-size(100px, 50%); // max-width: 100px; max-height: 50%;
+///   @include max-size(100, 200, true); // max-width: 100px; max-height: 200px; with !important
+///
+@mixin max-size($max-width: null, $max-height: null, $important: false) {
+    @include max-width($max-width, $important);
+    @include max-height($max-height, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets both width and height to the same value in one declaration (square).
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for the size value.
+/// 
+/// @param {number|string} $size - The width and height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include square(100); // width: 100px; height: 100px;
+///   @include square(100px); // width: 100px; height: 100px;
+///   @include square(100%, true); // width: 100%; height: 100%; with !important
+///
+@mixin square($size, $important: false) {
+    @include size($size, $size, $important) { @if meta.content-exists() { @content; }}
+}
+
+/// Sets width to max-content and height to auto in one declaration (intrinsic size).
+/// Note: This mixin sets width to max-content and height to auto, which allows the element to size itself based on its content. The $important parameter can be used to add !important to the declarations if needed.
+/// 
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include content-size; // width: max-content; height: auto;
+///   @include content-size(true); // width: max-content; height: auto; with !important
+///
+@mixin content-size($important: false) {
+    @include width(max-content, $important);
+    @include height(auto, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets width to auto and height to auto in one declaration (default size).
+/// Note: This mixin sets both width and height to auto, which allows the element to size itself based on its content and context. The $important parameter can be used to add !important to the declarations if needed.
+/// 
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include size-auto; // width: auto; height: auto;
+///   @include size-auto(true); // width: auto; height: auto; with !important
+///
+@mixin size-auto($important: false) {
+    @include size(auto, auto, $important) { @if meta.content-exists() { @content; }}
+}
+
+/// Sets width to 100% and height to 100% in one declaration (full size).
+/// Note: This mixin sets both width and height to 100%, which makes the element take up the full size of its container. The $important parameter can be used to add !important to the declarations if needed.
+/// 
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///   @include full-size; // width: 100%; height: 100%;
+///   @include full-size(true); // width: 100%; height: 100%; with !important
+///
+@mixin full-size($important: false) {
+    @include size(100%, 100%, $important) { @if meta.content-exists() { @content; }}
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Box sizing                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Sets the box-sizing property of an element with validation and optional !important.
+/// Note: This mixin sets the box-sizing property to either border-box or content-box, with validation to ensure only valid values are used. The $important parameter allows adding !important to the declaration if needed.
+/// 
+/// @param {string} $value - The box-sizing value (border-box or content-box).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include box-sizing(border-box); // box-sizing: border-box;
+///   @include box-sizing(content-box, true); // box-sizing: content-box !important;
+///
+@mixin box-sizing($value: border-box, $important: false) {
+    @if not ($value == border-box or $value == content-box) {
+        @warn "[box-model] box-sizing inattendu: #{meta.inspect($value)} (attendu: border-box | content-box)";
+    }
+    @include _prop(box-sizing, $value, $important);
+    @if meta.content-exists() { @content; }
+}

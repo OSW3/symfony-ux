@@ -1,0 +1,141 @@
+// * ===========================================================================
+// *  Structural Mixins for the Grid Layout
+// * ===========================================================================
+//
+// *  Grid container & propriétés (null-safe, !important).
+// *  Pas de support -ms-grid ici (syntaxe très différente). Fallback "display"
+// *  géré directement (inline grid possible).
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+$props-skip-null: true !default;
+$length-default-unit: 1px !default;
+
+// Aligne la sémantique avec _display.scss (pas de préfixes grid requis)
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important {
+      #{$prop}: $val !important;
+    } @else {
+      #{$prop}: $val;
+    }
+  }
+}
+
+@function _normalize-length($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value;
+}
+
+@function _normalize-length-list($values, $default-unit: $length-default-unit) {
+  @if meta.type-of($values) == 'list' {
+    $out: ();
+    @for $i from 1 through list.length($values) {
+      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+    }
+    @return $out;
+  }
+  @return _normalize-length($values, $default-unit);
+}
+
+// Helper interne: display:grid (ou inline-grid) + important
+@mixin _display-grid($type: grid, $important: false) {
+  @if $type == grid {
+    @include _emit('display', grid, $important);
+  } @else if $type == inline or $type == inline-grid {
+    @include _emit('display', inline-grid, $important);
+  } @else {
+    @warn "Invalid grid display type: #{$type}. Expected 'grid' or 'inline'/'inline-grid'.";
+    @include _emit('display', grid, $important);
+  }
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// -------------------- Conteneur (shorthand) --------------------
+@mixin grid-container(
+  $columns: null,
+  $rows: null,
+  $areas: null,
+  $auto-flow: null,
+  $auto-columns: null,
+  $auto-rows: null,
+  $place-items: null,
+  $place-content: null,
+  $gap: null,
+  $row-gap: null,
+  $column-gap: null,
+  $display-type: grid,
+  $important: false
+) {
+  @include _display-grid($display-type, $important);
+
+  @include grid-template-columns($columns, $important);
+  @include grid-template-rows($rows, $important);
+  @include grid-template-areas($areas, $important);
+  @include grid-auto-flow($auto-flow, $important);
+  @include grid-auto-columns($auto-columns, $important);
+  @include grid-auto-rows($auto-rows, $important);
+  @include grid-place-items($place-items, $important);
+  @include grid-place-content($place-content, $important);
+  @include gap($gap, $important);
+  @include row-gap($row-gap, $important);
+  @include column-gap($column-gap, $important);
+}
+
+// -------------------- Atomiques conteneur --------------------
+@mixin grid-template-columns($value, $important: false)  { @include _emit('grid-template-columns', $value, $important); }
+@mixin grid-template-rows($value, $important: false)     { @include _emit('grid-template-rows', $value, $important); }
+@mixin grid-template-areas($value, $important: false)    { @include _emit('grid-template-areas', $value, $important); }
+@mixin grid-auto-flow($value, $important: false)         { @include _emit('grid-auto-flow', $value, $important); }
+@mixin grid-auto-columns($value, $important: false)      { @include _emit('grid-auto-columns', $value, $important); }
+@mixin grid-auto-rows($value, $important: false)         { @include _emit('grid-auto-rows', $value, $important); }
+@mixin grid-place-items($value, $important: false)            { @include _emit('place-items', $value, $important); }
+@mixin grid-place-content($value, $important: false)          { @include _emit('place-content', $value, $important); }
+
+
+
+
+
+
+
+
+
+@mixin gap($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('gap', $v, $important);
+}
+@mixin row-gap($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('row-gap', $v, $important);
+}
+@mixin column-gap($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('column-gap', $v, $important);
+}

@@ -1,0 +1,290 @@
+// * ===========================================================================
+// *  Structural Mixins for Typography
+// * ===========================================================================
+// *
+// *  Mixins atomiques & shorthands pour :
+// *    - Font : family, size, weight, style, stretch, variant
+// *    - Line & spacing : line-height, letter-spacing, word-spacing
+// *    - Text behavior : align, transform, decoration, indent, white-space,
+// *                      word-break, overflow-wrap, hyphens
+// *    - Decoration & fine control : text-decoration-color/thickness,
+// *                      text-underline-offset/position, tab-size, text-wrap,
+// *                      text-size-adjust, quotes
+// *
+// *  Caractéristiques :
+// *    - null-safe via _emit()
+// *    - !important en param optionnel
+// *    - normalisations ciblées (longueurs, listes, bool final)
+// *    - fallbacks optionnels ($enable-css-fallbacks)
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Unité par défaut pour les longueurs (ex: px)
+$length-default-unit: 1px !default;
+
+// Activer les fallbacks legacy (webkit/ms quand pertinent)
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
+}
+
+// Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
+@function _normalize-length($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value; // mots-clés, calc(), var(), etc.
+}
+
+// Liste d'espaces de longueurs (1..n)
+@function _normalize-length-list($values, $default-unit: $length-default-unit) {
+  @if meta.type-of($values) == 'list' {
+    $out: ();
+    @for $i from 1 through list.length($values) {
+      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+    }
+    @return $out;
+  }
+  @return _normalize-length($values, $default-unit);
+}
+
+// Conserve les nombres unitless (utile pour line-height, tab-size)
+@function _length-or-number($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' and math.is-unitless($value) {
+    @return $value; // on garde le nombre nu
+  }
+  @return _normalize-length($value, $default-unit);
+}
+
+// Convertit des varargs en liste séparée par virgules (font-family layers, etc.)
+@function _as-comma-list($values) {
+  @if meta.type-of($values) != 'list' { @return $values; }
+  $out: ();
+  @for $i from 1 through list.length($values) {
+    $out: list.append($out, list.nth($values, $i), comma);
+  }
+  @return $out;
+}
+
+// Convertit des varargs en liste séparée par espaces (ex: quotes)
+@function _as-space-list($values) {
+  @if meta.type-of($values) != 'list' { @return $values; }
+  $out: ();
+  @for $i from 1 through list.length($values) {
+    $out: list.append($out, list.nth($values, $i), space);
+  }
+  @return $out;
+}
+
+// Extrait un booléen final optionnel depuis des varargs
+// Retourne (liste-sans-bool, important-bool)
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), space);
+    }
+    @return ($trimmed, $important);
+  }
+  @return ($values, false);
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// ---------------------------------------------
+// Font
+// ---------------------------------------------
+
+// font-family (supporte varargs + bool final pour !important)
+@mixin font-family($families...) {
+  $pair: _pop-trailing-bool($families);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  // On force une liste séparée par virgules (sans toucher aux quotes)
+  $ff: _as-comma-list($vals);
+  @include _emit('font-family', $ff, $important-flag);
+}
+
+// font-size (normalise nombres unitless → longueur)
+@mixin font-size($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('font-size', $v, $important);
+}
+
+// font-weight (100..900, bold, normal, etc.)
+@mixin font-weight($value, $important: false) {
+  @include _emit('font-weight', $value, $important);
+}
+
+// font-style (normal, italic, oblique)
+@mixin font-style($value, $important: false) {
+  @include _emit('font-style', $value, $important);
+}
+
+// font-stretch (pourcentages ou mots-clés)
+@mixin font-stretch($value, $important: false) {
+  @include _emit('font-stretch', $value, $important);
+}
+
+// font-variant (shorthand ; accepte liste de keywords / none)
+@mixin font-variant($value, $important: false) {
+  @include _emit('font-variant', $value, $important);
+}
+
+
+// ---------------------------------------------
+// Line & spacing
+// ---------------------------------------------
+
+// line-height (accepte nombre unitless → on le conserve)
+@mixin line-height($value, $important: false) {
+  $v: _length-or-number($value, $length-default-unit);
+  @include _emit('line-height', $v, $important);
+}
+
+// letter-spacing (<length> ou normal) — nombre unitless → converti en longueur
+@mixin letter-spacing($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('letter-spacing', $v, $important);
+}
+
+// word-spacing (<length> ou normal) — unitless → longueur
+@mixin word-spacing($value, $important: false) {
+  $v: _normalize-length($value, $length-default-unit);
+  @include _emit('word-spacing', $v, $important);
+}
+
+
+// ---------------------------------------------
+// Text behavior
+// ---------------------------------------------
+
+@mixin text-align($value, $important: false)        { @include _emit('text-align', $value, $important); }
+@mixin text-transform($value, $important: false)    { @include _emit('text-transform', $value, $important); }
+
+// text-decoration (shorthand) — varargs + bool final
+// e.g. underline solid red 2px
+@mixin text-decoration($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  // Laisse l’ordre/les types intacts
+  @include _emit('text-decoration', $vals, $important-flag);
+}
+
+// text-indent (<length> | <percentage> | each-line | hanging | keywords)
+@mixin text-indent($value, $important: false) {
+  // Si nombre nu → longueur ; si pourcentage/keyword → passthrough
+  $v: if(meta.type-of($value) == 'number' and math.is-unitless($value), $value * $length-default-unit, $value);
+  @include _emit('text-indent', $v, $important);
+}
+
+@mixin white-space($value, $important: false)       { @include _emit('white-space', $value, $important); }
+@mixin word-break($value, $important: false)        { @include _emit('word-break', $value, $important); }
+
+// overflow-wrap (fallback ancien: word-wrap)
+@mixin overflow-wrap($value, $important: false) {
+  @if $enable-css-fallbacks {
+    // mapping simple : normal/break-word
+    @include _emit('word-wrap', $value, $important);
+  }
+  @include _emit('overflow-wrap', $value, $important);
+}
+
+// hyphens (fallback -webkit-)
+@mixin hyphens($value, $important: false) {
+  @if $enable-css-fallbacks {
+    @include _emit('-webkit-hyphens', $value, $important);
+  }
+  @include _emit('hyphens', $value, $important);
+}
+
+
+// ---------------------------------------------
+// Text decoration & fine control
+// ---------------------------------------------
+
+@mixin text-decoration-color($value, $important: false)     { @include _emit('text-decoration-color', $value, $important); }
+
+// text-decoration-thickness (<length>|<percentage>|auto|from-font)
+// → nombre unitless → converti en longueur
+@mixin text-decoration-thickness($value, $important: false) {
+  $v: if(meta.type-of($value) == 'number' and math.is-unitless($value), $value * $length-default-unit, $value);
+  @include _emit('text-decoration-thickness', $v, $important);
+}
+
+// text-underline-offset (<length>|<percentage>|auto) — unitless -> longueur
+@mixin text-underline-offset($value, $important: false) {
+  $v: if(meta.type-of($value) == 'number' and math.is-unitless($value), $value * $length-default-unit, $value);
+  @include _emit('text-underline-offset', $v, $important);
+}
+
+@mixin text-underline-position($value, $important: false)   { @include _emit('text-underline-position', $value, $important); }
+
+// tab-size (<number> | <length>) — conserve les unitless numbers
+@mixin tab-size($value, $important: false) {
+  $v: _length-or-number($value, $length-default-unit);
+  @include _emit('tab-size', $v, $important);
+}
+
+// text-wrap (wrap | nowrap | balance | pretty | stable...)
+@mixin text-wrap($value, $important: false) {
+  @include _emit('text-wrap', $value, $important);
+}
+
+// text-size-adjust (fallbacks -webkit- & -ms-)
+@mixin text-size-adjust($value, $important: false) {
+  @if $enable-css-fallbacks {
+    @include _emit('-webkit-text-size-adjust', $value, $important);
+    @include _emit('-ms-text-size-adjust', $value, $important);
+  }
+  @include _emit('text-size-adjust', $value, $important);
+}
+
+// quotes — varargs d’arguments (paires de guillemets), ex:
+// @include quotes('«' '»' '‹' '›'); ou @include quotes(auto);
+@mixin quotes($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  // Si c’est un seul token (ex: auto), on passe tel quel.
+  // Sinon, on force une liste séparée par espaces.
+  $v: if(list.length($vals) > 1, _as-space-list($vals), $vals);
+  @include _emit('quotes', $v, $important-flag);
+}

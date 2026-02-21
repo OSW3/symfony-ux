@@ -20,6 +20,8 @@
 @use './../mixins/transition';
 @use './../storages/breadcrumb' as store;
 
+@use './../mixins/display' as *;
+
 @include banner.header('Component Breadcrumb');
 $prefix: prefix.$prefix;
 

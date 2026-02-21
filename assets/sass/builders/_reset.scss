@@ -5,12 +5,63 @@
 // * ---------------------------------------------------------------------------
 
 @use "sass:map";
-@use './../mixins/spacing';
-@use './../mixins/structure/box-model' as size;
+@use './../mixins/spacing' as *;
+@use './../mixins/box-model' as *;
 @use './../storages/fonts' as fonts;
 @use './../storages/prefix';
 @use './../storages/themes';
+@use './../mixins/display' as *;
+
+
+@use './../builders/banner';
+
+@include banner.header('Component Reset');
+
 $prefix: prefix.$prefix;
+
+
+
+
+/***/
+/***/
+/***/
+/***/
+/***/
+/***/
+/***/
+/***/
+
+.foo {
+    // @include aspect-ratio("16/9")
+}
+
+/***/
+/***/
+/***/
+/***/
+/***/
+/***/
+/***/
+/***/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // @function palette-declination($palette, $property) {
 //     @return null;
@@ -66,8 +117,8 @@ $theme-properties: (
 *,
 *::before,
 *::after {
-    @include spacing.outer(0, 0, 0, 0);
-    @include spacing.inner(0, 0, 0, 0);
+    @include margin(0, 0, 0, 0);
+    @include padding(0, 0, 0, 0);
     box-sizing: border-box;
 }
 
@@ -78,10 +129,10 @@ html {
 }
 
 body {
-    @include spacing.outer(0, 0, 0, 0);
-    @include spacing.inner(0, 0, 0, 0);
-    @include size.min-width(100vw);
-    @include size.min-height(100vh);
+    @include margin(0, 0, 0, 0);
+    @include padding(0, 0, 0, 0);
+    @include min-width(100vw);
+    @include min-height(100vh);
     // font-family: Arial, sans-serif; // todo: customize
     font-family: var(--#{$prefix}font-open-sans);
     font-size: 1rem; // todo: customize
@@ -93,9 +144,9 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    // @include spacing.outer(0, 0, 0, 0.5rem);
-    @include spacing.outer(0, 0, 0, 0);
-    @include spacing.inner(0, 0, 0, 0);
+    // @include margin(0, 0, 0, 0.5rem);
+    @include margin(0, 0, 0, 0);
+    @include padding(0, 0, 0, 0);
     font-family: inherit;
     font-weight: inherit;
     line-height: fonts.$heading-line-height;
@@ -110,7 +161,7 @@ h6 { font-size: fonts.$h6-font-size; }
 
 
 p {
-    @include spacing.outer(0, 0, 1rem); // todo: customize spaces
+    @include margin(0, 0, 1rem); // todo: customize spaces
     word-wrap: break-word;
     hyphens: auto;
 }
@@ -126,8 +177,8 @@ a:focus {
 }
 
 ul, ol {
-    @include spacing.outer(0, 0, 0, 0); // todo: customize spaces
-    @include spacing.inner(0, 0, 0, 1.5em); // todo: customize spaces
+    @include margin(0, 0, 0, 0); // todo: customize spaces
+    @include padding(0, 0, 0, 1.5em); // todo: customize spaces
     list-style-position: outside;
     line-height: inherit;
 }
@@ -138,10 +189,10 @@ ol {
     list-style-type: decimal;
 }
 ul ul, ol ol, ul ol, ol ul {
-    padding-left: 1.5em;
+    @include padding-left(1.5em);
 }
 li {
-    margin: 0 0 0.5em;
+    @include margin(0, 0, 0.5em);
 }
 li::marker {
     font-size: 1em;
@@ -149,8 +200,8 @@ li::marker {
 }
 
 blockquote {
-    margin: 0 0 1em;
-    padding-left: 1.5em;
+    @include margin(0, 0, 1em);
+    @include padding-left(1.5em);
     border-left: 4px solid #ccc;
     color: #555;
     font-style: italic;
@@ -166,8 +217,8 @@ blockquote {
 // }
 
 img, video, canvas, svg {
-    margin: 0;
-    padding: 0;
+    @include margin(0, 0, 0, 0);
+    @include padding(0, 0, 0, 0);
     display: block;
     max-width: 100%;
     height: auto;
@@ -180,20 +231,20 @@ picture {
 
 figure {
     display: block;
-    margin: 0;
-    padding: 0;
+    @include margin(0, 0, 0, 0);
+    @include padding(0, 0, 0, 0);
 }
 
 figcaption {
     display: block;
     font-size: 0.875rem;
     color: #666;
-    margin-top: 0.5em;
+    @include margin-top(0.5em);
 }
 
 button, input, select, textarea {
-    margin: 0;
-    padding: 0;
+    @include margin(0, 0, 0, 0);
+    @include padding(0, 0, 0, 0);
     font: inherit;
     color: inherit;
     background: none;

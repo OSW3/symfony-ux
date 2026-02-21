@@ -14,16 +14,18 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:math";
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 @use './../storages/alert' as store;
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/position';
+@use './../mixins/position' as *;
 @use './../storages/spaces';
 @use './../components/alert';
 @use './../mixins/component';
 @use './../mixins/transition';
+
+@use './../mixins/display' as *;
 
 $prefix: prefix.$prefix;
 
@@ -172,11 +174,11 @@ $btn-close-size: 24px;
     // Alert layout
     // --
     
-    @include flex.display;
-    @include flex.direction(row);
-    @include flex.align-items(center);
-    @include spacing.inner(var(--#{$prefix}alert-padding-x));
-    @include spacing.outer-y(var(--#{$prefix}alert-padding-y));
+    @include display-flex();
+    @include flex-direction(row);
+    @include flex-align-items(center);
+    @include padding(var(--#{$prefix}alert-padding-x));
+    @include margin-y(var(--#{$prefix}alert-padding-y));
 
     @include theme(
         var(--#{$prefix}alert--color),
@@ -205,12 +207,12 @@ $btn-close-size: 24px;
         // margin-left: 0;
     }
     &-message {
-        @include spacing.outer(0, auto, 0, 0, true);
+        @include margin(0, auto, 0, 0, true);
 
     }
 
     // & + & {
-    //     @include spacing.outer(spaces.$base * .6, 0, 0, 0);
+    //     @include margin(spaces.$base * .6, 0, 0, 0);
     // }
 
     
@@ -251,9 +253,9 @@ $btn-close-size: 24px;
 
     & .#{$prefix}button-close {
         cursor: pointer;    
-        @include flex.display;
-        @include flex.align-items(center);
-        @include flex.justify-content(center);
+        @include display-flex();
+        @include flex-align-items(center);
+        @include flex-justify-content(center);
         @include theme(
             var(--#{$prefix}alert--color),
             none

@@ -1,0 +1,71 @@
+// * ===========================================================================
+// *  Structural Mixins for Rendering & Performance
+// * ===========================================================================
+// *
+// *  Propriétés gérées :
+// *    - contain
+// *    - content-visibility
+// *    - (optionnel) contain-intrinsic-size
+// *
+// *  Caractéristiques :
+// *    - null-safe via _emit()
+// *    - !important optionnel
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// ---------------------------------------------
+// contain
+// ---------------------------------------------
+// Valeurs usuelles : none | strict | content | size | inline-size | layout | paint | style | (combinaisons)
+// On ne tente pas de parser, on passe tel quel.
+@mixin contain($value, $important: false) {
+  @include _emit('contain', $value, $important);
+}
+
+// ---------------------------------------------
+// content-visibility
+// ---------------------------------------------
+// Valeurs : visible | auto | hidden
+// Recommandation perf : coupler `auto` avec `contain-intrinsic-size`.
+@mixin content-visibility($value, $important: false) {
+  @include _emit('content-visibility', $value, $important);
+}
+
+// ---------------------------------------------
+// (Optionnel) contain-intrinsic-size
+// ---------------------------------------------
+// Permet de réserver une taille intrinsèque quand content-visibility masque le contenu
+// Accepte : <length> [<length>] | auto <length> [<length>]
+@mixin contain-intrinsic-size($value, $important: false) {
+  @include _emit('contain-intrinsic-size', $value, $important);
+}

@@ -16,9 +16,11 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/component';
-@use './../mixins/spacing';
+@use './../mixins/spacing' as *;
 @use './../mixins/support';
 @use './../mixins/transition';
+
+@use './../mixins/display' as *;
 
 @use './../storages/button' as store;
 @use './../components/button';
@@ -189,7 +191,7 @@ $prefix: prefix.$prefix;
         ease-in-out
     );
 
-    @include spacing.inner( 
+    @include padding( 
         var(--#{$prefix}button-padding-x),
         var(--#{$prefix}button-padding-y),
         var(--#{$prefix}button-padding-x),

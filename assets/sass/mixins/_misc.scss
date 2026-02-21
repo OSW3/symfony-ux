@@ -1,0 +1,6 @@
+
+@mixin aspect-ratio($ratio, $important: false) {
+    // $ratio peut être un nombre (ex: 16/9) ou une string "3 / 2"
+    @include _prop(aspect-ratio, $ratio, $important);
+    @if meta.content-exists() { @content; }
+}

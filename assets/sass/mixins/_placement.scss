@@ -1,0 +1,77 @@
+// * ===========================================================================
+// *  Structural Mixins for Item Placement (Flex & Grid items)
+// * ===========================================================================
+//
+// *  Propriétés des éléments enfants : flex items & grid items.
+// *  Null-safe via _emit(), !important option.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+$props-skip-null: true !default;
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important {
+      #{$prop}: $val !important;
+    } @else {
+      #{$prop}: $val;
+    }
+  }
+}
+
+// Mapping align-self -> -ms-flex-item-align
+@function _ms-item-align($value) {
+  @if $value == flex-start { @return start; }
+  @if $value == flex-end   { @return end; }
+  @if $value == center or $value == baseline or $value == stretch { @return $value; }
+  @return null;
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// Flex item
+@mixin order($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-order', $value, $important);
+    @include _emit('-ms-flex-order', $value, $important);
+  }
+  @include _emit('order', $value, $important);
+}
+
+@mixin align-self($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-align-self', $value, $important);
+    $ms: _ms-item-align($value);
+    @if $ms != null { @include _emit('-ms-flex-item-align', $ms, $important); }
+  }
+  @include _emit('align-self', $value, $important);
+}
+
+// Grid item
+@mixin grid-column($value, $important: false) { @include _emit('grid-column', $value, $important); }
+@mixin grid-row($value, $important: false)    { @include _emit('grid-row', $value, $important); }
+@mixin place-self($value, $important: false)  { @include _emit('place-self', $value, $important); }
+
+// Atomiques optionnels
+@mixin grid-column-start($value, $important: false) { @include _emit('grid-column-start', $value, $important); }
+@mixin grid-column-end($value, $important: false)   { @include _emit('grid-column-end', $value, $important); }
+@mixin grid-row-start($value, $important: false)    { @include _emit('grid-row-start', $value, $important); }
+@mixin grid-row-end($value, $important: false)      { @include _emit('grid-row-end', $value, $important); }

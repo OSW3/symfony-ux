@@ -17,11 +17,13 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 // @use './../mixins/component';
-// @use './../mixins/spacing';
+// @use './../mixins/spacing' as *;
 // @use './../mixins/support';
 @use './../mixins/corner';
 @use './../mixins/transition';
-@use './../mixins/position';
+@use './../mixins/position' as *;
+@use './../mixins/display' as *;
+
 
 @use './../storages/scroll-to-top' as store;
 @use './../components/scroll-to-top';
@@ -460,12 +462,11 @@ $background-position: center;
 
     // Position
 
-    @include position.fixed(
-        $position-top, 
-        $position-right, 
-        $position-bottom, 
-        $position-left
-    );
+    @include position-fixed();
+    @include top($position-top);
+    @include right($position-right);
+    @include bottom($position-bottom);
+    @include left($position-left);
 
     // Offset positions 
 

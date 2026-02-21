@@ -1,0 +1,314 @@
+// * ===========================================================================
+// *  Structural Mixins for the Visual Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the visual properties of elements.
+// *  These mixins provide a convenient way to apply width and height values with 
+// *  optional min and max constraints.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
+// Unité par défaut pour les rayons (par défaut = même que length)
+$radius-default-unit: $length-default-unit !default;
+
+// Ajouter des préfixes pour `appearance`
+$appearance-add-prefixes: true !default;
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important {
+      #{$prop}: $val !important;
+    } @else {
+      #{$prop}: $val;
+    }
+  }
+}
+
+// Nombre → longueur (ajoute unité par défaut si unitless, conserve 0 sans unité)
+@function _normalize-length($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value; // keywords, calc(), variables CSS, etc.
+}
+
+// Normalise une liste de longueurs simples (1..n, séparateur " ")
+// Utile pour border-width (1..4)
+@function _normalize-length-list($values, $default-unit: $length-default-unit) {
+  @if meta.type-of($values) == 'list' {
+    $out: ();
+    $len: list.length($values);
+    @for $i from 1 through $len {
+      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+    }
+    @return $out;
+  }
+  @return _normalize-length($values, $default-unit);
+}
+
+// Convertit une liste varargs en liste séparée par virgules (pour background-image, box-shadow layers, etc.)
+@function _as-comma-list($values) {
+  @if meta.type-of($values) != 'list' {
+    @return $values;
+  }
+  $out: ();
+  $len: list.length($values);
+  @for $i from 1 through $len {
+    $out: list.append($out, list.nth($values, $i), comma);
+  }
+  @return $out;
+}
+
+// Extrait un booléen final optionnel depuis des varargs
+// Retourne (liste-sans-bool, important-bool)
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), space);
+    }
+    @return ($trimmed, $important);
+  }
+
+  @return ($values, false);
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Color & basic visual
+// * ---------------------------------------------
+
+// color
+@mixin color($value, $important: false) {
+    @include _emit('color', $value, $important);
+}
+
+
+
+// * ---------------------------------------------
+// * Backgrounds
+// * ---------------------------------------------
+
+// background-color
+@mixin background-color($value, $important: false) {
+  @include _emit('background-color', $value, $important);
+}
+
+// background-image (supporte plusieurs layers + bool final pour !important)
+@mixin background-image($layers...) {
+  $pair: _pop-trailing-bool($layers);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $img: _as-comma-list($vals);
+  @include _emit('background-image', $img, $important-flag);
+}
+
+// background-size (peut être multi-layer, on accepte varargs + bool final)
+@mixin background-size($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('background-size', $v, $important-flag);
+}
+
+// background-position (multi-layer possible)
+@mixin background-position($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('background-position', $v, $important-flag);
+}
+
+// background-repeat (multi-layer possible)
+@mixin background-repeat($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('background-repeat', $v, $important-flag);
+}
+
+// background-clip (multi-layer possible)
+@mixin background-clip($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('background-clip', $v, $important-flag);
+}
+
+// background-origin (multi-layer possible)
+@mixin background-origin($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('background-origin', $v, $important-flag);
+}
+
+
+
+// * ---------------------------------------------
+// * Borders
+// * ---------------------------------------------
+
+// border-color (1..4 valeurs)
+@mixin border-color($value, $important: false) {
+  @include _emit('border-color', $value, $important);
+}
+
+// border-width (1..4 valeurs) — normalise les nombres unitless
+@mixin border-width($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('border-width', $v, $important);
+}
+
+// border-style (1..4 valeurs)
+@mixin border-style($value, $important: false) {
+  @include _emit('border-style', $value, $important);
+}
+
+// border-radius — normalise si valeur simple numérique unitless, sinon passe tel quel (elliptical non modifié)
+@mixin border-radius($value, $important: false) {
+
+  @if not ($value == null and $props-skip-null) {
+    // Déclare $v AVANT les branches pour assurer sa portée
+    $v: null;
+
+    // Normalise seulement les nombres ; conserve les formes elliptiques/kewords
+    @if meta.type-of($value) == 'number' {
+      $v: _normalize-length($value, $radius-default-unit);
+    } @else {
+      $v: $value;
+    }
+
+    @include _emit('border-radius', $v, $important);
+  }
+}
+
+
+@mixin border-image-source($value, $important: false) {
+  @include _emit('border-image-source', $value, $important);
+}
+
+@mixin border-image-slice($value, $important: false) {
+  @include _emit('border-image-slice', $value, $important);
+}
+
+@mixin border-image-outset($value, $important: false) {
+  @include _emit('border-image-outset', $value, $important);
+}
+
+@mixin border-image-repeat($value, $important: false) {
+  @include _emit('border-image-repeat', $value, $important);
+}
+
+
+// * ---------------------------------------------
+// * Outline
+// * ---------------------------------------------
+
+// outline-color
+@mixin outline-color($value, $important: false) {
+  @include _emit('outline-color', $value, $important);
+}
+
+
+
+// * ---------------------------------------------
+// * Shadows
+// * ---------------------------------------------
+
+// box-shadow (peut accepter plusieurs layers séparés par virgule)
+@mixin box-shadow($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('box-shadow', $v, $important-flag);
+}
+
+// text-shadow (peut accepter plusieurs layers séparés par virgule)
+@mixin text-shadow($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  $v: _as-comma-list($vals);
+  @include _emit('text-shadow', $v, $important-flag);
+}
+
+
+
+// * ---------------------------------------------
+// * UI accents
+// * ---------------------------------------------
+
+// caret-color
+@mixin caret-color($value, $important: false) {
+  @include _emit('caret-color', $value, $important);
+}
+
+// accent-color
+@mixin accent-color($value, $important: false) {
+  @include _emit('accent-color', $value, $important);
+}
+
+
+
+// * ---------------------------------------------
+// * UA reset
+// * ---------------------------------------------
+
+// appearance (avec préfixes optionnels)
+@mixin appearance($value, $important: false) {
+  @if $appearance-add-prefixes {
+    @include _emit('-webkit-appearance', $value, $important);
+    @include _emit('-moz-appearance', $value, $important);
+  }
+  @include _emit('appearance', $value, $important);
+}

@@ -13,12 +13,13 @@
 
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
+@use './../mixins/display' as *;
 
 @use './../storages/ticker' as store;
 @use './../components/ticker';
-@include banner.header('Component Ticker');
+
 $prefix: prefix.$prefix;
 
 
@@ -35,75 +36,6 @@ $prefix: prefix.$prefix;
 // * - Component Mixins                                                     - //
 // * ------------------------------------------------------------------------ //
 
-// -- ---------------------------------------------
-// -- Define the structure of the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the ticker component.
-// -- ---------------------------------------------
-@mixin ticker-effects() {
-    @content;
-}
 
 
 
@@ -116,18 +48,7 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 .#{$prefix}ticker {
-    @include ticker-structure();
-    @include ticker-layout();
-    @include ticker-typography();
-    @include ticker-spacing();
-    @include ticker-interactions();
-    @include ticker-state();
-    @include ticker-transition();
-    @include ticker-animation();
-    @include ticker-theme();
-    @include ticker-effects();
-
-    @include flex.display;
+    @include display-flex();
 
     overflow  : hidden;
     // min-height: 100%;
@@ -135,11 +56,11 @@ $prefix: prefix.$prefix;
     height    : store.$height;
 
     &-inner {
-        @include flex.display;
-        @include flex.justify-content(center);
-        @include flex.align-items(center);
-        @include spacing.inner(0);
-        @include spacing.outer(0);
+        @include display-flex();
+        @include flex-justify-content(center);
+        @include flex-align-items(center);
+        @include padding(0);
+        @include margin(0);
         position: relative;
         list-style: none;
         width: 100%;

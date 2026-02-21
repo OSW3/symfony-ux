@@ -17,10 +17,12 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/component';
-@use './../mixins/flex';
-@use './../mixins/spacing';
-@use './../mixins/position';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
+@use './../mixins/position' as *;
 @use './../mixins/transition';
+@use './../mixins/box-model' as *;
+@use './../mixins/display' as *;
 
 @use './../storages/toast' as store;
 @use './../components/toast';
@@ -40,76 +42,6 @@ $prefix: prefix.$prefix;
 // * ------------------------------------------------------------------------ //
 // * - Component Mixins                                                     - //
 // * ------------------------------------------------------------------------ //
-
-// -- ---------------------------------------------
-// -- Define the structure of the toast component.
-// -- ---------------------------------------------
-@mixin toast-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the toast component.
-// -- ---------------------------------------------
-@mixin toast-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the toast component.
-// -- ---------------------------------------------
-@mixin toast-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the toast component.
-// -- ---------------------------------------------
-@mixin toast-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the toast component.
-// -- ---------------------------------------------
-@mixin toast-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the toast component.
-// -- ---------------------------------------------
-@mixin toast-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the toast component.
-// -- ---------------------------------------------
-@mixin toast-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the toast component.
-// -- ---------------------------------------------
-@mixin toast-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the toast component.
-// -- ---------------------------------------------
-@mixin toast-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the toast component.
-// -- ---------------------------------------------
-@mixin toast-effects() {
-    @content;
-}
 
 
 
@@ -226,29 +158,18 @@ $btn-close-size: 24px;
 // * ---------------------------------------------
 
 .#{$prefix}toast {
-    @include toast-structure();
-    @include toast-layout();
-    @include toast-typography();
-    @include toast-spacing();
-    @include toast-interactions();
-    @include toast-state();
-    @include toast-transition();
-    @include toast-animation();
-    @include toast-theme();
-    @include toast-effects();
-
     &-container {
-        width: store.$width + (store.$gutter * 2);
-        z-index: 99999;
+        @include width(store.$width + (store.$gutter * 2));
+
+        @include z-index(99999);
         
-        @include spacing.inner(store.$offset);
+        @include padding(store.$offset);
     
-        @include position.fixed(
-            $container-placement-top, 
-            $container-placement-right, 
-            $container-placement-bottom, 
-            $container-placement-left
-        );
+        @include position-fixed();
+        @include top($container-placement-top);
+        @include right($container-placement-right);
+        @include bottom($container-placement-bottom);
+        @include left($container-placement-left);
         @if store.$placement == 'middle-center' or store.$placement == 'centered' {
             transform: translate(-50%, -50%);
         }
@@ -261,7 +182,7 @@ $btn-close-size: 24px;
         display: flex;
         flex-direction: row;
         cursor: default !important;
-        @include spacing.inner(15px);
+        @include padding(15px);
         margin-top: $item-margin-top;
         margin-bottom: $item-margin-bottom;
         &:first-child {

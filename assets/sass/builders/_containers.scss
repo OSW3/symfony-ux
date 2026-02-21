@@ -12,8 +12,10 @@
 @use './../storages/spaces' as stored-spaces;
 @use './../storages/breakpoints' as store;
 @use './../functions/collection' as fnCollection;
-@use './../mixins/structure/box-model' as size;
-@use './../mixins/spacing';
+@use './../mixins/box-model' as size;
+@use './../mixins/spacing' as *;
+
+@use './../mixins/display' as *;
 
 @include banner.header('Containers');
 $prefix: prefix.$prefix;
@@ -75,8 +77,8 @@ $containers-string: string.unquote(string.slice($containers-string, 1, -3));
     display: block;
     position: relative;
     @include size.width(100%);
-    @include spacing.outer-x(auto);
-    @include spacing.inner-x(map.get(stored-spaces.$spaces, 3));
+    @include margin-x(auto);
+    @include padding-x(map.get(stored-spaces.$spaces, 3));
     z-index: 1;
 }
 

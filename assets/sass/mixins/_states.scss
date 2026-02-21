@@ -1,0 +1,405 @@
+// * ===========================================================================
+// *  States Mixins
+// * ===========================================================================
+// *
+// *  This file contains mixins for handling different states of components, 
+// *  such as hover, focus, active, and disabled states.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+$states-skip-null: true !default;  // ne rien émettre pour les valeurs null
+$states-important-default: false !default; // important global par défaut
+
+// Liste d’états “classiques” (ordre d’émission)
+$states-default-order: (
+    "base",        // valeur par défaut (sans pseudo)
+    "hover",       // :hover
+    "focus",       // :focus
+    "focus-visible", // :focus-visible
+    "active",      // :active
+    "visited",     // :visited
+    "disabled",    // :disabled
+    "checked",     // :checked
+    "focus-within" // :focus-within
+) !default;
+
+// Mappings de pseudo-classes (et sélecteurs) reconnus
+$states-selectors: (
+    "base": "",
+    "hover": ":hover",
+    "focus": ":focus",
+    "focus-visible": ":focus-visible",
+    "active": ":active",
+    "visited": ":visited",
+    "disabled": ":disabled, [aria-disabled='true'], :where(button, input, select, textarea)[disabled]",
+    "checked": ":checked, [aria-checked='true']",
+    "focus-within": ":focus-within"
+) !default;
+
+// Etendus : sélecteurs ARIA & data-* que tu peux utiliser au besoin
+$states-aliases-extra: (
+    "aria-expanded": "[aria-expanded='true']",
+    "aria-selected": "[aria-selected='true']",
+    "aria-current":  "[aria-current='true']",
+    "data-open":     "[data-state='open'], [data-open='true']",
+    "data-closed":   "[data-state='closed'], [data-open='false']"
+) !default;
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet $prop: $val [!important] si $val n’est pas null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $states-skip-null) {
+    @if $important {
+      #{$prop}: $val !important;
+    } @else {
+      #{$prop}: $val;
+    }
+  }
+}
+
+// Convertit une string CSV de sélecteurs en liste (séparateur virgule)
+@function _split-selectors($selectors) {
+  // Si déjà une liste (ex: (":hover", ":focus")), renvoyer tel quel
+  @if meta.type-of($selectors) == 'list' {
+    @return $selectors;
+  }
+
+  // Null -> liste vide
+  @if $selectors == null {
+    @return ();
+  }
+
+  // Force en string
+  $s: #{$selectors};
+  $len: string.length($s);
+
+  $out: ();
+  $buf: "";
+
+  $depth-paren: 0;  // ()
+  $depth-brack: 0;  // []
+  $depth-brace: 0;  // {}
+  $in-string: false;
+  $quote: null;     // ' ou "
+
+  @for $i from 1 through $len {
+    $ch: string.slice($s, $i, $i);
+
+    // Gestion des chaînes
+    @if $in-string {
+      $buf: $buf + $ch;
+      @if $ch == $quote {
+        $in-string: false;
+        $quote: null;
+      }
+    } @else if ($ch == "'" or $ch == '"') {
+      $in-string: true;
+      $quote: $ch;
+      $buf: $buf + $ch;
+
+    } @else if $ch == "(" {
+      $depth-paren: $depth-paren + 1;
+      $buf: $buf + $ch;
+
+    } @else if $ch == ")" {
+      $depth-paren: $depth-paren - 1;
+      $buf: $buf + $ch;
+
+    } @else if $ch == "[" {
+      $depth-brack: $depth-brack + 1;
+      $buf: $buf + $ch;
+
+    } @else if $ch == "]" {
+      $depth-brack: $depth-brack - 1;
+      $buf: $buf + $ch;
+
+    } @else if $ch == "{" {
+      $depth-brace: $depth-brace + 1;
+      $buf: $buf + $ch;
+
+    } @else if $ch == "}" {
+      $depth-brace: $depth-brace - 1;
+      $buf: $buf + $ch;
+
+    } @else if $ch == "," and $depth-paren == 0 and $depth-brack == 0 and $depth-brace == 0 {
+      // Coupe uniquement au niveau racine
+      $segment: string.slice($buf, 1);
+      @if string.length($segment) > 0 {
+        $out: list.append($out, $segment, comma);
+      }
+      $buf: "";
+
+    } @else {
+      // Accumule caractère standard
+      $buf: $buf + $ch;
+    }
+  }
+
+  // Dernier segment
+  @if string.length($buf) > 0 {
+    $out: list.append($out, string.slice($buf, 1), comma);
+  }
+
+  @return $out;
+}
+
+
+
+// Récupère les sélecteurs associés à un “état” (peut retourner liste avec virgules)
+@function _selectors-for($state) {
+  @if map.has-key($states-selectors, $state) {
+    @return map.get($states-selectors, $state);
+  }
+
+  @if map.has-key($states-aliases-extra, $state) {
+    @return map.get($states-aliases-extra, $state);
+  }
+
+  // fallback → considère $state comme sélecteur brut (ex: "&[data-loading]")
+  @return $state;
+}
+
+// Compose le sélecteur final :
+// - $base-selector = "&" (contextuel) ou un sélecteur explicite (ex: ".btn")
+// - $state-selector = "" (base) ou un (ou plusieurs) pseudo/alias (peut contenir des virgules)
+// Retourne une liste de sélecteurs complets (gère la virgule côté state)
+@function _compose-selectors($base-selector, $state-selector) {
+  @if $state-selector == "" {
+    // Important : injecter "" pour supprimer STATE (et le ":" avant si présent)
+    @return (_inject-state($base-selector, ""),);
+  }
+
+  $parts: _split-selectors($state-selector);
+  $out: ();
+  $n: list.length($parts);
+
+  @for $i from 1 through $n {
+    $s: list.nth($parts, $i);
+    $out: list.append($out, _inject-state($base-selector, $s), comma);
+  }
+
+  @return $out;
+}
+
+
+
+
+
+// Remplace le jeton STATE (majuscule) par le sélecteur d'état fourni.
+// Si le jeton est absent, fallback: concatène à droite (comportement actuel).
+// Remplace UNE occurrence du jeton "STATE" dans $base par $state.
+// Cas gérés :
+// - Si $state == "" (état "base") et qu'un ":" précède STATE, on supprime ce ":" → ex: "&:STATE a" -> "& a"
+// - Si $state commence par ":" et qu'un ":" précède STATE, on évite la double ponctuation → "&::hover a" -> "&:hover a"
+// - Si "STATE" est absent, fallback : $base + $state (ex: "&" + ":hover" -> "&:hover")
+@function _inject-state($base, $state) {
+  $base-str: #{$base};
+  $state-str: #{$state};
+
+  $pos: string.index($base-str, "STATE");
+  @if $pos == null {
+    @return $base + $state;
+  }
+
+  // Détecte si un ":" précède STATE dans le template
+  $has-leading-colon: false;
+  @if $pos > 1 and string.slice($base-str, $pos - 1, $pos - 1) == ":" {
+    $has-leading-colon: true;
+  }
+
+  // Détermine la fin de la tête à conserver
+  // - cas base ("") : si ":" juste avant, on l'enlève aussi
+  // - cas état avec ":" ET ":" avant -> on retire le ":" du template (on garde celui de l'état)
+  $head-end: $pos - 1;
+  @if $has-leading-colon and ($state-str == "" or string.slice($state-str, 1, 1) == ":") {
+    $head-end: $head-end - 1;
+  }
+
+  // Head (partie avant le jeton / ajustée)
+  $head: "";
+  @if $head-end >= 1 {
+    $head: string.slice($base-str, 1, $head-end);
+  }
+
+  // Tail (partie après le jeton)
+  $tail-start: $pos + string.length("STATE");
+  $tail: "";
+  @if $tail-start <= string.length($base-str) {
+    $tail: string.slice($base-str, $tail-start);
+  }
+
+  @return $head + $state-str + $tail;
+}
+
+// Remplace TOUTES les occurrences de "STATE" dans $base par $state.
+// Si aucune occurrence, fallback : $base + $state.
+// Variante: remplace TOUTES les occurrences de STATE (mêmes règles de nettoyage de ":")
+@function _inject-state-all($base, $state) {
+  $result: #{$base};
+  $needle: "STATE";
+  $state-str: #{$state};
+
+  $pos: string.index($result, $needle);
+  @while $pos != null {
+    $has-leading-colon: false;
+    @if $pos > 1 and string.slice($result, $pos - 1, $pos - 1) == ":" {
+      $has-leading-colon: true;
+    }
+
+    $head-end: $pos - 1;
+    @if $has-leading-colon and ($state-str == "" or string.slice($state-str, 1, 1) == ":") {
+      $head-end: $head-end - 1;
+    }
+
+    $head: "";
+    @if $head-end >= 1 { $head: string.slice($result, 1, $head-end); }
+
+    $tail-start: $pos + string.length($needle);
+    $tail: "";
+    @if $tail-start <= string.length($result) { $tail: string.slice($result, $tail-start); }
+
+    $result: $head + $state-str + $tail;
+    $pos: string.index($result, $needle);
+  }
+
+  // Si aucun remplacement n'a eu lieu, fallback concat
+  @if $result == #{$base} {
+    @return $base + $state;
+  }
+
+  @return $result;
+}
+
+
+// Ajoute @media (@media (forced-colors: active)) autour d’un bloc si demandé
+@mixin _maybe-forced-colors($forced-colors: false) {
+  @if $forced-colors == true {
+    @media (forced-colors: active) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+// Ajoute @media (prefers-color-scheme: light|dark) autour d’un bloc si demandé
+@mixin _maybe-color-scheme($scheme: null) {
+  @if $scheme == dark {
+    @media (prefers-color-scheme: dark) { @content; }
+  } @else if $scheme == light {
+    @media (prefers-color-scheme: light) { @content; }
+  } @else {
+    @content;
+  }
+}
+
+// -------------------------------------------------
+// Mixin générique : states
+// -------------------------------------------------
+//
+// Usage:
+// @include states('color', (
+//    base: #222,
+//    hover: #000,
+//    focus: #004,
+//    disabled: #999
+// ), (
+//    selector: '&',             // ou '.btn' si hors contexte
+//    order: $states-default-order,
+//    important: false,
+//    forced-colors: false,      // true => wrap @media (forced-colors: active)
+//    scheme: null               // null|light|dark => wrap prefers-color-scheme
+// ));
+//
+// - La map d’états peut contenir aussi des clés custom: ex. "aria-expanded", "[data-loading]"
+// - Toute clé inconnue sera traitée comme sélecteur brut.
+
+@mixin states($property, $values, $options: ()) {
+  // options
+  $selector: map.get($options, selector);
+  @if $selector == null { $selector: "&"; }
+
+  $order: map.get($options, order);
+  @if $order == null { $order: $states-default-order; }
+
+  $important: map.get($options, important);
+  @if $important == null { $important: $states-important-default; }
+
+  $forced-colors: map.get($options, forced-colors);
+  $scheme: map.get($options, scheme);
+
+  // wrap médias si besoin
+  @include _maybe-forced-colors($forced-colors) {
+    @include _maybe-color-scheme($scheme) {
+
+      // 1) D’abord, on émet dans l’ordre “canonique” ($order) si présent
+      @each $st in $order {
+        @if map.has-key($values, $st) {
+          $val: map.get($values, $st);
+          $state-sel: _selectors-for($st);
+          $fulls: _compose-selectors($selector, $state-sel);
+
+          @if not ($val == null and $states-skip-null) {
+            @each $fs in $fulls {
+              #{$fs} {
+                @include _emit($property, $val, $important);
+              }
+            }
+          }
+        }
+      }
+
+      // 2) Puis, on émet les éventuels états “custom” non couverts par $order
+      @each $k, $val in $values {
+        @if list.index($order, $k) == null {
+          $state-sel: _selectors-for($k);
+          $fulls: _compose-selectors($selector, $state-sel);
+
+          @if not ($val == null and $states-skip-null) {
+            @each $fs in $fulls {
+              #{$fs} {
+                @include _emit($property, $val, $important);
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+}
+
+// -------------------------------------------------
+// Spécialisations : color-states, background-color-states
+// -------------------------------------------------
+
+@mixin color-states($map-values, $options: ()) {
+    @include states('color', $map-values, $options);
+}
+
+@mixin background-color-states($map-values, $options: ()) {
+    @include states('background-color', $map-values, $options);
+}
+
+@mixin border-color-states($map-values, $options: ()) {
+    @include states('border-color', $map-values, $options);
+}

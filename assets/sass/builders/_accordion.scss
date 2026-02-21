@@ -14,16 +14,19 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:math";
-// @use './../mixins/flex';
-// @use './../mixins/spacing';
+// @use './../mixins/flex' as *;
+@use './../mixins/box-model' as *;
+@use './../mixins/spacing' as *;
 // @use './../storages/accordion' as store;
 @use './../builders/banner';
 @use './../storages/prefix';
-// @use './../mixins/position';
+// @use './../mixins/position' as *;
 // @use './../storages/spaces';
 // @use './../components/accordion';
 // @use './../mixins/component';
 // @use './../mixins/transition';
+@use './../mixins/display' as *;
+
 $prefix: prefix.$prefix;
 
 
@@ -37,78 +40,8 @@ $prefix: prefix.$prefix;
 
 
 // * ------------------------------------------------------------------------ //
-// * - Component Mixins                                                     - //
+// * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
-
-// -- ---------------------------------------------
-// -- Define the structure of the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the accordion component.
-// -- ---------------------------------------------
-@mixin accordion-effects() {
-    @content;
-}
 
 
 
@@ -117,20 +50,9 @@ $prefix: prefix.$prefix;
 // * ------------------------------------------------------------------------ //
 
 .#{$prefix}accordion {
-    @include accordion-structure();
-    @include accordion-layout();
-    @include accordion-typography();
-    @include accordion-spacing();
-    @include accordion-interactions();
-    @include accordion-state();
-    @include accordion-transition();
-    @include accordion-animation();
-    @include accordion-theme();
-    @include accordion-effects();
-
-    width: 100%;
-    max-width: 600px;
-    margin: 20px auto;
+    @include width-full();
+    @include max-width(600);
+    @include margin(20px auto);
 
     &-item {
         border: 1px solid #ccc;

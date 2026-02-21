@@ -13,6 +13,8 @@
 
 @use './../builders/banner';
 @use './../storages/prefix';
+@use './../mixins/display' as *;
+
 
 // @use './../storages/icon' as store;
 // @use './../components/icon' ;

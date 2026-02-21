@@ -15,6 +15,8 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/transition';
+@use './../mixins/display' as *;
+
 
 @use './../storages/rating' as store;
 // @use './../components/rating' ;

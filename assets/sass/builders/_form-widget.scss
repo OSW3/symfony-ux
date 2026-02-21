@@ -15,10 +15,11 @@
 @use './../storages/prefix';
 @use './../mixins/icon' as iconMixin;
 @use './../mixins/corner';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 @use './../mixins/transition';
 @use './../functions/utils';
+@use './../mixins/display' as *;
 
 @use './../storages/form-widget' as store;
 @use './../components/form' ;
@@ -38,76 +39,6 @@ $prefix: prefix.$prefix;
 // * ------------------------------------------------------------------------ //
 // * - Component Mixins                                                     - //
 // * ------------------------------------------------------------------------ //
-
-// -- ---------------------------------------------
-// -- Define the structure of the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the form-widget component.
-// -- ---------------------------------------------
-@mixin form-widget-effects() {
-    @content;
-}
 
 
 
@@ -140,11 +71,11 @@ $prefix: prefix.$prefix;
 @mixin control-padding {
     @if store.$control--padding-x == store.$control--padding-y {
         @if store.$control--padding-x > 0 {
-            @include spacing.inner(store.$control--padding-x);
+            @include padding(store.$control--padding-x);
         }
     } @else {
-        @include spacing.inner-x(store.$control--padding-x);
-        @include spacing.inner-y(store.$control--padding-y);
+        @include padding-x(store.$control--padding-x);
+        @include padding-y(store.$control--padding-y);
     }
 }
 
@@ -161,11 +92,11 @@ $prefix: prefix.$prefix;
 @mixin spacing-inner($x, $y) {
     @if $x == $y {
         @if $x > 0 {
-            @include spacing.inner($x);
+            @include padding($x);
         }
     } @else {
-        @include spacing.inner-x($x);
-        @include spacing.inner-y($y);
+        @include padding-x($x);
+        @include padding-y($y);
     }
 }
 
@@ -180,24 +111,12 @@ $prefix: prefix.$prefix;
 
 
 .#{$prefix}form-widget {
-    @include form-widget-structure();
-    @include form-widget-layout();
-    @include form-widget-typography();
-    @include form-widget-spacing();
-    @include form-widget-interactions();
-    @include form-widget-state();
-    @include form-widget-transition();
-    @include form-widget-animation();
-    @include form-widget-theme();
-    @include form-widget-effects();
-
-
     // Widget layout
     // --
 
-    @include flex.display;
-    @include flex.direction(column);
-    @include flex.wrap(wrap);
+    @include display-flex();
+    @include flex-direction(column);
+    @include flex-wrap(wrap);
     @include transition;
     @include spacing-inner(
         store.$widget--padding-x, 
@@ -243,7 +162,7 @@ $prefix: prefix.$prefix;
 
     // Widget control
     &-control {
-        @include flex.grow(1);
+        @include flex-grow(1);
         @include control-padding;
         @include control-border;
         @include transition;
@@ -274,18 +193,18 @@ $prefix: prefix.$prefix;
     // Widget group
     &-group {
         // border: 5px soli
-        @include flex.display;
-        @include flex.direction(row);
-        @include flex.wrap(wrap);
-        @include flex.align-items(stretch);
-        @include flex.grow(1);
+        @include display-flex();
+        @include flex-direction(row);
+        @include flex-wrap(wrap);
+        @include flex-align-items(stretch);
+        @include flex-grow(1);
 
         &-text,
         & output {
             cursor: pointer;
-            @include flex.display;
-            @include flex.direction(row);
-            @include flex.align-items(center);
+            @include display-flex();
+            @include flex-direction(row);
+            @include flex-align-items(center);
             @include control-padding;
             @include control-border;
             @include theme(
@@ -377,8 +296,8 @@ $prefix: prefix.$prefix;
 
     $label-margin-right: .5rem;
     &-inline {
-        @include flex.direction(row);
-        @include flex.align-items(center);
+        @include flex-direction(row);
+        @include flex-align-items(center);
     }
     &-inline &-label {
         margin-bottom: 0;
@@ -389,7 +308,7 @@ $prefix: prefix.$prefix;
         }
     }
     &-inline &-control {
-        // // @include flex.grow(1);
+        // // @include flex-grow(1);
     }
     &-inline &-description {
         @if store.$label--inline-width != auto {
@@ -397,9 +316,9 @@ $prefix: prefix.$prefix;
         }
     }
     &-inline &-group {
-        // // @include flex.direction(row);
-        // // @include flex.align-items(center);
-        // // @include flex.grow(1);
+        // // @include flex-direction(row);
+        // // @include flex-align-items(center);
+        // // @include flex-grow(1);
     }
 
     

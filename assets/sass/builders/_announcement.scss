@@ -15,15 +15,17 @@
 @use "sass:meta";
 @use './ticker';
 @use './rotator';
-@use './../mixins/flex';
+@use './../mixins/flex' as *;
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../storages/announcement' as store;
 // @use './../components/announcement';
 
-@use './../mixins/structure/display' as d;
-@use './../mixins/structure/box-model' as bm;
+@use './../mixins/display' as *;
+@use './../mixins/box-model' as *;
+@use './../mixins/visual' as *;
+@use './../mixins/states' as *;
 
 $prefix: prefix.$prefix;
 
@@ -38,118 +40,9 @@ $prefix: prefix.$prefix;
 
 
 // * ------------------------------------------------------------------------ //
-// * - Component Mixins                                                     - //
+// * - Helpers                                                     - //
 // * ------------------------------------------------------------------------ //
 
-// -- ---------------------------------------------
-// -- Define the structure of the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-structure() {
-    @include d.display-flex();
-
-    // @include flex.display;
-    @include bm.min-height(store.$min-height);
-    @include bm.min-width(100%);
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-layout() {
-    @include flex.justify-content(center);
-    @include flex.align-items(center);
-
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-transition() {
-    @if store.$has-transition {
-        @include transition.set(
-            (color, background-color, border-color),
-            store.$transition-delay,
-            store.$transition-type,
-        );
-    }
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-theme() {
-    color: var(--#{$prefix}announcement--color);
-    background-color: var(--#{$prefix}announcement--bg-color);
-
-    border-width: store.$border-width;
-    border-style: solid;
-    border-color: var(--#{$prefix}announcement--border-color);
-    border-radius: store.$border-radius;
-
-    & a {
-        color: var(--#{$prefix}announcement--color);
-        text-decoration: underline;
-    }
-
-    @if store.$has-hover-state {
-        &:hover {
-            color: var(--#{$prefix}announcement--color--hover);
-            background-color: var(--#{$prefix}announcement--bg-color--hover);
-            border-color: var(--#{$prefix}announcement--border-color--hover);
-    
-            & a {
-                color: var(--#{$prefix}announcement--color--hover);
-                text-decoration: underline;
-            }
-        }
-    }
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the announcement component.
-// -- ---------------------------------------------
-@mixin announcement-effects() {
-    @content;
-}
 
 
 
@@ -158,14 +51,74 @@ $prefix: prefix.$prefix;
 // * ------------------------------------------------------------------------ //
 
 .#{$prefix}announcement {
-    @include announcement-structure();
-    @include announcement-layout();
-    @include announcement-typography();
-    @include announcement-spacing();
-    @include announcement-interactions();
-    @include announcement-state();
-    @include announcement-transition();
-    @include announcement-animation();
-    @include announcement-theme();
-    @include announcement-effects();
+    /* Layout */
+    @include display-flex();
+    @include flex-justify-content(center);
+    @include flex-align-items(center);
+
+    /* Box model */
+    @include min-height(store.$min-height);
+    @include min-width(100%);
+
+    /* Visual */
+    @include border-width(store.$border-width);
+    @include border-style(solid);
+    @include border-radius(store.$border-radius);
+
+
+    @if store.$has-hover-state == false {
+        @include color(var(--#{$prefix}announcement--color));
+        @include background-color(var(--#{$prefix}announcement--bg-color));
+        @include border-color(var(--#{$prefix}announcement--border-color));
+    }
+    @else { 
+        @include color-states((
+            base: var(--#{$prefix}announcement--color),
+            hover: var(--#{$prefix}announcement--color--hover),
+            // focus: var(--#{$prefix}announcement--color--focus),
+            // active: var(--#{$prefix}announcement--color--active),
+            // disabled: var(--#{$prefix}announcement--color--disabled)
+        ));
+    
+        @include background-color-states((
+            base: var(--#{$prefix}announcement--bg-color),
+            hover: var(--#{$prefix}announcement--bg-color--hover),
+            // focus: var(--#{$prefix}announcement--bg-color--focus),
+            // active: var(--#{$prefix}announcement--bg-color--active),
+            // disabled: var(--#{$prefix}announcement--bg-color--disabled)
+        ));
+    
+        @include border-color-states((
+            base: var(--#{$prefix}announcement--border-color),
+            hover: var(--#{$prefix}announcement--border-color--hover),
+            // focus: var(--#{$prefix}announcement--border-color--focus),
+            // active: var(--#{$prefix}announcement--border-color--active),
+            // disabled: var(--#{$prefix}announcement--border-color--disabled)
+        ));
+    }
+
+
+    /* Transition */
+    @if store.$has-transition {
+        @include transition-property(color, background-color, border-color);
+        @include transition-duration(store.$transition-delay);
+        @include transition-timing-function(store.$transition-type);
+    }
+
+    // Announcement links styles
+    // -- 
+
+    @include color-states((
+        base: var(--#{$prefix}announcement--color),
+        hover: var(--#{$prefix}announcement--color--hover)
+    ), (
+        selector: '&:STATE a'
+    ));
+
+    @include states('text-decoration', (
+        base: underline,
+        hover: underline
+    ), (
+        selector: '&:STATE a'
+    ));
 }

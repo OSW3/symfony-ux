@@ -1,97 +1,302 @@
+// * ===========================================================================
+// *  Structural Mixins for the Spacing Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the spacing properties (margin and 
+// *  padding) of elements. These mixins provide a convenient way to apply 
+// *  spacing values with optional !important flags.
+// *
+// * ===========================================================================
 
-@use './../functions//utils';
+@charset 'utf-8';
 
-@mixin margin($top: null, $right: null, $bottom: null, $left: null, $important: false) 
-{
-  @include _coords('margin', $top, $right, $bottom, $left, $important);
-}
-@mixin margin-x($value: null, $important: false) 
-{
-  @include _coords-x('margin', $value, $important);
-}
-@mixin margin-y($value: null, $important: false) 
-{
-  @include _coords-y('margin', $value, $important);
-}
-
-@mixin outer($top: null, $right: null, $bottom: null, $left: null, $important: false) 
-{
-  @include margin($top, $right, $bottom, $left, $important);
-}
-@mixin outer-x($value: null, $important: false) 
-{
-  @include margin-x($value, $important);
-}
-@mixin outer-y($value: null, $important: false) 
-{
-  @include margin-y($value, $important);
-}
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
 
 
-@mixin padding($top: null, $right: null, $bottom: null, $left: null, $important: false) 
-{
-  @include _coords('padding', $top, $right, $bottom, $left, $important);
-}
-@mixin padding-x($value: null, $important: false) 
-{
-  @include _coords-x('padding', $value, $important);
-}
-@mixin padding-y($value: null, $important: false) 
-{
-  @include _coords-y('padding', $value, $important);
-}
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
 
-@mixin inner($top: null, $right: null, $bottom: null, $left: null, $important: false) 
-{
-  @include padding($top, $right, $bottom, $left, $important);
-}
-@mixin inner-x($value: null, $important: false) 
-{
-  @include padding-x($value, $important);
-}
-@mixin inner-y($value: null, $important: false) 
-{
-  @include padding-y($value, $important);
-}
+// Unité par défaut pour les valeurs *numériques sans unité* (ex: 8 -> 8 * 1rem => 8rem)
+$spacing-default-unit: 1rem !default;
+
+// Si true, les arguments `null` n’émettent rien (skip)
+$spacing-skip-null: true !default;
 
 
 
 
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
 
-/// Position mixin's utilities
-/// =============================================
+/// Check if a value is length-like (number with or without unit, or percentage).
 /// 
-@mixin _coords($type, $top: null, $right: null, $bottom: null, $left: null, $important: false) 
-{
-  $suffix: utils.is_important($important);
-
-  @if $right == $top and $bottom == $right and $left == $bottom and $top == $left {
-    #{$type}: $top #{$suffix};
-  }
-  @else if $top == $bottom and $left == $right {
-    #{$type}: $top $left  #{$suffix};
-  }
-  @else if $top not null and $right not null and $bottom not null and $left not null {
-    #{$type}: $top $right $bottom $left #{$suffix};
-  }
-  @else {
-    @if ($top not null) {#{$type}-top : $top  #{$suffix};}
-    @if ($right not null) {#{$type}-right : $right  #{$suffix};}
-    @if ($bottom not null) {#{$type}-bottom : $bottom  #{$suffix};}
-    @if ($left not null) {#{$type}-left : $left  #{$suffix};}
-  }
+/// @param {Value} $value - The value to check.
+/// @return {Boolean} - True if the value is length-like, false otherwise.
+/// 
+@function _is-length-like($value) {
+  @return meta.type-of($value) == 'number';
 }
-@mixin _coords-x($type, $value: null, $important: false) 
-{
-  $suffix: utils.is_important($important);
 
-  #{$type}-right : $value  #{$suffix};
-  #{$type}-left : $value  #{$suffix};
+/// Check if a value is zero (either unitless or with any unit).
+/// 
+/// @param {Value} $value - The value to check.
+/// @return {Boolean} - True if the value is zero, false otherwise.
+///
+@function _is-zero($value) {
+@return _is-length-like($value) and $value == 0;
 }
-@mixin _coords-y($type, $value: null, $important: false) 
-{
-  $suffix: utils.is_important($important);
 
-  #{$type}-top : $value  #{$suffix};
-  #{$type}-bottom : $value  #{$suffix};
+/// Allow certain keywords based on context (e.g., 'auto' for margin but not for padding).
+/// 
+/// @param {Value} $value - The value to check.
+/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
+/// @return {Boolean} - True if the value is an allowed keyword, false otherwise.
+///
+@function _allowed-keyword($value, $allow-auto: false) {
+  @if meta.type-of($value) == 'string' {
+    @if $allow-auto and ($value == auto) { @return true; }
+    @if ($value == inherit) or ($value == initial) or ($value == unset) or ($value == revert) {
+      @return true;
+    }
+  }
+  @return false;
+}
+
+/// Converts a value to a length or allowed keyword, applying the default unit if it's a unitless number.
+/// 
+/// - If the value is a unitless number, it multiplies it by the default spacing unit (e.g., 1rem).
+/// - If the value is already a number with a unit, it returns it as is.
+/// - If the value is an allowed keyword, it returns it as is.
+/// - If the value is null and skipping is enabled, it returns null.
+/// - Otherwise, it returns the value as is (e.g., calc(...) remains as is).
+/// 
+/// @param {Value} $value - The value to convert.
+/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
+/// @return {Value} - The converted length or allowed keyword, or null if the value is null and skipping is enabled.
+///
+@function _to-length-or-keyword($value, $allow-auto: false) {
+  @if $value == null { @return null; }
+
+  @if _allowed-keyword($value, $allow-auto) { @return $value; }
+
+  // 0 sans unité
+  @if _is-zero($value) { @return 0; }
+
+  // Nombres
+  @if _is-length-like($value) {
+    @if math.is-unitless($value) {
+      // Ajoute l’unité dimensionnelle par défaut (ex: 1rem) — évite toute concat string
+      @return $value * $spacing-default-unit;
+    } @else {
+      @return $value;
+    }
+  }
+
+  // Laisse passer calc(), variables CSS, etc.
+  @return $value;
+}
+
+/// Returns the nth item of a list after converting it to a length or allowed 
+/// keyword, or null if the index is out of bounds.
+/// 
+/// @param {List} $values - The list of values to retrieve from.
+/// @param {Number} $index - The 1-based index of the item to retrieve.
+/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
+/// @return {Value} - The nth item converted to a length or allowed keyword, or null if the index is out of bounds.
+///
+@function _nth-or-null($values, $index, $allow-auto) {
+  @if list.length($values) >= $index {
+    @return _to-length-or-keyword(list.nth($values, $index), $allow-auto);
+  }
+  @return null;
+}
+
+/// Normalizes a list of spacing values (for margin or padding) into a format suitable for CSS output.
+/// 
+/// - Accepts 1 to 4 values, which can be passed as individual arguments or as a single list.
+/// - Normalizes each value to a length or allowed keyword using the _to-length-or-keyword function.
+/// - If $skip-null is true and all values are null, returns null to allow skipping the property entirely.
+/// 
+/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
+/// @param {Boolean} $skip-null - Whether to return null if all values are null (default: true).
+/// @param {List} $values - The list of values to normalize, either as individual arguments or as a single list.
+/// @return {List|null} - A normalized list of 1 to 4 values suitable for CSS output, or null if all values are null and skipping is enabled.
+///
+@function _normalize-spacing-list($allow-auto: false, $skip-null: true, $values...) {
+  
+  // Si une seule valeur est une liste explicite, l’aplatir
+  @if (list.length($values) == 1) and (meta.type-of(list.nth($values, 1)) == 'list') {
+    $values: list.nth($values, 1);
+  }
+
+  $len: list.length($values);
+  @if $len == 0 { @return null; }
+
+  $v1: _nth-or-null($values, 1, $allow-auto);
+  $v2: _nth-or-null($values, 2, $allow-auto);
+  $v3: _nth-or-null($values, 3, $allow-auto);
+  $v4: _nth-or-null($values, 4, $allow-auto);
+
+  // Si tout est null et que le caller a demandé de skipper, retourne null
+  @if $skip-null and ($v1 == null and $v2 == null and $v3 == null and $v4 == null) {
+    @return null;
+  }
+
+  @if $len == 1 { @return $v1; }
+  @if $len == 2 { @return $v1 $v2; }
+  @if $len == 3 { @return $v1 $v2 $v3; }
+  @return $v1 $v2 $v3 $v4;
+
+}
+
+/// Pops a trailing boolean from a list of values, if it exists.
+/// 
+/// @param {List} $values - The list of values to check for a trailing boolean.
+/// @return {List} A pair containing the list of values (with the trailing boolean removed if it exists) and the boolean value (true if the last item was a boolean, false otherwise).
+///
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    // reconstitue la liste sans le dernier item
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), space);
+    }
+    @return ($trimmed, $important);
+  }
+
+  @return ($values, false);
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Padding API
+// * ---------------------------------------------
+
+@mixin padding($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+
+    $norm: _normalize-spacing-list(false, $spacing-skip-null, $vals...);
+
+    @if not ($norm == null and $spacing-skip-null) {
+        @if $important-flag {
+            padding: $norm !important;
+        } @else {
+            padding: $norm;
+        }
+    }
+}
+@mixin padding-top($value, $important: false) {
+    $v: _to-length-or-keyword($value, false);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { padding-top: $v !important; }
+        @else { padding-top: $v; }
+    }
+}
+@mixin padding-right($value, $important: false) {
+    $v: _to-length-or-keyword($value, false);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { padding-right: $v !important; }
+        @else { padding-right: $v; }
+    }
+}
+@mixin padding-bottom($value, $important: false) {
+    $v: _to-length-or-keyword($value, false);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { padding-bottom: $v !important; }
+        @else { padding-bottom: $v; }
+    }
+}
+@mixin padding-left($value, $important: false) {
+    $v: _to-length-or-keyword($value, false);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { padding-left: $v !important; }
+        @else { padding-left: $v; }
+    }
+}
+@mixin padding-x($value: null, $important: false) {
+    @include padding-right($value, $important);
+    @include padding-left($value, $important);
+}
+@mixin padding-y($value: null, $important: false) {
+    @include padding-top($value, $important);
+    @include padding-bottom($value, $important);
+}
+
+
+// * ---------------------------------------------
+// * Margin API
+// * ---------------------------------------------
+
+@mixin margin($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+
+    $norm: _normalize-spacing-list(false, $spacing-skip-null, $vals...);
+
+    @if not ($norm == null and $spacing-skip-null) {
+        @if $important-flag {
+            margin: $norm !important;
+        } @else {
+            margin: $norm;
+        }
+    }
+}
+@mixin margin-top($value, $important: false) {
+    $v: _to-length-or-keyword($value, true);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { margin-top: $v !important; }
+        @else { margin-top: $v; }
+    }
+}
+@mixin margin-right($value, $important: false) {
+    $v: _to-length-or-keyword($value, true);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { margin-right: $v !important; }
+        @else { margin-right: $v; }
+    }
+}
+@mixin margin-bottom($value, $important: false) {
+    $v: _to-length-or-keyword($value, true);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { margin-bottom: $v !important; }
+        @else { margin-bottom: $v; }
+    }
+}
+@mixin margin-left($value, $important: false) {
+    $v: _to-length-or-keyword($value, true);
+
+    @if not ($v == null and $spacing-skip-null) {
+        @if $important { margin-left: $v !important; }
+        @else { margin-left: $v; }
+    }
+}
+@mixin margin-x($value: null, $important: false) {
+    @include margin-right($value, $important);
+    @include margin-left($value, $important);
+}
+@mixin margin-y($value: null, $important: false) {
+  @include margin-top($value, $important);
+  @include margin-bottom($value, $important);
 }

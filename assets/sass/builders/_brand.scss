@@ -14,12 +14,14 @@
 @use 'sass:map';
 @use 'sass:list';
 @use './../storages/brand' as store;
-@use './../mixins/spacing';
+@use './../mixins/spacing' as *;
 @use './../builders/banner';
 @use './../components/brand';
 @use './../storages/prefix';
 @use './../mixins/transition';
 @use './../storages/breakpoints';
+@use './../mixins/display' as *;
+
 
 @include banner.header('Component Brand');
 $prefix: prefix.$prefix;
@@ -157,7 +159,7 @@ $prefix: prefix.$prefix;
         @if store.$direction == row {
             align-items: center;
         }
-        @include spacing.inner( 
+        @include padding( 
             store.$padding-x,
             store.$padding-y,
             store.$padding-x,
@@ -231,13 +233,13 @@ $prefix: prefix.$prefix;
         color: inherit;
         font-size: store.$secondary-font-size;
         font-weight: store.$secondary-font-weight;
-        @include spacing.outer( 0,0,0,0 );
+        @include margin( 0,0,0,0 );
         @if store.$secondary-font-family {
             font-family: store.$secondary-font-family;
         }
     }
     &-name + &-tagline {
-        @include spacing.outer( store.$tagline-offset ,0,0,0 );
+        @include margin( store.$tagline-offset ,0,0,0 );
     }
     
     &-figures + &-text {

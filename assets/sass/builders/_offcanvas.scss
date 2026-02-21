@@ -15,16 +15,18 @@
 // @use "sass:meta";
 @use "sass:math";
 @use './../utils/no-scroll';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 @use './../storages/offcanvas' as store;
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/position';
+@use './../mixins/position' as *;
 // @use './../storages/spaces';
 @use './../components/offcanvas';
 // @use './../mixins/component';
 @use './../mixins/transition';
+@use './../mixins/display' as *;
+
 
 @include banner.header('Component Offcanvas');
 $prefix: prefix.$prefix;
@@ -159,7 +161,11 @@ $right-width: store.$width;
     opacity: 0;
     display: none;
     z-index: 1000; //  au dessus du menu header // au dessus de scroll to top
-    @include position.fixed(0,0,0,0);
+    @include position-fixed();
+    @include top(0);
+    @include left(0);
+    @include bottom(0);
+    @include right(0);
     @include transition.set(
         (opacity), 
         store.$transition-delay, 
@@ -174,7 +180,11 @@ $right-width: store.$width;
         backdrop-filter: blur(store.$backdrop--blur);
         &::after {
             content: "";
-            @include position.absolute(0,0,0,0);
+            @include position-absolute();
+            @include top(0);
+            @include left(0);
+            @include bottom(0);
+            @include right(0);
             background-color: var(--#{$prefix}offcanvas--backdrop--bg-color);
             opacity: store.$backdrop--opacity;
             z-index: 1;
@@ -199,8 +209,8 @@ $right-width: store.$width;
         // border: 3px solid green;
         background-color: var(--#{$prefix}offcanvas--bg-color);
 
-        @include flex.display;
-        @include flex.direction(column);
+        @include display-flex;
+        @include flex-direction(column);
 
         position: absolute;
         top: 0;
@@ -281,18 +291,18 @@ $right-width: store.$width;
 
     &-header, &-body, &-footer {
         position: relative;
-        @include spacing.inner-x(store.$padding-x);
-        @include spacing.inner-y(store.$padding-y);
+        @include padding-x(store.$padding-x);
+        @include padding-y(store.$padding-y);
     }
     &-header {
-        @include flex.display;
-        @include flex.direction(row);
-        @include flex.justify-content(space-between);
+        @include display-flex;
+        @include flex-direction(row);
+        @include flex-justify-content(space-between);
         background-color: var(--#{$prefix}offcanvas--header--bg-color);
         color: var(--#{$prefix}offcanvas--header--color);
     }
     &-body {
-        @include flex.grow(1);
+        @include flex-grow(1);
         overflow-y: scroll;
         -webkit-overflow-scrolling: touch;
         background-color: var(--#{$prefix}offcanvas--body--bg-color);

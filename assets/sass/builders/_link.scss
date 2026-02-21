@@ -15,9 +15,11 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/icon' as iconMixins;
-@use './../mixins/spacing';
+@use './../mixins/spacing' as *;
 @use './../mixins/transition';
 // @use './../mixins/icon';
+@use './../mixins/display' as *;
+
 
 @use './../storages/link' as store;
 @use './../components/link' ;

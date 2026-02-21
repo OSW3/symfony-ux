@@ -12,16 +12,17 @@
 @charset 'utf-8';
 
 @use 'sass:map';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/position';
+@use './../mixins/position' as *;
 @use './../mixins/transition';
 @use './../variables/alignments';
 @use './../storages/breakpoints';
 @use './../storages/nav' as store;
 @use './../components/nav';
+@use './../mixins/display' as *;
 
 @include banner.header('Component Nav');
 $prefix: prefix.$prefix;
@@ -40,76 +41,6 @@ $prefix: prefix.$prefix;
 // * - Component Mixins                                                     - //
 // * ------------------------------------------------------------------------ //
 
-// -- ---------------------------------------------
-// -- Define the structure of the nav component.
-// -- ---------------------------------------------
-@mixin nav-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the nav component.
-// -- ---------------------------------------------
-@mixin nav-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the nav component.
-// -- ---------------------------------------------
-@mixin nav-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the nav component.
-// -- ---------------------------------------------
-@mixin nav-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the nav component.
-// -- ---------------------------------------------
-@mixin nav-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the nav component.
-// -- ---------------------------------------------
-@mixin nav-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the nav component.
-// -- ---------------------------------------------
-@mixin nav-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the nav component.
-// -- ---------------------------------------------
-@mixin nav-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the nav component.
-// -- ---------------------------------------------
-@mixin nav-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the nav component.
-// -- ---------------------------------------------
-@mixin nav-effects() {
-    @content;
-}
-
 
 
 // * ------------------------------------------------------------------------ //
@@ -122,17 +53,6 @@ $breakpoints: breakpoints.$breakpoints;
 // * ---------------------------------------------
 
 .#{$prefix}nav {
-    @include nav-structure();
-    @include nav-layout();
-    @include nav-typography();
-    @include nav-spacing();
-    @include nav-interactions();
-    @include nav-state();
-    @include nav-transition();
-    @include nav-animation();
-    @include nav-theme();
-    @include nav-effects();
-
 
 
     // Set layout css variables
@@ -147,8 +67,8 @@ $breakpoints: breakpoints.$breakpoints;
     // div.nav 
 
     background-color: var(--#{$prefix}nav--bg-color);
-    @include spacing.inner(0);
-    @include spacing.outer(0);
+    @include padding(0);
+    @include margin(0);
     // overflow: hidden;
     // position: relative; 
 
@@ -159,10 +79,10 @@ $breakpoints: breakpoints.$breakpoints;
 
     &-items {
         list-style: none;
-        @include flex.display;
-        @include flex.direction(row);
-        @include spacing.inner(0);
-        @include spacing.outer(0);
+        @include display-flex();
+        @include flex-direction(row);
+        @include padding(0);
+        @include margin(0);
 
         white-space: nowrap;
         // overflow: hidden; 
@@ -174,7 +94,7 @@ $breakpoints: breakpoints.$breakpoints;
     // div.nav.nav-vertical > ul.nav-items
 
     &-vertical &-items { 
-        @include flex.direction(column, true);
+        @include flex-direction(column, true);
     }
 
 
@@ -185,11 +105,11 @@ $breakpoints: breakpoints.$breakpoints;
     // div.nav.nav-end > ul.nav-items ...
     @each $name, $value in alignments.$flex-alignments {
         &-#{$name} &-items {
-            @include flex.justify-content($value, true);
+            @include flex-justify-content($value, true);
         }
     }
     &-fill &-item {
-        @include flex.grow(1);
+        @include flex-grow(1);
     }
 
     
@@ -198,8 +118,8 @@ $breakpoints: breakpoints.$breakpoints;
     // div.nav > ul.nav-items > li.nav-item
 
     &-item {
-        @include position.relative;
-        @include spacing.outer(0);
+        @include position-relative;
+        @include margin(0);
 
         // &:hover > .#{$prefix}nav-link {
         //     background-color: var(--#{$prefix}nav-item--bg-color--hover);
@@ -216,14 +136,14 @@ $breakpoints: breakpoints.$breakpoints;
 
     &-link {
         cursor: store.$cursor;
-        @include flex.display;
-        @include flex.direction(row);
+        @include display-flex;
+        @include flex-direction(row);
         background-color: var(--#{$prefix}nav-item--bg-color);
         color: var(--#{$prefix}nav-item--color);
         white-space: nowrap;
         z-index: 1;
 
-        @include spacing.inner( 
+        @include padding( 
             var(--#{$prefix}nav-item-padding-x),
             var(--#{$prefix}nav-item-padding-y),
             var(--#{$prefix}nav-item-padding-x),
@@ -258,7 +178,7 @@ $breakpoints: breakpoints.$breakpoints;
 
     // Link content centered when nav alignment is 'fill'
     &-fill &-link {
-        @include flex.justify-content(center);
+        @include flex-justify-content(center);
     }
     
     // Disabled link
@@ -382,7 +302,7 @@ $breakpoints: breakpoints.$breakpoints;
         content: "\25BE";
     }
     [data-placement=left] > &-link {
-        // @include flex.direction(row-reverse);
+        // @include flex-direction(row-reverse);
         &::before {
             content: "\25C2";
             // margin-left: 0;
@@ -407,7 +327,7 @@ $breakpoints: breakpoints.$breakpoints;
     @each $key, $value in $breakpoints {
         @media (max-width: map.get($breakpoints, $key)) {
             &-#{$key} &-items { 
-                @include flex.direction(column);
+                @include flex-direction(column);
             }
             &-#{$key} .#{$prefix}has-subnav > &-items {
                 top: 100%;

@@ -17,16 +17,17 @@
 @use 'sass:string';
 @use './brand';
 @use './menu';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
 
 @use './../storages/navbar' as store;
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/position';
+@use './../mixins/position' as *;
 @use './../components/navbar';
 @use './../mixins/transition';
 @use './../storages/breakpoints';
+@use './../mixins/display' as *;
 
 @include banner.header('Component Navbar');
 $prefix: prefix.$prefix;
@@ -44,77 +45,6 @@ $prefix: prefix.$prefix;
 // * ------------------------------------------------------------------------ //
 // * - Component Mixins                                                     - //
 // * ------------------------------------------------------------------------ //
-
-// -- ---------------------------------------------
-// -- Define the structure of the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the navbar component.
-// -- ---------------------------------------------
-@mixin navbar-effects() {
-    @content;
-}
-
 
 
 // * ------------------------------------------------------------------------ //
@@ -165,18 +95,6 @@ $right-width: store.$width;
 // * ---------------------------------------------
 .#{$prefix}navbar {
     $root: &;
-    @include navbar-structure();
-    @include navbar-layout();
-    @include navbar-typography();
-    @include navbar-spacing();
-    @include navbar-interactions();
-    @include navbar-state();
-    @include navbar-transition();
-    @include navbar-animation();
-    @include navbar-theme();
-    @include navbar-effects();
-
-
 
     // Navbar main element
     // -- 
@@ -217,10 +135,10 @@ $right-width: store.$width;
 
     & #{$containers-string} {
         $direction: if(sass(store.$is-inverse): row-reverse; else: row);
-        @include flex.display;
-        @include flex.direction($direction);
-        @include flex.align-items(center);
-        @include flex.justify-content(space-between);
+        @include display-flex;
+        @include flex-direction($direction);
+        @include flex-align-items(center);
+        @include flex-justify-content(space-between);
     }
 
 
@@ -257,7 +175,11 @@ $right-width: store.$width;
         opacity: 0;
         display: none;
         z-index: 1000; //  au dessus du menu navbar // au dessus de scroll to top
-        @include position.fixed(0,0,0,0);
+        @include position-fixed();
+        @include top(0);
+        @include left(0);
+        @include bottom(0);
+        @include right(0);
         @include transition.set(
             (opacity), 
             store.$transition-delay, 
@@ -269,8 +191,8 @@ $right-width: store.$width;
         // --
 
         &-content {
-            @include flex.display;
-            @include flex.direction(column);
+            @include display-flex;
+            @include flex-direction(column);
             background-color: var(--#{$prefix}navbar--offcanvas--bg-color);
             position: absolute;
             top: 0;
@@ -289,18 +211,18 @@ $right-width: store.$width;
         // --
         
         &-header {
-            @include flex.display;
-            @include flex.direction(row);
-            @include flex.align-items(center);
-            @include flex.justify-content(space-between);
-            @include spacing.inner-x(store.$padding-x);
-            @include spacing.inner-y(store.$padding-y);
+            @include display-flex;
+            @include flex-direction(row);
+            @include flex-align-items(center);
+            @include flex-justify-content(space-between);
+            @include padding-x(store.$padding-x);
+            @include padding-y(store.$padding-y);
             @if store.$separator-width > 0 {
                 border-bottom: store.$separator-width solid var(--#{$prefix}navbar--border-color);
             }
         }
         &-body {
-            @include flex.grow(1);
+            @include flex-grow(1);
             overflow-y: scroll;
         }
 
@@ -459,7 +381,11 @@ $right-width: store.$width;
         #{$root}-nav {
             backdrop-filter: blur(store.$backdrop-blur);
             &::after {
-                @include position.absolute(0,0,0,0);
+                @include position-absolute();
+                @include top(0);
+                @include left(0);
+                @include right(0);
+                @include bottom(0);
                 content: "";
                 background-color: var(--#{$prefix}navbar--offcanvas--backdrop);
                 opacity: store.$backdrop-opacity;
@@ -504,7 +430,7 @@ $right-width: store.$width;
                 // --
 
                 &-content {
-                    @include flex.direction(row);
+                    @include flex-direction(row);
                     width: unset !important;
                     left: unset !important;
                     right: unset !important;

@@ -13,12 +13,12 @@
 
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/spacing';
 @use './../mixins/transition';
 @use './../storages/copyright' as store;
 // @use './../components/copyright';
 
-@use './../mixins/structure/display' as d;
+@use './../mixins/display' as *;
+@use './../mixins/spacing' as *;
 
 
 $prefix: prefix.$prefix;
@@ -41,7 +41,7 @@ $prefix: prefix.$prefix;
 // -- Define the structure of the copyright component.
 // -- ---------------------------------------------
 @mixin copyright-structure() {
-    @include d.display(store.$display, false);
+    @include display(store.$display, false);
     @content;
 }
 
@@ -68,13 +68,13 @@ $prefix: prefix.$prefix;
 // -- Define the spacing of the copyright component.
 // -- ---------------------------------------------
 @mixin copyright-spacing() {
-    @include spacing.inner( 
+    @include padding(
         store.$padding-x,
         store.$padding-y,
         store.$padding-x,
         store.$padding-y,
+        true
     );
-    
     @content;
 }
 

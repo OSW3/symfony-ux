@@ -1,0 +1,210 @@
+// * ===========================================================================
+// *  Structural Mixins for Animations
+// * ===========================================================================
+// *
+// *  Mixins atomiques & shorthands pour :
+// *    - animation, animation-name, animation-duration, animation-delay,
+// *      animation-timing-function, animation-iteration-count,
+// *      animation-direction, animation-fill-mode, animation-play-state
+// *    - @keyframes (avec fallbacks -webkit optionnels)
+// *
+// *  Caractéristiques :
+// *    - null-safe via _emit()
+// *    - !important en param optionnel
+// *    - normalisation du temps (unitless -> $time-default-unit)
+// *    - fallbacks optionnels ($enable-css-fallbacks)
+// *    - support multi-animations (comma-list + bool final)
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+@use "sass:meta";
+@use "sass:list";
+@use "sass:math";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Unité par défaut pour les temps (unitless -> temps)
+$time-default-unit: 1s !default; // ex: 200 -> 200s (recommande 1ms si tu veux plutôt des millisecondes)
+
+// Activer les fallbacks legacy (prefix -webkit-)
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
+}
+
+// Nombre -> temps (unitless -> $time-default-unit), conserve 0 sans unité
+@function _normalize-time($value, $default-unit: $time-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value; // keywords, calc(), var(), etc.
+}
+
+// Liste de temps séparés par virgules (pour multi-animations)
+@function _normalize-time-comma-list($values, $default-unit: $time-default-unit) {
+  // Si une liste "comma" déjà, on normalise chaque item individuellement
+  @if meta.type-of($values) == 'list' and list.separator($values) == comma {
+    $out: ();
+    @for $i from 1 through list.length($values) {
+      $out: list.append($out, _normalize-time(list.nth($values, $i), $default-unit), comma);
+    }
+    @return $out;
+  }
+  @return _normalize-time($values, $default-unit);
+}
+
+// Convertit varargs en liste séparée par virgules (ex: plusieurs animations)
+@function _as-comma-list($values) {
+  @if meta.type-of($values) != 'list' { @return $values; }
+  $out: ();
+  @for $i from 1 through list.length($values) {
+    $out: list.append($out, list.nth($values, $i), comma);
+  }
+  @return $out;
+}
+
+// Extrait un booléen final optionnel depuis des varargs
+// Retourne (liste-sans-bool, important-bool)
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), space);
+    }
+    @return ($trimmed, $important);
+  }
+  @return ($values, false);
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// ---------------------------------------------
+// Shorthand : animation
+// ---------------------------------------------
+//
+// Supporte plusieurs animations (séparées par virgules) + bool final.
+// Exemples :
+//   @include animation(fade-in 300ms ease-in 0s 1 normal both running);
+//   @include animation(fade-in 300ms ease, move 2s linear 200ms 3 alternate both, true);
+//
+// NB: on ne tente pas de parser le shorthand ; on passe tel quel.
+// Si tu veux des mixins "paramétrés", utilise les atomiques ci-dessous.
+//
+@mixin animation($values...) {
+  $pair: _pop-trailing-bool($values);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+
+  // Force la liste d’animations à être séparée par virgules si nécessaire
+  $v: _as-comma-list($vals);
+
+  @if $enable-css-fallbacks {
+    @include _emit('-webkit-animation', $v, $important-flag);
+  }
+  @include _emit('animation', $v, $important-flag);
+}
+
+
+// ---------------------------------------------
+// Atomiques
+// ---------------------------------------------
+
+@mixin animation-name($values..., $important: false) {
+  // Accepte plusieurs noms séparés par virgules
+  $names: _as-comma-list($values);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-name', $names, $important); }
+  @include _emit('animation-name', $names, $important);
+}
+
+@mixin animation-duration($values..., $important: false) {
+  // Plusieurs durées (comma-list), normalisées
+  $raw: _as-comma-list($values);
+  $v: _normalize-time-comma-list($raw, $time-default-unit);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-duration', $v, $important); }
+  @include _emit('animation-duration', $v, $important);
+}
+
+@mixin animation-delay($values..., $important: false) {
+  $raw: _as-comma-list($values);
+  $v: _normalize-time-comma-list($raw, $time-default-unit);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-delay', $v, $important); }
+  @include _emit('animation-delay', $v, $important);
+}
+
+@mixin animation-timing-function($values..., $important: false) {
+  // Plusieurs fonctions séparées par virgules possibles
+  $v: _as-comma-list($values);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-timing-function', $v, $important); }
+  @include _emit('animation-timing-function', $v, $important);
+}
+
+@mixin animation-iteration-count($values..., $important: false) {
+  // Ex: 1, 2, infinite (comma-list acceptée)
+  $v: _as-comma-list($values);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-iteration-count', $v, $important); }
+  @include _emit('animation-iteration-count', $v, $important);
+}
+
+@mixin animation-direction($values..., $important: false) {
+  $v: _as-comma-list($values);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-direction', $v, $important); }
+  @include _emit('animation-direction', $v, $important);
+}
+
+@mixin animation-fill-mode($values..., $important: false) {
+  $v: _as-comma-list($values);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-fill-mode', $v, $important); }
+  @include _emit('animation-fill-mode', $v, $important);
+}
+
+@mixin animation-play-state($values..., $important: false) {
+  $v: _as-comma-list($values);
+  @if $enable-css-fallbacks { @include _emit('-webkit-animation-play-state', $v, $important); }
+  @include _emit('animation-play-state', $v, $important);
+}
+
+
+// ---------------------------------------------
+// Keyframes (at-rule)
+// ---------------------------------------------
+//
+// Génère @keyframes (+ @-webkit-keyframes si fallbacks activés).
+// Utilisation :
+//   @include keyframes(fade-in) {
+//     from { opacity: 0; }
+//     to   { opacity: 1; }
+//   }
+//
+@mixin keyframes($name) {
+  @if $enable-css-fallbacks {
+    @-webkit-keyframes #{$name} { @content; }
+  }
+  @keyframes #{$name} { @content; }
+}
+

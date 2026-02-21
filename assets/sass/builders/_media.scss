@@ -14,16 +14,17 @@
 @use "sass:map";
 @use "sass:meta";
 @use "sass:math";
-@use './../mixins/flex';
-// @use './../mixins/structure/box-model' as size;
+@use './../mixins/flex' as *;
+// @use './../mixins/box-model' as size;
 @use './../builders/banner';
-@use './../mixins/structure/box-model' as size;
-@use './../mixins/spacing';
+@use './../mixins/box-model' as size;
+@use './../mixins/spacing' as *;
 @use './../storages/prefix';
-// @use './../mixins/position';
+// @use './../mixins/position' as *;
 @use './../storages/spaces';
 @use './../mixins/component';
 @use './../mixins/transition';
+@use './../mixins/display' as *;
 
 @use './../storages/media' as store;
 @use './../components/media';
@@ -138,8 +139,8 @@ $prefix: prefix.$prefix;
     @include media-effects();
 
 
-    @include flex.display;
-    @include flex.direction(column);
+    @include display-flex;
+    @include flex-direction(column);
     @include size.width(var(--#{$prefix}media-width, 100%));
     // padding: .5rem;
     // margin: .5rem;
@@ -174,8 +175,8 @@ $prefix: prefix.$prefix;
     // border: 1px solid blue;
     // margin-bottom: 10px;
 
-    @include flex.display;
-    @include flex.direction(column);
+    @include display-flex;
+    @include flex-direction(column);
     // padding: .5rem;
 
     // .#{$prefix}media > & {

@@ -13,8 +13,10 @@
 
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/flex';
-@use './../mixins/spacing';
+@use './../mixins/flex' as *;
+@use './../mixins/spacing' as *;
+@use './../mixins/display' as *;
+
 
 @use './../storages/map' as store;
 // @use './../components/map';

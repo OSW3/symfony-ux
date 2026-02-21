@@ -1,96 +1,268 @@
-// flex.scss
-// =============================================================================
-// This file contains utility mixins for working with flexbox properties.
-// These mixins simplify the implementation of flexbox layouts by applying
-// standard flexbox behaviors using various flex properties.
+// * ===========================================================================
+// *  Structural Mixins for the Flex Layout
+// * ===========================================================================
 //
-// Available Mixins:
-// - `display()` : Applies flex display for modern browsers with prefixes.
-// - `direction($direction)` : Sets the flex-direction property (row, column, etc.)
-// - `wrap($wrap)` : Controls how the items wrap in the flex container.
-// - `justifyContent($alignment)` : Aligns items along the main axis (horizontal or vertical).
-// - `alignItems($alignment)` : Aligns items along the cross axis (perpendicular to the main axis).
-// - `alignSelf($alignment)` : Allows individual items to override their container's align-items.
-// - `flex($grow, $shrink, $basis)` : Sets the flex shorthand for flex-grow, flex-shrink, and flex-basis.
-//
-// Example usage:
-// @include display();
-// @include direction(row);
-// @include justifyContent(center);
-// @include alignItems(center);
-// @include flex(1, 0, auto);  // Flex-grow, flex-shrink, and flex-basis
-//
-// These utility mixins ensure that your flexbox layouts are easy to implement
-// and maintain, with minimal code repetition and maximum compatibility.
-// =============================================================================
+// *  Flex container & properties (avec fallbacks optionnels).
+// *  - Null-safe via _emit()
+// *  - !important option sur chaque mixin
+// *  - Fallbacks IE10/11 et vieux WebKit activables via $enable-css-fallbacks
+// *
+// * ===========================================================================
 
+@charset 'utf-8';
+
+@use "sass:meta";
 @use "sass:list";
+@use "sass:math";
+
 @use "./support";
 
-// Display Flex for all browsers
-@mixin display($important: false) {
-    display: -webkit-box;       // Old Safari, iOS 6.x
-    display: -ms-flexbox;       // IE10
-    display: -webkit-flex;      // Old Safari
-    display: flex  #{if(sass($important): "!important"; else: "")}; // Modern browsers
-}
-  
-// Set the flex direction (row, column, etc.)
-@mixin direction($direction: row, $important: false) {
-    $valid-values: column, column-reverse, row, row-reverse;
 
-    @if list.index($valid-values, $direction) {  
-        -webkit-box-orient: horizontal; // Pour les anciennes versions de Safari
-        -webkit-box-direction: normal; // Pour les anciennes versions de Safari
-        @include support.prefix('flex-direction', $direction, (webkit ms), $important);
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
+$length-default-unit: 1px !default;
+
+// Activer les fallbacks legacy (IE10/11, vieux WebKit)
+$enable-css-fallbacks: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, et skip si null
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($val == null and $props-skip-null) {
+    @if $important {
+      #{$prop}: $val !important;
     } @else {
-        @error "'flex.direction()' invalid value. Expected values: column, column-reverse, row, row-reverse.";
+      #{$prop}: $val;
     }
+  }
 }
 
-// Set flex wrap behavior (nowrap, wrap, wrap-reverse)
-@mixin wrap($wrap: nowrap, $important: false) {
-    $valid-values: nowrap, wrap, wrap-reverse, inherit, initial, unset;
+// Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
+@function _normalize-length($value, $default-unit: $length-default-unit) {
+  @if $value == null { @return null; }
+  @if meta.type-of($value) == 'number' {
+    @if $value == 0 { @return 0; }
+    @if math.is-unitless($value) { @return $value * $default-unit; }
+    @return $value;
+  }
+  @return $value; // mots-clés, calc(), variables, etc.
+}
 
-    @if list.index($valid-values, $wrap) {
-        @include support.prefix('flex-wrap', $wrap, (webkit ms), $important);
-    } @else {
-        @error "'flex.wrap()' invalid value. Expected values: nowrap, wrap, wrap-reverse, inherit, initial, unset.";
+// Liste d'espaces de longueurs (1..n)
+@function _normalize-length-list($values, $default-unit: $length-default-unit) {
+  @if meta.type-of($values) == 'list' {
+    $out: ();
+    @for $i from 1 through list.length($values) {
+      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
     }
+    @return $out;
+  }
+  @return _normalize-length($values, $default-unit);
+}
+
+// Mapping direction -> vieux WebKit box-orient / box-direction
+@function _webkit-box-orient($direction) {
+  @if $direction == row or $direction == row-reverse { @return horizontal; }
+  @if $direction == column or $direction == column-reverse { @return vertical; }
+  @return null;
+}
+@function _webkit-box-direction($direction) {
+  @if $direction == row or $direction == column { @return normal; }
+  @if $direction == row-reverse or $direction == column-reverse { @return reverse; }
+  @return null;
+}
+
+// Mapping justify-content -> -ms-flex-pack
+@function _ms-pack($value) {
+  @if $value == flex-start { @return start; }
+  @if $value == flex-end { @return end; }
+  @if $value == center { @return center; }
+  @if $value == space-between { @return justify; }
+  @if $value == space-around { @return distribute; }
+  // Approx pour space-evenly (non supporté IE10/11) -> distribute
+  @if $value == space-evenly { @return distribute; }
+  @return null;
+}
+
+// Mapping align-items -> -ms-flex-align
+@function _ms-align($value) {
+  @if $value == flex-start { @return start; }
+  @if $value == flex-end { @return end; }
+  @if $value == center or $value == baseline or $value == stretch { @return $value; }
+  @return null;
+}
+
+// Mapping align-content -> -ms-flex-line-pack
+@function _ms-line-pack($value) {
+  @if $value == flex-start { @return start; }
+  @if $value == flex-end { @return end; }
+  @if $value == center { @return center; }
+  @if $value == space-between { @return justify; }
+  @if $value == space-around { @return distribute; }
+  @if $value == stretch { @return stretch; }
+  @return null;
+}
+
+// Mapping align-self -> -ms-flex-item-align
+@function _ms-item-align($value) {
+  @return _ms-align($value); // même mapping que align-items
+}
+
+// Helper interne: display:flex avec fallbacks (évite dépendance à un autre module)
+@mixin _display-flex($important: false) {
+  @if $enable-css-fallbacks {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+  }
+  @include _emit('display', flex, $important);
 }
 
 
-// Justify content along the main axis (flex-start, flex-end, center, space-between, space-around)
-@mixin justify-content($alignment: flex-start, $important: false) {
-    justify-content: $alignment #{if(sass($important): "!important"; else: "")};
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// -------------------- Conteneur (shorthand) --------------------
+// Génère display:flex + propriétés passées (toutes optionnelles)
+@mixin flex-container(
+  $direction: null,
+  $wrap: null,
+  $justify: null,
+  $align-items: null,
+  $align-content: null,
+  $gap: null,
+  $row-gap: null,
+  $column-gap: null,
+  $important: false
+) {
+  @include _display-flex($important);
+
+  @include flex-direction($direction, $important);
+  @include flex-wrap($wrap, $important);
+  @include flex-justify-content($justify, $important);
+  @include flex-align-items($align-items, $important);
+  @include flex-align-content($align-content, $important);
+  @include gap($gap, $important);
+  @include row-gap($row-gap, $important);
+  @include column-gap($column-gap, $important);
 }
 
-// Align items along the cross axis (flex-start, flex-end, center, baseline, stretch)
-@mixin align-items($alignment: stretch, $important: false) {
-    align-items: $alignment #{if(sass($important): "!important"; else: "")};
+// -------------------- Atomiques conteneur --------------------
+
+/// flex() : Définit la propriété flex avec les préfixes nécessaires pour les navigateurs anciens et modernes.
+/// @param {String} $value - La valeur à assigner à la propriété flex (ex: "1 0 auto").
+/// @param {Boolean} $important - Si true, ajoute !important à la déclaration (par défaut: false).
+/// Usage example:
+///   @include flex(1 0 auto);
+///   @include flex(1 0 auto, true);
+/// 
+@mixin flex($value, $important: false) {
+  @if $enable-css-fallbacks {
+    @include _emit('-webkit-flex', $value, $important);
+    @include _emit('-ms-flex', $value, $important);
+  }
+  @include _emit('flex', $value, $important);
 }
 
-// // Align an individual item along the cross axis (flex-start, flex-end, center, baseline, stretch)
-// @mixin alignSelf($alignment: auto) {
-//     align-self: $alignment;
-// }
-
-// // Set the flex shorthand (flex-grow, flex-shrink, flex-basis)
-// @mixin flex($grow: 0, $shrink: 1, $basis: auto) {
-//     flex: $grow $shrink $basis;
-// }
-  
-
-@mixin grow($value: 1, $important: false) {
-    @include support.prefix('flex-grow', $value, (webkit, moz, ms), $important);
-    // @include support.prefix('flex-grow', $value, (), $important);
+@mixin flex-direction($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    $orient: _webkit-box-orient($value);
+    $dir: _webkit-box-direction($value);
+    @if $orient != null { @include _emit('-webkit-box-orient', $orient, $important); }
+    @if $dir != null    { @include _emit('-webkit-box-direction', $dir, $important); }
+    @include _emit('-webkit-flex-direction', $value, $important);
+    @include _emit('-ms-flex-direction', $value, $important);
+  }
+  @include _emit('flex-direction', $value, $important);
 }
-@mixin shrink($value: 1, $important: false) {
-    -ms-flex-negative: $value; // Ancien IE 10 (utilise -ms-flex-negative au lieu de flex-shrink)
-    @include support.prefix('flex-shrink', $value, (webkit), $important);
-    // @include support.prefix('flex-shrink', $value, (), $important); //
+
+@mixin flex-wrap($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-flex-wrap', $value, $important);
+    @include _emit('-ms-flex-wrap', $value, $important);
+  }
+  @include _emit('flex-wrap', $value, $important);
 }
-@mixin basis($value: 0, $important: false) {
-    @include support.prefix('flex-basis', $value, (webkit, moz, ms), $important);
-    // @include support.prefix('flex-basis', $value, (), $important);
+
+@mixin flex-grow($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-flex-grow', $value, $important);
+    @include _emit('-ms-flex-positive', $value, $important);
+  }
+  @include _emit('flex-grow', $value, $important);
+}
+
+@mixin flex-shrink($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-flex-shrink', $value, $important);
+    @include _emit('-ms-flex-negative', $value, $important);
+  }
+  @include _emit('flex-shrink', $value, $important);
+}
+
+@mixin flex-basis($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-flex-basis', $value, $important);
+    @include _emit('-ms-flex-preferred-size', $value, $important);
+  }
+  @include _emit('flex-basis', $value, $important);
+}
+
+@mixin flex-justify-content($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-justify-content', $value, $important);
+    $ms: _ms-pack($value);
+    @if $ms != null { @include _emit('-ms-flex-pack', $ms, $important); }
+  }
+  @include _emit('justify-content', $value, $important);
+}
+
+@mixin flex-align-items($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-align-items', $value, $important);
+    $ms: _ms-align($value);
+    @if $ms != null { @include _emit('-ms-flex-align', $ms, $important); }
+  }
+  @include _emit('align-items', $value, $important);
+}
+
+@mixin flex-align-content($value, $important: false) {
+  @if $value != null and $enable-css-fallbacks {
+    @include _emit('-webkit-align-content', $value, $important);
+    $ms: _ms-line-pack($value);
+    @if $ms != null { @include _emit('-ms-flex-line-pack', $ms, $important); }
+  }
+  @include _emit('align-content', $value, $important);
+}
+
+
+
+
+
+
+
+
+
+@mixin gap($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('gap', $v, $important);
+}
+@mixin row-gap($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('row-gap', $v, $important);
+}
+@mixin column-gap($value, $important: false) {
+  $v: _normalize-length-list($value, $length-default-unit);
+  @include _emit('column-gap', $v, $important);
 }

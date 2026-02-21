@@ -6,10 +6,11 @@
 
 @use "sass:math";
 @use "sass:map";
-@use './../mixins/flex';
-@use './../mixins/structure/box-model' as size;
+@use './../mixins/flex' as *;
+@use './../mixins/box-model' as size;
+@use './../mixins/display' as *;
 @use './../storages/grid' as store;
-@use './../mixins/spacing';
+@use './../mixins/spacing' as *;
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../storages/spaces' as stored-spaces;
@@ -38,19 +39,19 @@ $breakpoints: stored-breakpoints.$breakpoints;
 // * --
 
 .#{$prefix}grid {
-    @include flex.display;
-    @include flex.direction(row);
-    @include flex.wrap(wrap);
+    @include display-flex();
+    @include flex-direction(row);
+    @include flex-wrap(wrap);
 
     // Make grid direct children as wrapped
     & > * {
-        @include flex.grow(1);
-        @include flex.shrink(0);
-        @include flex.basis(0%);
+        @include flex-grow(1);
+        @include flex-shrink(0);
+        @include flex-basis(0%);
         @include size.width(100%);
         @include size.max-width(100%);
-        @include spacing.inner-x(var(--#{$prefix}gap-x, 0));
-        @include spacing.outer-y(var(--#{$prefix}gap-y, 0));
+        @include padding-x(var(--#{$prefix}gap-x, 0));
+        @include margin-y(var(--#{$prefix}gap-y, 0));
     }
 }
 
@@ -68,9 +69,9 @@ $breakpoints: stored-breakpoints.$breakpoints;
         }
 
         #{$selector-group} {
-            @include flex.grow(0);
-            @include flex.shrink(0);
-            @include flex.basis(auto);
+            @include flex-grow(0);
+            @include flex-shrink(0);
+            @include flex-basis(auto);
         }
 
         @for $i from 1 through $divisions {
@@ -89,7 +90,7 @@ $breakpoints: stored-breakpoints.$breakpoints;
     .#{$prefix}grid {
         @each $name, $value in alignments.$flex-alignments {
             &-content-#{$name} {
-                @include flex.justify-content($value, true);
+                @include flex-justify-content($value, true);
             }
         }
     }
@@ -109,9 +110,9 @@ $breakpoints: stored-breakpoints.$breakpoints;
         }
 
         #{$selector-group} {
-            @include flex.grow(0);
-            @include flex.shrink(0);
-            @include flex.basis(var(--#{$prefix}column-width));
+            @include flex-grow(0);
+            @include flex-shrink(0);
+            @include flex-basis(var(--#{$prefix}column-width));
             @include size.max-width(var(--#{$prefix}column-width));
         }
 
@@ -124,11 +125,11 @@ $breakpoints: stored-breakpoints.$breakpoints;
     
         // .column-break
         &-break {
-            @include flex.basis(100%);
+            @include flex-basis(100%);
             @include size.height(0);
             @include size.width(100%);
-            @include spacing.inner(0, 0, 0, 0, true);
-            @include spacing.outer(0, 0, 0, 0, true);
+            @include padding(0, 0, 0, 0, true);
+            @include margin(0, 0, 0, 0, true);
         }
 
 
@@ -145,9 +146,9 @@ $breakpoints: stored-breakpoints.$breakpoints;
         }
 
         #{$selector-group} {
-            @include flex.grow(0);
-            @include flex.shrink(0);
-            @include flex.basis(var(--#{$prefix}column-media-width));
+            @include flex-grow(0);
+            @include flex-shrink(0);
+            @include flex-basis(var(--#{$prefix}column-media-width));
             @include size.max-width(var(--#{$prefix}column-media-width));
         }
 
