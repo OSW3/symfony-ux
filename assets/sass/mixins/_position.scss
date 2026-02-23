@@ -2,21 +2,13 @@
 // *  Structural Mixins for Positioning
 // * ===========================================================================
 // *
-// *  Propriétés gérées :
-// *    - position
-// *    - top / right / bottom / left
-// *    - z-index
-// *    - inset (shorthand optionnel)
-// *
-// *  Caractéristiques :
-// *    - null-safe via _emit()
-// *    - !important optionnel
-// *    - normalisation des longueurs (unitless -> $length-default-unit) pour TRBL
+// *  This file defines a set of mixins to simplify the application of CSS 
+// *  position properties. It includes mixins for setting position values 
+// *  (static, relative, absolute, fixed, sticky),
 // *
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
@@ -33,9 +25,19 @@ $props-skip-null: true !default;
 $length-default-unit: 1px !default;
 
 
+// Active quelques fallbacks legacy (ex: -webkit-sticky).
+$enable-css-fallbacks: false !default;
+
+
+
+
 // * ------------------------------------------------------------------------ //
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
+
+@function _is-global-keyword($value) {
+    @return list.index((initial, inherit, unset, revert, revert-layer), $value) != null;
+}
 
 // Émet une propriété avec ou sans !important, et skip si null
 @mixin _emit($prop, $val, $important: false) {
@@ -48,12 +50,16 @@ $length-default-unit: 1px !default;
 // Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
 @function _normalize-length($value, $default-unit: $length-default-unit) {
   @if $value == null { @return null; }
+  @if _is-global-keyword($value) { @return $value; }
+
   @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
+    @if $value == 0 { @return 0; } // CSS: 0 sans unité
     @if math.is-unitless($value) { @return $value * $default-unit; }
     @return $value;
   }
-  @return $value; // keywords (auto), calc(), var(), etc.
+
+  // string/ident -> laisse passer (auto, calc(), var(), tokens…)
+  @return $value;
 }
 
 // Normalise 1..4 longueurs façon CSS inset (TRBL)
@@ -71,110 +77,370 @@ $length-default-unit: 1px !default;
   @return _normalize-length($values, $default-unit);
 }
 
+// Extrait un booléen final optionnel depuis des varargs
+// Retourne (liste-sans-bool, important-bool)
+@function _pop-trailing-bool($values) {
+  $argc: list.length($values);
+
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important: list.nth($values, $argc);
+    $trimmed: ();
+    @for $i from 1 through ($argc - 1) {
+      $trimmed: list.append($trimmed, list.nth($values, $i), space);
+    }
+    @return ($trimmed, $important);
+  }
+
+  @return ($values, false);
+}
+
+
+
+
 
 // * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
-// ---------------------------------------------
-// Position
-// ---------------------------------------------
+// * ---------------------------------------------
+// * Position
+// * ---------------------------------------------
 
+/// Set position property (static, relative, absolute, fixed, sticky)
+/// 
+/// @param {String} $value - Position value (static, relative, absolute, fixed, sticky)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include position(absolute) {
+///     @include top(10px);
+///     @include left(20px);
+///   } // position: absolute; top: 10px; left: 20px;
+///   @include position(relative); // position: relative;
+/// 
 @mixin position($value, $important: false) {
-  // Ex: static | relative | absolute | fixed | sticky
-  @include _emit('position', $value, $important);
+    @if $enable-css-fallbacks and $value == sticky {
+        @include _emit('position', -webkit-sticky, $important);
+    }
+    @include _emit('position', $value, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set position: static
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-static; // position: static;
+///  @include position-static(true); // position: static !important;
+/// 
 @mixin position-static($important: false) {
-  @include position(static, $important);
+    @include position(static, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set position: relative
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-relative; // position: relative;
+///  @include position-relative(true); // position: relative !important;
+///
 @mixin position-relative($important: false) {
-  @include position(relative, $important);
+    @include position(relative, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set position: absolute
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-absolute; // position: absolute;
+///  @include position-absolute(true); // position: absolute !important;
+///
 @mixin position-absolute($important: false) {
-  @include position(absolute, $important);
+    @include position(absolute, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set position: fixed
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include position-fixed; // position: fixed;
+///   @include position-fixed(true); // position: fixed !important;
+///
 @mixin position-fixed($important: false) {
-  @include position(fixed, $important);
+    @include position(fixed, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set position: sticky
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-sticky; // position: sticky;
+///  @include position-sticky(true); // position: sticky !important;
+///
 @mixin position-sticky($important: false) {
-  @include position(sticky, $important);
+    @include position(sticky, $important);
+    @if meta.content-exists() { @content; }
 }
 
-// ---------------------------------------------
-// Axes (top / right / bottom / left)
-// ---------------------------------------------
 
+// * ---------------------------------------------
+// * Axes (top / right / bottom / left)
+// * ---------------------------------------------
+
+/// Set top property with length normalization
+/// 
+/// @param {String|Number} $value - Top value (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include top(10px); // top: 10px;
+///   @include top(5); // top: 5px; (unitless numbers are converted to lengths)
+///   @include top(auto); // top: auto;
+///   @include top(10px, true); // top: 10px !important
+///
 @mixin top($value, $important: false) {
-  $v: _normalize-length($value, $length-default-unit);
-  @include _emit('top', $v, $important);
+    @include _emit('top', _normalize-length($value, $length-default-unit), $important);
+    @if meta.content-exists() { @content; }
 }
 
+
+/// Set right property with length normalization
+/// 
+/// @param {String|Number} $value - Right value (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include right(10px); // right: 10px;
+///   @include right(5); // right: 5px; (unitless numbers are converted to lengths)
+///   @include right(auto); // right: auto;
+///   @include right(10px, true); // right: 10px !important
+///
 @mixin right($value, $important: false) {
-  $v: _normalize-length($value, $length-default-unit);
-  @include _emit('right', $v, $important);
+    @include _emit('right', _normalize-length($value, $length-default-unit), $important);
+    @if meta.content-exists() { @content; }
 }
 
+/// Set bottom property with length normalization
+/// 
+/// @param {String|Number} $value - Bottom value (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include bottom(10px); // bottom: 10px;
+///   @include bottom(5); // bottom: 5px; (unitless numbers are converted to lengths)
+///   @include bottom(auto); // bottom: auto;
+///   @include bottom(10px, true); // bottom: 10px !important
+///
 @mixin bottom($value, $important: false) {
-  $v: _normalize-length($value, $length-default-unit);
-  @include _emit('bottom', $v, $important);
+    @include _emit('bottom', _normalize-length($value, $length-default-unit), $important);
+    @if meta.content-exists() { @content; }
 }
 
+/// Set left property with length normalization
+/// 
+/// @param {String|Number} $value - Left value (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include left(10px); // left: 10px;
+///   @include left(5); // left: 5px; (unitless numbers are converted to lengths)
+///   @include left(auto); // left: auto;
+///   @include left(10px, true); // left: 10px !important
+///
 @mixin left($value, $important: false) {
-  $v: _normalize-length($value, $length-default-unit);
-  @include _emit('left', $v, $important);
+    @include _emit('left', _normalize-length($value, $length-default-unit), $important);
+    @if meta.content-exists() { @content; }
 }
 
-// ---------------------------------------------
-// z-index
-// ---------------------------------------------
 
+// * ---------------------------------------------
+// * z-index
+// * ---------------------------------------------
+
+/// Set z-index property
+/// 
+/// @param {String|Number} $value - z-index value (number, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include z-index(10); // z-index: 10;
+///   @include z-index(auto); // z-index: auto;
+///   @include z-index(10, true); // z-index: 10 !important
+///
 @mixin z-index($value, $important: false) {
-  // Accepte nombres, auto, var(), etc. — pas de normalisation d’unités
-  @include _emit('z-index', $value, $important);
+    @if $value == auto {
+        @include _emit('z-index', auto, $important);
+    } 
+    @else if meta.type-of($value) == 'number' {
+        @include _emit('z-index', $value, $important);
+    } 
+    @else if _is-global-keyword($value) {
+        @include _emit('z-index', $value, $important);
+    } 
+    @else {
+        @warn "z-index(): unexpected value `#{$value}` (allowed: number | auto | global keyword).";
+    }
+    @if meta.content-exists() { @content; }
 }
 
-// ---------------------------------------------
-// Shorthand (optionnel) : inset
-// ---------------------------------------------
-//
-// CSS moderne : inset: <top> [<right> <bottom> <left>] ;
-// On émet la propriété 'inset' directement (si supportée), ou on peut
-// choisir d’émettre les 4 propriétés TRBL (décommenter plus bas si souhaité).
-//
-// @mixin inset($values..., $important: false) {
-//   // Normalise 1..4 valeurs (nombres unitless -> longueurs)
-//   $norm: _normalize-inset-list($values, $length-default-unit);
-//   @include _emit('inset', $norm, $important);
 
-//   // Alternative : générer TRBL explicitement (si tu préfères une compat totale)
-//   // @if meta.type-of($norm) == 'list' {
-//   //   $len: list.length($norm);
-//   //   @if $len == 1 {
-//   //     @include top(list.nth($norm, 1), $important);
-//   //     @include right(list.nth($norm, 1), $important);
-//   //     @include bottom(list.nth($norm, 1), $important);
-//   //     @include left(list.nth($norm, 1), $important);
-//   //   } @else if $len == 2 {
-//   //     @include top(list.nth($norm, 1), $important);
-//   //     @include right(list.nth($norm, 2), $important);
-//   //     @include bottom(list.nth($norm, 1), $important);
-//   //     @include left(list.nth($norm, 2), $important);
-//   //   } @else if $len == 3 {
-//   //     @include top(list.nth($norm, 1), $important);
-//   //     @include right(list.nth($norm, 2), $important);
-//   //     @include bottom(list.nth($norm, 3), $important);
-//   //     @include left(list.nth($norm, 2), $important);
-//   //   } @else if $len == 4 {
-//   //     @include top(list.nth($norm, 1), $important);
-//   //     @include right(list.nth($norm, 2), $important);
-//   //     @include bottom(list.nth($norm, 3), $important);
-//   //     @include left(list.nth($norm, 4), $important);
-//   //   }
-//   // } @else {
-//   //   // Valeur simple unique
-//   //   @include top($norm, $important);
-//   //   @include right($norm, $important);
-//   //   @include bottom($norm, $important);
-//   //   @include left($norm, $important);
-//   // }
-// }
+// * ---------------------------------------------
+// * inset
+// * ---------------------------------------------
+
+/// Set top, right, bottom, left properties with CSS-like syntax and length normalization
+/// 
+/// @param {String|Number} $values... - 1 to 4 values (length, auto, etc.) following CSS inset syntax (TRBL)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// Usage:
+///   @include inset(10px); // top: 10px; right: 10px; bottom: 10px; left: 10px;
+///   @include inset(10px 20px); // top: 10px; right: 20px; bottom: 10px; left: 20px;
+///   @include inset(10px 20px 30px); // top: 10px; right: 20px; bottom: 30px; left: 20px;
+///   @include inset(10px 20px 30px 40px); // top: 10px; right: 20px; bottom: 30px; left: 40px;
+///   @include inset(10px auto); // top: 10px; right: auto; bottom: 10px; left: auto;
+///   @include inset(10px auto, true); // top: 10px !important; right: auto !important; bottom: 10px !important; left: auto !important;
+/// 
+@mixin inset($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+
+    $norm: _normalize-inset-list($vals, $length-default-unit);
+    @include _emit('inset', $norm, $important-flag);
+
+    // Émission des longhands (utile pour engines partiels/legacy)
+    @if meta.type-of($norm) == 'list' {
+        $len: list.length($norm);
+        @if $len == 1 {
+            @include top(   list.nth($norm, 1), $important-flag);
+            @include right( list.nth($norm, 1), $important-flag);
+            @include bottom(list.nth($norm, 1), $important-flag);
+            @include left(  list.nth($norm, 1), $important-flag);
+        } @else if $len == 2 {
+            @include top(   list.nth($norm, 1), $important-flag);
+            @include right( list.nth($norm, 2), $important-flag);
+            @include bottom(list.nth($norm, 1), $important-flag);
+            @include left(  list.nth($norm, 2), $important-flag);
+        } @else if $len == 3 {
+            @include top(   list.nth($norm, 1), $important-flag);
+            @include right( list.nth($norm, 2), $important-flag);
+            @include bottom(list.nth($norm, 3), $important-flag);
+            @include left(  list.nth($norm, 2), $important-flag);
+        } @else if $len == 4 {
+            @include top(   list.nth($norm, 1), $important-flag);
+            @include right( list.nth($norm, 2), $important-flag);
+            @include bottom(list.nth($norm, 3), $important-flag);
+            @include left(  list.nth($norm, 4), $important-flag);
+        }
+    } @else {
+        @include top($norm, $important-flag);
+        @include right($norm, $important-flag);
+        @include bottom($norm, $important-flag);
+        @include left($norm, $important-flag);
+    }
+
+    @if meta.content-exists() { @content; }
+}
+
+/// Shorthand for logical properties inset-inline and inset-block
+/// 
+/// @param {String|Number} $values... - 1 to 4 values (length, auto, etc.) following CSS inset syntax (TRBL)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include inset-inline(10px); // inset-inline-start: 10px; inset-inline-end: 10px;
+///   @include inset-block(10px 20px); // inset-block-start: 10px; inset-block-end: 20px;
+///   @include inset-inline(10px auto, true); // inset-inline-start: 10px !important; inset-inline-end: auto !important;
+/// 
+@mixin inset-inline($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $imp:  list.nth($pair, 2);
+    $norm: _normalize-inset-list($vals, $length-default-unit);
+    @include _emit('inset-inline', $norm, $imp);
+    @if meta.content-exists() { @content; }
+}
+
+/// Shorthand for logical properties inset-block
+/// 
+/// @param {String|Number} $values... - 1 to 4 values (length, auto, etc.) following CSS inset syntax (TRBL)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include inset-block(10px); // inset-block-start: 10px; inset-block-end: 10px;
+///   @include inset-block(10px 20px); // inset-block-start: 10px; inset-block-end: 20px;
+///   @include inset-block(10px auto, true); // inset-block-start: 10px !important; inset-block-end: auto !important;
+///
+@mixin inset-block($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $imp:  list.nth($pair, 2);
+    $norm: _normalize-inset-list($vals, $length-default-unit);
+    @include _emit('inset-block', $norm, $imp);
+    @if meta.content-exists() { @content; }
+}
+
+/// Shorthand for logical properties inset-inline-start
+/// 
+/// @param {String|Number} $value - Value for the inset-inline-start property (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include inset-inline-start(10px); // inset-inline-start: 10px;
+///   @include inset-inline-start(10px, true); // inset-inline-start: 10px !important;
+///
+@mixin inset-inline-start($value, $important: false) {
+    @include _emit('inset-inline-start', _normalize-length($value, $length-default-unit), $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Shorthand for logical properties inset-inline-end
+/// 
+/// @param {String|Number} $value - Value for the inset-inline-end property (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include inset-inline-end(10px); // inset-inline-end: 10px;
+///   @include inset-inline-end(10px, true); // inset-inline-end: 10px !important;
+///
+@mixin inset-inline-end($value,   $important: false) {
+    @include _emit('inset-inline-end',   _normalize-length($value, $length-default-unit), $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Shorthand for logical properties inset-block-start
+/// 
+/// @param {String|Number} $value - Value for the inset-block-start property (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include inset-block-start(10px); // inset-block-start: 10px;
+///   @include inset-block-start(10px, true); // inset-block-start: 10px !important;
+///
+@mixin inset-block-start($value,  $important: false) {
+    @include _emit('inset-block-start',  _normalize-length($value, $length-default-unit), $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Shorthand for logical properties inset-block-end
+/// 
+/// @param {String|Number} $value - Value for the inset-block-end property (length, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///   @include inset-block-end(10px); // inset-block-end: 10px;
+///   @include inset-block-end(10px, true); // inset-block-end: 10px !important;
+///
+@mixin inset-block-end($value,    $important: false) {
+    @include _emit('inset-block-end',    _normalize-length($value, $length-default-unit), $important); 
+    @if meta.content-exists() { @content; } 
+}

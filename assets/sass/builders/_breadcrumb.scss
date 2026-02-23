@@ -17,7 +17,7 @@
 @use './link';
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../storages/breadcrumb' as store;
 
 @use './../mixins/display' as *;
@@ -152,7 +152,7 @@ $prefix: prefix.$prefix;
         color: var(--#{$prefix}breadcrumb--color);
 
         @if store.$transition {
-            @include transition.set(
+            @include transition-set(
                 (color),
                 store.$transition-delay,
                 store.$transition-type,

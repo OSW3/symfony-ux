@@ -2,24 +2,12 @@
 // *  Structural Mixins for Interactions
 // * ===========================================================================
 // *
-// *  Propriétés gérées :
-// *    - cursor
-// *    - user-select
-// *    - pointer-events
-// *    - touch-action
-// *    - outline (shorthand)
-// *    - outline-offset
-// *
-// *  Caractéristiques :
-// *    - null-safe via _emit()
-// *    - !important optionnel
-// *    - normalisation de longueur pour outline-offset
-// *    - fallbacks optionnels ($enable-css-fallbacks)
+// *  This file defines mixins for interaction-related properties, such as 
+// *  cursor, user-select, pointer-events, touch-action, and outline.
 // *
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
@@ -43,9 +31,9 @@ $enable-css-fallbacks: true !default;
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
-// Émet une propriété avec ou sans !important, et skip si null
+// Émet une propriété avec ou sans !important, et skip si null/''
 @mixin _emit($prop, $val, $important: false) {
-  @if not ($val == null and $props-skip-null) {
+  @if not ($props-skip-null and ($val == null or $val == '')) {
     @if $important { #{$prop}: $val !important; }
     @else          { #{$prop}: $val; }
   }
@@ -88,87 +76,198 @@ $enable-css-fallbacks: true !default;
 }
 
 
+
 // * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
-// ---------------------------------------------
-// Cursor
-// ---------------------------------------------
-//
-// Supporte plusieurs valeurs séparées par virgules (ex: 'grab, pointer') + bool final.
-//
+// * ---------------------------------------------
+// * Cursor
+// * ---------------------------------------------
+
+/// Set cursor.
+/// 
+/// @param {string|list} $values - Cursor value(s). Can be a single value or multiple fallbacks as varargs.
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include cursor(pointer); // cursor: pointer;
+///   @include cursor(auto, pointer, true); // cursor: auto, pointer !important;
+///   @include cursor(url('cursor.png'), pointer); // cursor: url('cursor.png'), pointer;
+///   @include cursor(url('cursor.png'), pointer, true); // cursor: url('cursor.png'), pointer !important;
+///   @include cursor(pointer, url('cursor.png')); // cursor: pointer, url('cursor.png');
+///   @include cursor(pointer, url('cursor.png'), true); // cursor: pointer, url('cursor.png') !important;
+/// 
 @mixin cursor($values...) {
-  $pair: _pop-trailing-bool($values);
-  $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
 
-  $v: _as-comma-list($vals);
-  @include _emit('cursor', $v, $important-flag);
+    $v: _as-comma-list($vals);
+    @include _emit('cursor', $v, $important-flag);
+    @if meta.content-exists() { @content; }
 }
 
 
-// ---------------------------------------------
-// User Select
-// ---------------------------------------------
-//
-// Fallbacks: -webkit-user-select, -ms-user-select.
-//
+// * ---------------------------------------------
+// * User Select & Drag
+// * ---------------------------------------------
+
+/// Set user-select property with fallbacks for WebKit and IE/Edge Legacy.
+/// 
+/// @param {string} $value - The value for user-select (e.g., none, auto, text, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///   @include user-select(none); // user-select: none;
+///   @include user-select(text, true); // user-select: text !important;
+///
 @mixin user-select($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-user-select', $value, $important);
-    @include _emit('-ms-user-select', $value, $important);
-  }
-  @include _emit('user-select', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-user-select', $value, $important);
+        @include _emit('-ms-user-select', $value, $important);
+    }
+    @include _emit('user-select', $value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set user-drag property with fallback for WebKit.
+/// 
+/// @param {string} $value - The value for user-drag (e.g., none, auto, element)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///   @include user-drag(none); // -webkit-user-drag: none;
+///   @include user-drag(element, true); // -webkit-user-drag: element !important;
+///
+@mixin user-drag($value, $important: false) {
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-user-drag', $value, $important);
+    }
+    @if meta.content-exists() { @content; }
 }
 
 
-// ---------------------------------------------
-// Pointer Events
-// ---------------------------------------------
-//
+// * ---------------------------------------------
+// * Pointer Events
+// * ---------------------------------------------
+
+/// Set pointer-events property.
+/// 
+/// @param {string} $value - The value for pointer-events (e.g., auto, none, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///   @include pointer-events(auto); // pointer-events: auto;
+///   @include pointer-events(none, true); // pointer-events: none !important;
+///
 @mixin pointer-events($value, $important: false) {
-  @include _emit('pointer-events', $value, $important);
+    @include _emit('pointer-events', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
 
-// ---------------------------------------------
-// Touch Action
-// ---------------------------------------------
-//
-// Fallback: -ms-touch-action (IE/Edge Legacy).
-//
+// * ---------------------------------------------
+// * Touch Action
+// * ---------------------------------------------
+
+/// Set touch-action property with fallback for IE/Edge Legacy.
+/// 
+/// @param {string} $value - The value for touch-action (e.g., auto, none, pan-x, pan-y, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///   @include touch-action(auto); // touch-action: auto;
+///   @include touch-action(none, true); // touch-action: none !important;
+///
 @mixin touch-action($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-ms-touch-action', $value, $important);
-  }
-  @include _emit('touch-action', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-ms-touch-action', $value, $important);
+    }
+    @include _emit('touch-action', $value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set -webkit-touch-callout property (iOS) with fallback.
+/// 
+/// @param {string} $value - The value for -webkit-touch-callout (e.g., none, default)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///   @include touch-callout(none); // -webkit-touch-callout: none;
+///   @include touch-callout(default, true); // -webkit-touch-callout: default !important;
+///
+@mixin touch-callout($value, $important: false) {
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-touch-callout', $value, $important);
+    }
+    @if meta.content-exists() { @content; }
 }
 
 
-// ---------------------------------------------
-// Outline (shorthand)
-// ---------------------------------------------
-//
-// Supporte varargs (ex: '2px solid currentColor') + bool final.
-// On laisse l'ordre tel quel, pas de parsing.
-//
+// * ---------------------------------------------
+// * Outline
+// * ---------------------------------------------
+
+/// Set outline property with support for multiple values and optional !important.
+/// 
+/// @param {string|list} $values - Outline value(s). Can be a single value or multiple values as varargs (e.g., outline-width, outline-style, outline-color).   
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include outline(1px solid red); // outline: 1px solid red;
+///   @include outline(1px, solid, red); // outline: 1px solid red;
+///   @include outline(1px, solid, red, true); // outline: 1px solid red !important;
+///   @include outline(1px solid red, true); // outline: 1px solid red !important;
+///   @include outline(1px solid red, false); // outline: 1px solid red;
+///   @include outline(1px, solid, red, false); // outline: 1px solid red;
+///   @include outline(none); // outline: none;
+///   @include outline(none, true); // outline: none !important;
+///
 @mixin outline($values...) {
-  $pair: _pop-trailing-bool($values);
-  $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
 
-  @include _emit('outline', $vals, $important-flag);
+    @include _emit('outline', $vals, $important-flag);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set outline-offset property with optional !important.
+/// 
+/// @param {string|number} $value - The value for outline-offset (e.g., 5px, -2em, 0). Unitless numbers will be converted to $length-default-unit.
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include outline-offset(5px); // outline-offset: 5px;
+///   @include outline-offset(-2em, true); // outline-offset: -2em !important;
+///   @include outline-offset(0); // outline-offset: 0;
+///   @include outline-offset(0, true); // outline-offset: 0 !important;
+///   @include outline-offset(5, true); // outline-offset: 5px !important;
+///
+@mixin outline-offset($value, $important: false) {
+    $v: _normalize-length($value, $length-default-unit);
+    @include _emit('outline-offset', $v, $important);
+    @if meta.content-exists() { @content; }
 }
 
 
-// ---------------------------------------------
-// Outline Offset
-// ---------------------------------------------
-//
-// Normalise les nombres unitless -> longueur.
-//
-@mixin outline-offset($value, $important: false) {
-  $v: _normalize-length($value, $length-default-unit);
-  @include _emit('outline-offset', $v, $important);
+// * ---------------------------------------------
+// * Tap
+// * ---------------------------------------------
+
+/// Set -webkit-tap-highlight-color property (iOS) with fallback.
+/// 
+/// @param {string} $value - The value for -webkit-tap-highlight-color (e.g., transparent, rgba(0,0,0,0.2), etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///   @include tap-highlight-color(transparent); // -webkit-tap-highlight-color: transparent;
+///   @include tap-highlight-color(rgba(0,0,0,0.2), true); // -webkit-tap-highlight-color: rgba(0,0,0,0.2) !important;
+///
+@mixin tap-highlight-color($value, $important: false) {
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-tap-highlight-color', $value, $important);
+    }
+    @if meta.content-exists() { @content; }
 }

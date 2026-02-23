@@ -25,7 +25,7 @@
 @use './../storages/prefix';
 @use './../mixins/position' as *;
 @use './../components/navbar';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../storages/breakpoints';
 @use './../mixins/display' as *;
 
@@ -105,7 +105,7 @@ $right-width: store.$width;
     margin: 0;
     z-index: 1000;
 
-    @include transition.set(
+    @include transition-set(
         (background-color, border-bottom-color), 
         store.$transition-delay, 
         store.$transition-type
@@ -180,7 +180,7 @@ $right-width: store.$width;
         @include left(0);
         @include bottom(0);
         @include right(0);
-        @include transition.set(
+        @include transition-set(
             (opacity), 
             store.$transition-delay, 
             store.$transition-type
@@ -199,7 +199,7 @@ $right-width: store.$width;
             bottom: 0;
             z-index: 2;
     
-            @include transition.set(
+            @include transition-set(
                 (opacity, left, right, box-shadow), 
                 store.$transition-delay, 
                 store.$transition-type
@@ -248,7 +248,7 @@ $right-width: store.$width;
             opacity: 0.4;
             z-index: 999;
             
-            @include transition.set(
+            @include transition-set(
                 (opacity), 
                 store.$transition-delay, 
                 store.$transition-type

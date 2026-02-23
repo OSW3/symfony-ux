@@ -1,21 +1,25 @@
 // * ===========================================================================
 // *  Structural Mixins for the Flex Layout
 // * ===========================================================================
-//
-// *  Flex container & properties (avec fallbacks optionnels).
-// *  - Null-safe via _emit()
-// *  - !important option sur chaque mixin
-// *  - Fallbacks IE10/11 et vieux WebKit activables via $enable-css-fallbacks
+// *
+// *  This file defines a set of mixins to simplify the use of CSS Flexbox, 
+// *  including support for older browsers with necessary fallbacks. 
+// *  The main mixin `flex-container` allows you to set up a flex container with 
+// *  various properties in a single call, while individual mixins like 
+// *  `flex-direction`, `justify-content`, and `align-items` can be used for 
+// *  more granular control.
+// *  
+// *  The mixins also handle unit normalization and vendor prefixing for better 
+// *  cross-browser compatibility.
 // *
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
-
-@use "./support";
+@use "./display" as *;
+@use "./gaps" as *;
 
 
 // * ------------------------------------------------------------------------ //
@@ -36,9 +40,9 @@ $enable-css-fallbacks: true !default;
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
-// Émet une propriété avec ou sans !important, et skip si null
+// Émet une propriété avec ou sans !important, et skip si null/'' (si activé)
 @mixin _emit($prop, $val, $important: false) {
-  @if not ($val == null and $props-skip-null) {
+  @if not ($props-skip-null and ($val == null or $val == '')) {
     @if $important {
       #{$prop}: $val !important;
     } @else {
@@ -47,7 +51,7 @@ $enable-css-fallbacks: true !default;
   }
 }
 
-// Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
+// Nombre → longueur (unitless -> $length-default-unit), conserve 0 unitless
 @function _normalize-length($value, $default-unit: $length-default-unit) {
   @if $value == null { @return null; }
   @if meta.type-of($value) == 'number' {
@@ -58,7 +62,7 @@ $enable-css-fallbacks: true !default;
   @return $value; // mots-clés, calc(), variables, etc.
 }
 
-// Liste d'espaces de longueurs (1..n)
+// Liste d'espaces de longueurs (1..n) ou scalaire
 @function _normalize-length-list($values, $default-unit: $length-default-unit) {
   @if meta.type-of($values) == 'list' {
     $out: ();
@@ -70,7 +74,7 @@ $enable-css-fallbacks: true !default;
   @return _normalize-length($values, $default-unit);
 }
 
-// Mapping direction -> vieux WebKit box-orient / box-direction
+// Mapping direction -> vieux WebKit box-orient/box-direction
 @function _webkit-box-orient($direction) {
   @if $direction == row or $direction == row-reverse { @return horizontal; }
   @if $direction == column or $direction == column-reverse { @return vertical; }
@@ -89,8 +93,7 @@ $enable-css-fallbacks: true !default;
   @if $value == center { @return center; }
   @if $value == space-between { @return justify; }
   @if $value == space-around { @return distribute; }
-  // Approx pour space-evenly (non supporté IE10/11) -> distribute
-  @if $value == space-evenly { @return distribute; }
+  @if $value == space-evenly { @return distribute; } // approx
   @return null;
 }
 
@@ -113,19 +116,23 @@ $enable-css-fallbacks: true !default;
   @return null;
 }
 
-// Mapping align-self -> -ms-flex-item-align
+// Mapping align-self -> -ms-flex-item-align (même mapping que align-items)
 @function _ms-item-align($value) {
-  @return _ms-align($value); // même mapping que align-items
+  @return _ms-align($value);
 }
 
-// Helper interne: display:flex avec fallbacks (évite dépendance à un autre module)
-@mixin _display-flex($important: false) {
-  @if $enable-css-fallbacks {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
+// Parse flex shorthand en triplet (grow, shrink, basis) si possible
+// - number -> (number, 1, 0)
+// - liste >= 3 -> (n1, n2, n3)
+// - sinon -> null (on n’émet que la version moderne)
+@function _flex-parse($value) {
+  @if meta.type-of($value) == 'number' {
+    @return ($value, 1, 0);
   }
-  @include _emit('display', flex, $important);
+  @if meta.type-of($value) == 'list' and list.length($value) >= 3 {
+    @return (list.nth($value, 1), list.nth($value, 2), list.nth($value, 3));
+  }
+  @return null;
 }
 
 
@@ -133,136 +140,341 @@ $enable-css-fallbacks: true !default;
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
-// -------------------- Conteneur (shorthand) --------------------
-// Génère display:flex + propriétés passées (toutes optionnelles)
-@mixin flex-container(
-  $direction: null,
-  $wrap: null,
-  $justify: null,
-  $align-items: null,
-  $align-content: null,
-  $gap: null,
-  $row-gap: null,
-  $column-gap: null,
-  $important: false
-) {
-  @include _display-flex($important);
+// * ---------------------------------------------
+// * Generic flex container
+// * ---------------------------------------------
 
-  @include flex-direction($direction, $important);
-  @include flex-wrap($wrap, $important);
-  @include flex-justify-content($justify, $important);
-  @include flex-align-items($align-items, $important);
-  @include flex-align-content($align-content, $important);
-  @include gap($gap, $important);
-  @include row-gap($row-gap, $important);
-  @include column-gap($column-gap, $important);
+/// Set up a flex container with various properties in a single declaration, 
+/// with fallbacks for older browsers.
+/// 
+/// @param {String} $display - The display value (e.g., "flex", "inline-flex")
+/// @param {String} $direction - The flex-direction value (e.g., "row", "column")
+/// @param {String} $wrap - The flex-wrap value (e.g., "nowrap", "wrap")
+/// @param {String} $justify - The justify-content value (e.g., "center", "space-between")
+/// @param {String} $align-items - The align-items value (e.g., "center", "stretch")
+/// @param {String} $align-content - The align-content value (e.g., "center", "space-around")
+/// @param {String|number|list} $gap - The gap value (e.g., "10px", "10px 20px", or 10)
+/// @param {String|number|list} $row-gap - The row-gap value (e.g., "10px" or 10)
+/// @param {String|number|list} $column-gap - The column-gap value (e.g., "20px" or 20)
+/// @param {Boolean} $important - Whether to add !important to the declarations (default: false)
+/// @param {String} $gap-child-selector - Optional selector for child elements to apply padding for gap fallback (e.g., "> *")
+///     
+/// Usage:
+///  @include flex-container(
+///   $display: flex,
+///   $direction: row,
+///   $wrap: wrap,
+///   $justify: space-between,
+///   $align-items: center,
+///   $align-content: stretch,
+///   $gap: 10px 20px,
+///   $row-gap: 10px,
+///   $column-gap: 20px,
+///   $important: true,
+///   $gap-child-selector: '> *'
+/// );
+///
+@mixin flex-container(
+    $display: flex,
+    $direction: null,
+    $wrap: null,
+    $justify: null,
+    $align-items: null,
+    $align-content: null,
+    $gap: null,
+    $row-gap: null,
+    $column-gap: null,
+    $important: false,
+    // pour fallbacks gap à base de marges/paddings
+    $gap-child-selector: null,
+    $row-gap-child-selector: null,
+    $column-gap-child-selector: null
+) {
+    @include display-flex($display, $important);
+    @include flex-direction($direction, $important);
+    @include flex-wrap($wrap, $important);
+    @include flex-justify-content($justify, $important);
+    @include flex-align-items($align-items, $important);
+    @include flex-align-content($align-content, $important);
+    @include gap($gap, $important, $gap-child-selector);
+    @include row-gap($row-gap, $important, $row-gap-child-selector);
+    @include column-gap($column-gap, $important, $column-gap-child-selector);
+    @if meta.content-exists() { @content; }
 }
 
-// -------------------- Atomiques conteneur --------------------
 
-/// flex() : Définit la propriété flex avec les préfixes nécessaires pour les navigateurs anciens et modernes.
-/// @param {String} $value - La valeur à assigner à la propriété flex (ex: "1 0 auto").
-/// @param {Boolean} $important - Si true, ajoute !important à la déclaration (par défaut: false).
-/// Usage example:
-///   @include flex(1 0 auto);
-///   @include flex(1 0 auto, true);
+// * ---------------------------------------------
+// * Flex properties
+// * ---------------------------------------------
+
+/// Set flex grow, shrink, basis in a single declaration (shorthand)
+/// 
+/// @param {string|number|list} $value, e.g.: 1, "1 0 auto", (1 0 100px)
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage: 
+///  @include flex(1 0 auto); // flex: 1 0 auto;
+///  @include flex(1); // flex: 1; (grow=1, shrink=1, basis=0)  
 /// 
 @mixin flex($value, $important: false) {
-  @if $enable-css-fallbacks {
-    @include _emit('-webkit-flex', $value, $important);
-    @include _emit('-ms-flex', $value, $important);
-  }
-  @include _emit('flex', $value, $important);
+    @include _emit('flex', $value, $important);
+
+    @if $enable-css-fallbacks and $value != null {
+        $triple: _flex-parse($value);
+        @if $triple != null {
+            $grow: list.nth($triple, 1);
+            $shrk: list.nth($triple, 2);
+            $basi: _normalize-length(list.nth($triple, 3), $length-default-unit);
+
+            // IE10/11
+            @include _emit('-ms-flex-positive', $grow, $important);
+            @include _emit('-ms-flex-negative', $shrk, $important);
+            @include _emit('-ms-flex-preferred-size', $basi, $important);
+
+            // WebKit moderne préfixé
+            @include _emit('-webkit-flex-grow', $grow, $important);
+            @include _emit('-webkit-flex-shrink', $shrk, $important);
+            @include _emit('-webkit-flex-basis', $basi, $important);
+
+            // Très vieux WebKit (display: -webkit-box) – seulement grow
+            @include _emit('-webkit-box-flex', $grow, $important);
+        }
+    }
+    @if meta.content-exists() { @content; }
 }
 
+
+// * ---------------------------------------------
+// * Flex Direction properties
+// * ---------------------------------------------
+
+/// Set flex-direction with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: row | row-reverse | column | column-reverse
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-direction(row); // flex-direction: row;
+///  @include flex-direction(column, true); // flex-direction: column !important;
+/// 
 @mixin flex-direction($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    $orient: _webkit-box-orient($value);
-    $dir: _webkit-box-direction($value);
-    @if $orient != null { @include _emit('-webkit-box-orient', $orient, $important); }
-    @if $dir != null    { @include _emit('-webkit-box-direction', $dir, $important); }
-    @include _emit('-webkit-flex-direction', $value, $important);
-    @include _emit('-ms-flex-direction', $value, $important);
-  }
-  @include _emit('flex-direction', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        $orient: _webkit-box-orient($value);
+        $dir: _webkit-box-direction($value);
+        @if $orient != null { @include _emit('-webkit-box-orient', $orient, $important); }
+        @if $dir != null    { @include _emit('-webkit-box-direction', $dir, $important); }
+        @include _emit('-webkit-flex-direction', $value, $important);
+        @include _emit('-ms-flex-direction', $value, $important);
+    }
+    @include _emit('flex-direction', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
+
+// * ---------------------------------------------
+// * Flex Wrap properties
+// * ---------------------------------------------
+
+/// Set flex-wrap with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: nowrap | wrap | wrap-reverse
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-wrap(wrap); // flex-wrap: wrap;
+///  @include flex-wrap(nowrap, true); // flex-wrap: nowrap !important;
+///
 @mixin flex-wrap($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-flex-wrap', $value, $important);
-    @include _emit('-ms-flex-wrap', $value, $important);
-  }
-  @include _emit('flex-wrap', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-flex-wrap', $value, $important);
+        @include _emit('-ms-flex-wrap', $value, $important);
+    }
+    @include _emit('flex-wrap', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
+
+// * ---------------------------------------------
+// * Flex 
+// * ---------------------------------------------
+
+/// Set flex-grow with necessary fallbacks for older browsers.
+/// 
+/// @param {number} $value A non-negative number representing the flex grow factor
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-grow(1); // flex-grow: 1;
+///  @include flex-grow(0, true); // flex-grow: 0 !important;
+///
 @mixin flex-grow($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-flex-grow', $value, $important);
-    @include _emit('-ms-flex-positive', $value, $important);
-  }
-  @include _emit('flex-grow', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-flex-grow', $value, $important);
+        @include _emit('-ms-flex-positive', $value, $important);
+    }
+    @include _emit('flex-grow', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
+/// Set flex-shrink with necessary fallbacks for older browsers.
+/// 
+/// @param {number} $value A non-negative number representing the flex shrink factor
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-shrink(1); // flex-shrink: 1;
+///  @include flex-shrink(0, true); // flex-shrink: 0 !important;
+///
 @mixin flex-shrink($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-flex-shrink', $value, $important);
-    @include _emit('-ms-flex-negative', $value, $important);
-  }
-  @include _emit('flex-shrink', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-flex-shrink', $value, $important);
+        @include _emit('-ms-flex-negative', $value, $important);
+    }
+    @include _emit('flex-shrink', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
+/// Set flex-basis with necessary fallbacks for older browsers.
+/// 
+/// @param {string|number} $value A length value (e.g., 100px, auto) or a number (treated as length with default unit)
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-basis(100px); // flex-basis: 100px;
+///  @include flex-basis(100); // flex-basis: 100px; (assuming $length-default-unit is 1px)
+///  @include flex-basis(auto); // flex-basis: auto;
+///
 @mixin flex-basis($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-flex-basis', $value, $important);
-    @include _emit('-ms-flex-preferred-size', $value, $important);
-  }
-  @include _emit('flex-basis', $value, $important);
+    $v: _normalize-length($value, $length-default-unit);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-flex-basis', $v, $important);
+        @include _emit('-ms-flex-preferred-size', $v, $important);
+    }
+    @include _emit('flex-basis', $v, $important);
+    @if meta.content-exists() { @content; }
 }
 
+
+// * ---------------------------------------------
+// * Flex Alignment properties
+// * ---------------------------------------------
+
+/// Set justify-content with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: flex-start | flex-end | center | space-between | space-around | space-evenly
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-justify-content(center); // justify-content: center;
+///  @include flex-justify-content(space-between, true); // justify-content: space-between !important;
+///
 @mixin flex-justify-content($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-justify-content', $value, $important);
-    $ms: _ms-pack($value);
-    @if $ms != null { @include _emit('-ms-flex-pack', $ms, $important); }
-  }
-  @include _emit('justify-content', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @if $value == flex-start { 
+            @include _emit('-webkit-box-pack', start, $important); 
+        }
+        @else if $value == flex-end { 
+            @include _emit('-webkit-box-pack', end, $important); 
+        }
+        @else if $value == center { 
+            @include _emit('-webkit-box-pack', center, $important); 
+        }
+        @else if $value == space-between or $value == space-around or $value == space-evenly {
+            @include _emit('-webkit-box-pack', justify, $important);
+        }
+
+        // IE10/11
+        $ms: _ms-pack($value);
+        @if $ms != null { 
+            @include _emit('-ms-flex-pack', $ms, $important); 
+        }
+    }
+    @include _emit('justify-content', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
+/// Set align-items with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: flex-start | flex-end | center | baseline | stretch
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-align-items(center); // align-items: center;
+///  @include flex-align-items(flex-start, true); // align-items: flex-start !important;
+///
 @mixin flex-align-items($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-align-items', $value, $important);
-    $ms: _ms-align($value);
-    @if $ms != null { @include _emit('-ms-flex-align', $ms, $important); }
-  }
-  @include _emit('align-items', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-align-items', $value, $important);
+        $ms: _ms-align($value);
+        @if $ms != null { 
+            @include _emit('-ms-flex-align', $ms, $important); 
+        }
+    }
+    @include _emit('align-items', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
+/// Set align-content with necessary fallbacks for older browsers.
+///
+/// @param {string} $value One of: flex-start | flex-end | center | space-between | space-around | stretch
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-align-content(center); // align-content: center;
+///  @include flex-align-content(space-between, true); // align-content: space-between !important;
+///
 @mixin flex-align-content($value, $important: false) {
-  @if $value != null and $enable-css-fallbacks {
-    @include _emit('-webkit-align-content', $value, $important);
-    $ms: _ms-line-pack($value);
-    @if $ms != null { @include _emit('-ms-flex-line-pack', $ms, $important); }
-  }
-  @include _emit('align-content', $value, $important);
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-align-content', $value, $important);
+        $ms: _ms-line-pack($value);
+        @if $ms != null { 
+            @include _emit('-ms-flex-line-pack', $ms, $important); 
+        }
+    }
+    @include _emit('align-content', $value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set align-self with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: auto | flex-start | flex-end | center | baseline | stretch
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-align-self(center); // align-self: center;
+///  @include flex-align-self(flex-end, true); // align-self: flex-end !important;
+/// 
+@mixin flex-align-self($value, $important: false) {
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-align-self', $value, $important);
+        $ms: _ms-item-align($value);
+        @if $ms != null { 
+            @include _emit('-ms-flex-item-align', $ms, $important); 
+        }
+    }
+    @include _emit('align-self', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
 
+// * ---------------------------------------------
+// * Flex Order properties
+// * ---------------------------------------------
 
-
-
-
-
-
-
-@mixin gap($value, $important: false) {
-  $v: _normalize-length-list($value, $length-default-unit);
-  @include _emit('gap', $v, $important);
-}
-@mixin row-gap($value, $important: false) {
-  $v: _normalize-length-list($value, $length-default-unit);
-  @include _emit('row-gap', $v, $important);
-}
-@mixin column-gap($value, $important: false) {
-  $v: _normalize-length-list($value, $length-default-unit);
-  @include _emit('column-gap', $v, $important);
+/// Set order with necessary fallbacks for older browsers.
+/// 
+/// @param {number} $value An integer representing the order of the flex item
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-order(1); // order: 1;
+///  @include flex-order(0, true); // order: 0 !important;
+///
+@mixin flex-order($value, $important: false) {
+    @if $value != null and $enable-css-fallbacks {
+        @include _emit('-webkit-order', $value, $important);
+        @include _emit('-ms-flex-order', $value, $important);
+    }
+    @include _emit('order', $value, $important);
+    @if meta.content-exists() { @content; }
 }

@@ -9,7 +9,8 @@
 // * ===========================================================================
 
 @charset 'utf-8';
-
+@use "sass:meta";
+@use "sass:string";
 
 
 // * ------------------------------------------------------------------------ //
@@ -24,6 +25,24 @@ $enable-css-fallbacks: true !default;
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
+@function _important-flag($important) {
+    @if $important {
+        @return " !important";
+    }
+    @else {
+        @return "";
+    }
+}
+
+@function _is-global-keyword($value) {
+    @return index((initial, inherit, unset, revert, revert-layer), $value) != null;
+}
+
+@mixin _emit($prop, $val, $important: false) {
+    #{$prop}: #{$val}#{_important-flag($important)};
+}
+
+
 
 
 // * ------------------------------------------------------------------------ //
@@ -31,206 +50,237 @@ $enable-css-fallbacks: true !default;
 // * ------------------------------------------------------------------------ //
 
 
-/// The 'display' mixin is a utility that allows you to set the display property 
-/// of an element with an optional !important flag. 
+/// Sets the display property.
 /// 
 /// @param {Display} $value - The display value to set (e.g., block, inline, flex).
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display(block);
-///    @include display(inline, true);
+///    @include display(block); // display: block;
+///    @include display(inline, true); // display: inline !important
 /// 
 @mixin display($value, $important: false) {
-    @if $value == flex and $enable-css-fallbacks {
-        display: -webkit-box;
-        display: -webkit-flex;
-        display: -ms-flexbox;
+    @if $value == null {
+        @warn "display(): value is null.";
     }
-    @if $important {
-        display: $value !important;
-    } @else {
-        display: $value;
+    @else {
+
+        @if $enable-css-fallbacks {
+            @if $value == flex {
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: -ms-flexbox;
+            } 
+            @else if $value == inline-flex {
+                display: -webkit-inline-box;
+                display: -webkit-inline-flex;
+                display: -ms-inline-flexbox;
+            } 
+            @else if $value == contents {
+                @supports not (display: contents) {
+                    display: block #{_important-flag($important)};
+                }
+            }
+        }
+
+        display: $value #{_important-flag($important)};
     }
+
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-block' mixin is a utility that allows you to set the display
-/// property to 'block'.
+/// Sets the display property to 'block'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-block();
-///    @include display-block(true);
+///    @include display-block(); // display: block;
+///    @include display-block(true); // display: block !important
 ///
 @mixin display-block($important: false) {
     @include display(block, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-inline' mixin is a utility that allows you to set the display
-/// property to 'inline'.
+/// Sets the display property to 'inline'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-inline();
-///    @include display-inline(true);
+///    @include display-inline(); // display: inline;
+///    @include display-inline(true); // display: inline !important
 ///
 @mixin display-inline($important: false) {
     @include display(inline, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-inline-block' mixin is a utility that allows you to set the display
-/// property to 'inline-block'.
+/// Sets the display property to 'inline-block'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-inline-block();
-///    @include display-inline-block(true);
+///    @include display-inline-block(); // display: inline-block;
+///    @include display-inline-block(true); // display: inline-block !important
 ///
 @mixin display-inline-block($important: false) {
     @include display(inline-block, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-inline-flex' mixin is a utility that allows you to set the display
-/// property to 'inline-flex'.
+/// Sets the display property to 'inline-flex'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-inline-flex();
-///    @include display-inline-flex(true);
+///    @include display-inline-flex(); // display: inline-flex;
+///    @include display-inline-flex(true); // display: inline-flex !important
 ///
 @mixin display-inline-flex($important: false) {
     @include display(inline-flex, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-none' mixin is a utility that allows you to set the display 
-/// property to 'none'.
+/// Sets the display property to 'none'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-none();
-///    @include display-none(true);
+///    @include display-none(); // display: none;
+///    @include display-none(true); // display: none !important
 ///
 @mixin display-none($important: false) {
     @include display(none, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-contents' mixin is a utility that allows you to set the display 
-/// property to 'contents'.
+/// Sets the display property to 'contents'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-contents();
-///    @include display-contents(true);
+///    @include display-contents(); // display: contents;
+///    @include display-contents(true); // display: contents !important
 ///
 @mixin display-contents($important: false) {
     @include display(contents, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-flex' mixin is a utility that allows you to set the display
-/// property to 'flex' or 'inline-flex', with optional support for older browsers.
+/// Sets the display property to 'flex' or 'inline-flex'.
 /// 
 /// @param {String} $type - The type of flex display ('flex' or 'inline') (default: 'flex').
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-flex();
-///    @include display-flex('inline', true);
+///    @include display-flex(); // display: flex;
+///    @include display-flex('inline', true); // display: inline-flex !important
 ///
 @mixin display-flex($type: flex, $important: false) {
     @if $type == 'flex' {
         @include display(flex, $important);
-    } @else if $type == 'inline' or $type == 'inline-flex' {
+    } 
+    @else if $type == 'inline' or $type == 'inline-flex' {
         @include display(inline-flex, $important);
-    } @else {
+    } 
+    @else {
         @warn "Invalid flex display type: #{$type}. Expected 'flex' or 'inline'.";
     }
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-grid' mixin is a utility that allows you to set the display
-/// property to 'grid' or 'inline-grid'.
+/// Sets the display property to 'grid' or 'inline-grid'.
 /// 
 /// @param {String} $type - The type of grid display ('grid' or 'inline') (default: 'grid').
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-grid();
-///    @include display-grid('inline', true);
+///    @include display-grid(); // display: grid;
+///    @include display-grid('inline', true); // display: inline-grid !important
 ///
 @mixin display-grid($type: grid, $important: false) {
     @if $type == 'grid' {
         @include display(grid, $important);
-    } @else if $type == 'inline' {
+    } @else if $type == 'inline' or $type == 'inline-grid' {
         @include display(inline-grid, $important);
     } @else {
-        @warn "Invalid grid display type: #{$type}. Expected 'grid' or 'inline-grid'.";
+        @warn "Invalid grid display type: #{$type}. Expected 'grid' or 'inline'/'inline-grid'.";
     }
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-list' mixin is a utility that allows you to set the display
-/// property to 'list-item'.
+/// Sets the display property to 'list-item'.
 /// 
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-list();
-///    @include display-list(true);
+///    @include display-list(); // display: list-item;
+///    @include display-list(true); // display: list-item !important
 ///
 @mixin display-list($important: false) {
     @include display(list-item, $important);
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-table' mixin is a utility that allows you to set the display
-/// property to various table display types (e.g., 'table', 'inline-table', '
-/// table-row', 'table-cell').
+/// Sets the display property to various table display types (e.g., 'table', 'inline-table', 'table-row', 'table-cell').
 /// 
 /// @param {String} $type - The type of table display ('table', 'inline-table', 'table-row', 'table-cell') (default: 'table').
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-table();
-///    @include display-table('inline-table', true);
+///    @include display-table(); // display: table;
+///    @include display-table('inline-table', true); // display: inline-table !important
 ///
 @mixin display-table($type: table, $important: false) {
     @if $type == 'table' {
         @include display(table, $important);
-    } @else if $type == 'inline' {
+    } @else if $type == 'inline' or $type == 'inline-table' {
         @include display(inline-table, $important);
-    } @else if $type == 'row' {
+    } @else if $type == 'row' or $type == 'table-row' {
         @include display(table-row, $important);
-    } @else if $type == 'cell' {
+    } @else if $type == 'cell' or $type == 'table-cell' {
         @include display(table-cell, $important);
     } @else {
         @warn "Invalid table display type: #{$type}. Expected 'table', 'inline-table', 'table-row', or 'table-cell'.";
     }
-    @content;
+    @if meta.content-exists() { @content; }
 }
 
-/// The 'display-ruby' mixin is a utility that allows you to set the display
-/// property to various ruby display types (e.g., 'ruby', 'inline-ruby', 'ruby-base', 'ruby-text', 'ruby-group').
+/// Sets the display property to various ruby display types (e.g., 'ruby', 'inline-ruby', 'ruby-base', 'ruby-text', 'ruby-group').
 /// 
 /// @param {String} $type - The type of ruby display ('ruby', 'inline-ruby', 'ruby-base', 'ruby-text', 'ruby-group') (default: 'ruby').
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage example:
-///    @include display-ruby();
-///    @include display-ruby('inline-ruby', true);
+///    @include display-ruby(); // display: ruby;
+///    @include display-ruby('inline-ruby', true); // display: inline-ruby !important
 ///
 @mixin display-ruby($type: ruby, $important: false) {
     @if $type == 'ruby' {
         @include display(ruby, $important);
-    } @else if $type == 'inline' {
+    } @else if $type == 'inline' or $type == 'inline-ruby' {
         @include display(inline-ruby, $important);
-    } @else if $type == 'base' {
+    } @else if $type == 'base' or $type == 'ruby-base' {
         @include display(ruby-base, $important);
-    } @else if $type == 'text' {
+    } @else if $type == 'text' or $type == 'ruby-text' {
         @include display(ruby-text, $important);
-    } @else if $type == 'group' {
+    } @else if $type == 'group' or $type == 'ruby-group' {
         @include display(ruby-group, $important);
     } @else {
         @warn "Invalid ruby display type: #{$type}. Expected 'ruby', 'inline-ruby', 'ruby-base', 'ruby-text', or 'ruby-group'.";
     }
-    @content;
+    @if meta.content-exists() { @content; }
+}
+
+/// Sets the display property to 'flow-root'.
+/// 
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
+/// Usage example:
+///    @include display-flow-root(); // display: flow-root;
+///    @include display-flow-root(true); // display: flow-root !important
+///
+@mixin display-flow-root($important: false) {
+    @include display(flow-root, $important);
+    @if meta.content-exists() { @content; }
 }

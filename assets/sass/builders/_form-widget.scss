@@ -17,7 +17,7 @@
 @use './../mixins/corner';
 @use './../mixins/flex' as *;
 @use './../mixins/spacing' as *;
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../functions/utils';
 @use './../mixins/display' as *;
 
@@ -81,7 +81,7 @@ $prefix: prefix.$prefix;
 
 @mixin transition {
     @if store.$transition {
-        @include transition.set(
+        @include transition-set(
             (color, background-color, border-color),
             store.$transition-delay,
             store.$transition-type,
@@ -330,7 +330,7 @@ $prefix: prefix.$prefix;
     &-group-text > .#{$prefix}icon,
     &-description > .#{$prefix}icon {
         @include iconMixin.toFontSize;
-        @include transition.set(
+        @include transition-set(
             (fill, stroke),
             store.$transition-delay,
             store.$transition-type,

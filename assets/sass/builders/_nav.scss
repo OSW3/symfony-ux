@@ -17,7 +17,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/position' as *;
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../variables/alignments';
 @use './../storages/breakpoints';
 @use './../storages/nav' as store;
@@ -151,7 +151,7 @@ $breakpoints: breakpoints.$breakpoints;
         );
 
         @if store.$transition {
-            @include transition.set(
+            @include transition-set(
                 (color, background-color),
                 var(--#{$prefix}transition-normal),
                 ease-in-out
@@ -211,7 +211,7 @@ $breakpoints: breakpoints.$breakpoints;
         z-index: 2;
 
         @if store.$transition {
-            @include transition.set(
+            @include transition-set(
                 (color, background-color),
                 var(--#{$prefix}transition-normal),
                 ease-in-out

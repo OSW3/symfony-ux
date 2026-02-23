@@ -9,7 +9,6 @@
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
@@ -20,14 +19,19 @@
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-/// Si true, les valeurs null n’émettent pas de propriété
+/// Si true, les valeurs null/'' n’émettent pas de propriété
 $trans-skip-null: true !default;
 
 /// Unité par défaut pour convertir les nombres unitless en temps.
-/// Recommandation: `1ms` pour écrire `150` -> `150ms` naturellement.
-/// (Tu peux mettre `0.001s` si tu préfères des secondes par défaut)
+/// Recommandation: `1ms` pour pouvoir écrire `200` -> `200ms`.
 $transition-time-default-unit: 1ms !default;
 
+/// Accessibilité : garde “réduction de mouvement”
+/// - remove  : enlève les transitions (transition: none)
+/// - shorten : raccourcit drastiquement les durées (voir $reduced-motion-duration)
+$enable-reduced-motion-guard: true !default;
+$reduced-motion-strategy: remove !default; // remove|shorten
+$reduced-motion-duration: 67ms !default;   // si strategy=shorten
 
 
 
@@ -35,22 +39,17 @@ $transition-time-default-unit: 1ms !default;
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
-/// Émet une propriété avec ou sans !important, en respectant $trans-skip-null
+// Émet une propriété avec ou sans !important, et skip si null/''
 @mixin _emit($prop, $val, $important: false) {
-  @if not ($val == null and $trans-skip-null) {
-    @if $important {
-      #{$prop}: $val !important;
-    } @else {
-      #{$prop}: $val;
-    }
+  @if not ($trans-skip-null and ($val == null or $val == '')) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
   }
 }
 
-/// Extrait un booléen final d’une liste varargs
-/// Retourne la paire (liste-sans-bool, important-bool)
+// Extrait un booléen final d’une liste varargs. Retourne (liste-sans-bool, important-bool)
 @function _pop-trailing-bool($values) {
   $argc: list.length($values);
-
   @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
     $important: list.nth($values, $argc);
     $trimmed: ();
@@ -59,172 +58,269 @@ $transition-time-default-unit: 1ms !default;
     }
     @return ($trimmed, $important);
   }
-
   @return ($values, false);
 }
 
-/// Normalise un temps (nombre → temps avec unité par défaut)
-/// - 0 reste 0
-/// - nombre unitless → * $transition-time-default-unit
-/// - nombre avec unité, keywords, calc(), variables CSS → inchangés
+// Normalise un temps (nombre → temps avec unité par défaut)
+// - 0 -> 0 (sans unité)
+// - nombre unitless -> * $transition-time-default-unit
+// - déjà unités, keywords, calc(), var() -> inchangés
 @function _normalize-time($value) {
   @if $value == null { @return null; }
-
   @if meta.type-of($value) == 'number' {
     @if $value == 0 { @return 0; }
     @if math.is-unitless($value) { @return $value * $transition-time-default-unit; }
     @return $value;
   }
-
   @return $value;
 }
 
-/// Applique _normalize-time à une liste séparée par virgules OU à une valeur simple.
-/// Conserve les virgules entre les couches (multi-transitions).
+// Applique _normalize-time à une **liste séparée par virgules** OU un scalaire
 @function _normalize-time-comma-list($values) {
   @if meta.type-of($values) != 'list' {
     @return _normalize-time($values);
   }
 
-  // Sass peut représenter une "liste de couches" en liste séparée par virgules
   $out: ();
-  $len: list.length($values);
-  @for $i from 1 through $len {
+  @for $i from 1 through list.length($values) {
     $out: list.append($out, _normalize-time(list.nth($values, $i)), comma);
   }
   @return $out;
 }
 
-/// Convertit une liste (varargs) en liste séparée par virgules.
-/// Si ce n’est pas une liste, retourne tel quel.
-/// Utile pour property & timing-function multi-couches.
+// Force une liste **virgule** (gardée telle quelle si déjà liste)
 @function _as-comma-list($values) {
-  @if meta.type-of($values) != 'list' {
-    @return $values;
-  }
+  @if meta.type-of($values) != 'list' { @return $values; }
   $out: ();
-  $len: list.length($values);
-  @for $i from 1 through $len {
+  @for $i from 1 through list.length($values) {
     $out: list.append($out, list.nth($values, $i), comma);
   }
   @return $out;
 }
 
+// Garde prefers-reduced-motion (remove|shorten). Utilisé par transition()/transition-ease().
+@mixin _guard-reduced-motion($important: false) {
+  @if $enable-reduced-motion-guard {
+    @media (prefers-reduced-motion: reduce) {
+      @if $reduced-motion-strategy == remove {
+        @include _emit('transition', none, $important);
+      } @else if $reduced-motion-strategy == shorten {
+        // Réduit toutes les durées / délais au minimum
+        // NB: On n’essaie pas de parser la valeur existante ; on couvre le cas générique.
+        @include _emit('transition-duration', $reduced-motion-duration, $important);
+        @include _emit('transition-delay', 0ms, $important);
+      }
+    }
+  }
+}
 
 
 // * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
+
 // * ---------------------------------------------
-// * transition (shorthand)
+// * Transition shorthand
 // * ---------------------------------------------
 
-/// Shorthand `transition`. Supporte plusieurs couches séparées par virgules.
-/// API 1 (directe) :
-///   @include transition(opacity .2s ease, transform .2s ease .05s, true);
-/// API 2 (simple) :
-///   @include transition(all 200 ease); // 200 -> 200ms si $transition-time-default-unit: 1ms
+/// Set transition 
+/// 
+/// @param {List} $values - A list of values for the transition property. The last value can be a boolean to indicate if the declaration should be marked as !important.
+/// 
+/// Usage:
+///   @include transition((opacity 200ms ease, transform 300ms), true);
+///   @include transition(opacity 200ms ease); // without !important
+/// 
 @mixin transition($values...) {
-  $pair: _pop-trailing-bool($values);
-  $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
 
-  // Laisse l’appelant composer librement (ex: "opacity .2s ease .05s")
-  // Si on veut pointer les durées pour normaliser des nombres unitless, on propose aussi une API dédiée ci-dessous.
-  @include _emit('transition', _as-comma-list($vals), $important-flag);
+    @include _emit('transition', _as-comma-list($vals), $important-flag);
+    @include _guard-reduced-motion($important-flag);
+    @if meta.content-exists() { @content; }
 }
 
-/// Shorthand "assistée" : propriété + durée (+ timing + délai), avec normalisation auto des temps.
-/// Exemple :
-///   @include transition-ease(opacity, 200, ease, 50); // => "opacity 200ms ease 50ms"
-///   @include transition-ease(all, .2s);               // => "all .2s ease 0s"
+
+// * ---------------------------------------------
+// * Transition 
+// * ---------------------------------------------
+
+/// Set transition with separate parameters for property, duration, timing, and delay.
+/// 
+/// @param {String} $property - The CSS property to transition (e.g., opacity, transform).
+/// @param {String|Number} $duration - The duration of the transition (e.g., 200ms or 0.2s). Unitless numbers will be converted to milliseconds based on $transition-time-default-unit.
+/// @param {String} $timing - The timing function for the transition (e.g., ease, linear, ease-in-out). Default is 'ease'.
+/// @param {String|Number} $delay - The delay before the transition starts (e.g., 100ms). Unitless numbers will be converted to milliseconds based on $transition-time-default-unit. Default is null (no delay).
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include transition-ease(opacity, 200, ease); // with !important
+///   @include transition-ease(transform, 300ms, linear, 100ms); // without !important
+///   @include transition-ease(color, 0.5s, ease-in-out, null, true); // with !important and no delay
+///
 @mixin transition-ease($property, $duration, $timing: ease, $delay: null, $important: false) {
   $d: _normalize-time($duration);
   $dl: _normalize-time($delay);
 
   $val: $property $d;
-  @if $timing != null {
-    $val: $val $timing;
-  }
-  @if $dl != null {
-    $val: $val $dl;
-  }
+  @if $timing != null { $val: $val $timing; }
+  @if $dl != null     { $val: $val $dl; }
 
   @include _emit('transition', $val, $important);
+
+  // Garde reduced motion
+  @include _guard-reduced-motion($important);
+
+  @if meta.content-exists() { @content; }
 }
 
-
-
-// * ---------------------------------------------
-// * propriétés unitaires
-// * ---------------------------------------------
-
-// transition-property (comma-list)
+/// Transition-property (comma-list)
+/// 
+/// @param {List} $values - A list of properties to transition. The last value can be a boolean to indicate if the declaration should be marked as !important.
+/// 
+/// Usage:
+///   @include transition-property((opacity, transform), true); // with !important
+///   @include transition-property((opacity, transform)); // without !important
+/// 
 @mixin transition-property($values...) {
   $pair: _pop-trailing-bool($values);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
 
   @include _emit('transition-property', _as-comma-list($vals), $important-flag);
+  @if meta.content-exists() { @content; }
 }
 
-// transition-duration (normalise les nombres unitless)
+/// Transition-duration (comma-list)
+/// 
+/// @param {List} $values - A list of durations for the transition. Unitless numbers will be converted to milliseconds based on $transition-time-default-unit. The last value can be a boolean to indicate if the declaration should be marked as !important.
+/// 
+/// Usage:
+///   @include transition-duration((200, 300ms), true); // with !important
+///   @include transition-duration((200, 300ms)); // without !important
+///
 @mixin transition-duration($values...) {
   $pair: _pop-trailing-bool($values);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
 
   @include _emit('transition-duration', _normalize-time-comma-list(_as-comma-list($vals)), $important-flag);
+  @if meta.content-exists() { @content; }
 }
 
-// transition-delay (normalise les nombres unitless)
+/// Transition-delay (comma-list)
+/// 
+/// @param {List} $values - A list of delays for the transition. Unitless numbers will be converted to milliseconds based on $transition-time-default-unit. The last value can be a boolean to indicate if the declaration should be marked as !important.
+/// 
+/// Usage:
+///   @include transition-delay((100, 200ms), true); // with !important
+///   @include transition-delay((100, 200ms)); // without !important
+///
 @mixin transition-delay($values...) {
   $pair: _pop-trailing-bool($values);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
 
   @include _emit('transition-delay', _normalize-time-comma-list(_as-comma-list($vals)), $important-flag);
+  @if meta.content-exists() { @content; }
 }
 
-// transition-timing-function (comma-list)
+/// Transition-timing-function (comma-list)
+/// 
+/// @param {List} $values - A list of timing functions for the transition (e.g., ease, linear, ease-in-out). The last value can be a boolean to indicate if the declaration should be marked as !important.
+/// 
+/// Usage:
+///   @include transition-timing-function((ease, linear), true); // with !important
+///   @include transition-timing-function((ease, linear)); // without !important
+///
 @mixin transition-timing-function($values...) {
   $pair: _pop-trailing-bool($values);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
 
-  // Accepte keywords (ease-in, linear, ...), cubic-bezier(), steps(), etc.
+  // Accepte keywords (ease, linear, ease-in-out), cubic-bezier(), steps()
   @include _emit('transition-timing-function', _as-comma-list($vals), $important-flag);
+  @if meta.content-exists() { @content; }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-/// Generate a transition property
+/// Transition: none
 /// 
-/// @example @include transition.set((color, width)), .3s);
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
-/// @param {List} $properties Properties list
-/// @param {String} $delay  Transition delay for all properties
+/// Usage:
+///   @include transition-none(true); // with !important
+///   @include transition-none(); // without !important
+///
+@mixin transition-none($important: false) {
+  @include _emit('transition', none, $important);
+
+  // Même si already none, on garde le guard pour cohérence (ne fera rien de plus)
+  @include _guard-reduced-motion($important);
+
+  @if meta.content-exists() { @content; }
+}
+
+/// Transition shorthand with separate parameters for properties, duration, and timing.
 /// 
-@mixin set($properties: (), $delay: '.3s', $type: 'ease-in-out')
-{
-    $transitions: ();
+/// @param {List} $properties - A list of CSS properties to transition (e.g., opacity, transform).
+/// @param {String|Number} $delay - The duration of the transition (e.g., 200ms or 0.2s). Unitless numbers will be converted to milliseconds based on $transition-time-default-unit. Default is 0.3s.
+/// @param {String} $timing - The timing function for the transition (e.g., ease, linear, ease-in-out). Default is 'ease-in-out'.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include transition-set((opacity, transform), 200, ease); // with !important
+///   @include transition-set((opacity, transform), 200); // with !important and default timing
+///   @include transition-set((opacity, transform)); // with !important and default duration and timing
+///
+@mixin transition-set($properties: (), $delay: .3s, $timing: ease-in-out, $important: false) {
+  $d: _normalize-time($delay);
+  $transitions: ();
 
-    @each $property in $properties {
-      $transitions: list.append($transitions, $property + " " + $delay + " " + $type, comma);
-    }
-    
-    transition: $transitions;
+  @each $property in $properties {
+    $item: $property $d $timing;
+    $transitions: list.append($transitions, $item, comma);
+  }
 
+  @include _emit('transition', $transitions, $important);
+
+  // Guard reduced motion
+  @include _guard-reduced-motion($important);
+
+  @if meta.content-exists() { @content; }
+}
+
+/// Transition shorthand with separate parameters for properties, duration, timing, and delay.
+/// 
+/// @param {List} $properties - A list of CSS properties to transition (e.g., opacity, transform).
+/// @param {String|Number} $duration - The duration of the transition (e.g., 200ms or 0.2s). Unitless numbers will be converted to milliseconds based on $transition-time-default-unit. Default is 0.2s.
+/// @param {String} $timing - The timing function for the transition (e.g., ease, linear, ease-in-out). Default is 'ease'.
+/// @param {String|Number} $delay - The delay before the transition starts (e.g., 100ms). Unitless numbers will be converted to milliseconds based on $transition-time-default-unit. Default is null (no delay).
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include transition-vars((opacity, transform), 200, ease, 100ms, true); // with !important
+///   @include transition-vars((opacity, transform), 200, ease, 100ms); // without !important
+///   @include transition-vars((opacity, transform), 200, ease); // without !important and default delay
+///   @include transition-vars((opacity, transform), 200); // without !important and default timing and delay
+///   @include transition-vars((opacity, transform)); // without !important and default duration, timing, and delay
+///
+@mixin transition-vars($properties: (), $duration: 200, $timing: ease, $delay: null, $important: false) {
+  $d: _normalize-time($duration);
+  $dl: _normalize-time($delay);
+
+  $items: ();
+  @each $prop in $properties {
+    $val: $prop $d $timing;
+    @if $dl != null { $val: $val $dl; }
+    $items: list.append($items, $val, comma);
+  }
+
+  @include _emit('transition', $items, $important);
+
+  // Guard reduced motion
+  @include _guard-reduced-motion($important);
+
+  @if meta.content-exists() { @content; }
 }

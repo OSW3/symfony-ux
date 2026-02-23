@@ -14,7 +14,7 @@
 @use 'sass:math';
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../mixins/display' as *;
 
 
@@ -164,7 +164,7 @@ $sizes: (
 
 
         @if store.$transition {
-            @include transition.set(
+            @include transition-set(
                 (transform),
                 store.$transition-delay,
                 store.$transition-type,

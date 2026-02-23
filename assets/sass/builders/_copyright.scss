@@ -13,7 +13,7 @@
 
 @use './../builders/banner';
 @use './../storages/prefix';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../storages/copyright' as store;
 // @use './../components/copyright';
 
@@ -101,7 +101,7 @@ $prefix: prefix.$prefix;
 // -- ---------------------------------------------
 @mixin copyright-transition() {
     @if store.$has-transition {
-        @include transition.set(
+        @include transition-set(
             (color, background-color),
             store.$transition-delay,
             store.$transition-type,

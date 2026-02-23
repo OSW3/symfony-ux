@@ -6,11 +6,21 @@
 
 @use "sass:map";
 @use './../mixins/spacing' as *;
-@use './../mixins/box-model' as *;
 @use './../storages/fonts' as fonts;
 @use './../storages/prefix';
 @use './../storages/themes';
-@use './../mixins/display' as *;
+
+@use './../mixins/box-model' as *;
+// @use './../mixins/display' as *;
+// @use './../mixins/position' as *;
+// @use './../mixins/rendering' as *;
+// @use './../mixins/scroll' as *;
+// @use './../mixins/flex' as *;
+// @use './../mixins/grid' as *;
+@use './../mixins/typography' as *;
+// @use './../mixins/interaction' as *;
+// @use './../mixins/states' as *;
+@use './../mixins/transition' as *;
 
 
 @use './../builders/banner';
@@ -18,49 +28,6 @@
 @include banner.header('Component Reset');
 
 $prefix: prefix.$prefix;
-
-
-
-
-/***/
-/***/
-/***/
-/***/
-/***/
-/***/
-/***/
-/***/
-
-.foo {
-    // @include aspect-ratio("16/9")
-}
-
-/***/
-/***/
-/***/
-/***/
-/***/
-/***/
-/***/
-/***/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 // @function palette-declination($palette, $property) {
@@ -119,13 +86,13 @@ $theme-properties: (
 *::after {
     @include margin(0, 0, 0, 0);
     @include padding(0, 0, 0, 0);
-    box-sizing: border-box;
+    @include box-sizing(border-box);
 }
 
 html {
-    font-size: 1rem;
-    // line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
+    @include font-size(1rem);
+    @include line-height(1.5);
+    @include text-size-adjust(100%); 
 }
 
 body {
@@ -133,10 +100,9 @@ body {
     @include padding(0, 0, 0, 0);
     @include min-width(100vw);
     @include min-height(100vh);
-    // font-family: Arial, sans-serif; // todo: customize
-    font-family: var(--#{$prefix}font-open-sans);
-    font-size: 1rem; // todo: customize
-    font-weight: 400; // todo: customize
+    @include font-family(var(--#{$prefix}font-open-sans));
+    @include font-size(1rem); // todo: customize
+    @include font-weight(400); // todo: customize
     color: var(--#{$prefix}black);
     background-color: var(--#{$prefix}white);
     text-rendering: optimizeLegibility;

@@ -2,21 +2,15 @@
 // *  Structural Mixins for Scroll Containers (Advanced)
 // * ===========================================================================
 // *
-// *  Propriétés gérées :
-// *    - scrollbar-gutter
-// *    - overscroll-behavior (shorthand + axes)
-// *
-// *  Caractéristiques :
-// *    - null-safe via _emit()
-// *    - !important optionnel sur chaque mixin
-// *    - fallbacks optionnels pour IE/Edge Legacy via $enable-css-fallbacks
-// *      (mapping vers -ms-scroll-chaining)
+// *  This file defines mixins for advanced scroll container properties, 
+// *  including scrollbar-gutter and overscroll-behavior.
 // *
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
+@use "sass:list";
+
 
 
 // * ------------------------------------------------------------------------ //
@@ -34,6 +28,11 @@ $enable-css-fallbacks: true !default;
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
+// Global CSS keywords valables pour toutes propriétés
+@function _is-global-keyword($value) {
+    @return list.index((initial, inherit, unset, revert, revert-layer), $value) != null;
+}
+
 // Émet une propriété avec ou sans !important, et skip si null
 @mixin _emit($prop, $val, $important: false) {
   @if not ($val == null and $props-skip-null) {
@@ -42,59 +41,147 @@ $enable-css-fallbacks: true !default;
   }
 }
 
+// Tokens autorisés pour scrollbar-gutter
+@function _is-scrollbar-gutter-token($value) {
+  // valeurs de base : auto | stable | both-edges | stable both-edges
+  // On laisse passer les combinaisons, donc simple présence dans ce set suffit
+  @return list.index((auto, stable, both-edges), $value) != null;
+}
+
 // Map overscroll-behavior -> -ms-scroll-chaining (IE/Edge Legacy)
 // auto    -> chained
 // contain -> none
 // none    -> none
 @function _ms-scroll-chaining-map($value) {
-  @if $value == auto    { @return chained; }
-  @if $value == contain { @return none; }
-  @if $value == none    { @return none; }
-  @return null; // unknown keyword -> ne rien émettre en fallback
+    @if $value == auto    { @return chained; }
+    @if $value == contain { @return none; }
+    @if $value == none    { @return none; }
+    @return null; // unknown keyword -> ne rien émettre en fallback
 }
+
+// Normalise une entrée overscroll-behavior (1 ou 2 valeurs)
+@function _normalize-overscroll($value) {
+  @if $value == null or _is-global-keyword($value) { @return $value; }
+
+  // Forcer en liste (séparateur espace) si besoin
+  @if meta.type-of($value) != 'list' {
+    @return ($value,);
+  }
+
+  @return $value;
+}
+
+// Calcule la meilleure valeur de fallback -ms-scroll-chaining à partir d'1 ou 2 valeurs
+@function _fallback-ms-scroll-chaining($value-list) {
+  // $value-list est déjà une liste (taille 1 ou 2)
+  $len: list.length($value-list);
+
+  @if $len == 1 {
+    @return _ms-scroll-chaining-map(list.nth($value-list, 1));
+  }
+
+  // Deux valeurs : x y
+  $vx: list.nth($value-list, 1);
+  $vy: list.nth($value-list, 2);
+
+  // Si identiques -> mapping simple
+  @if $vx == $vy {
+    @return _ms-scroll-chaining-map($vx);
+  }
+
+  // Valeurs différentes : compromis
+  // Règle pragmatique :
+  //  - si l'une est auto -> chained (comportement le plus permissif)
+  //  - sinon (contain/none mixés) -> none (comportement le plus restrictif)
+  @if $vx == auto or $vy == auto { @return chained; }
+  @if ($vx == contain or $vx == none) and ($vy == contain or $vy == none) { @return none; }
+
+  // valeurs inconnues : pas de fallback
+  @return null;
+}
+
 
 
 // * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
-// ---------------------------------------------
-// scrollbar-gutter
-// ---------------------------------------------
-//
-// Valeurs usuelles : auto | stable | stable both-edges
-// On passe la valeur telle quelle.
-//
+// * ---------------------------------------------
+// * scrollbar-gutter
+// * ---------------------------------------------
+
+/// Settings for scrollbar-gutter property
+/// 
+/// @param {String} $value - The value for scrollbar-gutter (e.g., auto, stable, both-edges)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///   @include scrollbar-gutter(stable); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable; }
+///   @include scrollbar-gutter(stable both-edges); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable both-edges; }
+/// 
 @mixin scrollbar-gutter($value, $important: false) {
-  @include _emit('scrollbar-gutter', $value, $important);
+    @if $enable-css-fallbacks {
+        @supports (scrollbar-gutter: stable) {
+        @include _emit('scrollbar-gutter', $value, $important);
+        }
+    } 
+    @else {
+        @include _emit('scrollbar-gutter', $value, $important);
+    }
+    @if meta.content-exists() { @content; }
 }
 
 
-// ---------------------------------------------
-// overscroll-behavior (shorthand)
-// ---------------------------------------------
-//
-// Valeurs : auto | contain | none
-// Supporte aussi deux valeurs (x y) comme en CSS.
-//
+// * ---------------------------------------------
+// * overscroll-behavior
+// * ---------------------------------------------
+
+/// Settings for overscroll-behavior property
+/// 
+/// @param {String} $value - The value for overscroll-behavior (e.g., auto, contain, none, or combinations like "auto none")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///   @include overscroll-behavior(contain); // overscroll-behavior: contain;
+///   @include overscroll-behavior(auto none); // overscroll-behavior: auto none;
+/// 
 @mixin overscroll-behavior($value, $important: false) {
+  $norm: _normalize-overscroll($value);
+
   // Fallback IE/Edge Legacy
-  @if $value != null and $enable-css-fallbacks {
-    $ms: _ms-scroll-chaining-map($value);
+  @if $enable-css-fallbacks and $norm != null and not _is-global-keyword($norm) {
+    $ms: _fallback-ms-scroll-chaining($norm);
     @if $ms != null { @include _emit('-ms-scroll-chaining', $ms, $important); }
   }
 
   @include _emit('overscroll-behavior', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// overscroll-behavior-x
+/// Settings for overscroll-behavior-x property
+/// 
+/// @param {String} $value - The value for overscroll-behavior-x (e.g., auto, contain, none)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///   @include overscroll-behavior-x(contain); // overscroll-behavior-x: contain;
+///   @include overscroll-behavior-x(auto); // overscroll-behavior-x: auto;
+///
 @mixin overscroll-behavior-x($value, $important: false) {
-  // IE/Edge legacy n’a pas d’API axis-based -> on tombe sur le shorthand si besoin
-  @include _emit('overscroll-behavior-x', $value, $important);
+    @include _emit('overscroll-behavior-x', $value, $important);
+    @if meta.content-exists() { @content; }
 }
 
-// overscroll-behavior-y
+/// Settings for overscroll-behavior-y property
+/// 
+/// @param {String} $value - The value for overscroll-behavior-y (e.g., auto, contain, none)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///   @include overscroll-behavior-y(contain); // overscroll-behavior-y: contain;
+///   @include overscroll-behavior-y(auto); // overscroll-behavior-y: auto;
+///
 @mixin overscroll-behavior-y($value, $important: false) {
-  // IE/Edge legacy n’a pas d’API axis-based -> on tombe sur le shorthand si besoin
-  @include _emit('overscroll-behavior-y', $value, $important);
+    @include _emit('overscroll-behavior-y', $value, $important);
+    @if meta.content-exists() { @content; }
 }

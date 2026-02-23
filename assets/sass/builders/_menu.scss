@@ -18,7 +18,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/position' as *;
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../variables/alignments';
 @use './../storages/breakpoints';
 @use './../storages/menu' as store;

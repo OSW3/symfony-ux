@@ -18,7 +18,7 @@
 @use './../builders/banner';
 @use './../components/brand';
 @use './../storages/prefix';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../storages/breakpoints';
 @use './../mixins/display' as *;
 
@@ -40,75 +40,6 @@ $prefix: prefix.$prefix;
 // * - Component Mixins                                                     - //
 // * ------------------------------------------------------------------------ //
 
-// -- ---------------------------------------------
-// -- Define the structure of the brand component.
-// -- ---------------------------------------------
-@mixin brand-structure() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the layout of the brand component.
-// -- ---------------------------------------------
-@mixin brand-layout() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the typography of the brand component.
-// -- ---------------------------------------------
-@mixin brand-typography() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the spacing of the brand component.
-// -- ---------------------------------------------
-@mixin brand-spacing() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions of the brand component.
-// -- ---------------------------------------------
-@mixin brand-interactions() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the brand component.
-// -- ---------------------------------------------
-@mixin brand-state() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the transition effects for the brand component.
-// -- ---------------------------------------------
-@mixin brand-transition() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the animation effects for the brand component.
-// -- ---------------------------------------------
-@mixin brand-animation() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the theme for the brand component.
-// -- ---------------------------------------------
-@mixin brand-theme() {
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the effects for the brand component.
-// -- ---------------------------------------------
-@mixin brand-effects() {
-    @content;
-}
 
 
 
@@ -117,16 +48,6 @@ $prefix: prefix.$prefix;
 // * ------------------------------------------------------------------------ //
 
 .#{$prefix}brand {
-    @include brand-structure();
-    @include brand-layout();
-    @include brand-typography();
-    @include brand-spacing();
-    @include brand-interactions();
-    @include brand-state();
-    @include brand-transition();
-    @include brand-animation();
-    @include brand-theme();
-    @include brand-effects();
 
     display: inline-block;
     text-decoration: none;
@@ -165,7 +86,7 @@ $prefix: prefix.$prefix;
             store.$padding-x,
             store.$padding-y,
         );
-        @include transition.set(
+        @include transition-set(
             (background-color, border-color), 
             store.$transition-delay, 
             store.$transition-type
@@ -216,7 +137,7 @@ $prefix: prefix.$prefix;
         flex-direction: column;
         align-items: store.$justify;
         color: var(--#{$prefix}brand--color);
-        @include transition.set(
+        @include transition-set(
             (color), 
             store.$transition-delay, 
             store.$transition-type

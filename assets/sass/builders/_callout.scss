@@ -19,7 +19,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/component';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 
 @use './../storages/callout' as store;
 @use './../components/callout';

@@ -16,7 +16,7 @@
 @use './../storages/prefix';
 @use './../mixins/icon' as iconMixins;
 @use './../mixins/spacing' as *;
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 // @use './../mixins/icon';
 @use './../mixins/display' as *;
 
@@ -155,7 +155,7 @@ $prefix: prefix.$prefix;
         text-decoration-thickness: 0px;
     }
 
-    @include transition.set(
+    @include transition-set(
         (color, background-color, text-decoration, text-decoration-color, text-decoration-thickness),
         store.$transition-delay,
         store.$transition-type,
@@ -206,7 +206,7 @@ $prefix: prefix.$prefix;
 
     & .#{$prefix}icon {
         @include iconMixins.toFontSize;
-        @include transition.set(
+        @include transition-set(
             (fill, stroke),
             store.$transition-delay,
             store.$transition-type,

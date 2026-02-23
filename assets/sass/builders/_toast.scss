@@ -20,7 +20,7 @@
 @use './../mixins/flex' as *;
 @use './../mixins/spacing' as *;
 @use './../mixins/position' as *;
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../mixins/box-model' as *;
 @use './../mixins/display' as *;
 
@@ -207,7 +207,7 @@ $btn-close-size: 24px;
 
 
         @if store.$transition {
-            @include transition.set(
+            @include transition-set(
                 (background-color, color, opacity, transform, height), 
                 store.$transition-delay, 
                 store.$transition-type
@@ -280,7 +280,7 @@ $btn-close-size: 24px;
         font-size: math.div($btn-close-size, 1.5);
         opacity: 0;
         
-        @include transition.set(
+        @include transition-set(
             (opacity), 
             store.$transition-delay, 
             store.$transition-type
@@ -305,7 +305,7 @@ $btn-close-size: 24px;
 
 
         @if store.$transition {
-            @include transition.set(
+            @include transition-set(
                 (background-color, opacity), 
                 store.$transition-delay, 
                 store.$transition-type

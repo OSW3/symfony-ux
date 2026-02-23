@@ -24,7 +24,7 @@
 // @use './../storages/spaces';
 // @use './../components/accordion';
 // @use './../mixins/component';
-// @use './../mixins/transition';
+// @use './../mixins/transition' as *;
 @use './../mixins/display' as *;
 
 $prefix: prefix.$prefix;

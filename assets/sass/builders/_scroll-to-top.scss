@@ -20,7 +20,7 @@
 // @use './../mixins/spacing' as *;
 // @use './../mixins/support';
 @use './../mixins/corner';
-@use './../mixins/transition';
+@use './../mixins/transition' as *;
 @use './../mixins/position' as *;
 @use './../mixins/display' as *;
 
@@ -487,7 +487,7 @@ $background-position: center;
     // Transition 
     // -- 
 
-    @include transition.set(
+    @include transition-set(
         $transition-elements,
         store.$transition-delay,
         store.$transition-type,

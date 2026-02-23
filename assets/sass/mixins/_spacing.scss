@@ -9,7 +9,6 @@
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
@@ -26,36 +25,37 @@ $spacing-default-unit: 1rem !default;
 $spacing-skip-null: true !default;
 
 
-
-
 // * ------------------------------------------------------------------------ //
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
-/// Check if a value is length-like (number with or without unit, or percentage).
-/// 
-/// @param {Value} $value - The value to check.
-/// @return {Boolean} - True if the value is length-like, false otherwise.
-/// 
+// Émet une propriété spacing avec ou sans !important, et skip si null/''
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($spacing-skip-null and ($val == null or $val == '')) {
+    #{$prop}: $val#{_important-flag($important)};
+  }
+}
+
+@function _important-flag($important) {
+    @if $important {
+        @return " !important";
+    }
+    @else {
+        @return "";
+    }
+}
+
+// number ? (inclut % car Sass le traite comme number avec unité %)
 @function _is-length-like($value) {
   @return meta.type-of($value) == 'number';
 }
 
-/// Check if a value is zero (either unitless or with any unit).
-/// 
-/// @param {Value} $value - The value to check.
-/// @return {Boolean} - True if the value is zero, false otherwise.
-///
+// zero (unitless ou avec unité)
 @function _is-zero($value) {
-@return _is-length-like($value) and $value == 0;
+  @return _is-length-like($value) and $value == 0;
 }
 
-/// Allow certain keywords based on context (e.g., 'auto' for margin but not for padding).
-/// 
-/// @param {Value} $value - The value to check.
-/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
-/// @return {Boolean} - True if the value is an allowed keyword, false otherwise.
-///
+// keywords autorisés : margin peut accepter 'auto', padding non
 @function _allowed-keyword($value, $allow-auto: false) {
   @if meta.type-of($value) == 'string' {
     @if $allow-auto and ($value == auto) { @return true; }
@@ -66,48 +66,27 @@ $spacing-skip-null: true !default;
   @return false;
 }
 
-/// Converts a value to a length or allowed keyword, applying the default unit if it's a unitless number.
-/// 
-/// - If the value is a unitless number, it multiplies it by the default spacing unit (e.g., 1rem).
-/// - If the value is already a number with a unit, it returns it as is.
-/// - If the value is an allowed keyword, it returns it as is.
-/// - If the value is null and skipping is enabled, it returns null.
-/// - Otherwise, it returns the value as is (e.g., calc(...) remains as is).
-/// 
-/// @param {Value} $value - The value to convert.
-/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
-/// @return {Value} - The converted length or allowed keyword, or null if the value is null and skipping is enabled.
-///
+// Convertit un token en longueur/keyword autorisé
 @function _to-length-or-keyword($value, $allow-auto: false) {
   @if $value == null { @return null; }
 
+  // keywords whitelisted
   @if _allowed-keyword($value, $allow-auto) { @return $value; }
 
-  // 0 sans unité
+  // 0 : toujours sûr et accepte unitless
   @if _is-zero($value) { @return 0; }
 
-  // Nombres
+  // nombres (avec ou sans unité)
   @if _is-length-like($value) {
-    @if math.is-unitless($value) {
-      // Ajoute l’unité dimensionnelle par défaut (ex: 1rem) — évite toute concat string
-      @return $value * $spacing-default-unit;
-    } @else {
-      @return $value;
-    }
+    @if math.is-unitless($value) { @return $value * $spacing-default-unit; }
+    @return $value;
   }
 
-  // Laisse passer calc(), variables CSS, etc.
+  // calc(), var(), etc. : laisser passer
   @return $value;
 }
 
-/// Returns the nth item of a list after converting it to a length or allowed 
-/// keyword, or null if the index is out of bounds.
-/// 
-/// @param {List} $values - The list of values to retrieve from.
-/// @param {Number} $index - The 1-based index of the item to retrieve.
-/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
-/// @return {Value} - The nth item converted to a length or allowed keyword, or null if the index is out of bounds.
-///
+// nth or null avec conversion
 @function _nth-or-null($values, $index, $allow-auto) {
   @if list.length($values) >= $index {
     @return _to-length-or-keyword(list.nth($values, $index), $allow-auto);
@@ -115,20 +94,9 @@ $spacing-skip-null: true !default;
   @return null;
 }
 
-/// Normalizes a list of spacing values (for margin or padding) into a format suitable for CSS output.
-/// 
-/// - Accepts 1 to 4 values, which can be passed as individual arguments or as a single list.
-/// - Normalizes each value to a length or allowed keyword using the _to-length-or-keyword function.
-/// - If $skip-null is true and all values are null, returns null to allow skipping the property entirely.
-/// 
-/// @param {Boolean} $allow-auto - Whether to allow the 'auto' keyword (default: false).
-/// @param {Boolean} $skip-null - Whether to return null if all values are null (default: true).
-/// @param {List} $values - The list of values to normalize, either as individual arguments or as a single list.
-/// @return {List|null} - A normalized list of 1 to 4 values suitable for CSS output, or null if all values are null and skipping is enabled.
-///
+// Normalise une liste de spacing (1..4), peut recevoir varargs ou une seule liste
 @function _normalize-spacing-list($allow-auto: false, $skip-null: true, $values...) {
-  
-  // Si une seule valeur est une liste explicite, l’aplatir
+  // si une seule valeur est déjà une liste -> aplatir
   @if (list.length($values) == 1) and (meta.type-of(list.nth($values, 1)) == 'list') {
     $values: list.nth($values, 1);
   }
@@ -141,7 +109,7 @@ $spacing-skip-null: true !default;
   $v3: _nth-or-null($values, 3, $allow-auto);
   $v4: _nth-or-null($values, 4, $allow-auto);
 
-  // Si tout est null et que le caller a demandé de skipper, retourne null
+  // si tout est null et skip activé -> null
   @if $skip-null and ($v1 == null and $v2 == null and $v3 == null and $v4 == null) {
     @return null;
   }
@@ -150,29 +118,22 @@ $spacing-skip-null: true !default;
   @if $len == 2 { @return $v1 $v2; }
   @if $len == 3 { @return $v1 $v2 $v3; }
   @return $v1 $v2 $v3 $v4;
-
 }
 
-/// Pops a trailing boolean from a list of values, if it exists.
-/// 
-/// @param {List} $values - The list of values to check for a trailing boolean.
-/// @return {List} A pair containing the list of values (with the trailing boolean removed if it exists) and the boolean value (true if the last item was a boolean, false otherwise).
-///
+// Extrait un booléen final optionnel des varargs : retourne (liste-sans-bool, bool)
 @function _pop-trailing-bool($values) {
   $argc: list.length($values);
-
   @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
     $important: list.nth($values, $argc);
-    // reconstitue la liste sans le dernier item
     $trimmed: ();
     @for $i from 1 through ($argc - 1) {
       $trimmed: list.append($trimmed, list.nth($values, $i), space);
     }
     @return ($trimmed, $important);
   }
-
   @return ($values, false);
 }
+
 
 
 
@@ -184,60 +145,301 @@ $spacing-skip-null: true !default;
 // * Padding API
 // * ---------------------------------------------
 
+/// Set padding properties
+/// 
+/// @param {length|keyword} $values... - 1 to 4 values for padding (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding(10px); // padding: 10px;
+///   @include padding(10px 20px); // padding: 10px 20px;
+///   @include padding(10px 20px 30px); // padding: 10px 20px 30px;
+///   @include padding(10px 20px 30px 40px); // padding: 10px 20px 30px 40px;
+///   @include padding(10px, true); // padding: 10px !important;
+///   @include padding(10px 20px, true); // padding: 10px 20px !important;
+///   @include padding(10px 20px 30px, true); // padding: 10px 20px 30px !important;
+///   @include padding(10px 20px 30px 40px, true); // padding: 10px 20px 30px 40px !important;
+///   @include padding((10px, 20px), true); // padding: 10px 20px !important;
+///   @include padding((10px, 20px, 30px), true); // padding: 10px 20px 30px !important;
+///   @include padding((10px, 20px, 30px, 40px), true); // padding: 10px 20px 30px 40px !important;
+///   @include padding((10px, 20px, 30px, 40px)); // padding: 10px 20px 30px 40px;
+///   @include padding((10px, 20px, 30px, 40px), false); // padding: 10px 20px 30px 40px;
+///   @include padding((null, 20px, null, 40px), true); // padding: 20px 40px !important; (null values are skipped if $spacing-skip-null is true)
+///   @include padding((null, null, null, null), true); // (no output if $spacing-skip-null is true)
+///   @include padding((null, null, null, null), false); // (no output if $spacing-skip-null is true)
+///   @include padding(null, true); // (no output if $spacing-skip-null is true)
+///   @include padding(null); // (no output if $spacing-skip-null is true);
+///   @include padding((), true); // (no output if $spacing-skip-null is true);
+///   @include padding((), false); // (no output if $spacing-skip-null is true);
+/// 
 @mixin padding($values...) {
     $pair: _pop-trailing-bool($values);
     $vals: list.nth($pair, 1);
     $important-flag: list.nth($pair, 2);
 
     $norm: _normalize-spacing-list(false, $spacing-skip-null, $vals...);
+    @include _emit('padding', $norm, $important-flag);
 
-    @if not ($norm == null and $spacing-skip-null) {
-        @if $important-flag {
-            padding: $norm !important;
-        } @else {
-            padding: $norm;
-        }
-    }
+    @if meta.content-exists() { @content; }
 }
+
+/// Set padding-top property
+///
+/// @param {length|keyword} $value - The value for padding-top (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include padding-top(10px); // padding-top: 10px;
+///   @include padding-top(10px, true); // padding-top: 10px !important;
+///   @include padding-top(auto); // padding-top: auto;
+///   @include padding-top(auto, true); // padding-top: auto !important;
+///   @include padding-top(null); // (no output if $spacing-skip-null is true);
+///   @include padding-top(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-top(''); // (no output if $spacing-skip-null is true);
+///   @include padding-top('', true); // (no output if $spacing-skip-null is true);
+/// 
 @mixin padding-top($value, $important: false) {
     $v: _to-length-or-keyword($value, false);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { padding-top: $v !important; }
-        @else { padding-top: $v; }
-    }
+    @include _emit('padding-top', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set padding-right property
+///
+/// @param {length|keyword} $value - The value for padding-right (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-right(10px); // padding-right: 10px;
+///   @include padding-right(10px, true); // padding-right: 10px !important;
+///   @include padding-right(auto); // padding-right: auto;
+///   @include padding-right(auto, true); // padding-right: auto !important;
+///   @include padding-right(null); // (no output if $spacing-skip-null is true);
+///   @include padding-right(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-right(''); // (no output if $spacing-skip-null is true);
+///   @include padding-right('', true); // (no output if $spacing-skip-null is true);
+///
 @mixin padding-right($value, $important: false) {
     $v: _to-length-or-keyword($value, false);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { padding-right: $v !important; }
-        @else { padding-right: $v; }
-    }
+    @include _emit('padding-right', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set padding-bottom property
+///
+/// @param {length|keyword} $value - The value for padding-bottom (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-bottom(10px); // padding-bottom: 10px;
+///   @include padding-bottom(10px, true); // padding-bottom: 10px !important;
+///   @include padding-bottom(auto); // padding-bottom: auto;
+///   @include padding-bottom(auto, true); // padding-bottom: auto !important;
+///   @include padding-bottom(null); // (no output if $spacing-skip-null is true);
+///   @include padding-bottom(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-bottom(''); // (no output if $spacing-skip-null is true);
+///   @include padding-bottom('', true); // (no output if $spacing-skip-null is true);
+///
 @mixin padding-bottom($value, $important: false) {
     $v: _to-length-or-keyword($value, false);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { padding-bottom: $v !important; }
-        @else { padding-bottom: $v; }
-    }
+    @include _emit('padding-bottom', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set padding-left property
+///
+/// @param {length|keyword} $value - The value for padding-left (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-left(10px); // padding-left: 10px;
+///   @include padding-left(10px, true); // padding-left: 10px !important;
+///   @include padding-left(auto); // padding-left: auto;
+///   @include padding-left(auto, true); // padding-left: auto !important;
+///   @include padding-left(null); // (no output if $spacing-skip-null is true);
+///   @include padding-left(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-left(''); // (no output if $spacing-skip-null is true);
+///   @include padding-left('', true); // (no output if $spacing-skip-null is true);
+///
 @mixin padding-left($value, $important: false) {
     $v: _to-length-or-keyword($value, false);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { padding-left: $v !important; }
-        @else { padding-left: $v; }
-    }
+    @include _emit('padding-left', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set padding-x (shorthand for padding-left and padding-right)
+/// 
+/// @param {length|keyword} $value - The value for padding-x (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-x(10px); // padding-left: 10px; padding-right: 10px;
+///   @include padding-x(10px, true); // padding-left: 10px !important; padding-right: 10px !important;
+///   @include padding-x(auto); // padding-left: auto; padding-right: auto;
+///   @include padding-x(auto, true); // padding-left: auto !important; padding-right: auto !important;
+///   @include padding-x(null); // (no output if $spacing-skip-null is true);
+///   @include padding-x(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-x(''); // (no output if $spacing-skip-null is true);
+///   @include padding-x('', true); // (no output if $spacing-skip-null is true);
+///
 @mixin padding-x($value: null, $important: false) {
     @include padding-right($value, $important);
     @include padding-left($value, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set padding-y (shorthand for padding-top and padding-bottom)
+/// 
+/// @param {length|keyword} $value - The value for padding-y (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-y(10px); // padding-top: 10px; padding-bottom: 10px;
+///   @include padding-y(10px, true); // padding-top: 10px !important; padding-bottom: 10px !important;
+///   @include padding-y(auto); // padding-top: auto; padding-bottom: auto;
+///   @include padding-y(auto, true); // padding-top: auto !important; padding-bottom: auto !important;
+///   @include padding-y(null); // (no output if $spacing-skip-null is true);
+///   @include padding-y(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-y(''); // (no output if $spacing-skip-null is true);
+///   @include padding-y('', true); // (no output if $spacing-skip-null is true);
+///
 @mixin padding-y($value: null, $important: false) {
     @include padding-top($value, $important);
     @include padding-bottom($value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set padding-inline property (logical properties for left/right)
+/// 
+/// @param {length|keyword} $values... - 1 to 4 values for padding-inline (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-inline(10px); // padding-inline: 10px;
+///   @include padding-inline(10px, true); // padding-inline: 10px !important;
+///   @include padding-inline(10px 20px); // padding-inline: 10px 20px;
+///   @include padding-inline(10px 20px, true); // padding-inline: 10px 20px !important;
+///   @include padding-inline((10px, 20px), true); // padding-inline: 10px 20px !important;
+///   @include padding-inline((10px, 20px)); // padding-inline: 10px 20px;
+///   @include padding-inline((null, 20px), true); // padding-inline: 20px !important; (null values are skipped if $spacing-skip-null is true)
+///   @include padding-inline((null, null), true); // (no output if $spacing-skip-null is true)
+///   @include padding-inline((null, null), false); // (no output if $spacing-skip-null is true)
+/// 
+@mixin padding-inline($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+    $norm: _normalize-spacing-list(false, $spacing-skip-null, $vals...);
+    @include _emit('padding-inline', $norm, $important-flag);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set padding-inline-start property (logical property for left/start)
+///
+/// @param {length|keyword} $value - The value for padding-inline-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-inline-start(10px); // padding-inline-start: 10px;
+///   @include padding-inline-start(10px, true); // padding-inline-start: 10px !important;
+///   @include padding-inline-start(auto); // padding-inline-start: auto;
+///   @include padding-inline-start(auto, true); // padding-inline-start: auto !important;
+///   @include padding-inline-start(null); // (no output if $spacing-skip-null is true);
+///   @include padding-inline-start(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-inline-start(''); // (no output if $spacing-skip-null is true);
+///   @include padding-inline-start('', true); // (no output if $spacing-skip-null is true);
+///
+@mixin padding-inline-start($value, $important: false) { 
+    $v: _to-length-or-keyword($value, false);
+    @include _emit('padding-inline-start', $v, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Set padding-inline-end property (logical property for right/end)
+/// 
+/// @param {length|keyword} $value - The value for padding-inline-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-inline-end(10px); // padding-inline-end: 10px;
+///   @include padding-inline-end(10px, true); // padding-inline-end: 10px !important;
+///   @include padding-inline-end(auto); // padding-inline-end: auto;
+///   @include padding-inline-end(auto, true); // padding-inline-end: auto !important;
+///   @include padding-inline-end(null); // (no output if $spacing-skip-null is true);
+///   @include padding-inline-end(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-inline-end(''); // (no output if $spacing-skip-null is true);
+///   @include padding-inline-end('', true); // (no output if $spacing-skip-null is true);
+///
+@mixin padding-inline-end($value, $important: false)   { 
+    $v: _to-length-or-keyword($value, false);
+    @include _emit('padding-inline-end', $v, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Set padding-block property (logical properties for top/bottom)
+/// 
+/// @param {length|keyword} $values... - 1 to 4 values for padding-block (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// Usage:
+///   @include padding-block(10px); // padding-block: 10px;
+///   @include padding-block(10px, true); // padding-block: 10px !important;
+///   @include padding-block(10px 20px); // padding-block: 10px 20px;
+///   @include padding-block(10px 20px, true); // padding-block: 10px 20px !important;
+///   @include padding-block((10px, 20px), true); // padding-block: 10px 20px !important;
+///   @include padding-block((10px, 20px)); // padding-block: 10px 20px;
+///   @include padding-block((null, 20px), true); // padding-block: 20px !important; (null values are skipped if $spacing-skip-null is true)
+///   @include padding-block((null, null), true); // (no output if $spacing-skip-null is true)
+///   @include padding-block((null, null), false); // (no output if $spacing-skip-null is true) 
+/// 
+@mixin padding-block($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+    $norm: _normalize-spacing-list(false, $spacing-skip-null, $vals...);
+    @include _emit('padding-block', $norm, $important-flag);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set padding-block-start property (logical property for top/start)
+///
+/// @param {length|keyword} $value - The value for padding-block-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-block-start(10px); // padding-block-start: 10px;
+///   @include padding-block-start(10px, true); // padding-block-start: 10px !important;
+///   @include padding-block-start(auto); // padding-block-start: auto;
+///   @include padding-block-start(auto, true); // padding-block-start: auto !important;
+///   @include padding-block-start(null); // (no output if $spacing-skip-null is true);
+///   @include padding-block-start(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-block-start(''); // (no output if $spacing-skip-null is true);
+///   @include padding-block-start('', true); // (no output if $spacing-skip-null is true);
+///
+@mixin padding-block-start($value, $important: false) { 
+    $v: _to-length-or-keyword($value, false);
+    @include _emit('padding-block-start', $v, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Set padding-block-end property (logical property for bottom/end)
+/// 
+/// @param {length|keyword} $value - The value for padding-block-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///   @include padding-block-end(10px); // padding-block-end: 10px;
+///   @include padding-block-end(10px, true); // padding-block-end: 10px !important;
+///   @include padding-block-end(auto); // padding-block-end: auto;
+///   @include padding-block-end(auto, true); // padding-block-end: auto !important;
+///   @include padding-block-end(null); // (no output if $spacing-skip-null is true);
+///   @include padding-block-end(null, true); // (no output if $spacing-skip-null is true);
+///   @include padding-block-end(''); // (no output if $spacing-skip-null is true);
+///   @include padding-block-end('', true); // (no output if $spacing-skip-null is true);
+///
+@mixin padding-block-end($value, $important: false)   { 
+    $v: _to-length-or-keyword($value, false);
+    @include _emit('padding-block-end', $v, $important); 
+    @if meta.content-exists() { @content; } 
 }
 
 
@@ -245,58 +447,229 @@ $spacing-skip-null: true !default;
 // * Margin API
 // * ---------------------------------------------
 
+/// Set margin properties
+///
+/// @param {length|keyword} $values... - 1 to 4 values for margin (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin(10px); // margin: 10px;
+///   @include margin(10px 20px); // margin: 10px 20px;
+///   @include margin(10px 20px 30px); // margin: 10px 20px 30px;
+///   @include margin(10px 20px 30px 40px); // margin: 10px 20px 30px 40px;
+///   @include margin(10px, true); // margin: 10px !important;
+///   @include margin((10px, 20px), true); // margin: 10px 20px !important;
+///   @include margin(auto); // margin: auto;
+///   @include margin((null, 20px, null, 40px), true); // margin: 20px 40px !important; (null values are skipped if $spacing-skip-null is true)
+///
 @mixin margin($values...) {
     $pair: _pop-trailing-bool($values);
     $vals: list.nth($pair, 1);
     $important-flag: list.nth($pair, 2);
 
     $norm: _normalize-spacing-list(false, $spacing-skip-null, $vals...);
+    @include _emit('margin', $norm, $important-flag);
 
-    @if not ($norm == null and $spacing-skip-null) {
-        @if $important-flag {
-            margin: $norm !important;
-        } @else {
-            margin: $norm;
-        }
-    }
+    @if meta.content-exists() { @content; }
 }
+
+/// Set margin-top property
+///
+/// @param {length|keyword} $value - The value for margin-top (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-top(10px); // margin-top: 10px;
+///   @include margin-top(auto); // margin-top: auto;
+///   @include margin-top(10px, true); // margin-top: 10px !important;
+///
 @mixin margin-top($value, $important: false) {
     $v: _to-length-or-keyword($value, true);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { margin-top: $v !important; }
-        @else { margin-top: $v; }
-    }
+    @include _emit('margin-top', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set margin-right property
+///
+/// @param {length|keyword} $value - The value for margin-right (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-right(10px); // margin-right: 10px;
+///   @include margin-right(auto); // margin-right: auto;
+///   @include margin-right(10px, true); // margin-right: 10px !important;
+///
 @mixin margin-right($value, $important: false) {
     $v: _to-length-or-keyword($value, true);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { margin-right: $v !important; }
-        @else { margin-right: $v; }
-    }
+    @include _emit('margin-right', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set margin-bottom property
+///
+/// @param {length|keyword} $value - The value for margin-bottom (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-bottom(10px); // margin-bottom: 10px;
+///   @include margin-bottom(auto); // margin-bottom: auto;
+///   @include margin-bottom(10px, true); // margin-bottom: 10px !important;
+///
 @mixin margin-bottom($value, $important: false) {
     $v: _to-length-or-keyword($value, true);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { margin-bottom: $v !important; }
-        @else { margin-bottom: $v; }
-    }
+    @include _emit('margin-bottom', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set margin-left property
+///
+/// @param {length|keyword} $value - The value for margin-left (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-left(10px); // margin-left: 10px;
+///   @include margin-left(auto); // margin-left: auto;
+///   @include margin-left(10px, true); // margin-left: 10px !important;
+///
 @mixin margin-left($value, $important: false) {
     $v: _to-length-or-keyword($value, true);
-
-    @if not ($v == null and $spacing-skip-null) {
-        @if $important { margin-left: $v !important; }
-        @else { margin-left: $v; }
-    }
+    @include _emit('margin-left', $v, $important); 
+    @if meta.content-exists() { @content; }
 }
+
+/// Set margin-x (shorthand for margin-left and margin-right)
+///
+/// @param {length|keyword} $value - The value for horizontal margins
+/// @param {bool} $important (optional) - if true, adds !important to both declarations
+///
+/// Usage:
+///   @include margin-x(12px); // margin-right: 12px; margin-left: 12px;
+///   @include margin-x(auto); // margin-right: auto; margin-left: auto;
+///   @include margin-x(12px, true); // margin-right: 12px !important; margin-left: 12px !important;
+///
 @mixin margin-x($value: null, $important: false) {
     @include margin-right($value, $important);
     @include margin-left($value, $important);
+    @if meta.content-exists() { @content; }
 }
+
+/// Set margin-y (shorthand for margin-top and margin-bottom)
+///
+/// @param {length|keyword} $value - The value for vertical margins
+/// @param {bool} $important (optional) - if true, adds !important to both declarations
+///
+/// Usage:
+///   @include margin-y(8px); // margin-top: 8px; margin-bottom: 8px;
+///   @include margin-y(auto); // margin-top: auto; margin-bottom: auto;
+///   @include margin-y(8px, true); // margin-top: 8px !important; margin-bottom: 8px !important;
+///
 @mixin margin-y($value: null, $important: false) {
-  @include margin-top($value, $important);
-  @include margin-bottom($value, $important);
+    @include margin-top($value, $important);
+    @include margin-bottom($value, $important);
+    @if meta.content-exists() { @content; }
+}
+
+
+/// Set margin-inline property (logical properties for inline axis)
+///
+/// @param {length|keyword} $values... - 1 to 4 values for margin-inline (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-inline(10px); // margin-inline: 10px;
+///   @include margin-inline(10px 20px); // margin-inline: 10px 20px;
+///   @include margin-inline(auto); // margin-inline: auto;
+///   @include margin-inline((10px, auto), true); // margin-inline: 10px auto !important;
+///
+@mixin margin-inline($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+    $norm: _normalize-spacing-list(true, $spacing-skip-null, $vals...);
+    @include _emit('margin-inline', $norm, $important-flag);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set margin-inline-start property
+///
+/// @param {length|keyword} $value - The value for margin-inline-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-inline-start(10px); // margin-inline-start: 10px;
+///   @include margin-inline-start(auto); // margin-inline-start: auto;
+///   @include margin-inline-start(10px, true); // margin-inline-start: 10px !important;
+///
+@mixin margin-inline-start($value, $important: false) { 
+    $v: _to-length-or-keyword($value, true);
+    @include _emit('margin-inline-start', $v, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Set margin-inline-end property
+///
+/// @param {length|keyword} $value - The value for margin-inline-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-inline-end(10px); // margin-inline-end: 10px;
+///   @include margin-inline-end(auto); // margin-inline-end: auto;
+///   @include margin-inline-end(10px, true); // margin-inline-end: 10px !important;
+///
+@mixin margin-inline-end($value, $important: false)   { 
+    $v: _to-length-or-keyword($value, true);
+    @include _emit('margin-inline-end', $v, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Set margin-block property (logical properties for block axis)
+///
+/// @param {length|keyword} $values... - 1 to 4 values for margin-block (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-block(10px); // margin-block: 10px;
+///   @include margin-block(10px 20px); // margin-block: 10px 20px;
+///   @include margin-block(auto); // margin-block: auto;
+///   @include margin-block((auto, 20px), true); // margin-block: auto 20px !important;
+///
+@mixin margin-block($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+    $norm: _normalize-spacing-list(true, $spacing-skip-null, $vals...);
+    @include _emit('margin-block', $norm, $important-flag);
+    @if meta.content-exists() { @content; }
+}
+
+/// Set margin-block-start property
+///
+/// @param {length|keyword} $value - The value for margin-block-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-block-start(10px); // margin-block-start: 10px;
+///   @include margin-block-start(auto); // margin-block-start: auto;
+///   @include margin-block-start(10px, true); // margin-block-start: 10px !important;
+///
+@mixin margin-block-start($value, $important: false) { 
+    $v: _to-length-or-keyword($value, true);
+    @include _emit('margin-block-start', $v, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Set margin-block-end property
+///
+/// @param {length|keyword} $value - The value for margin-block-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///   @include margin-block-end(10px); // margin-block-end: 10px;
+///   @include margin-block-end(auto); // margin-block-end: auto;
+///   @include margin-block-end(10px, true); // margin-block-end: 10px !important;
+///
+@mixin margin-block-end($value, $important: false)   { 
+    $v: _to-length-or-keyword($value, true);
+    @include _emit('margin-block-end', $v, $important); 
+    @if meta.content-exists() { @content; } 
 }
