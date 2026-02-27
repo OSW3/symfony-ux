@@ -1,53 +1,145 @@
-// clear.scss
-// =============================================================================
-// This file contains mixins for managing the "clear" behavior in CSS layouts.
-// These mixins are used to resolve issues with floated elements by resetting
-// the floating effect inside a parent element using the :after pseudo-class 
-// along with the "clear" property.
-//
-// Available Mixins:
-// - `clear($clear)` : A generic mixin to apply a value to the `clear` property.
-// - `both()` : Applies `clear: both` to clear both left and right floats.
-// - `left()` : Applies `clear: left` to clear left floats.
-// - `right()` : Applies `clear: right` to clear right floats.
-// - `none()` : Applies `clear: none` to avoid clearing floats.
-// - `clearfix()` : Applies `clear: both` for a simplified clearfix solution.
-//
-// Example usage:
-// @include both();  // Uses clear: both
-// @include left();  // Uses clear: left
-// @include right(); // Uses clear: right
-// @include clearfix(); // Uses clear: both for floating elements in a parent
-//
-// This approach simplifies managing floats in complex layouts, ensuring that
-// floated elements are properly "cleared" after their use.
-// =============================================================================
+// * ===========================================================================
+// *  Structural Mixins for the Clearfix Pattern
+// * ===========================================================================
+// *
+// *  This file defines mixins for the clearfix pattern.
+// *  These mixins provide a convenient way to clear floated elements within a 
+// *  container.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
 
 
-@mixin clear($clear: both) {
-    &:after {
-        content: "";
-        display: block;
-        clear: $clear;
-    }
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// skip si valeur vide/null
+$clear-skip-null: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec ou sans !important, en skipant null/''
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($clear-skip-null and ($val == null or $val == '')) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
+  }
 }
 
-@mixin both() {
-    @include clear(both);
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Clear
+// * ---------------------------------------------
+
+/// Clear (legacy)
+///
+/// @param {string} $value - The value for the clear property (e.g., 'both', 'left', 'right', 'none').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include clear(both);
+///   @include clear(left, true); // with !important 
+/// 
+@mixin clear($value, $important: false) {
+  @include _emit('clear', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
-@mixin left() {
-    @include clear(left);
+/// Clearfix (modern)
+///
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include clear-both;
+///
+@mixin clear-both($important: false) { 
+    @include clear(both,  $important); 
+    @if meta.content-exists() { @content; } 
 }
 
-@mixin right() {
-    @include clear(right);
+/// Clearfix with specific sides
+///
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include clear-left;
+/// 
+@mixin clear-left($important: false) { 
+    @include clear(left,  $important); 
+    @if meta.content-exists() { @content; } 
 }
 
-@mixin none() {
-    @include clear(none);
+/// Clearfix with specific sides
+///
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include clear-right;
+/// 
+@mixin clear-right($important: false) { 
+    @include clear(right, $important); 
+    @if meta.content-exists() { @content; } 
 }
 
-@mixin clearfix() {
-    @include clear(both);
+/// Clearfix with no clearing (for resetting)
+///
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include clear-none;
+///
+@mixin clear-none($important: false) { 
+    @include clear(none,  $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Clearfix with logical properties (modern)
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include clear-inline-start;
+/// 
+@mixin clear-inline-start($important: false) { 
+    @include clear(inline-start, $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+/// Clearfix with logical properties (modern)
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///   @include clear-inline-end;
+///
+@mixin clear-inline-end($important: false) { 
+    @include clear(inline-end,   $important); 
+    @if meta.content-exists() { @content; } 
+}
+
+
+// * ---------------------------------------------
+// * Clearfix
+// * ---------------------------------------------
+
+/// Clearfix
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///   @include clearfix;
+/// 
+@mixin clearfix($important: false) {
+    @include _emit('display', flow-root, $important);
+    @if meta.content-exists() { @content; }
 }

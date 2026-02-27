@@ -14,6 +14,7 @@
 @use "sass:string";
 @use "./display" as *;
 @use "./gaps" as *;
+// @use "./../helpers/helpers";
 
 
 // * ------------------------------------------------------------------------ //
@@ -215,6 +216,7 @@ $enable-css-fallbacks: true !default;
 /// 
 @mixin grid($value, $important: false) {
     @include _emit('grid', $value, $important);
+    // @include helpers.emit('grid', $value, $important);
 
     // Décomposition (fallbacks longhands) si activé et si on peut parser proprement
     @if $enable-css-fallbacks and $value != null and $value != '' and meta.type-of($value) == 'string' {

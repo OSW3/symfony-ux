@@ -12,6 +12,7 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
+@use "./../helpers/helpers" as helpers;
 
 
 // * ------------------------------------------------------------------------ //
@@ -30,18 +31,22 @@ $tab-size-default-unit: 1ch !default;
 // Activer les fallbacks legacy (webkit/ms quand pertinent)
 $enable-css-fallbacks: true !default;
 
+// Flag global pour émettre (ou pas) des propriétés non standard
+$enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-osx-font-smoothing
+
+
 
 // * ------------------------------------------------------------------------ //
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
 
 // Émet une propriété avec ou sans !important, et skip si null/'' (si activé)
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($props-skip-null and ($val == null or $val == '')) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
+// @mixin _emit($prop, $val, $important: false) {
+//   @if not ($props-skip-null and ($val == null or $val == '')) {
+//     @if $important { #{$prop}: $val !important; }
+//     @else          { #{$prop}: $val; }
+//   }
+// }
 
 // Nombre -> longueur (unitless -> $length-default-unit), conserve 0 unitless
 @function _normalize-length($value, $default-unit: $length-default-unit) {
@@ -148,7 +153,9 @@ $enable-css-fallbacks: true !default;
     $important-flag: list.nth($pair, 2);
 
     $ff: _as-comma-list($vals);
-    @include _emit('font-family', $ff, $important-flag);
+    // @include _emit('font-family', $ff, $important-flag);
+    @include helpers.emit('font-family', $ff, $important-flag);
+
     @if meta.content-exists() { @content; }
 }
 
@@ -164,7 +171,7 @@ $enable-css-fallbacks: true !default;
 /// 
 @mixin font-size($value, $important: false) {
     $v: _normalize-length($value, $length-default-unit);
-    @include _emit('font-size', $v, $important);
+    @include helpers.emit('font-size', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -180,7 +187,7 @@ $enable-css-fallbacks: true !default;
 ///   @include font-weight(700, true); // font-weight: 700 !important;
 /// 
 @mixin font-weight($value, $important: false) {
-    @include _emit('font-weight', $value, $important);
+    @include helpers.emit('font-weight', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -194,7 +201,7 @@ $enable-css-fallbacks: true !default;
 ///   @include font-style(oblique, true); // font-style: oblique !important;
 ///
 @mixin font-style($value, $important: false) {
-    @include _emit('font-style', $value, $important);
+    @include helpers.emit('font-style', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -208,7 +215,7 @@ $enable-css-fallbacks: true !default;
 ///   @include font-stretch(condensed, true); // font-stretch: condensed !important;
 ///
 @mixin font-stretch($value, $important: false) {
-    @include _emit('font-stretch', $value, $important);
+    @include helpers.emit('font-stretch', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -222,7 +229,7 @@ $enable-css-fallbacks: true !default;
 ///   @include font-variant(small-caps, true); // font-variant: small-caps !important;
 ///
 @mixin font-variant($value, $important: false) {
-    @include _emit('font-variant', $value, $important);
+    @include helpers.emit('font-variant', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -244,7 +251,7 @@ $enable-css-fallbacks: true !default;
 ///
 @mixin line-height($value, $important: false) {
     $v: _length-or-number($value, $length-default-unit);
-    @include _emit('line-height', $v, $important);
+    @include helpers.emit('line-height', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -261,7 +268,7 @@ $enable-css-fallbacks: true !default;
 ///
 @mixin letter-spacing($value, $important: false) {
     $v: _normalize-length($value, $length-default-unit);
-    @include _emit('letter-spacing', $v, $important);
+    @include helpers.emit('letter-spacing', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -278,7 +285,7 @@ $enable-css-fallbacks: true !default;
 ///
 @mixin word-spacing($value, $important: false) {
     $v: _normalize-length($value, $length-default-unit);
-    @include _emit('word-spacing', $v, $important);
+    @include helpers.emit('word-spacing', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -300,7 +307,7 @@ $enable-css-fallbacks: true !default;
 ///   @include text-align(end); // text-align: end;
 ///
 @mixin text-align($value, $important: false) { 
-    @include _emit('text-align', $value, $important); 
+    @include helpers.emit('text-align', $value, $important); 
     @if meta.content-exists() { @content; }
 }
 
@@ -316,7 +323,7 @@ $enable-css-fallbacks: true !default;
 ///   @include text-transform(none, true); // text-transform: none !important;
 ///
 @mixin text-transform($value, $important: false) { 
-    @include _emit('text-transform', $value, $important); 
+    @include helpers.emit('text-transform', $value, $important); 
     @if meta.content-exists() { @content; }
 }
 
@@ -336,7 +343,7 @@ $enable-css-fallbacks: true !default;
     $vals: list.nth($pair, 1);
     $important-flag: list.nth($pair, 2);
 
-    @include _emit('text-decoration', $vals, $important-flag);
+    @include helpers.emit('text-decoration', $vals, $important-flag);
     @if meta.content-exists() { @content; }
 }
 
@@ -355,11 +362,11 @@ $enable-css-fallbacks: true !default;
     } 
     @else if meta.type-of($value) == 'list' {
         $out: _normalize-length-or-percentage-list($value, $length-default-unit);
-        @include _emit('text-indent', $out, $important);
+        @include helpers.emit('text-indent', $out, $important);
     } 
     @else {
         $v: _normalize-length-or-percentage($value, $length-default-unit);
-        @include _emit('text-indent', $v, $important);
+        @include helpers.emit('text-indent', $v, $important);
     }
     @if meta.content-exists() { @content; }
 
@@ -379,7 +386,7 @@ $enable-css-fallbacks: true !default;
 ///   @include white-space(break-spaces, true); // white-space: break-spaces !important;
 ///
 @mixin white-space($value, $important: false) { 
-    @include _emit('white-space', $value, $important); 
+    @include helpers.emit('white-space', $value, $important); 
     @if meta.content-exists() { @content; }
 }
 
@@ -395,11 +402,16 @@ $enable-css-fallbacks: true !default;
 ///   @include word-break(break-word, true); // word-break: break-word !important; with fallback for word-wrap: break-word;
 ///
 @mixin word-break($value, $important: false) {
-    @include _emit('word-break', $value, $important);
+    @include helpers.emit('word-break', $value, $important);
     @if $enable-css-fallbacks and $value == break-word {
-        @include _emit('overflow-wrap', anywhere, $important);
-        @include _emit('word-wrap', break-word, $important);
+        @include helpers.emit('overflow-wrap', anywhere, $important);
+        @include helpers.emit('word-wrap', break-word, $important);
     }
+    @if meta.content-exists() { @content; }
+}
+
+@mixin word-wrap($value, $important: false) {
+    @include helpers.emit('word-wrap', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -416,9 +428,9 @@ $enable-css-fallbacks: true !default;
 ///
 @mixin overflow-wrap($value, $important: false) {
     @if $enable-css-fallbacks {
-        @include _emit('word-wrap', $value, $important);
+        @include helpers.emit('word-wrap', $value, $important);
     }
-    @include _emit('overflow-wrap', $value, $important);
+    @include helpers.emit('overflow-wrap', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -433,10 +445,10 @@ $enable-css-fallbacks: true !default;
 ///
 @mixin hyphens($value, $important: false) {
     @if $enable-css-fallbacks {
-        @include _emit('-webkit-hyphens', $value, $important);
-        @include _emit('-ms-hyphens', $value, $important);
+        @include helpers.emit('-webkit-hyphens', $value, $important);
+        @include helpers.emit('-ms-hyphens', $value, $important);
     }
-    @include _emit('hyphens', $value, $important);
+    @include helpers.emit('hyphens', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -455,7 +467,7 @@ $enable-css-fallbacks: true !default;
 ///   @include text-decoration-color(currentColor, true); // text-decoration-color: currentColor !important;
 ///
 @mixin text-decoration-color($value, $important: false) { 
-    @include _emit('text-decoration-color', $value, $important); 
+    @include helpers.emit('text-decoration-color', $value, $important); 
     @if meta.content-exists() { @content; }
 }
 
@@ -472,7 +484,7 @@ $enable-css-fallbacks: true !default;
 /// 
 @mixin text-decoration-thickness($value, $important: false) {
     $v: _normalize-length-or-percentage($value, $length-default-unit);
-    @include _emit('text-decoration-thickness', $v, $important);
+    @include helpers.emit('text-decoration-thickness', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -489,7 +501,7 @@ $enable-css-fallbacks: true !default;
 /// 
 @mixin text-underline-offset($value, $important: false) {
     $v: _normalize-length-or-percentage($value, $length-default-unit);
-    @include _emit('text-underline-offset', $v, $important);
+    @include helpers.emit('text-underline-offset', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -505,7 +517,7 @@ $enable-css-fallbacks: true !default;
 ///   @include text-underline-position(right, true); // text-underline-position: right !important;
 ///
 @mixin text-underline-position($value, $important: false) { 
-    @include _emit('text-underline-position', $value, $important);
+    @include helpers.emit('text-underline-position', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -523,7 +535,7 @@ $enable-css-fallbacks: true !default;
 @mixin tab-size($value, $important: false) {
     // $v: _length-or-number($value, $tab-size-default-unit);
     $v: _normalize-length($value, $tab-size-default-unit);
-    @include _emit('tab-size', $v, $important);
+    @include helpers.emit('tab-size', $v, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -539,7 +551,7 @@ $enable-css-fallbacks: true !default;
 ///   @include text-wrap(pretty, true); // text-wrap: pretty !important;
 ///
 @mixin text-wrap($value, $important: false) {
-    @include _emit('text-wrap', $value, $important);
+    @include helpers.emit('text-wrap', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -554,11 +566,11 @@ $enable-css-fallbacks: true !default;
 ///
 @mixin text-size-adjust($value, $important: false) {
     @if $enable-css-fallbacks {
-        @include _emit('-webkit-text-size-adjust', $value, $important);
-        @include _emit('-ms-text-size-adjust', $value, $important);
-        @include _emit('-moz-text-size-adjust', $value, $important);
+        @include helpers.emit('-webkit-text-size-adjust', $value, $important);
+        @include helpers.emit('-ms-text-size-adjust', $value, $important);
+        @include helpers.emit('-moz-text-size-adjust', $value, $important);
     }
-    @include _emit('text-size-adjust', $value, $important);
+    @include helpers.emit('text-size-adjust', $value, $important);
     @if meta.content-exists() { @content; }
 }
 
@@ -580,6 +592,63 @@ $enable-css-fallbacks: true !default;
     @if meta.type-of($vals) == 'string' or meta.type-of($vals) == 'keyword' {
         $v: $vals;
     }
-    @include _emit('quotes', $v, $important-flag);
+    @include helpers.emit('quotes', $v, $important-flag);
     @if meta.content-exists() { @content; }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ---------------------------------------------
+// Text rendering & smoothing
+// ---------------------------------------------
+/// text-rendering (hint non standard – effets limités sur la plupart des moteurs)
+/// Valeurs usuelles : auto | optimizeSpeed | optimizeLegibility | geometricPrecision
+@mixin text-rendering($value, $important: false) {
+  @include helpers.emit('text-rendering', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Raccourci pour text-rendering: optimizeLegibility
+@mixin text-rendering-optimize-legibility($important: false) {
+  @include text-rendering(optimizeLegibility, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// (Optionnel, non standard) – ajuste l’antialiasing sur WebKit/macOS
+///  -webkit-font-smoothing: antialiased | subpixel-antialiased
+///  -moz-osx-font-smoothing: grayscale | auto
+@mixin font-smoothing($webkit: antialiased, $moz: grayscale, $important: false) {
+  @if $enable-typography-nonstandard {
+    @include helpers.emit('-webkit-font-smoothing', $webkit, $important);
+    @include helpers.emit('-moz-osx-font-smoothing', $moz, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// (Optionnel) Preset "lisibilité" – à activer consciemment.
+/// Combine text-rendering + ligatures + smoothing non standard si flag actif.
+@mixin text-readability-preset($important: false) {
+  // Hint de rendu
+  @include text-rendering(optimizeLegibility, $important);
+
+  // Ligatures “communes” (selon police/moteur)
+  // Préfère font-variant-ligatures quand dispo, sinon font-feature-settings
+  @include helpers.emit('font-variant-ligatures', common-ligatures, $important);
+  // (facultatif de doublonner)
+  // @include _emit('font-feature-settings', 'liga' 1, $important);
+
+  // Antialiasing non standard (opt-in via flag)
+  @include font-smoothing(antialiased, grayscale, $important);
+
+  @if meta.content-exists() { @content; }
 }

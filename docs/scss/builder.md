@@ -698,30 +698,75 @@
 @include transition-vars((opacity, transform), 200, ease, 100ms, true);       // transition: opacity 200ms ease 100ms, transform 200ms ease 100ms !important;
 ```
 
-## Animation
+
+
+### Clear
+
 ```scss
-    // -- ---------------------------------------------
-    // -- Define the animation effects for the xxx component.
-    // -- ---------------------------------------------
-    @mixin xxx-animation() {
-
-    // Propriétés
-    // - animation
-    // - animation-name
-    // - animation-duration
-    // - animation-delay
-    // - animation-timing-function
-    // - animation-iteration-count
-    // - animation-direction
-    // - animation-fill-mode
-    // - animation-play-state
-    // - @keyframes
-
-    @content;
-}
+@include clear(both);               // clear: both;
+@include clear(left);               // clear: left;
+@include clear(right);              // clear: right;
+@include clear(none);               // clear: none;
+@include clear-both;                // clear: both;
+@include clear-left;                // clear: left;
+@include clear-right;               // clear: right;
+@include clear-none;                // clear: none;
+@include clear-inline-start;        // clear: inline-start;
+@include clear-inline-end;          // clear: inline-end;
+@include clearfix;                  // clear: both; (clearfix helper)
 ```
 
-## Theme
+### Corner
+
+```scss
+@include corner-rounded(8 12 10 9);   // border-radius: 8px 12px 10px 9px;
+
+@include corner-start(8 12);          // border-start-start-radius: 8px;    // border-end-start-radius: 12px;
+@include corner-end(8 12);            // border-start-end-radius: 8px;    // border-end-end-radius: 12px;
+@include corner-top(8 12);            // border-top-left-radius: 8px;   // border-top-right-radius: 12px;
+@include corner-bottom(8 12);         // border-bottom-left-radius: 8px;  // border-bottom-right-radius: 12px;
+
+@include corner-top-start(8 12);      // border-start-start-radius: 8px 12px;
+@include corner-top-end(8 12);        // border-start-end-radius: 8px 12px;
+@include corner-top-left(8 12);       // border-top-left-radius: 8px 12px;
+@include corner-top-right(8 12);      // border-top-right-radius: 8px 12px;
+
+@include corner-bottom-start(8 12);   // border-end-start-radius: 8px 12px;
+@include corner-bottom-end(8 12);     // border-end-end-radius: 8px 12px;
+@include corner-bottom-left(8 12);    // border-bottom-left-radius: 8px 12px;
+@include corner-bottom-right(8 12);   // border-bottom-right-radius: 8px 12px;
+
+@include corner-inline(8, 12);        // border-start-start-radius: 8px;   // border-end-start-radius: 8px;  // border-start-end-radius: 12px;  // border-end-end-radius: 12px;
+@include corner-block(8, 12);         // border-start-start-radius: 8px;  // border-start-end-radius: 8px;   // border-end-start-radius: 12px;   // border-end-end-radius: 12px;
+@include corner-rounded-full();       // border-radius: 9999px;
+@include corner-rounded-circle();     // border-radius: 50%;
+```
+
+
+### Animation
+```scss
+@include animation(fade-in 1s ease-in-out);// animation: fade-in 1s ease-in-out;
+@include animation-ease(blink, 200ms, ease, 0s);// animation: blink 200ms ease 0s;
+@include animation-steps(blink, 5, end);// animation-timing-function: steps(5, end);
+@include animation-paused();// animation-play-state: paused;
+@include animation-running();// animation-play-state: running;
+
+@include animation-name(fade-in);// animation-name: fade-in;
+@include animation-duration(1s);// animation-duration: 1s;
+@include animation-timing-function(ease-in-out);// animation-timing-function: ease-in-out;
+@include animation-delay(0s);// animation-delay: 0s;
+@include animation-iteration-count(infinite);// animation-iteration-count: infinite;
+@include animation-direction(alternate);// animation-direction: alternate;
+@include animation-fill-mode(forwards);// animation-fill-mode: forwards;
+@include animation-play-state(running);// animation-play-state: running;
+
+@include keyframes(fade-in) {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}// @keyframes fade-in {  from { opacity: 0; }  to { opacity: 1; }}
+``
+
+### Visual
 ```scss
 // -- ---------------------------------------------
 // -- Define the theme for the xxx component.
@@ -759,32 +804,83 @@
 }
 ```
 
-## Effects
+### Effects
 ```scss
-    // -- ---------------------------------------------
-    // -- Define the effects for the xxx component.
-    // -- ---------------------------------------------
-    @mixin xxx-effects() {
+@include opacity(0.5);                                           // opacity: 0.5;
+@include filter(blur(5px) grayscale(50%) brightness(150%));      // filter: blur(5px) grayscale(50%) brightness(150%);
+@include backdrop-filter(blur(5px) grayscale(50%) brightness(150%)); // backdrop-filter: blur(5px) grayscale(50%) brightness(150%);
+@include mix-blend-mode(multiply);                               // mix-blend-mode: multiply;
+@include isolation(isolate);                                     // isolation: isolate;
+@include will-change(opacity, filter, backdrop-filter);          // will-change: opacity, filter, backdrop-filter;
+@include transform-box(border-box);                              // transform-box: border-box;
 
-    // Propriétés
-    // - opacity
-    // - filter
-    // - backdrop-filter
-    // - mix-blend-mode
-    // - isolation
+@include transform-origin(50% 50%);                              // transform-origin: 50% 50%;
+@include transform-style(preserve-3d);                           // transform-style: preserve-3d;
+@include perspective(1000px);                                    // perspective: 1000px;
+@include perspective-origin(50% 50%);                            // perspective-origin: 50% 50%;
+@include backface-visibility(hidden);                            // backface-visibility: hidden;
 
-    // Transform & 3D
-    // - transform
-    // - transform-origin
-    // - transform-style
-    // - perspective
-    // - perspective-origin
-    // - backface-visibility
-    // (ou propriétés individuelles modernes: translate / rotate / scale)
-
-    @content;
-}
+@include translate(10px, 20px);                                  // translate: 10px 20px;
+@include rotate(45deg);                                          // rotate: 45deg;
+@include scale(1.5, 1.5);                                        // scale: 1.5 1.5;
 ```
+
+
+### Overflow
+
+```scss
+@include overflow(hidden);                 // overflow: hidden;
+@include overflow(scroll);                 // overflow: scroll;
+@include overflow(auto);                   // overflow: auto;
+@include overflow(visible);                // overflow: visible;
+@include overflow(clip);                   // overflow: clip;
+
+@include overflow-x(hidden);               // overflow-x: hidden;
+@include overflow-x(scroll);               // overflow-x: scroll;
+@include overflow-x(auto);                 // overflow-x: auto;
+@include overflow-x(visible);              // overflow-x: visible;
+@include overflow-x(clip);                 // overflow-x: clip;
+
+@include overflow-y(hidden);               // overflow-y: hidden;
+@include overflow-y(scroll);               // overflow-y: scroll;
+@include overflow-y(auto);                 // overflow-y: auto;
+@include overflow-y(visible);              // overflow-y: visible;
+@include overflow-y(clip);                 // overflow-y: clip;
+
+@include overflow-visible();               // overflow: visible;
+@include overflow-hidden();                // overflow: hidden;
+@include overflow-clip();                  // overflow: clip;
+@include overflow-scroll();                // overflow: scroll;
+@include overflow-auto();                  // overflow: auto;
+
+@include overflow-inline(visible);         // overflow-inline: visible;
+@include overflow-inline(hidden);          // overflow-inline: hidden;
+@include overflow-inline(auto);            // overflow-inline: auto;
+
+@include overflow-block(visible);          // overflow-block: visible;
+@include overflow-block(hidden);           // overflow-block: hidden;
+@include overflow-block(auto);             // overflow-block: auto;
+
+@include overflow-scrollbars-hide();       // scrollbar-width: none; -ms-overflow-style: none; &::-webkit-scrollbar { display: none; }
+@include overflow-smooth-scroll();         // scroll-behavior: smooth;
+@include overflow-contain();               // overscroll-behavior: contain;
+@include overflow-touch();                 // -webkit-overflow-scrolling: touch;
+
+@include visibility(visible);              // visibility: visible;
+@include visibility(hidden);               // visibility: hidden;
+@include visibility(collapse);             // visibility: collapse;
+@include visibility-visible();             // visibility: visible;
+@include visibility-hidden();              // visibility: hidden;
+@include visibility-collapse();            // visibility: collapse;
+```
+
+
+
+
+
+
+
+
 
 
 

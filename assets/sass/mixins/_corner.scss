@@ -1,237 +1,391 @@
-// ************************************************************************** //
-// *                                                                        * //
-// * Corners tools to apply border-radius.                                  * //
-// *                                                                        * //
-// * How to import                                                          * //
-// *  @use 'abstracts/mixins/corner' as corner;                             * //
-// *                                                                        * //
-// ************************************************************************** //
+// * ===========================================================================
+// *  Structural Mixins for the Corner Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border-radius properties of 
+// *  elements.
+// *
+// * ===========================================================================
 
+@charset 'utf-8';
 @use 'sass:list';
 @use 'sass:meta';
+@use 'sass:math';
 
-//*   * - *
-//*   -   -   corner.rounded($radius);
-//*   * - *
-//* 
-//*   * - *
-//*   -   -   corner.top($radius);
-//*   - - -
-//* 
-//*   - - x
-//*   -   -   corner.end($radius);
-//*   - - x
-//* 
-//*   - - -
-//*   -   -   corner.bottom($radius);
-//*   * - *
-//* 
-//*   * - -
-//*   -   -   corner.start($radius);
-//*   * - -
-//* 
-//*   * - -
-//*   -   -   corner.top-start($radius);
-//*   - - -
-//* 
-//*   - - *
-//*   -   -   corner.top-end($radius);
-//*   - - -
-//* 
-//*   - - -
-//*   -   -   corner.bottom-end($radius);
-//*   - - *
-//* 
-//*   - - -
-//*   -   -   corner.bottom-start($radius);
-//*   * - -
-//* 
 
-/// Radius validator
-/// =============================================
-/// 
-/// @example valid-radius($radius);
-/// 
-/// @access private
-/// @param {Int} $radius - Border radius value
-/// 
-@function valid-radius($radius) 
-{
-  $return: ();
-  @each $value in $radius {
-    @if meta.type-of($value) == number {
-      $return: list.append($return, max($value, 0));
-    } @else {
-      $return: list.append($return, $value);
-    }
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Ignore les valeurs null / '' si true
+$corners-skip-null: true !default;
+
+// Unité par défaut pour convertir les nombres unitless (ex: 8 -> 8px)
+$corners-default-unit: 1px !default;
+
+// Valeur par défaut utilisée quand aucun rayon n'est fourni aux mixins (peut rester null)
+$corners-default-radius: null !default;
+
+// Utiliser les propriétés **logiques** ?
+// - false (par défaut) : propriétés **physiques** (border-top-left-radius, etc.)
+// - true               : propriétés **logiques** (border-start-start-radius, etc.)
+$corners-logical: false !default;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+// Émet une propriété avec/ss !important, en skipant null/''
+@mixin _emit($prop, $val, $important: false) {
+  @if not ($corners-skip-null and ($val == null or $val == '')) {
+    @if $important { #{$prop}: $val !important; }
+    @else          { #{$prop}: $val; }
   }
-  @return $return;
+}
+
+// Normalise une **longueur** (0 reste 0, unitless -> * $corners-default-unit)
+@function _normalize-length($v, $default-unit: $corners-default-unit) {
+  @if $v == null { @return null; }
+  @if meta.type-of($v) == 'number' {
+    @if $v == 0 { @return 0; }
+    @if math.is-unitless($v) { @return $v * $default-unit; }
+    @return $v;
+  }
+  // mots-clés (ex: 'max(…)'), calc(), var(), etc. — on laisse passer
+  @return $v;
+}
+
+// Normalise une liste d’items séparés par **espaces** (1..4)
+@function _normalize-length-space-list($values, $default-unit: $corners-default-unit) {
+  @if meta.type-of($values) != 'list' {
+    @return _normalize-length($values, $default-unit);
+  }
+  $out: ();
+  @for $i from 1 through list.length($values) {
+    $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+  }
+  @return $out;
+}
+
+// Normalise un **rayon** pouvant être :
+// - scalaire
+// - liste "espaces" (1..4)
+// - liste **slash** (x‑rayons / y‑rayons), où x et y peuvent être listes espaces (1..4)
+@function _normalize-radius($radius) {
+  @if $radius == null { @return null; }
+
+  // Liste slash (elliptique) ?
+  @if meta.type-of($radius) == 'list' and list.separator($radius) == slash {
+    $len: list.length($radius);
+    @if $len == 2 {
+      $x: list.nth($radius, 1);
+      $y: list.nth($radius, 2);
+      $xn: _normalize-length-space-list($x, $corners-default-unit);
+      $yn: _normalize-length-space-list($y, $corners-default-unit);
+      // Reconstruire "xn / yn" (liste slash)
+      @return list.join($xn, $yn, slash);
+    }
+    // Si forme inattendue, normaliser chaque item et garder le slash
+    $out: ();
+    @for $i from 1 through $len {
+      $out: list.append($out, _normalize-length-space-list(list.nth($radius, $i), $corners-default-unit), slash);
+    }
+    @return $out;
+  }
+
+  // Liste "espaces" (1..4)
+  @if meta.type-of($radius) == 'list' {
+    @return _normalize-length-space-list($radius, $corners-default-unit);
+  }
+
+  // Scalaire
+  @return _normalize-length($radius, $corners-default-unit);
+}
+
+// Clamp à 0 les nombres négatifs (sinon CSS invalide)
+@function _nonnegative($v) {
+  @if $v == null { @return null; }
+  @if meta.type-of($v) == 'number' and $v < 0 { @return 0; }
+  @return $v;
+}
+
+// Applique _nonnegative à chaque item d’une liste (espaces) OU à un scalaire
+@function _nonnegative-list($v) {
+    @if meta.type-of($v) != 'list' {
+        @return _nonnegative($v);
+    }
+    $out: ();
+    @for $i from 1 through list.length($v) {
+        $out: list.append($out, _nonnegative(list.nth($v, $i)), list.separator($v));
+    }
+    @return $out;
+}
+
+// Pipeline complet pour un rayon (normalise unités + clamp >= 0)
+@function _valid-radius($radius) {
+    $nr: _normalize-radius($radius);
+    @return _nonnegative-list($nr);
+}
+
+// Propriétés par coin : physiques vs logiques
+@function _prop-top-start() {
+    @if $corners-logical {
+        @return 'border-start-start-radius';
+    } @else {
+        @return 'border-top-left-radius';
+    }
+}
+@function _prop-top-end() {
+    @if $corners-logical {
+        @return 'border-start-end-radius';
+    } @else {
+        @return 'border-top-right-radius';
+    }   
+}
+@function _prop-bottom-end() {
+    @if $corners-logical {
+        @return 'border-end-end-radius';
+    } @else {
+        @return 'border-bottom-right-radius';
+    }
+}
+@function _prop-bottom-start() {
+     @if $corners-logical {
+        @return 'border-end-start-radius';
+    } @else {
+        @return 'border-bottom-left-radius';
+    }
+}
+
+// Limite une liste "espaces" à $max items, warning si trop d'items.
+// Normalise chaque item (unités) et clamp >= 0 via _normalize-length/_nonnegative.
+@function _limit-corner-values($values, $max: 2) {
+  // scalaire -> normalize + clamp
+  @if meta.type-of($values) != 'list' {
+    @return _nonnegative(_normalize-length($values, $corners-default-unit));
+  }
+
+  $len: list.length($values);
+  $out: ();
+
+  // Tronque si trop d'items
+  @if $len > $max {
+    @warn "[corner] Trop de valeurs (#{$len}) pour un rayon de coin. Seules les #{$max} premières seront utilisées.";
+  }
+
+  $upto: $len;
+  @if $len > $max {
+    $upto: $max;
+  }
+
+  @for $i from 1 through $upto {
+    $tok: list.nth($values, $i);
+    $out: list.append($out, _nonnegative(_normalize-length($tok, $corners-default-unit)), space);
+  }
+
+  @return $out;
+}
+
+// Version "pair" : accepte 1 ou 2 valeurs pour un set appliqué à 2 coins.
+@function _valid-corner-pair($radius) {
+  @if $radius == null { @return null; }
+  @return _limit-corner-values($radius, 2);
+}
+
+// Version "single corner" : 1 ou 2 valeurs max (horizontal vertical).
+@function _valid-corner-single($radius) {
+  @if $radius == null { @return null; }
+  @return _limit-corner-values($radius, 2);
 }
 
 
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
 
-/// Border Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.rounded($radius, false);
-/// 
-///   * - *
-///   -   -
-///   * - *
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin rounded($radius) 
-{
-  border-radius: valid-radius($radius);
-}
 
-/// Border Top Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.top($radius);
-/// 
-///   * - *
-///   -   -
-///   - - -
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin top($radius: $border-radius) 
-{
-  border-top-left-radius: valid-radius($radius);
-  border-top-right-radius: valid-radius($radius);
-}
-
-/// Border End Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.end($radius);
-/// 
-///   - - *
-///   -   -
-///   - - *
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin end($radius: $border-radius) 
-{
-  border-top-right-radius: valid-radius($radius);
-  border-bottom-right-radius: valid-radius($radius);
-}
-
-/// Border Bottom Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.bottom($radius);
-/// 
-///   - - -
-///   -   -
-///   * - *
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin bottom($radius: $border-radius) 
-{
-  border-bottom-right-radius: valid-radius($radius);
-  border-bottom-left-radius: valid-radius($radius);
-}
-
-/// Border Start Radius
-/// =============================================
-/// 
+/// Border Radius (shorthand)
 /// @example
-///   @include corner.start($radius);
-/// 
-///   * - -
-///   -   -
-///   * - -
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin start($radius: $border-radius) 
-{
-  border-top-left-radius: valid-radius($radius);
-  border-bottom-left-radius: valid-radius($radius);
+///   @include corner-rounded(12);              // -> 12px
+///   @include corner-rounded(8 12);            // -> 8px 12px
+///   @include corner-rounded(8 / 16);          // -> 8px / 16px (elliptique)
+///   @include corner-rounded(var(--r), true);  // !important
+@mixin corner-rounded($radius: $corners-default-radius, $important: false) {
+  $v: _valid-radius($radius);
+  @include _emit('border-radius', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-/// Border Top Start Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.top-start($radius);
-/// 
-///   * - -
-///   -   -
-///   - - -
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin top-start($radius: $border-radius) 
-{
-  border-top-left-radius: valid-radius($radius);
+
+/// Border Start (left side phys., start side logique)
+@mixin corner-start($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-pair($radius);
+    @include _emit(_prop-top-start(),     $v, $important);
+    @include _emit(_prop-bottom-start(),  $v, $important);
+    @if meta.content-exists() { @content; }
+
 }
 
-/// Border Top End Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.top-end($radius);
-/// 
-///   - - *
-///   -   -
-///   - - -
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin top-end($radius: $border-radius) 
-{
-  border-top-right-radius: valid-radius($radius);
+/// Border End (right side phys., end side logique)
+@mixin corner-end($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-pair($radius);
+    // end = top-end + bottom-end
+    @include _emit(_prop-top-end(),    $v, $important);
+    @include _emit(_prop-bottom-end(), $v, $important);
+    @if meta.content-exists() { @content; }
 }
 
-/// Border Bottom End Radius
-/// =============================================
-/// 
-/// @example
-///   @include corner.bottom-end($radius);
-/// 
-///   - - -
-///   -   -
-///   - - *
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin bottom-end($radius: $border-radius) 
-{
-  border-bottom-right-radius: valid-radius($radius);
+/// Border Top (top-left + top-right)  **physique** ou **logique** selon $corners-logical
+@mixin corner-top($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-pair($radius);
+    @include _emit(_prop-top-start(), $v, $important);
+    @include _emit(_prop-top-end(),   $v, $important);
+    @if meta.content-exists() { @content; }
 }
 
-/// Border Bottom Start Radius
-/// =============================================
-/// 
-/// @example 
-///   @include corner.bottom-start($radius);
-/// 
-///   - - -
-///   -   -
-///   * - -
-/// 
-/// @param {Int} $radius
-///   Border radius value
-/// 
-@mixin bottom-start($radius: $border-radius) 
-{
-  border-bottom-left-radius: valid-radius($radius);
+/// Border Bottom (bottom-left + bottom-right)
+@mixin corner-bottom($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-pair($radius);
+    @include _emit(_prop-bottom-start(), $v, $important);
+    @include _emit(_prop-bottom-end(),   $v, $important);
+    @if meta.content-exists() { @content; }
 }
+
+
+
+/// Top-Start
+@mixin corner-top-start($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit(_prop-top-start(), $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Top-End
+@mixin corner-top-end($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit(_prop-top-end(), $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+@mixin corner-top-left($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit('border-top-left-radius', $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+@mixin corner-top-right($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit('border-top-right-radius', $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+
+
+/// Bottom-Start
+@mixin corner-bottom-start($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit(_prop-bottom-start(), $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+/// Bottom-End
+@mixin corner-bottom-end($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit(_prop-bottom-end(), $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+@mixin corner-bottom-right($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit('border-bottom-right-radius', $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+@mixin corner-bottom-left($radius: $corners-default-radius, $important: false) {
+    $v: _valid-corner-single($radius);
+    @include _emit('border-bottom-left-radius', $v, $important);
+    @if meta.content-exists() { @content; }
+}
+
+
+
+
+
+// --- Paires par axes (inline / block) ---
+// inline : côté en ligne (start/end)  → phys. : left/right
+@mixin corner-inline($start: $corners-default-radius, $end: $corners-default-radius, $important: false) {
+    $vs: _valid-corner-pair($start);
+    $ve: _valid-corner-pair($end);
+    // haut
+    @include _emit(_prop-top-start(), $vs, $important);
+    @include _emit(_prop-top-end(),   $ve, $important);
+    // bas
+    @include _emit(_prop-bottom-start(), $vs, $important);
+    @include _emit(_prop-bottom-end(),   $ve, $important);
+    @if meta.content-exists() { @content; }
+}
+
+// block : côté bloc (start/end)      → phys. : top/bottom
+@mixin corner-block($start: $corners-default-radius, $end: $corners-default-radius, $important: false) {
+    $vs: _valid-corner-pair($start);
+    $ve: _valid-corner-pair($end);
+    // start (haut phys.)
+    @include _emit(_prop-top-start(), $vs, $important);
+    @include _emit(_prop-top-end(),   $vs, $important);
+    // end (bas phys.)
+    @include _emit(_prop-bottom-start(), $ve, $important);
+    @include _emit(_prop-bottom-end(),   $ve, $important);
+    @if meta.content-exists() { @content; }
+}
+
+// --- Utilitaires shape ---
+@mixin corner-rounded-full($important: false) {
+    // très grand rayon -> pill / full (convention utilitaire)
+    @include _emit('border-radius', 9999px, $important);
+    @if meta.content-exists() { @content; }
+}
+@mixin corner-rounded-circle($important: false) {
+    // 50% -> cercle si l’élément est carré (width == height)
+    @include _emit('border-radius', 50%, $important);
+    @if meta.content-exists() { @content; }
+}
+
+
+//*   * - *
+//*   -   -   corner-rounded($radius);
+//*   * - *
+//* 
+//*   * - *
+//*   -   -   corner-top($radius);
+//*   - - -
+//* 
+//*   - - x
+//*   -   -   corner-end($radius);
+//*   - - x
+//* 
+//*   - - -
+//*   -   -   corner-bottom($radius);
+//*   * - *
+//* 
+//*   * - -
+//*   -   -   corner-start($radius);
+//*   * - -
+//* 
+//*   * - -
+//*   -   -   corner-top-start($radius);
+//*   - - -
+//* 
+//*   - - *
+//*   -   -   corner-top-end($radius);
+//*   - - -
+//* 
+//*   - - -
+//*   -   -   corner-bottom-end($radius);
+//*   - - *
+//* 
+//*   - - -
+//*   -   -   corner-bottom-start($radius);
+//*   * - -
+//* 

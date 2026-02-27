@@ -1,33 +1,16 @@
 // * ===========================================================================
-// *  Structural Mixins for Effects & Transforms
+// *  Structural Mixins for Effects and Transforms
 // * ===========================================================================
 // *
-// *  Propriétés :
-// *    - opacity
-// *    - filter
-// *    - backdrop-filter
-// *    - mix-blend-mode
-// *    - isolation
-// *
-// *  Transform & 3D :
-// *    - transform
-// *    - transform-origin
-// *    - transform-style
-// *    - perspective
-// *    - perspective-origin
-// *    - backface-visibility
-// *    - (propriétés individuelles) : translate / rotate / scale
-// *
-// *  Caractéristiques :
-// *    - null-safe via _emit()
-// *    - !important optionnel
-// *    - normalisation longueurs & angles
-// *    - fallbacks optionnels ($enable-css-fallbacks)
+// *  This file defines mixins for common CSS effects such as opacity, filter, 
+// *  backdrop-filter, mix-blend-mode, and isolation. It also includes mixins for
+// *  transforms and 3D properties such as transform, transform-origin, transform-style,
+// *  perspective, perspective-origin, backface-visibility, and individual transform
+// *  properties like translate, rotate, and scale.
 // *
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
@@ -51,16 +34,15 @@ $enable-css-fallbacks: true !default;
 // * ------------------------------------------------------------------------ //
 // * - Helpers                                                              - //
 // * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null
+// Émet une propriété avec ou sans !important, et skip si null/''
 @mixin _emit($prop, $val, $important: false) {
-  @if not ($val == null and $props-skip-null) {
+  @if not ($props-skip-null and ($val == null or $val == '')) {
     @if $important { #{$prop}: $val !important; }
     @else          { #{$prop}: $val; }
   }
 }
 
-// Nombre → longueur (unitless -> $length-default-unit), conserve 0 sans unité
+// Nombre -> longueur (unitless -> $length-default-unit), conserve 0 unitless
 @function _normalize-length($value, $default-unit: $length-default-unit) {
   @if $value == null { @return null; }
   @if meta.type-of($value) == 'number' {
@@ -71,7 +53,7 @@ $enable-css-fallbacks: true !default;
   @return $value; // keywords, calc(), var(), etc.
 }
 
-// Nombre → angle (unitless -> $angle-default-unit)
+// Nombre -> angle (unitless -> $angle-default-unit), 0 gardé
 @function _normalize-angle($value, $default-unit: $angle-default-unit) {
   @if $value == null { @return null; }
   @if meta.type-of($value) == 'number' {
@@ -82,7 +64,7 @@ $enable-css-fallbacks: true !default;
   @return $value;
 }
 
-// Convertit varargs en liste séparée par virgules (filters layers, etc.)
+// Force une comma-list (si $values est déjà une liste, convertit son séparateur -> comma)
 @function _as-comma-list($values) {
   @if meta.type-of($values) != 'list' { @return $values; }
   $out: ();
@@ -92,8 +74,20 @@ $enable-css-fallbacks: true !default;
   @return $out;
 }
 
-// Extrait un booléen final optionnel depuis des varargs
-// Retourne (liste-sans-bool, important-bool)
+// Construit un transform fallback à partir de segments non nuls
+@function _join-transform($parts...) {
+  @if list.length($parts) == 0 { @return null; }
+  $out: ();
+  @for $i from 1 through list.length($parts) {
+    $part: list.nth($parts, $i);
+    @if $part != null {
+      $out: list.append($out, $part, space);
+    }
+  }
+  @return $out;
+}
+
+// Extrait un booléen final optionnel des varargs : retourne (liste-sans-bool, bool)
 @function _pop-trailing-bool($values) {
   $argc: list.length($values);
   @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
@@ -107,151 +101,235 @@ $enable-css-fallbacks: true !default;
   @return ($values, false);
 }
 
-// Construit un "transform" de repli à partir de morceaux (ex: translate + rotate)
-@function _join-transform($parts...) {
-  @if list.length($parts) == 0 { @return null; }
-  $out: ();
-  @for $i from 1 through list.length($parts) {
-    $part: list.nth($parts, $i);
-    @if $part != null {
-      $out: list.append($out, $part, space);
-    }
-  }
-  @return $out;
-}
-
-
 // * ------------------------------------------------------------------------ //
-// * - API                                                                  - //
+// * - API: Effects                                                         - //
 // * ------------------------------------------------------------------------ //
-
-// ---------------------------------------------
-// Effects basiques
-// ---------------------------------------------
 
 @mixin opacity($value, $important: false) {
-  // On laisse passer nombres (0..1), pourcentage, var(), etc. sans normaliser.
+  // Laisse passer nombres (0..1), %, var(), etc.
   @include _emit('opacity', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// filter (supporte plusieurs fonctions, séparées par virgules) + bool final
+/// Set filter
+/// 
+/// @param $values... List of filter functions and values, e.g. blur(5px) grayscale(50%) brightness(150%).
+/// 
+/// Usage:
+///   @include filter(blur(5px) grayscale(50%) brightness(150%));
+///   @include filter(blur(5px) grayscale(50%) brightness(150%), true); // with !important
+/// 
 @mixin filter($values...) {
-  $pair: _pop-trailing-bool($values);
-  $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
+  $argc: list.length($values);
+  $important-flag: false;
+  $vals: $values;
+
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important-flag: list.nth($values, $argc);
+    // reconstruire la liste sans le dernier bool
+    $tmp: ();
+    @for $i from 1 through ($argc - 1) {
+      $tmp: list.append($tmp, list.nth($values, $i), space);
+    }
+    $vals: $tmp;
+  }
 
   $v: _as-comma-list($vals);
   @include _emit('filter', $v, $important-flag);
+  @if meta.content-exists() { @content; }
 }
 
-// backdrop-filter (+ prefix -webkit optionnel) — varargs + bool final
+// backdrop-filter (+ prefix WebKit optionnel)
 @mixin backdrop-filter($values...) {
-  $pair: _pop-trailing-bool($values);
-  $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
+  $argc: list.length($values);
+  $important-flag: false;
+  $vals: $values;
+
+  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
+    $important-flag: list.nth($values, $argc);
+    $tmp: ();
+    @for $i from 1 through ($argc - 1) {
+      $tmp: list.append($tmp, list.nth($values, $i), space);
+    }
+    $vals: $tmp;
+  }
 
   $v: _as-comma-list($vals);
   @if $enable-css-fallbacks { @include _emit('-webkit-backdrop-filter', $v, $important-flag); }
   @include _emit('backdrop-filter', $v, $important-flag);
+  @if meta.content-exists() { @content; }
 }
 
-@mixin mix-blend-mode($value, $important: false) { @include _emit('mix-blend-mode', $value, $important); }
-@mixin isolation($value, $important: false)      { @include _emit('isolation', $value, $important); }
-
-
-// ---------------------------------------------
-// Transform — shorthand & propriétés 3D
-// ---------------------------------------------
-
-// transform (shorthand) — on passe tel quel (var(), calc(), etc.)
-@mixin transform($value, $important: false) {
-  @include _emit('transform', $value, $important);
+@mixin mix-blend-mode($value, $important: false) { 
+  @include _emit('mix-blend-mode', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+@mixin isolation($value, $important: false)      { 
+  @include _emit('isolation', $value, $important);      
+  @if meta.content-exists() { @content; } 
 }
 
-// transform-origin : accepte 1..3 valeurs (longueurs/keywords)
-@mixin transform-origin($values..., $important: false) {
-  // Normalise uniquement si nombre nu
-  $len: list.length($values);
-  @if $len == 0 {
-    @include _emit('transform-origin', null, $important);
-  } @else if $len == 1 {
-    $v1: list.nth($values, 1);
-    $n1: if(meta.type-of($v1) == 'number' and math.is-unitless($v1), $v1 * $length-default-unit, $v1);
-    @include _emit('transform-origin', $n1, $important);
-  } @else if $len == 2 or $len == 3 {
-    $v1: list.nth($values, 1);
-    $v2: list.nth($values, 2);
-    $v3: if($len == 3, list.nth($values, 3), null);
+// Perf hints utiles
+@mixin will-change($values...) { 
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
 
-    $n1: if(meta.type-of($v1) == 'number' and math.is-unitless($v1), $v1 * $length-default-unit, $v1);
-    $n2: if(meta.type-of($v2) == 'number' and math.is-unitless($v2), $v2 * $length-default-unit, $v2);
-    $n3: if($v3 != null and meta.type-of($v3) == 'number' and math.is-unitless($v3), $v3 * $length-default-unit, $v3);
+    @include _emit('will-change', _as-comma-list($vals), $important-flag); 
+    @if meta.content-exists() { @content; } 
+}
+@mixin transform-box($value, $important: false)   { 
+  @include _emit('transform-box', $value, $important);   
+  @if meta.content-exists() { @content; } 
+}
 
-    @if $n3 != null {
-      @include _emit('transform-origin', $n1 $n2 $n3, $important);
+
+// * ------------------------------------------------------------------------ //
+// * - API: Transform & 3D                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// transform (shorthand libre)
+@mixin transform($value, $important: false) { 
+  @include _emit('transform', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+// transform-origin : 1..3 valeurs (x y [z]) — normalise les nombres nus
+@mixin transform-origin($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+    
+    $len: list.length($vals);
+
+    @if $len == 0 {
+        @include _emit('transform-origin', null, $important-flag);
     } @else {
-      @include _emit('transform-origin', $n1 $n2, $important);
+        // On construit une liste espace normalisée
+        $out: ();
+        @for $i from 1 through $len {
+        $tok: list.nth($vals, $i);
+        @if meta.type-of($tok) == 'number' and math.is-unitless($tok) {
+            // x/y -> longueurs / z -> longueur (spéc autorise aussi %/keywords)
+            $tok: _normalize-length($tok, $length-default-unit);
+        }
+        $out: list.append($out, $tok, space);
+        }
+        @include _emit('transform-origin', $out, $important-flag);
     }
-  } @else {
-    // On n'essaie pas de parser au-delà de 3 tokens
-    @include _emit('transform-origin', $values, $important);
-  }
+
+    @if meta.content-exists() { @content; }
 }
 
-@mixin transform-style($value, $important: false)     { @include _emit('transform-style', $value, $important); }
+@mixin transform-style($value, $important: false) { 
+    @include _emit('transform-style', $value, $important); 
+    @if meta.content-exists() { @content; } 
+}
 
 @mixin perspective($value, $important: false) {
   $v: _normalize-length($value, $length-default-unit);
   @include _emit('perspective', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// perspective-origin (2D/3D) : même normalisation que transform-origin
-@mixin perspective-origin($values..., $important: false) {
-  @include transform-origin($values..., $important: $important); // même logique de normalisation
+// perspective-origin : 1..2 valeurs, même logique de normalisation que transform-origin
+@mixin perspective-origin($values...) {
+    $pair: _pop-trailing-bool($values);
+    $vals: list.nth($pair, 1);
+    $important-flag: list.nth($pair, 2);
+
+    // @include transform-origin($vals..., $important-flag);
+    @if meta.content-exists() { @content; }
 }
 
-@mixin backface-visibility($value, $important: false) { @include _emit('backface-visibility', $value, $important); }
+@mixin backface-visibility($value, $important: false) { 
+  @include _emit('backface-visibility', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
 
 
-// ---------------------------------------------
-// Propriétés individuelles modernes
-//  - translate / rotate / scale
-//  - avec fallback "transform" si activé
-// ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - API: Propriétés transform individuelles + fallbacks                   - //
+// * ------------------------------------------------------------------------ //
 
 // translate(x [, y] [, z])
+// - Exige au moins x ; si y est null mais z non null, on force y=0 pour un 3D cohérent.
+// - Normalise longueurs (unitless -> $length-default-unit)
 @mixin translate($x, $y: null, $z: null, $important: false) {
-  $nx: if($x != null, _normalize-length($x), null);
-  $ny: if($y != null, _normalize-length($y), null);
-  $nz: if($z != null, _normalize-length($z), null);
+  $nx: _normalize-length($x, $length-default-unit);
+  $ny: null;
+  $nz: null;
 
-  // Propriété moderne
-  @include _emit('translate', if($nz != null, $nx $ny $nz, if($ny != null, $nx $ny, $nx)), $important);
+  @if $y != null { $ny: _normalize-length($y, $length-default-unit); }
+  @if $z != null {
+    $nz: _normalize-length($z, $length-default-unit);
+    @if $ny == null { $ny: 0; } // garde-fou : si z spécifié sans y
+  }
+
+  // Propriété moderne (translate / translate(x y) / translate(x y z))
+  @if $nz != null {
+    @include _emit('translate', $nx $ny $nz, $important);
+  } @else if $ny != null {
+    @include _emit('translate', $nx $ny, $important);
+  } @else {
+    @include _emit('translate', $nx, $important);
+  }
 
   // Fallback transform
   @if $enable-css-fallbacks {
-    $tf: if($nz != null, translate3d($nx, $ny, $nz), if($ny != null, translate($nx, $ny), translate($nx)));
-    @include _emit('transform', $tf, $important);
+    @if $nz != null {
+      @include _emit('transform', translate3d($nx, $ny, $nz), $important);
+    } @else if $ny != null {
+      @include _emit('transform', translate($nx, $ny), $important);
+    } @else {
+      @include _emit('transform', translate($nx), $important);
+    }
   }
+
+  @if meta.content-exists() { @content; }
 }
 
-// rotate(angle | x y z angle)
+// rotate(angle | x y z angle) → on ne gère que l’angle scalaire ici
 @mixin rotate($angle, $important: false) {
   $a: _normalize-angle($angle, $angle-default-unit);
+
   @include _emit('rotate', $a, $important);
 
   @if $enable-css-fallbacks {
     @include _emit('transform', rotate($a), $important);
   }
+
+  @if meta.content-exists() { @content; }
 }
 
-// scale(x [, y] [, z])
+// scale(x [, y] [, z]) — sans unité ; y null => y=x (convention CSS si transform(), pas pour la prop individuelle)
+// Pour la propriété individuelle, si y est omis, on émet juste "scale: x" ; si z présent sans y, on force y=1.
 @mixin scale($x, $y: null, $z: null, $important: false) {
-  // scale est sans unité → on n’applique pas _normalize-length
-  @include _emit('scale', if($z != null, $x $y $z, if($y != null, $x $y, $x)), $important);
+  $sx: $x;
+  $sy: $y;
+  $sz: $z;
 
-  @if $enable-css-fallbacks {
-    $tf: if($z != null, scale3d($x, $y, $z), if($y != null, scale($x, $y), scale($x)));
-    @include _emit('transform', $tf, $important);
+  @if $sz != null and $sy == null { $sy: 1; } // garde-fou 3D
+
+  // Propriété moderne
+  @if $sz != null {
+    @include _emit('scale', $sx $sy $sz, $important);
+  } @else if $sy != null {
+    @include _emit('scale', $sx $sy, $important);
+  } @else {
+    @include _emit('scale', $sx, $important);
   }
+
+  // Fallback transform
+  @if $enable-css-fallbacks {
+    @if $sz != null {
+      @include _emit('transform', scale3d($sx, $sy, $sz), $important);
+    } @else if $sy != null {
+      @include _emit('transform', scale($sx, $sy), $important);
+    } @else {
+      @include _emit('transform', scale($sx), $important);
+    }
+  }
+
+  @if meta.content-exists() { @content; }
 }

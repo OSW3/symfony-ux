@@ -19,7 +19,7 @@
 // @use './../mixins/component';
 // @use './../mixins/spacing' as *;
 // @use './../mixins/support';
-@use './../mixins/corner';
+@use './../mixins/corner' as *;
 @use './../mixins/transition' as *;
 @use './../mixins/position' as *;
 @use './../mixins/display' as *;
@@ -450,10 +450,10 @@ $background-position: center;
     // --
 
     @if store.$shape == 'circle' {
-        @include corner.rounded(50%);
+        @include corner-rounded(50%);
     }
     @else {
-        @include corner.rounded(store.$square-radius);
+        @include corner-rounded(store.$square-radius);
     }
 
     

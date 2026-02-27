@@ -14,7 +14,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/icon' as iconMixin;
-@use './../mixins/corner';
+@use './../mixins/corner' as *;
 @use './../mixins/flex' as *;
 @use './../mixins/spacing' as *;
 @use './../mixins/transition' as *;
@@ -57,10 +57,10 @@ $prefix: prefix.$prefix;
         border: store.$control--border-width solid var(--#{$prefix}form-widget-control--border-color);
 
         &:first-child {
-            @include corner.start(store.$control--border-radius);
+            @include corner-start(store.$control--border-radius);
         }
         &:last-child {
-            @include corner.end(store.$control--border-radius);
+            @include corner-end(store.$control--border-radius);
         }
         &:not(:first-child) {
             margin-left: store.$control--border-width * -1;
@@ -217,7 +217,7 @@ $prefix: prefix.$prefix;
     // &-group,
     &-control:not(&-group &-control)  {
         @include control-border;
-        @include corner.rounded(store.$control--border-radius);
+        @include corner-rounded(store.$control--border-radius);
 
         &:hover {
             @include theme(

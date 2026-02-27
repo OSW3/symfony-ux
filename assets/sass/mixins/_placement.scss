@@ -1,9 +1,10 @@
 // * ===========================================================================
 // *  Structural Mixins for Item Placement (Flex & Grid items)
 // * ===========================================================================
-//
-// *  Propriétés des éléments enfants : flex items & grid items.
-// *  Null-safe via _emit(), !important option.
+// *
+// *  This file contains mixins for placing items in flex and grid containers, 
+// *  such as order, align-self, grid-column, etc. It also includes optional 
+// *  fallbacks for older browsers that do not support the latest CSS properties.
 // *
 // * ===========================================================================
 

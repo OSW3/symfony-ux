@@ -21,6 +21,12 @@
 // @use './../mixins/interaction' as *;
 // @use './../mixins/states' as *;
 @use './../mixins/transition' as *;
+@use './../mixins/visual' as *;
+@use './../mixins/clear' as *;
+@use './../mixins/corner' as *;
+@use './../mixins/animation' as *;
+@use './../mixins/effects' as *;
+@use './../mixins/overflow' as *;
 
 
 @use './../builders/banner';
@@ -103,43 +109,45 @@ body {
     @include font-family(var(--#{$prefix}font-open-sans));
     @include font-size(1rem); // todo: customize
     @include font-weight(400); // todo: customize
-    color: var(--#{$prefix}black);
-    background-color: var(--#{$prefix}white);
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
+    @include color(var(--#{$prefix}main-color));
+    @include background-color(var(--#{$prefix}main--bg-color));
+    @include text-rendering(optimizeLegibility);
+    @include font-smoothing(antialiased);
 }
 
 h1, h2, h3, h4, h5, h6 {
     // @include margin(0, 0, 0, 0.5rem);
     @include margin(0, 0, 0, 0);
     @include padding(0, 0, 0, 0);
-    font-family: inherit;
-    font-weight: inherit;
-    line-height: fonts.$heading-line-height;
-    color: inherit;
+    @include font-family(inherit);
+    @include font-weight(inherit);
+    @include line-height(fonts.$heading-line-height);
+    @include color(inherit);
 }
-h1 { font-size: fonts.$h1-font-size; }
-h2 { font-size: fonts.$h2-font-size; }
-h3 { font-size: fonts.$h3-font-size; }
-h4 { font-size: fonts.$h4-font-size; }
-h5 { font-size: fonts.$h5-font-size; }
-h6 { font-size: fonts.$h6-font-size; }
+h1 { @include font-size(fonts.$h1-font-size); }
+h2 { @include font-size(fonts.$h2-font-size); }
+h3 { @include font-size(fonts.$h3-font-size); }
+h4 { @include font-size(fonts.$h4-font-size); }
+h5 { @include font-size(fonts.$h5-font-size); }
+h6 { @include font-size(fonts.$h6-font-size); }
 
 
 p {
     @include margin(0, 0, 1rem); // todo: customize spaces
-    word-wrap: break-word;
-    hyphens: auto;
+    @include word-wrap(break-word);
+    @include hyphens(auto);
 }
 
 a {
-    color: var(--#{$prefix}main-link--color);
-    text-decoration: none;
+    @include color(var(--#{$prefix}main-link--color));
+    @include text-decoration(none);
 }
 a:hover,
 a:focus {
-    text-decoration: underline;
-    color: var(--#{$prefix}main-hover-link--color);
+    @include color(var(--#{$prefix}main-hover-link--color));
+    @include text-decoration(underline);
+    // color: var(--#{$prefix}main-hover-link--color);
+    // text-decoration: underline;
 }
 
 ul, ol {
@@ -162,7 +170,7 @@ li {
 }
 li::marker {
     font-size: 1em;
-    color: #ff0000;
+    @include color(#ff0000);
 }
 
 blockquote {
