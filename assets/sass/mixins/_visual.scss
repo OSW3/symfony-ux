@@ -13,14 +13,12 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
-
-// Si true, les valeurs null n’émettent pas de propriété
-$props-skip-null: true !default;
 
 // Unité par défaut pour convertir les nombres unitless → longueurs
 $length-default-unit: 1px !default;
@@ -34,88 +32,27 @@ $appearance-add-prefixes: true !default;
 
 
 // * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($val == null and $props-skip-null) {
-    @if $important {
-      #{$prop}: $val !important;
-    } @else {
-      #{$prop}: $val;
-    }
-  }
-}
-
-// Nombre → longueur (ajoute unité par défaut si unitless, conserve 0 sans unité)
-@function _normalize-length($value, $default-unit: $length-default-unit) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value;
-  }
-  @return $value; // keywords, calc(), variables CSS, etc.
-}
-
-// Normalise une liste de longueurs simples (1..n, séparateur " ")
-// Utile pour border-width (1..4)
-@function _normalize-length-list($values, $default-unit: $length-default-unit) {
-  @if meta.type-of($values) == 'list' {
-    $out: ();
-    $len: list.length($values);
-    @for $i from 1 through $len {
-      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
-    }
-    @return $out;
-  }
-  @return _normalize-length($values, $default-unit);
-}
-
-// Convertit une liste varargs en liste séparée par virgules (pour background-image, box-shadow layers, etc.)
-@function _as-comma-list($values) {
-  @if meta.type-of($values) != 'list' {
-    @return $values;
-  }
-  $out: ();
-  $len: list.length($values);
-  @for $i from 1 through $len {
-    $out: list.append($out, list.nth($values, $i), comma);
-  }
-  @return $out;
-}
-
-// Extrait un booléen final optionnel depuis des varargs
-// Retourne (liste-sans-bool, important-bool)
-@function _pop-trailing-bool($values) {
-  $argc: list.length($values);
-
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important: list.nth($values, $argc);
-    $trimmed: ();
-    @for $i from 1 through ($argc - 1) {
-      $trimmed: list.append($trimmed, list.nth($values, $i), space);
-    }
-    @return ($trimmed, $important);
-  }
-
-  @return ($values, false);
-}
-
-
-
-// * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
 // * ---------------------------------------------
-// * Color & basic visual
+// * Color
 // * ---------------------------------------------
 
-// color
+/// Set color property with optional !important flag
+/// 
+/// @param {String} $value - The color value to apply (e.g., 'red', '#ff0000', 'var(--my-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include color('red'); // outputs: color: red;
+///  @include color('#ff0000', true); // outputs: color: #ff0000 !important;
+///  @include color(var(--my-color)); // outputs: color: var(--my-color);
+///  @include color(var(--my-color), true); // outputs: color: var(--my-color) !important;
+/// 
 @mixin color($value, $important: false) {
-    @include _emit('color', $value, $important);
+  @include h.emit('color', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -124,69 +61,160 @@ $appearance-add-prefixes: true !default;
 // * Backgrounds
 // * ---------------------------------------------
 
-// background-color
+/// Set background property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The background value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background('red'); // outputs: background: red;
+///  @include background('url(image.png) no-repeat center', true); // outputs: background: url(image.png) no-repeat center !important;
+///  @include background(('url(image1.png) no-repeat', 'url(image2.png) repeat'), true); // outputs: background: url(image1.png) no-repeat, url(image2.png) repeat !important;
+///  @include background(var(--my-bg), true); // outputs: background: var(--my-bg) !important;
+///  @include background(var(--my-bg)); // outputs: background: var(--my-bg);
+/// 
+@mixin background($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('background', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-color property with optional !important flag
+/// 
+/// @param {String} $value - The background color value to apply (e.g., 'red', '#ff0000', 'var(--my-bg-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-color('red'); // outputs: background-color: red;
+///  @include background-color('#ff0000', true); // outputs: background-color: #ff0000 !important;
+///  @include background-color(var(--my-bg-color)); // outputs: background-color: var(--my-bg-color);
+///  @include background-color(var(--my-bg-color), true); // outputs: background-color: var(--my-bg-color) !important;
+/// 
 @mixin background-color($value, $important: false) {
-  @include _emit('background-color', $value, $important);
+  @include h.emit('background-color', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// background-image (supporte plusieurs layers + bool final pour !important)
+/// Set background-image property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $layers - The background image value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-image('url(image.png)'); // outputs: background-image: url(image.png);
+///  @include background-image(('url(image1.png)', 'url(image2.png)')); // outputs: background-image: url(image1.png), url(image2.png);
+///  @include background-image(var(--my-bg-image), true); // outputs: background-image: var(--my-bg-image) !important;
+///  @include background-image(var(--my-bg-image)); // outputs: background-image: var(--my-bg-image);
+///
 @mixin background-image($layers...) {
-  $pair: _pop-trailing-bool($layers);
+  $pair: h.pop-trailing-bool($layers...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $img: _as-comma-list($vals);
-  @include _emit('background-image', $img, $important-flag);
+  $important: list.nth($pair, 2);
+  $img: h.as-comma-list($vals);
+  @include h.emit('background-image', $img, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// background-size (peut être multi-layer, on accepte varargs + bool final)
+/// Set background-size property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background size value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-size('cover'); // outputs: background-size: cover;
+///  @include background-size(('cover', 'contain'), true); // outputs: background-size: cover, contain !important;
+///  @include background-size(var(--my-bg-size)); // outputs: background-size: var(--my-bg-size);
+///  @include background-size(var(--my-bg-size), true); // outputs: background-size: var(--my-bg-size) !important;
+/// 
 @mixin background-size($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('background-size', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-size', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// background-position (multi-layer possible)
+/// Set background-position property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background position value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-position('top left'); // outputs: background-position: top left;
+///  @include background-position(('top left', 'bottom right'), true); // outputs: background-position: top left, bottom right !important;
+///  @include background-position(var(--my-bg-position)); // outputs: background-position: var(--my-bg-position);
+///  @include background-position(var(--my-bg-position), true); // outputs: background-position: var(--my-bg-position) !important;
+///
 @mixin background-position($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('background-position', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-position', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// background-repeat (multi-layer possible)
+/// Set background-repeat property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background repeat value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-repeat('no-repeat'); // outputs: background-repeat: no-repeat;
+///  @include background-repeat(('no-repeat', 'repeat-x'), true); // outputs: background-repeat: no-repeat, repeat-x !important;
+///  @include background-repeat(var(--my-bg-repeat)); // outputs: background-repeat: var(--my-bg-repeat);
+///  @include background-repeat(var(--my-bg-repeat), true); // outputs: background-repeat: var(--my-bg-repeat) !important;
+/// 
 @mixin background-repeat($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('background-repeat', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-repeat', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// background-clip (multi-layer possible)
+/// Set background-clip property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background clip value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-clip('border-box'); // outputs: background-clip: border-box;
+///  @include background-clip(('border-box', 'padding-box'), true); // outputs: background-clip: border-box, padding-box !important;
+///  @include background-clip(var(--my-bg-clip)); // outputs: background-clip: var(--my-bg-clip);
+///  @include background-clip(var(--my-bg-clip), true); // outputs: background-clip: var(--my-bg-clip) !important;
+/// 
 @mixin background-clip($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('background-clip', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-clip', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// background-origin (multi-layer possible)
+/// Set background-origin property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background origin value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-origin('border-box'); // outputs: background-origin: border-box;
+///  @include background-origin(('border-box', 'padding-box'), true); // outputs: background-origin: border-box, padding-box !important;
+///  @include background-origin(var(--my-bg-origin)); // outputs: background-origin: var(--my-bg-origin);
+///  @include background-origin(var(--my-bg-origin), true); // outputs: background-origin: var(--my-bg-origin) !important;
+/// 
 @mixin background-origin($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('background-origin', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-origin', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -195,55 +223,444 @@ $appearance-add-prefixes: true !default;
 // * Borders
 // * ---------------------------------------------
 
-// border-color (1..4 valeurs)
+/// Set border property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The border value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border('1px solid red'); // outputs: border: 1px solid red;
+///  @include border(('1px solid red', '2px dashed blue'), true); // outputs: border: 1px solid red, 2px dashed blue !important;
+///  @include border(var(--my-border), true); // outputs: border: var(--my-border) !important;
+///  @include border(var(--my-border)); // outputs: border: var(--my-border);
+/// 
+@mixin border($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('border', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// border-color (shorthand for setting all 4 sides' colors at once)
+/// 
+/// @param {String|List} $value - The border color value(s) to apply. Can be a single value or multiple values (e.g., 'red', '#ff0000', 'var(--my-border-color)', etc.). If multiple values are provided, they will be applied in the order: top, right, bottom, left (following CSS shorthand rules).
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-color('red'); // outputs: border-color: red;
+///  @include border-color(('red', 'green'), true); // outputs: border-color: red, green !important;
+///  @include border-color(var(--my-border-color)); // outputs: border-color: var(--my-border-color);
+///  @include border-color(var(--my-border-color), true); // outputs: border-color: var(--my-border-color) !important;
+/// 
 @mixin border-color($value, $important: false) {
-  @include _emit('border-color', $value, $important);
+  @include h.emit('border-color', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// border-width (1..4 valeurs) — normalise les nombres unitless
+/// Set border-width property with optional !important flag. Normalizes unitless numbers to $length-default-unit.
+/// 
+/// @param {String|Number|List} $value - The border width value(s) to apply. Can be a single value or multiple values (e.g., '1px', '0.5em', 'var(--my-border-width)', etc.). Unitless numbers will be converted to $length-default-unit.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-width(1px); // outputs: border-width: 1px;
+///  @include border-width(0.5em, true); // outputs: border-width: 0.5em !important;
+///  @include border-width(var(--my-border-width)); // outputs: border-width: var(--my-border-width);
+///  @include border-width(var(--my-border-width), true); // outputs: border-width: var(--my-border-width) !important;
+/// 
 @mixin border-width($value, $important: false) {
-  $v: _normalize-length-list($value, $length-default-unit);
-  @include _emit('border-width', $v, $important);
+  $v: h.normalize-length-list($value, $length-default-unit);
+  @include h.emit('border-width', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// border-style (1..4 valeurs)
+/// Set border-style property with optional !important flag
+/// 
+/// @param {String|List} $value - The border style value(s) to apply. Can be a single value or multiple values (e.g., 'solid', 'dashed', 'var(--my-border-style)', etc.).
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-style('solid'); // outputs: border-style: solid;
+///  @include border-style(('solid', 'dashed'), true); // outputs: border-style: solid, dashed !important;
+///  @include border-style(var(--my-border-style)); // outputs: border-style: var(--my-border-style);
+///  @include border-style(var(--my-border-style), true); // outputs: border-style: var(--my-border-style) !important;
+///  
 @mixin border-style($value, $important: false) {
-  @include _emit('border-style', $value, $important);
+  @include h.emit('border-style', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
-// border-radius — normalise si valeur simple numérique unitless, sinon passe tel quel (elliptical non modifié)
+/// Set border-color property with optional !important flag
+/// 
+/// @param {String|List} $value - The border color value(s) to apply. Can be a single value or multiple values (e.g., 'red', '#ff0000', 'var(--my-border-color)', etc.). If multiple values are provided, they will be applied in the order: top, right, bottom, left (following CSS shorthand rules).
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-color('red'); // outputs: border-color: red;
+///  @include border-color(('red', 'green'), true); // outputs: border-color: red, green !important;
+///  @include border-color(var(--my-border-color)); // outputs: border-color: var(--my-border-color);
+///  @include border-color(var(--my-border-color), true); // outputs: border-color: var(--my-border-color) !important;
+/// 
+@mixin border-top($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('border-top', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-top-color property with optional !important flag
+/// 
+/// @param {String} $value - The border top color value to apply (e.g., 'red', '#ff0000', 'var(--my-border-top-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-top-color('red'); // outputs: border-top-color: red;
+///  @include border-top-color('#ff0000', true); // outputs: border-top-color: #ff0000 !important;
+///  @include border-top-color(var(--my-border-top-color)); // outputs: border-top-color: var(--my-border-top-color);
+///  @include border-top-color(var(--my-border-top-color), true); // outputs: border-top-color: var(--my-border-top-color) !important;
+///  
+@mixin border-top-color($value, $important: false) {
+  @include h.emit('border-top-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-top-width property with optional !important flag
+/// 
+/// @param {String} $value - The border top width value to apply (e.g., '1px', '0.5em', 'var(--my-border-top-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-top-width('1px'); // outputs: border-top-width: 1px;
+///  @include border-top-width('0.5em', true); // outputs: border-top-width: 0.5em !important;
+///  @include border-top-width(var(--my-border-top-width)); // outputs: border-top-width: var(--my-border-top-width);
+///  @include border-top-width(var(--my-border-top-width), true); // outputs: border-top-width: var(--my-border-top-width) !important;
+///  
+@mixin border-top-width($value, $important: false) {
+  @include h.emit('border-top-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-top-style property with optional !important flag
+/// 
+/// @param {String} $value - The border top style value to apply (e.g., 'solid', 'dashed', 'var(--my-border-top-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-top-style('solid'); // outputs: border-top-style: solid;
+///  @include border-top-style('dashed', true); // outputs: border-top-style: dashed !important;
+///  @include border-top-style(var(--my-border-top-style)); // outputs: border-top-style: var(--my-border-top-style);
+///  @include border-top-style(var(--my-border-top-style), true); // outputs: border-top-style: var(--my-border-top-style) !important;
+///  
+@mixin border-top-style($value, $important: false) {
+  @include h.emit('border-top-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-right property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The border right value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-right('1px solid red'); // outputs: border-right: 1px solid red;
+///  @include border-right(('1px solid red', '2px dashed blue'), true); // outputs: border-right: 1px solid red, 2px dashed blue !important;
+///  @include border-right(var(--my-border-right)); // outputs: border-right: var(--my-border-right);
+///  @include border-right(var(--my-border-right), true); // outputs: border-right: var(--my-border-right) !important;
+/// 
+@mixin border-right($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('border-right', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-right-color property with optional !important flag
+/// 
+/// @param {String} $value - The border right color value to apply (e.g., 'red', '#ff0000', 'var(--my-border-right-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-right-color('red'); // outputs: border-right-color: red;
+///  @include border-right-color('#ff0000', true); // outputs: border-right-color: #ff0000 !important;
+///  @include border-right-color(var(--my-border-right-color)); // outputs: border-right-color: var(--my-border-right-color);
+///  @include border-right-color(var(--my-border-right-color), true); // outputs: border-right-color: var(--my-border-right-color) !important;
+///  
+@mixin border-right-color($value, $important: false) {
+  @include h.emit('border-right-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-right-width property with optional !important flag
+/// 
+/// @param {String} $value - The border right width value to apply (e.g., '1px', '0.5em', 'var(--my-border-right-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-right-width('1px'); // outputs: border-right-width: 1px;
+///  @include border-right-width('0.5em', true); // outputs: border-right-width: 0.5em !important;
+///  @include border-right-width(var(--my-border-right-width)); // outputs: border-right-width: var(--my-border-right-width);
+///  @include border-right-width(var(--my-border-right-width), true); // outputs: border-right-width: var(--my-border-right-width) !important;
+///  
+@mixin border-right-width($value, $important: false) {
+  @include h.emit('border-right-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-right-style property with optional !important flag
+/// 
+/// @param {String} $value - The border right style value to apply (e.g., 'solid', 'dashed', 'var(--my-border-right-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-right-style('solid'); // outputs: border-right-style: solid;
+///  @include border-right-style('dashed', true); // outputs: border-right-style: dashed !important;
+///  @include border-right-style(var(--my-border-right-style)); // outputs: border-right-style: var(--my-border-right-style);
+///  @include border-right-style(var(--my-border-right-style), true); // outputs: border-right-style: var(--my-border-right-style) !important;
+///  
+@mixin border-right-style($value, $important: false) {
+  @include h.emit('border-right-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-bottom property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The border bottom value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-bottom('1px solid red'); // outputs: border-bottom: 1px solid red;
+///  @include border-bottom(('1px solid red', '2px dashed blue'), true); // outputs: border-bottom: 1px solid red, 2px dashed blue !important;
+///  @include border-bottom(var(--my-border-bottom)); // outputs: border-bottom: var(--my-border-bottom);
+///  @include border-bottom(var(--my-border-bottom), true); // outputs: border-bottom: var(--my-border-bottom) !important;
+/// 
+@mixin border-bottom($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('border-bottom', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-bottom-color property with optional !important flag
+/// 
+/// @param {String} $value - The border bottom color value to apply (e.g., 'red', '#ff0000', 'var(--my-border-bottom-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-bottom-color('red'); // outputs: border-bottom-color: red;
+///  @include border-bottom-color('#ff0000', true); // outputs: border-bottom-color: #ff0000 !important;
+///  @include border-bottom-color(var(--my-border-bottom-color)); // outputs: border-bottom-color: var(--my-border-bottom-color);
+///  @include border-bottom-color(var(--my-border-bottom-color), true); // outputs: border-bottom-color: var(--my-border-bottom-color) !important;
+///  
+@mixin border-bottom-color($value, $important: false) {
+  @include h.emit('border-bottom-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-bottom-width property with optional !important flag
+/// 
+/// @param {String} $value - The border bottom width value to apply (e.g., '1px', '0.5em', 'var(--my-border-bottom-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-bottom-width('1px'); // outputs: border-bottom-width: 1px;
+///  @include border-bottom-width('0.5em', true); // outputs: border-bottom-width: 0.5em !important;
+///  @include border-bottom-width(var(--my-border-bottom-width)); // outputs: border-bottom-width: var(--my-border-bottom-width);
+///  @include border-bottom-width(var(--my-border-bottom-width), true); // outputs: border-bottom-width: var(--my-border-bottom-width) !important;
+///  
+@mixin border-bottom-width($value, $important: false) {
+  @include h.emit('border-bottom-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-bottom-style property with optional !important flag
+/// 
+/// @param {String} $value - The border bottom style value to apply (e.g., 'solid', 'dashed', 'var(--my-border-bottom-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-bottom-style('solid'); // outputs: border-bottom-style: solid;
+///  @include border-bottom-style('dashed', true); // outputs: border-bottom-style: dashed !important;
+///  @include border-bottom-style(var(--my-border-bottom-style)); // outputs: border-bottom-style: var(--my-border-bottom-style);
+///  @include border-bottom-style(var(--my-border-bottom-style), true); // outputs: border-bottom-style: var(--my-border-bottom-style) !important;
+///  
+@mixin border-bottom-style($value, $important: false) {
+  @include h.emit('border-bottom-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-left property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The border left value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-left('1px solid red'); // outputs: border-left: 1px solid red;
+///  @include border-left(('1px solid red', '2px dashed blue'), true); // outputs: border-left: 1px solid red, 2px dashed blue !important;
+///  @include border-left(var(--my-border-left)); // outputs: border-left: var(--my-border-left);
+///  @include border-left(var(--my-border-left), true); // outputs: border-left: var(--my-border-left) !important;
+/// 
+@mixin border-left($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('border-left', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-left-color property with optional !important flag
+/// 
+/// @param {String} $value - The border left color value to apply (e.g., 'red', '#ff0000', 'var(--my-border-left-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-left-color('red'); // outputs: border-left-color: red;
+///  @include border-left-color('#ff0000', true); // outputs: border-left-color: #ff0000 !important;
+///  @include border-left-color(var(--my-border-left-color)); // outputs: border-left-color: var(--my-border-left-color);
+///  @include border-left-color(var(--my-border-left-color), true); // outputs: border-left-color: var(--my-border-left-color) !important;
+///  
+@mixin border-left-color($value, $important: false) {
+  @include h.emit('border-left-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-left-width property with optional !important flag
+/// 
+/// @param {String} $value - The border left width value to apply (e.g., '1px', '0', 'var(--my-border-left-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-left-width('1px'); // outputs: border-left-width: 1px;
+///  @include border-left-width('0', true); // outputs: border-left-width: 0 !important;
+///  @include border-left-width(var(--my-border-left-width)); // outputs: border-left-width: var(--my-border-left-width);
+///  @include border-left-width(var(--my-border-left-width), true); // outputs: border-left-width: var(--my-border-left-width) !important;
+/// 
+@mixin border-left-width($value, $important: false) {
+  @include h.emit('border-left-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-left-style property with optional !important flag
+/// 
+/// @param {String} $value - The border left style value to apply (e.g., 'solid', 'dashed', 'var(--my-border-left-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-left-style('solid'); // outputs: border-left-style: solid;
+///  @include border-left-style('dashed', true); // outputs: border-left-style: dashed !important;
+///  @include border-left-style(var(--my-border-left-style)); // outputs: border-left-style: var(--my-border-left-style);
+///  @include border-left-style(var(--my-border-left-style), true); // outputs: border-left-style: var(--my-border-left-style) !important;
+/// 
+@mixin border-left-style($value, $important: false) {
+  @include h.emit('border-left-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-radius property with optional !important flag. Normalizes unitless numbers to $radius-default-unit.
+/// 
+/// @param {String|Number|List} $value - The border radius value(s) to apply. Can be a single value or multiple values (e.g., '10px', '50%', '1em 0.5em', etc.). Unitless numbers will be converted to $radius-default-unit.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-radius(10px); // outputs: border-radius: 10px;
+///  @include border-radius(50%, true); // outputs: border-radius: 50% !important;
+///  @include border-radius(1em 0.5em); // outputs: border-radius: 1em 0.5em;
+///  @include border-radius(1em 0.5em, true); // outputs: border-radius: 1em 0.5em !important;
+/// 
 @mixin border-radius($value, $important: false) {
-
   @if not ($value == null and $props-skip-null) {
-    // Déclare $v AVANT les branches pour assurer sa portée
     $v: null;
-
-    // Normalise seulement les nombres ; conserve les formes elliptiques/kewords
     @if meta.type-of($value) == 'number' {
-      $v: _normalize-length($value, $radius-default-unit);
+      $v: h.to-length($value, $radius-default-unit);
     } @else {
       $v: $value;
     }
-
-    @include _emit('border-radius', $v, $important);
+    @include h.emit('border-radius', $v, $important);
   }
+  @if meta.content-exists() { @content; }
 }
 
-
+/// Set border-image-source property with optional !important flag
+/// 
+/// @param {String} $value - The border image source value to apply (e.g., 'url(image.png)', 'none', 'var(--my-border-image-source)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-source('url(image.png)'); // outputs: border-image-source: url(image.png);
+///  @include border-image-source('none', true); // outputs: border-image-source: none !important;
+///  @include border-image-source(var(--my-border-image-source)); // outputs: border-image-source: var(--my-border-image-source);
+///  @include border-image-source(var(--my-border-image-source), true); // outputs: border-image-source: var(--my-border-image-source) !important;
+/// 
 @mixin border-image-source($value, $important: false) {
-  @include _emit('border-image-source', $value, $important);
+  @include h.emit('border-image-source', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
+/// Set border-image-slice property with optional !important flag
+/// 
+/// @param {String} $value - The border image slice value to apply (e.g., '1', '0', 'var(--my-border-image-slice)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-slice('1'); // outputs: border-image-slice: 1;
+///  @include border-image-slice('0', true); // outputs: border-image-slice: 0 !important;
+///  @include border-image-slice(var(--my-border-image-slice)); // outputs: border-image-slice: var(--my-border-image-slice);
+///  @include border-image-slice(var(--my-border-image-slice), true); // outputs: border-image-slice: var(--my-border-image-slice) !important;
+///
 @mixin border-image-slice($value, $important: false) {
-  @include _emit('border-image-slice', $value, $important);
+  @include h.emit('border-image-slice', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
+/// Set border-image-width property with optional !important flag
+/// 
+/// @param {String} $value - The border image width value to apply (e.g., '1px', '0', 'var(--my-border-image-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-width('1px'); // outputs: border-image-width: 1px;
+///  @include border-image-width('0', true); // outputs: border-image-width: 0 !important;
+///  @include border-image-width(var(--my-border-image-width)); // outputs: border-image-width: var(--my-border-image-width);
+///  @include border-image-width(var(--my-border-image-width), true); // outputs: border-image-width: var(--my-border-image-width) !important;
+///
+@mixin border-image-width($value, $important: false) {
+  @include h.emit('border-image-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-image-outset property with optional !important flag
+/// 
+/// @param {String} $value - The border image outset value to apply (e.g., '1px', '0', 'var(--my-border-image-outset)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-outset('1px'); // outputs: border-image-outset: 1px;
+///  @include border-image-outset('0', true); // outputs: border-image-outset: 0 !important;
+///  @include border-image-outset(var(--my-border-image-outset)); // outputs: border-image-outset: var(--my-border-image-outset);
+///  @include border-image-outset(var(--my-border-image-outset), true); // outputs: border-image-outset: var(--my-border-image-outset) !important;
+///
 @mixin border-image-outset($value, $important: false) {
-  @include _emit('border-image-outset', $value, $important);
+  @include h.emit('border-image-outset', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
+/// Set border-image-repeat property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The border image repeat value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-repeat('repeat'); // outputs: border-image-repeat: repeat;
+///  @include border-image-repeat(('repeat', 'space'), true); // outputs: border-image-repeat: repeat, space !important;
+///  @include border-image-repeat(var(--my-border-image-repeat)); // outputs: border-image-repeat: var(--my-border-image-repeat);
+///  @include border-image-repeat(var(--my-border-image-repeat), true); // outputs: border-image-repeat: var(--my-border-image-repeat) !important;
+/// 
 @mixin border-image-repeat($value, $important: false) {
-  @include _emit('border-image-repeat', $value, $important);
+  @include h.emit('border-image-repeat', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -251,35 +668,128 @@ $appearance-add-prefixes: true !default;
 // * Outline
 // * ---------------------------------------------
 
-// outline-color
-@mixin outline-color($value, $important: false) {
-  @include _emit('outline-color', $value, $important);
+/// Set outline property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The outline value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline('1px solid red'); // outputs: outline: 1px solid red;
+///  @include outline(('1px solid red', '2px dashed blue'), true); // outputs: outline: 1px solid red, 2px dashed blue !important;
+///  @include outline(var(--my-outline)); // outputs: outline: var(--my-outline);
+///  @include outline(var(--my-outline), true); // outputs: outline: var(--my-outline) !important;
+///
+@mixin outline($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('outline', $vals, $important);
+  @if meta.content-exists() { @content; }
 }
 
+/// Set outline-color property with optional !important flag
+/// 
+/// @param {String} $value - The outline color value to apply (e.g., 'red', '#ff0000', 'var(--my-outline-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline-color('red'); // outputs: outline-color: red;
+///  @include outline-color('#ff0000', true); // outputs: outline-color: #ff0000 !important;
+///  @include outline-color(var(--my-outline-color)); // outputs: outline-color: var(--my-outline-color);
+///  @include outline-color(var(--my-outline-color), true); // outputs: outline-color: var(--my-outline-color) !important;
+/// 
+@mixin outline-color($value, $important: false) {
+  @include h.emit('outline-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-width property with optional !important flag
+/// 
+/// @param {String} $value - The outline width value to apply (e.g., '1px', '0', 'var(--my-outline-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline-width('1px'); // outputs: outline-width: 1px;
+///  @include outline-width('0', true); // outputs: outline-width: 0 !important;
+///  @include outline-width(var(--my-outline-width)); // outputs: outline-width: var(--my-outline-width);
+///  @include outline-width(var(--my-outline-width), true); // outputs: outline-width: var(--my-outline-width) !important;
+///
+@mixin outline-width($value, $important: false) {
+  @include h.emit('outline-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-style property with optional !important flag
+/// 
+/// @param {String} $value - The outline style value to apply (e.g., 'solid', 'dashed', 'var(--my-outline-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline-style('solid'); // outputs: outline-style: solid;
+///  @include outline-style('dashed', true); // outputs: outline-style: dashed !important;
+///  @include outline-style(var(--my-outline-style)); // outputs: outline-style: var(--my-outline-style);
+///  @include outline-style(var(--my-outline-style), true); // outputs: outline-style: var(--my-outline-style) !important;
+///
+@mixin outline-style($value, $important: false) {
+  @include h.emit('outline-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-offset property with optional !important.
+/// 
+/// @param {string|number} $value - The value for outline-offset (e.g., 5px, -2em, 0). Unitless numbers will be converted to $length-default-unit.
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include outline-offset(5px); // outline-offset: 5px;
+///  @include outline-offset(-2em, true); // outline-offset: -2em !important;
+///  @include outline-offset(0); // outline-offset: 0;
+///  @include outline-offset(0, true); // outline-offset: 0 !important;
+///  @include outline-offset(5, true); // outline-offset: 5px !important;
+///
+@mixin outline-offset($value, $important: false) {
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('outline-offset', $v, $important);
+  @if meta.content-exists() { @content; }
+}
 
 
 // * ---------------------------------------------
 // * Shadows
 // * ---------------------------------------------
 
-// box-shadow (peut accepter plusieurs layers séparés par virgule)
+/// Set box-shadow property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The box shadow value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include box-shadow('2px 2px 5px red'); // outputs: box-shadow: 2px 2px 5px red;
+///  @include box-shadow(('2px 2px 5px red', '1px 1px 3px blue'), true); // outputs: box-shadow: 2px 2px 5px red, 1px 1px 3px blue !important;
+///  @include box-shadow(var(--my-box-shadow)); // outputs: box-shadow: var(--my-box-shadow);
+///  @include box-shadow(var(--my-box-shadow), true); // outputs: box-shadow: var(--my-box-shadow) !important;
+///
 @mixin box-shadow($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('box-shadow', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('box-shadow', $v, $important);
 }
 
-// text-shadow (peut accepter plusieurs layers séparés par virgule)
+/// Set text-shadow property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The text shadow value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-shadow('2px 2px 5px red'); // outputs: text-shadow: 2px 2px 5px red;
+///  @include text-shadow(('2px 2px 5px red', '1px 1px 3px blue'), true); // outputs: text-shadow: 2px 2px 5px red, 1px 1px 3px blue !important;
+///  @include text-shadow(var(--my-text-shadow)); // outputs: text-shadow: var(--my-text-shadow);
+///  @include text-shadow(var(--my-text-shadow), true); // outputs: text-shadow: var(--my-text-shadow) !important;
+///
 @mixin text-shadow($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
-
-  $v: _as-comma-list($vals);
-  @include _emit('text-shadow', $v, $important-flag);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('text-shadow', $v, $important);
 }
 
 
@@ -288,14 +798,34 @@ $appearance-add-prefixes: true !default;
 // * UI accents
 // * ---------------------------------------------
 
-// caret-color
+/// Set caret-color property with optional !important flag
+/// 
+/// @param {String} $value - The caret color value to apply (e.g., 'red', '#ff0000', 'var(--my-caret-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include caret-color('red'); // outputs: caret-color: red;
+///  @include caret-color('#ff0000', true); // outputs: caret-color: #ff0000 !important;
+///  @include caret-color(var(--my-caret-color)); // outputs: caret-color: var(--my-caret-color);
+///  @include caret-color(var(--my-caret-color), true); // outputs: caret-color: var(--my-caret-color) !important;
+///
 @mixin caret-color($value, $important: false) {
-  @include _emit('caret-color', $value, $important);
+  @include h.emit('caret-color', $value, $important);
 }
 
-// accent-color
+/// Set accent-color property with optional !important flag
+/// 
+/// @param {String} $value - The accent color value to apply (e.g., 'red', '#ff0000', 'var(--my-accent-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include accent-color('red'); // outputs: accent-color: red;
+///  @include accent-color('#ff0000', true); // outputs: accent-color: #ff0000 !important;
+///  @include accent-color(var(--my-accent-color)); // outputs: accent-color: var(--my-accent-color);
+///  @include accent-color(var(--my-accent-color), true); // outputs: accent-color: var(--my-accent-color) !important;
+///
 @mixin accent-color($value, $important: false) {
-  @include _emit('accent-color', $value, $important);
+  @include h.emit('accent-color', $value, $important);
 }
 
 
@@ -304,11 +834,20 @@ $appearance-add-prefixes: true !default;
 // * UA reset
 // * ---------------------------------------------
 
-// appearance (avec préfixes optionnels)
+/// Set appearance property with optional vendor prefixes and !important flag
+/// 
+/// @param {String} $value - The appearance value to apply (e.g., 'none', 'button', 'textfield')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include appearance('none'); // outputs: -webkit-appearance: none; -moz-appearance: none; appearance: none;
+///  @include appearance('button', true); // outputs: -webkit-appearance: button !important; -moz-appearance: button !important; appearance: button !important;
+///  @include appearance(var(--my-appearance)); // outputs: -webkit-appearance: var(--my-appearance); -moz-appearance: var(--my-appearance); appearance: var(--my-appearance); 
+///  @include appearance(var(--my-appearance), true); // outputs: -webkit-appearance: var(--my-appearance) !important; -moz-appearance: var(--my-appearance) !important; appearance: var(--my-appearance) !important;
+/// 
 @mixin appearance($value, $important: false) {
   @if $appearance-add-prefixes {
-    @include _emit('-webkit-appearance', $value, $important);
-    @include _emit('-moz-appearance', $value, $important);
+    @include h.emit('-webkit-appearance', $value, $important);
+    @include h.emit('-moz-appearance', $value, $important);
   }
-  @include _emit('appearance', $value, $important);
+  @include h.emit('appearance', $value, $important);
 }

@@ -10,95 +10,7 @@
 @charset 'utf-8';
 @use "sass:meta";
 @use "sass:list";
-
-
-
-// * ------------------------------------------------------------------------ //
-// * - Settings                                                             - //
-// * ------------------------------------------------------------------------ //
-
-// Si true, les valeurs null n’émettent pas de propriété
-$props-skip-null: true !default;
-
-// Active l’émission de fallbacks quand pertinent
-$enable-css-fallbacks: true !default;
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Global CSS keywords valables pour toutes propriétés
-@function _is-global-keyword($value) {
-    @return list.index((initial, inherit, unset, revert, revert-layer), $value) != null;
-}
-
-// Émet une propriété avec ou sans !important, et skip si null
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($val == null and $props-skip-null) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
-
-// Tokens autorisés pour scrollbar-gutter
-@function _is-scrollbar-gutter-token($value) {
-  // valeurs de base : auto | stable | both-edges | stable both-edges
-  // On laisse passer les combinaisons, donc simple présence dans ce set suffit
-  @return list.index((auto, stable, both-edges), $value) != null;
-}
-
-// Map overscroll-behavior -> -ms-scroll-chaining (IE/Edge Legacy)
-// auto    -> chained
-// contain -> none
-// none    -> none
-@function _ms-scroll-chaining-map($value) {
-    @if $value == auto    { @return chained; }
-    @if $value == contain { @return none; }
-    @if $value == none    { @return none; }
-    @return null; // unknown keyword -> ne rien émettre en fallback
-}
-
-// Normalise une entrée overscroll-behavior (1 ou 2 valeurs)
-@function _normalize-overscroll($value) {
-  @if $value == null or _is-global-keyword($value) { @return $value; }
-
-  // Forcer en liste (séparateur espace) si besoin
-  @if meta.type-of($value) != 'list' {
-    @return ($value,);
-  }
-
-  @return $value;
-}
-
-// Calcule la meilleure valeur de fallback -ms-scroll-chaining à partir d'1 ou 2 valeurs
-@function _fallback-ms-scroll-chaining($value-list) {
-  // $value-list est déjà une liste (taille 1 ou 2)
-  $len: list.length($value-list);
-
-  @if $len == 1 {
-    @return _ms-scroll-chaining-map(list.nth($value-list, 1));
-  }
-
-  // Deux valeurs : x y
-  $vx: list.nth($value-list, 1);
-  $vy: list.nth($value-list, 2);
-
-  // Si identiques -> mapping simple
-  @if $vx == $vy {
-    @return _ms-scroll-chaining-map($vx);
-  }
-
-  // Valeurs différentes : compromis
-  // Règle pragmatique :
-  //  - si l'une est auto -> chained (comportement le plus permissif)
-  //  - sinon (contain/none mixés) -> none (comportement le plus restrictif)
-  @if $vx == auto or $vy == auto { @return chained; }
-  @if ($vx == contain or $vx == none) and ($vy == contain or $vy == none) { @return none; }
-
-  // valeurs inconnues : pas de fallback
-  @return null;
-}
+@use "./../helpers/helpers" as h;
 
 
 
@@ -107,7 +19,7 @@ $enable-css-fallbacks: true !default;
 // * ------------------------------------------------------------------------ //
 
 // * ---------------------------------------------
-// * scrollbar-gutter
+// * Scrollbar Gutter
 // * ---------------------------------------------
 
 /// Settings for scrollbar-gutter property
@@ -116,24 +28,115 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include scrollbar-gutter(stable); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable; }
-///   @include scrollbar-gutter(stable both-edges); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable both-edges; }
+///  @include scrollbar-gutter(stable); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable; }
+///  @include scrollbar-gutter(stable both-edges); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable both-edges; }
 /// 
 @mixin scrollbar-gutter($value, $important: false) {
-    @if $enable-css-fallbacks {
-        @supports (scrollbar-gutter: stable) {
-        @include _emit('scrollbar-gutter', $value, $important);
-        }
-    } 
-    @else {
-        @include _emit('scrollbar-gutter', $value, $important);
+  @if h.fallbacks-enabled() {
+    @supports (scrollbar-gutter: stable) {
+    @include h.emit('scrollbar-gutter', $value, $important);
     }
-    @if meta.content-exists() { @content; }
+  } 
+  @else {
+    @include h.emit('scrollbar-gutter', $value, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for scrollbar-gutter: stable (with optional edge control)
+/// 
+/// @param {String} $edges - Optional edge control for stable gutter (e.g., both-edges, start-edge, end-edge)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include scrollbar-gutter-stable(); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable; }
+///  @include scrollbar-gutter-stable(both-edges); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable both-edges; }
+///  @include scrollbar-gutter-stable(start-edge); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable start-edge; }
+///  @include scrollbar-gutter-stable(end-edge); // @supports (scrollbar-gutter: stable) { scrollbar-gutter: stable end-edge; }
+///
+@mixin scrollbar-gutter-stable($edges: auto, $important: false) {
+  $value: stable + ' ' + $edges;
+  @if $edges == auto {
+    $value: stable;
+  }
+  @include scrollbar-gutter($value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for scrollbar-gutter: stable both-edges
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include scrollbar-gutter-both-edges(); // @supports (scrollbar-gutter: stable both-edges) { scrollbar-gutter: stable both-edges; }
+///
+@mixin scrollbar-gutter-both-edges($important: false) {
+  @include scrollbar-gutter(stable both-edges, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for scrollbar-gutter: auto
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include scrollbar-gutter-auto(); // @supports (scrollbar-gutter: auto) { scrollbar-gutter: auto; }
+///  @include scrollbar-gutter-auto(true); // @supports (scrollbar-gutter: auto) { scrollbar-gutter: auto !important; }
+/// 
+@mixin scrollbar-gutter-auto($important: false) {
+  @include scrollbar-gutter(auto, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
 // * ---------------------------------------------
-// * overscroll-behavior
+// * Scroll Behavior
+// * ---------------------------------------------
+
+/// Settings for scroll-behavior property
+/// 
+/// @param {String} $value - The value for scroll-behavior (e.g., auto, smooth)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include scroll-behavior(smooth); // scroll-behavior: smooth;
+///  @include scroll-behavior(auto); // scroll-behavior: auto;
+///  @include scroll-behavior(smooth, true); // scroll-behavior: smooth !important;
+///
+@mixin scroll-behavior($value, $important: false) {
+  @include h.emit('scroll-behavior', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for scroll-behavior: smooth
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include scroll-behavior-smooth(); // scroll-behavior: smooth;
+///  @include scroll-behavior-smooth(true); // scroll-behavior: smooth !important;
+///
+@mixin scroll-behavior-smooth($important: false) {
+  @include scroll-behavior(smooth, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for scroll-behavior: auto
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include scroll-behavior-auto(); // scroll-behavior: auto;
+///  @include scroll-behavior-auto(true); // scroll-behavior: auto !important;
+///
+@mixin scroll-behavior-auto($important: false) {
+  @include scroll-behavior(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Overscroll Behavior
 // * ---------------------------------------------
 
 /// Settings for overscroll-behavior property
@@ -142,19 +145,58 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include overscroll-behavior(contain); // overscroll-behavior: contain;
-///   @include overscroll-behavior(auto none); // overscroll-behavior: auto none;
+///  @include overscroll-behavior(contain); // overscroll-behavior: contain;
+///  @include overscroll-behavior(auto none); // overscroll-behavior: auto none;
 /// 
 @mixin overscroll-behavior($value, $important: false) {
-  $norm: _normalize-overscroll($value);
+  $norm: h.normalize-overscroll($value);
 
   // Fallback IE/Edge Legacy
-  @if $enable-css-fallbacks and $norm != null and not _is-global-keyword($norm) {
-    $ms: _fallback-ms-scroll-chaining($norm);
-    @if $ms != null { @include _emit('-ms-scroll-chaining', $ms, $important); }
+  @if h.fallbacks-enabled() and $norm != null and not h.is-global-keyword($norm) {
+    $ms: h.fallback-ms-scroll-chaining($norm);
+    @if $ms != null { @include h.emit('-ms-scroll-chaining', $ms, $important); }
   }
 
-  @include _emit('overscroll-behavior', $value, $important);
+  @include h.emit('overscroll-behavior', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior: auto
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-auto(); // overscroll-behavior: auto;
+///  @include overscroll-behavior-auto(true); // overscroll-behavior: auto !important;
+///
+@mixin overscroll-behavior-auto($important: false) {
+  @include overscroll-behavior(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior: contain
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-contain(); // overscroll-behavior: contain;
+///  @include overscroll-behavior-contain(true); // overscroll-behavior: contain !important;
+///
+@mixin overscroll-behavior-contain($important: false) {
+  @include overscroll-behavior(contain, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior: none
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-none(); // overscroll-behavior: none;
+///  @include overscroll-behavior-none(true); // overscroll-behavior: none !important;
+///
+@mixin overscroll-behavior-none($important: false) {
+  @include overscroll-behavior(none, $important);
   @if meta.content-exists() { @content; }
 }
 
@@ -164,12 +206,51 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include overscroll-behavior-x(contain); // overscroll-behavior-x: contain;
-///   @include overscroll-behavior-x(auto); // overscroll-behavior-x: auto;
+///  @include overscroll-behavior-x(contain); // overscroll-behavior-x: contain;
+///  @include overscroll-behavior-x(auto); // overscroll-behavior-x: auto;
 ///
 @mixin overscroll-behavior-x($value, $important: false) {
-    @include _emit('overscroll-behavior-x', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('overscroll-behavior-x', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior-x: auto
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-x-auto(); // overscroll-behavior-x: auto;
+///  @include overscroll-behavior-x-auto(true); // overscroll-behavior-x: auto !important;
+///
+@mixin overscroll-behavior-x-auto($important: false) {
+  @include h.emit('overscroll-behavior-x', auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior-x: contain
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-x-contain(); // overscroll-behavior-x: contain;
+///  @include overscroll-behavior-x-contain(true); // overscroll-behavior-x: contain !important;
+///
+@mixin overscroll-behavior-x-contain($important: false) {
+  @include h.emit('overscroll-behavior-x', contain, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior-x: none
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include overscroll-behavior-x-none(); // overscroll-behavior-x: none;
+///  @include overscroll-behavior-x-none(true); // overscroll-behavior-x: none !important;
+///
+@mixin overscroll-behavior-x-none($important: false) {
+  @include h.emit('overscroll-behavior-x', none, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Settings for overscroll-behavior-y property
@@ -178,10 +259,49 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include overscroll-behavior-y(contain); // overscroll-behavior-y: contain;
-///   @include overscroll-behavior-y(auto); // overscroll-behavior-y: auto;
+///  @include overscroll-behavior-y(contain); // overscroll-behavior-y: contain;
+///  @include overscroll-behavior-y(auto); // overscroll-behavior-y: auto;
 ///
 @mixin overscroll-behavior-y($value, $important: false) {
-    @include _emit('overscroll-behavior-y', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('overscroll-behavior-y', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior-y: auto
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-y-auto(); // overscroll-behavior-y: auto;
+///  @include overscroll-behavior-y-auto(true); // overscroll-behavior-y: auto !important;
+///
+@mixin overscroll-behavior-y-auto($important: false) {
+  @include h.emit('overscroll-behavior-y', auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior-y: contain
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-y-contain(); // overscroll-behavior-y: contain;
+///  @include overscroll-behavior-y-contain(true); // overscroll-behavior-y: contain !important;
+///
+@mixin overscroll-behavior-y-contain($important: false) {
+  @include h.emit('overscroll-behavior-y', contain, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Settings for overscroll-behavior-y: none
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overscroll-behavior-y-none(); // overscroll-behavior-y: none;
+///  @include overscroll-behavior-y-none(true); // overscroll-behavior-y: none !important;
+///
+@mixin overscroll-behavior-y-none($important: false) {
+  @include h.emit('overscroll-behavior-y', none, $important);
+  @if meta.content-exists() { @content; }
 }

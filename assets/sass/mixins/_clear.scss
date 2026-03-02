@@ -10,27 +10,7 @@
 
 @charset 'utf-8';
 @use "sass:meta";
-
-
-// * ------------------------------------------------------------------------ //
-// * - Settings                                                             - //
-// * ------------------------------------------------------------------------ //
-
-// skip si valeur vide/null
-$clear-skip-null: true !default;
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, en skipant null/''
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($clear-skip-null and ($val == null or $val == '')) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
@@ -47,11 +27,11 @@ $clear-skip-null: true !default;
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 ///
 /// Usage:
-///   @include clear(both);
-///   @include clear(left, true); // with !important 
+///  @include clear(both);
+///  @include clear(left, true); // with !important 
 /// 
 @mixin clear($value, $important: false) {
-  @include _emit('clear', $value, $important);
+  @include h.emit('clear', $value, $important);
   @if meta.content-exists() { @content; }
 }
 
@@ -60,35 +40,35 @@ $clear-skip-null: true !default;
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 ///
 /// Usage:
-///   @include clear-both;
+///  @include clear-both;
 ///
 @mixin clear-both($important: false) { 
-    @include clear(both,  $important); 
-    @if meta.content-exists() { @content; } 
+  @include clear(both,  $important); 
+  @if meta.content-exists() { @content; } 
 }
 
-/// Clearfix with specific sides
+/// Clearfix left side
 ///
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include clear-left;
+///  @include clear-left;
 /// 
 @mixin clear-left($important: false) { 
-    @include clear(left,  $important); 
-    @if meta.content-exists() { @content; } 
+  @include clear(left,  $important); 
+  @if meta.content-exists() { @content; } 
 }
 
-/// Clearfix with specific sides
+/// Clearfix right side
 ///
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 ///
 /// Usage:
-///   @include clear-right;
+///  @include clear-right;
 /// 
 @mixin clear-right($important: false) { 
-    @include clear(right, $important); 
-    @if meta.content-exists() { @content; } 
+  @include clear(right, $important); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Clearfix with no clearing (for resetting)
@@ -96,11 +76,11 @@ $clear-skip-null: true !default;
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 ///
 /// Usage:
-///   @include clear-none;
+///  @include clear-none;
 ///
 @mixin clear-none($important: false) { 
-    @include clear(none,  $important); 
-    @if meta.content-exists() { @content; } 
+  @include clear(none,  $important); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Clearfix with logical properties (modern)
@@ -108,11 +88,11 @@ $clear-skip-null: true !default;
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include clear-inline-start;
+///  @include clear-inline-start;
 /// 
 @mixin clear-inline-start($important: false) { 
-    @include clear(inline-start, $important); 
-    @if meta.content-exists() { @content; } 
+  @include clear(inline-start, $important); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Clearfix with logical properties (modern)
@@ -120,11 +100,11 @@ $clear-skip-null: true !default;
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 ///
 /// Usage:
-///   @include clear-inline-end;
+///  @include clear-inline-end;
 ///
 @mixin clear-inline-end($important: false) { 
-    @include clear(inline-end,   $important); 
-    @if meta.content-exists() { @content; } 
+  @include clear(inline-end,   $important); 
+  @if meta.content-exists() { @content; } 
 }
 
 
@@ -137,9 +117,9 @@ $clear-skip-null: true !default;
 /// @param {bool} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include clearfix;
+///  @include clearfix;
 /// 
 @mixin clearfix($important: false) {
-    @include _emit('display', flow-root, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('display', flow-root, $important);
+  @if meta.content-exists() { @content; }
 }

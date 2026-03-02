@@ -12,15 +12,13 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
-@use "./../helpers/helpers" as helpers;
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-// Si true, les valeurs null n’émettent pas de propriété
-$props-skip-null: true !default;
 
 // Unité par défaut pour les longueurs (ex: px)
 $length-default-unit: 1px !default;
@@ -28,105 +26,8 @@ $length-default-unit: 1px !default;
 // tab-size: par défaut 1ch (plus logique que px)
 $tab-size-default-unit: 1ch !default; 
 
-// Activer les fallbacks legacy (webkit/ms quand pertinent)
-$enable-css-fallbacks: true !default;
-
 // Flag global pour émettre (ou pas) des propriétés non standard
 $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-osx-font-smoothing
-
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null/'' (si activé)
-// @mixin _emit($prop, $val, $important: false) {
-//   @if not ($props-skip-null and ($val == null or $val == '')) {
-//     @if $important { #{$prop}: $val !important; }
-//     @else          { #{$prop}: $val; }
-//   }
-// }
-
-// Nombre -> longueur (unitless -> $length-default-unit), conserve 0 unitless
-@function _normalize-length($value, $default-unit: $length-default-unit) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value; // a déjà une unité (px, rem, em, %, ch, etc.)
-  }
-  @return $value; // keywords, calc(), var(), etc.
-}
-
-// Longueur OU pourcentage (préserve % / calc / var)
-@function _normalize-length-or-percentage($value, $default-unit: $length-default-unit) {
-  // même logique que _normalize-length, mais laissons % tels quels (ce qui est déjà le cas)
-  @return _normalize-length($value, $default-unit);
-}
-
-// Normalise chaque item d'une liste (length/%), préserve keywords
-@function _normalize-length-or-percentage-list($values, $default-unit: $length-default-unit) {
-  @if meta.type-of($values) == 'list' {
-    $out: ();
-    @for $i from 1 through list.length($values) {
-      $tok: list.nth($values, $i);
-      $out: list.append($out, _normalize-length-or-percentage($tok, $default-unit), space);
-    }
-    @return $out;
-  }
-  @return _normalize-length-or-percentage($values, $default-unit);
-}
-
-// Conserve les nombres unitless (utile pour line-height, tab-size si on veut)
-@function _length-or-number($value, $default-unit: $length-default-unit) {
-    @if $value == null { 
-        @return null; 
-    }
-    @if meta.type-of($value) == 'number' and math.is-unitless($value) {
-        @return $value; // garde le nombre nu (ex: line-height: 1.5)
-    }
-    @return _normalize-length($value, $default-unit);
-}
-
-// Convertit des varargs en liste séparée par virgules (font-family layers, etc.)
-@function _as-comma-list($values) {
-    @if meta.type-of($values) != 'list' { 
-        @return $values; 
-    }
-    $out: ();
-    @for $i from 1 through list.length($values) {
-        $out: list.append($out, list.nth($values, $i), comma);
-    }
-    @return $out;
-}
-
-
-// Convertit des varargs en liste séparée par espaces (ex: quotes)
-@function _as-space-list($values) {
-    @if meta.type-of($values) != 'list' { 
-        @return $values; 
-    }
-    $out: ();
-    @for $i from 1 through list.length($values) {
-        $out: list.append($out, list.nth($values, $i), space);
-    }
-    @return $out;
-}
-
-// Extrait un booléen final optionnel depuis des varargs : retourne (liste-sans-bool, important-bool)
-@function _pop-trailing-bool($values) {
-    $argc: list.length($values);
-    @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-        $important: list.nth($values, $argc);
-        $trimmed: ();
-        @for $i from 1 through ($argc - 1) {
-            $trimmed: list.append($trimmed, list.nth($values, $i), space);
-        }
-        @return ($trimmed, $important);
-    }
-    @return ($values, false);
-}
 
 
 // * ------------------------------------------------------------------------ //
@@ -144,19 +45,16 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include font-family('Open Sans', sans-serif); // font-family: 'Open Sans', sans-serif;
-///   @include font-family('Open Sans', sans-serif, true); // font-family: 'Open Sans', sans-serif !important;  
+///  @include font-family('Open Sans', sans-serif); // font-family: 'Open Sans', sans-serif;
+///  @include font-family('Open Sans', sans-serif, true); // font-family: 'Open Sans', sans-serif !important;  
 /// 
 @mixin font-family($families...) {
-    $pair: _pop-trailing-bool($families);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $ff: _as-comma-list($vals);
-    // @include _emit('font-family', $ff, $important-flag);
-    @include helpers.emit('font-family', $ff, $important-flag);
-
-    @if meta.content-exists() { @content; }
+  $pair: h.pop-trailing-bool($families);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $ff: h.as-comma-list($vals);
+  @include h.emit('font-family', $ff, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// font-size with support for unitless numbers (treated as length with default unit).
@@ -165,14 +63,14 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include font-size(16px); // font-size: 16px;
-///   @include font-size(1.5, true); // font-size: 1.5 !important; (unitless number treated as length using $length-default-unit)
-///   @include font-size(1.5); // font-size: 1.5; (unitless number treated as length using $length-default-unit)
+///  @include font-size(16px); // font-size: 16px;
+///  @include font-size(1.5, true); // font-size: 1.5 !important; (unitless number treated as length using $length-default-unit)
+///  @include font-size(1.5); // font-size: 1.5; (unitless number treated as length using $length-default-unit)
 /// 
 @mixin font-size($value, $important: false) {
-    $v: _normalize-length($value, $length-default-unit);
-    @include helpers.emit('font-size', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('font-size', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// font-weight (normal, bold, 100..900)
@@ -181,14 +79,14 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include font-weight(normal); // font-weight: normal;
-///   @include font-weight(400, true); // font-weight: 400 !important;
-///   @include font-weight(bold); // font-weight: bold;
-///   @include font-weight(700, true); // font-weight: 700 !important;
+///  @include font-weight(normal); // font-weight: normal;
+///  @include font-weight(400, true); // font-weight: 400 !important;
+///  @include font-weight(bold); // font-weight: bold;
+///  @include font-weight(700, true); // font-weight: 700 !important;
 /// 
 @mixin font-weight($value, $important: false) {
-    @include helpers.emit('font-weight', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('font-weight', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// font-style (normal, italic, oblique)
@@ -197,12 +95,12 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include font-style(italic); // font-style: italic;
-///   @include font-style(oblique, true); // font-style: oblique !important;
+///  @include font-style(italic); // font-style: italic;
+///  @include font-style(oblique, true); // font-style: oblique !important;
 ///
 @mixin font-style($value, $important: false) {
-    @include helpers.emit('font-style', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('font-style', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// font-stretch (normal, condensed, expanded, etc.)
@@ -211,12 +109,12 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include font-stretch(normal); // font-stretch: normal;
-///   @include font-stretch(condensed, true); // font-stretch: condensed !important;
+///  @include font-stretch(normal); // font-stretch: normal;
+///  @include font-stretch(condensed, true); // font-stretch: condensed !important;
 ///
 @mixin font-stretch($value, $important: false) {
-    @include helpers.emit('font-stretch', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('font-stretch', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// font-variant (normal, small-caps, etc.)
@@ -225,12 +123,12 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include font-variant(normal); // font-variant: normal;
-///   @include font-variant(small-caps, true); // font-variant: small-caps !important;
+///  @include font-variant(normal); // font-variant: normal;
+///  @include font-variant(small-caps, true); // font-variant: small-caps !important;
 ///
 @mixin font-variant($value, $important: false) {
-    @include helpers.emit('font-variant', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('font-variant', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -244,15 +142,15 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include line-height(1.5); // line-height: 1.5; (unitless number)
-///   @include line-height(1.5, true); // line-height: 1.5 !important; (unitless number)
-///   @include line-height(20px); // line-height: 20px; (length)
-///   @include line-height(20, true); // line-height: 20px !important; (number normalized to length using $length-default-unit)
+///  @include line-height(1.5); // line-height: 1.5; (unitless number)
+///  @include line-height(1.5, true); // line-height: 1.5 !important; (unitless number)
+///  @include line-height(20px); // line-height: 20px; (length)
+///  @include line-height(20, true); // line-height: 20px !important; (number normalized to length using $length-default-unit)
 ///
 @mixin line-height($value, $important: false) {
-    $v: _length-or-number($value, $length-default-unit);
-    @include helpers.emit('line-height', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.length-or-number($value, $length-default-unit);
+  @include h.emit('line-height', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// letter-spacing
@@ -261,15 +159,15 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include letter-spacing(2px); // letter-spacing: 2px;
-///   @include letter-spacing(2, true); // letter-spacing: 2px !important; (assuming $length-default-unit is 1px)
-///   @include letter-spacing(normal); // letter-spacing: normal;
-///   @include letter-spacing(normal, true); // letter-spacing: normal !important;
+///  @include letter-spacing(2px); // letter-spacing: 2px;
+///  @include letter-spacing(2, true); // letter-spacing: 2px !important; (assuming $length-default-unit is 1px)
+///  @include letter-spacing(normal); // letter-spacing: normal;
+///  @include letter-spacing(normal, true); // letter-spacing: normal !important;
 ///
 @mixin letter-spacing($value, $important: false) {
-    $v: _normalize-length($value, $length-default-unit);
-    @include helpers.emit('letter-spacing', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('letter-spacing', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// word-spacing
@@ -278,15 +176,15 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 ///  Usage:
-///   @include word-spacing(10px); // word-spacing: 10px;
-///   @include word-spacing(10, true); // word-spacing: 10px !important; (assuming $length-default-unit is 1px)
-///   @include word-spacing(normal); // word-spacing: normal;
-///   @include word-spacing(normal, true); // word-spacing: normal !important;
+///  @include word-spacing(10px); // word-spacing: 10px;
+///  @include word-spacing(10, true); // word-spacing: 10px !important; (assuming $length-default-unit is 1px)
+///  @include word-spacing(normal); // word-spacing: normal;
+///  @include word-spacing(normal, true); // word-spacing: normal !important;
 ///
 @mixin word-spacing($value, $important: false) {
-    $v: _normalize-length($value, $length-default-unit);
-    @include helpers.emit('word-spacing', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('word-spacing', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -300,15 +198,15 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 ///  Usage:
-///   @include text-align(left); // text-align: left;
-///   @include text-align(center, true); // text-align: center !important;
-///   @include text-align(justify); // text-align: justify;
-///   @include text-align(start, true); // text-align: start !important;
-///   @include text-align(end); // text-align: end;
+///  @include text-align(left); // text-align: left;
+///  @include text-align(center, true); // text-align: center !important;
+///  @include text-align(justify); // text-align: justify;
+///  @include text-align(start, true); // text-align: start !important;
+///  @include text-align(end); // text-align: end;
 ///
 @mixin text-align($value, $important: false) { 
-    @include helpers.emit('text-align', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('text-align', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// text-transform (none, capitalize, uppercase, lowercase, full-width, full-size-kana)
@@ -317,14 +215,14 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include text-transform(uppercase); // text-transform: uppercase;
-///   @include text-transform(lowercase, true); // text-transform: lowercase !important;
-///   @include text-transform(none); // text-transform: none;
-///   @include text-transform(none, true); // text-transform: none !important;
+///  @include text-transform(uppercase); // text-transform: uppercase;
+///  @include text-transform(lowercase, true); // text-transform: lowercase !important;
+///  @include text-transform(none); // text-transform: none;
+///  @include text-transform(none, true); // text-transform: none !important;
 ///
 @mixin text-transform($value, $important: false) { 
-    @include helpers.emit('text-transform', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('text-transform', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// text-decoration
@@ -333,18 +231,17 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include text-decoration(underline); // text-decoration: underline;
-///   @include text-decoration(underline overline, true); // text-decoration: underline overline !important;
-///   @include text-decoration(none); // text-decoration: none;
-///   @include text-decoration(none, true); // text-decoration: none !important;
+///  @include text-decoration(underline); // text-decoration: underline;
+///  @include text-decoration(underline overline, true); // text-decoration: underline overline !important;
+///  @include text-decoration(none); // text-decoration: none;
+///  @include text-decoration(none, true); // text-decoration: none !important;
 ///
 @mixin text-decoration($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    @include helpers.emit('text-decoration', $vals, $important-flag);
-    @if meta.content-exists() { @content; }
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('text-decoration', $vals, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// text-indent
@@ -353,23 +250,23 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include text-indent(20px); // text-indent: 20px;
-///   @include text-indent(2, true); // text-indent: 2px !important; (assuming $length-default-unit is 1px)
+///  @include text-indent(20px); // text-indent: 20px;
+///  @include text-indent(2, true); // text-indent: 2px !important; (assuming $length-default-unit is 1px)
 ///
 @mixin text-indent($value, $important: false) {
-    @if $value == null and $props-skip-null {
-        // silence
-    } 
-    @else if meta.type-of($value) == 'list' {
-        $out: _normalize-length-or-percentage-list($value, $length-default-unit);
-        @include helpers.emit('text-indent', $out, $important);
-    } 
-    @else {
-        $v: _normalize-length-or-percentage($value, $length-default-unit);
-        @include helpers.emit('text-indent', $v, $important);
-    }
-    @if meta.content-exists() { @content; }
-
+  @if $value == null and h.props-skip-null() {
+    // silence
+  } 
+  @else if meta.type-of($value) == 'list' {
+    $out: h.normalize-length-list($value, $length-default-unit);
+    @include h.emit('text-indent--', $out, $important);
+  } 
+  @else {
+    // $v: h.normalize-length($value, $length-default-unit);
+    $v: h.normalize-length($value, $length-default-unit);
+    @include h.emit('text-indent', $v, $important);
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// white-space (normal, nowrap, pre, pre-line, pre-wrap, break-spaces)
@@ -378,16 +275,16 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include white-space(normal); // white-space: normal;
-///   @include white-space(pre, true); // white-space: pre !important;
-///   @include white-space(pre-line); // white-space: pre-line;
-///   @include white-space(pre-wrap, true); // white-space: pre-wrap !important;
-///   @include white-space(break-spaces); // white-space: break-spaces;
-///   @include white-space(break-spaces, true); // white-space: break-spaces !important;
+///  @include white-space(normal); // white-space: normal;
+///  @include white-space(pre, true); // white-space: pre !important;
+///  @include white-space(pre-line); // white-space: pre-line;
+///  @include white-space(pre-wrap, true); // white-space: pre-wrap !important;
+///  @include white-space(break-spaces); // white-space: break-spaces;
+///  @include white-space(break-spaces, true); // white-space: break-spaces !important;
 ///
 @mixin white-space($value, $important: false) { 
-    @include helpers.emit('white-space', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('white-space', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// word-break (normal, break-all, keep-all, break-word)
@@ -396,23 +293,32 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include word-break(normal); // word-break: normal;
-///   @include word-break(break-all, true); // word-break: break-all !important;
-///   @include word-break(keep-all); // word-break: keep-all;
-///   @include word-break(break-word, true); // word-break: break-word !important; with fallback for word-wrap: break-word;
+///  @include word-break(normal); // word-break: normal;
+///  @include word-break(break-all, true); // word-break: break-all !important;
+///  @include word-break(keep-all); // word-break: keep-all;
+///  @include word-break(break-word, true); // word-break: break-word !important; with fallback for word-wrap: break-word;
 ///
 @mixin word-break($value, $important: false) {
-    @include helpers.emit('word-break', $value, $important);
-    @if $enable-css-fallbacks and $value == break-word {
-        @include helpers.emit('overflow-wrap', anywhere, $important);
-        @include helpers.emit('word-wrap', break-word, $important);
-    }
-    @if meta.content-exists() { @content; }
+  @include h.emit('word-break', $value, $important);
+  @if h.fallbacks-enabled() and $value == break-word {
+    @include h.emit('overflow-wrap', anywhere, $important);
+    @include h.emit('word-wrap', break-word, $important);
+  }
+  @if meta.content-exists() { @content; }
 }
 
+/// word-wrap (normal, break-word)
+/// 
+/// @param {string} $value The value for word-wrap (e.g., normal, break-word)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include word-wrap(normal); // word-wrap: normal;
+///  @include word-wrap(break-word, true); // word-wrap: break-word !important;
+///
 @mixin word-wrap($value, $important: false) {
-    @include helpers.emit('word-wrap', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('word-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// overflow-wrap (normal, break-word, anywhere) 
@@ -421,17 +327,17 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include overflow-wrap(normal); // overflow-wrap: normal;
-///   @include overflow-wrap(break-word, true); // overflow-wrap: break-word !important;
-///   @include overflow-wrap(anywhere); // overflow-wrap: anywhere;
-///   @include overflow-wrap(anywhere, true); // overflow-wrap: anywhere !important;
+///  @include overflow-wrap(normal); // overflow-wrap: normal;
+///  @include overflow-wrap(break-word, true); // overflow-wrap: break-word !important;
+///  @include overflow-wrap(anywhere); // overflow-wrap: anywhere;
+///  @include overflow-wrap(anywhere, true); // overflow-wrap: anywhere !important;
 ///
 @mixin overflow-wrap($value, $important: false) {
-    @if $enable-css-fallbacks {
-        @include helpers.emit('word-wrap', $value, $important);
-    }
-    @include helpers.emit('overflow-wrap', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if h.fallbacks-enabled() {
+    @include h.emit('word-wrap', $value, $important);
+  }
+  @include h.emit('overflow-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// hyphens (auto, manual, none)
@@ -440,16 +346,16 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include hyphens(auto); // hyphens: auto; with fallback for -webkit-hyphens
-///   @include hyphens(auto, true); // hyphens: auto !important; with fallback for -webkit-hyphens
+///  @include hyphens(auto); // hyphens: auto; with fallback for -webkit-hyphens
+///  @include hyphens(auto, true); // hyphens: auto !important; with fallback for -webkit-hyphens
 ///
 @mixin hyphens($value, $important: false) {
-    @if $enable-css-fallbacks {
-        @include helpers.emit('-webkit-hyphens', $value, $important);
-        @include helpers.emit('-ms-hyphens', $value, $important);
-    }
-    @include helpers.emit('hyphens', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-hyphens', $value, $important);
+    @include h.emit('-ms-hyphens', $value, $important);
+  }
+  @include h.emit('hyphens', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -463,12 +369,12 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include text-decoration-color(red); // text-decoration-color: red;
-///   @include text-decoration-color(currentColor, true); // text-decoration-color: currentColor !important;
+///  @include text-decoration-color(red); // text-decoration-color: red;
+///  @include text-decoration-color(currentColor, true); // text-decoration-color: currentColor !important;
 ///
 @mixin text-decoration-color($value, $important: false) { 
-    @include helpers.emit('text-decoration-color', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('text-decoration-color', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// text-decoration-thickness (<length> | auto)
@@ -477,15 +383,15 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include text-decoration-thickness(2px); // text-decoration-thickness: 2px;
-///   @include text-decoration-thickness(2, true); // text-decoration-thickness: 2px !important; (assuming $length-default-unit is 1px)
-///   @include text-decoration-thickness(auto); // text-decoration-thickness: auto;
-///   @include text-decoration-thickness(auto, true); // text-decoration-thickness: auto !important;
+///  @include text-decoration-thickness(2px); // text-decoration-thickness: 2px;
+///  @include text-decoration-thickness(2, true); // text-decoration-thickness: 2px !important; (assuming $length-default-unit is 1px)
+///  @include text-decoration-thickness(auto); // text-decoration-thickness: auto;
+///  @include text-decoration-thickness(auto, true); // text-decoration-thickness: auto !important;
 /// 
 @mixin text-decoration-thickness($value, $important: false) {
-    $v: _normalize-length-or-percentage($value, $length-default-unit);
-    @include helpers.emit('text-decoration-thickness', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('text-decoration-thickness', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// text-underline-offset (<length>|auto)
@@ -494,15 +400,15 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include text-underline-offset(2px); // text-underline-offset: 2px;
-///   @include text-underline-offset(2, true); // text-underline-offset: 2px !important; (assuming $length-default-unit is 1px)
-///   @include text-underline-offset(auto); // text-underline-offset: auto;
-///   @include text-underline-offset(auto, true); // text-underline-offset: auto !important;
+///  @include text-underline-offset(2px); // text-underline-offset: 2px;
+///  @include text-underline-offset(2, true); // text-underline-offset: 2px !important; (assuming $length-default-unit is 1px)
+///  @include text-underline-offset(auto); // text-underline-offset: auto;
+///  @include text-underline-offset(auto, true); // text-underline-offset: auto !important;
 /// 
 @mixin text-underline-offset($value, $important: false) {
-    $v: _normalize-length-or-percentage($value, $length-default-unit);
-    @include helpers.emit('text-underline-offset', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('text-underline-offset', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// text-underline-position (auto | under | left | right)
@@ -511,32 +417,14 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include text-underline-position(auto); // text-underline-position: auto;
-///   @include text-underline-position(under, true); // text-underline-position: under !important;
-///   @include text-underline-position(left); // text-underline-position: left;
-///   @include text-underline-position(right, true); // text-underline-position: right !important;
+///  @include text-underline-position(auto); // text-underline-position: auto;
+///  @include text-underline-position(under, true); // text-underline-position: under !important;
+///  @include text-underline-position(left); // text-underline-position: left;
+///  @include text-underline-position(right, true); // text-underline-position: right !important;
 ///
 @mixin text-underline-position($value, $important: false) { 
-    @include helpers.emit('text-underline-position', $value, $important);
-    @if meta.content-exists() { @content; }
-}
-
-/// Set tab-size with support for unitless numbers (treated as length with default unit).
-/// 
-/// @param {string|number} $value The value for tab-size (e.g., 4, 4ch)
-/// @param {boolean} $important Whether to add !important to the declaration (default: false)
-///
-///  Usage:
-///   @include tab-size(4); // tab-size: 4ch; (assuming $length-default-unit is 1ch)
-///   @include tab-size(4, true); // tab-size: 4ch !important; (assuming $length-default-unit is 1ch)
-///   @include tab-size(4ch); // tab-size: 4ch;
-///   @include tab-size(4ch, true); // tab-size: 4ch !important;
-///
-@mixin tab-size($value, $important: false) {
-    // $v: _length-or-number($value, $tab-size-default-unit);
-    $v: _normalize-length($value, $tab-size-default-unit);
-    @include helpers.emit('tab-size', $v, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('text-underline-position', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// text-wrap (normal, balance, pretty)
@@ -545,14 +433,14 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include text-wrap(normal); // text-wrap: normal;
-///   @include text-wrap(balance, true); // text-wrap: balance !important;
-///   @include text-wrap(pretty); // text-wrap: pretty;
-///   @include text-wrap(pretty, true); // text-wrap: pretty !important;
+///  @include text-wrap(normal); // text-wrap: normal;
+///  @include text-wrap(balance, true); // text-wrap: balance !important;
+///  @include text-wrap(pretty); // text-wrap: pretty;
+///  @include text-wrap(pretty, true); // text-wrap: pretty !important;
 ///
 @mixin text-wrap($value, $important: false) {
-    @include helpers.emit('text-wrap', $value, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('text-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Set text-size-adjust with necessary fallbacks for older browsers.
@@ -561,18 +449,87 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include text-size-adjust(none); // text-size-adjust: none; with fallbacks for -webkit- and -ms-
-///   @include text-size-adjust(auto, true); // text-size-adjust: auto !important; with fallbacks for -webkit- and -ms-
+///  @include text-size-adjust(none); // text-size-adjust: none; with fallbacks for -webkit- and -ms-
+///  @include text-size-adjust(auto, true); // text-size-adjust: auto !important; with fallbacks for -webkit- and -ms-
 ///
 @mixin text-size-adjust($value, $important: false) {
-    @if $enable-css-fallbacks {
-        @include helpers.emit('-webkit-text-size-adjust', $value, $important);
-        @include helpers.emit('-ms-text-size-adjust', $value, $important);
-        @include helpers.emit('-moz-text-size-adjust', $value, $important);
-    }
-    @include helpers.emit('text-size-adjust', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-text-size-adjust', $value, $important);
+    @include h.emit('-ms-text-size-adjust', $value, $important);
+    @include h.emit('-moz-text-size-adjust', $value, $important);
+  }
+  @include h.emit('text-size-adjust', $value, $important);
+  @if meta.content-exists() { @content; }
 }
+
+/// Set text-rendering with support for an optional !important flag.
+/// 
+/// @param {string} $value The value for text-rendering (e.g., auto, optimizeSpeed, optimizeLegibility, geometricPrecision)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include text-rendering(optimizeLegibility); // text-rendering: optimizeLegibility;
+///  @include text-rendering(optimizeLegibility, true); // text-rendering: optimizeLegibility !important;
+///
+@mixin text-rendering($value, $important: false) {
+  @include h.emit('text-rendering', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set font smoothing properties 
+/// 
+/// @param {string} $webkit The value for -webkit-font-smoothing (e.g., antialiased, subpixel-antialiased)
+/// @param {string} $moz The value for -moz-osx-font-smoothing (e.g., grayscale, auto)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-smoothing(antialiased, grayscale); // -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+///  @include font-smoothing(antialiased, grayscale, true); // -webkit-font-smoothing: antialiased !important; -moz-osx-font-smoothing: grayscale !important;
+///
+@mixin font-smoothing($webkit: antialiased, $moz: grayscale, $important: false) {
+  @if $enable-typography-nonstandard {
+    @include h.emit('-webkit-font-smoothing', $webkit, $important);
+    @include h.emit('-moz-osx-font-smoothing', $moz, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set a "readability" preset for text rendering, ligatures, and font smoothing.
+/// 
+/// @param {boolean} $important Whether to add !important to the declarations (default: false)
+/// 
+/// Usage:
+///  @include text-readability-preset(); // Applies the preset with normal specificity.
+///  @include text-readability-preset(true); // Applies the preset with !important for higher specificity.
+///
+@mixin text-readability-preset($important: false) {
+  @include text-rendering(optimizeLegibility, $important);
+  @include h.emit('font-variant-ligatures', common-ligatures, $important);
+  @include font-smoothing(antialiased, grayscale, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set tab-size with support for unitless numbers (treated as length with default unit).
+/// 
+/// @param {string|number} $value The value for tab-size (e.g., 4, 4ch)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include tab-size(4); // tab-size: 4ch; (assuming $length-default-unit is 1ch)
+///  @include tab-size(4, true); // tab-size: 4ch !important; (assuming $length-default-unit is 1ch)
+///  @include tab-size(4ch); // tab-size: 4ch;
+///  @include tab-size(4ch, true); // tab-size: 4ch !important;
+///
+@mixin tab-size($value, $important: false) {
+  $v: h.normalize-length($value, $tab-size-default-unit);
+  @include h.emit('tab-size', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Quotes
+// * ---------------------------------------------
 
 /// Set quotes with support for multiple values and an optional !important flag.
 /// 
@@ -580,75 +537,19 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 /// @param {boolean} $important Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include quotes('"«' '»"' '"‹' '›"'); // quotes: '"«' '»"' '"‹' '›"';
-///   @include quotes('"«' '»"' '"‹' '›"', true); // quotes: '"«' '»"' '"‹' '›" !important;
+///  @include quotes('"«' '»"' '"‹' '›"'); // quotes: '"«' '»"' '"‹' '›"';
+///  @include quotes('"«' '»"' '"‹' '›"', true); // quotes: '"«' '»"' '"‹' '›" !important;
 ///
 @mixin quotes($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
 
-    $v: _as-space-list($vals);
-    @if meta.type-of($vals) == 'string' or meta.type-of($vals) == 'keyword' {
-        $v: $vals;
-    }
-    @include helpers.emit('quotes', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ---------------------------------------------
-// Text rendering & smoothing
-// ---------------------------------------------
-/// text-rendering (hint non standard – effets limités sur la plupart des moteurs)
-/// Valeurs usuelles : auto | optimizeSpeed | optimizeLegibility | geometricPrecision
-@mixin text-rendering($value, $important: false) {
-  @include helpers.emit('text-rendering', $value, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Raccourci pour text-rendering: optimizeLegibility
-@mixin text-rendering-optimize-legibility($important: false) {
-  @include text-rendering(optimizeLegibility, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// (Optionnel, non standard) – ajuste l’antialiasing sur WebKit/macOS
-///  -webkit-font-smoothing: antialiased | subpixel-antialiased
-///  -moz-osx-font-smoothing: grayscale | auto
-@mixin font-smoothing($webkit: antialiased, $moz: grayscale, $important: false) {
-  @if $enable-typography-nonstandard {
-    @include helpers.emit('-webkit-font-smoothing', $webkit, $important);
-    @include helpers.emit('-moz-osx-font-smoothing', $moz, $important);
+  $v: h.as-space-list($vals);
+  @if meta.type-of($vals) == 'string' or meta.type-of($vals) == 'keyword' {
+    $v: $vals;
   }
-  @if meta.content-exists() { @content; }
-}
-
-/// (Optionnel) Preset "lisibilité" – à activer consciemment.
-/// Combine text-rendering + ligatures + smoothing non standard si flag actif.
-@mixin text-readability-preset($important: false) {
-  // Hint de rendu
-  @include text-rendering(optimizeLegibility, $important);
-
-  // Ligatures “communes” (selon police/moteur)
-  // Préfère font-variant-ligatures quand dispo, sinon font-feature-settings
-  @include helpers.emit('font-variant-ligatures', common-ligatures, $important);
-  // (facultatif de doublonner)
-  // @include _emit('font-feature-settings', 'liga' 1, $important);
-
-  // Antialiasing non standard (opt-in via flag)
-  @include font-smoothing(antialiased, grayscale, $important);
-
+  
+  @include h.emit('quotes', $v, $important);
   @if meta.content-exists() { @content; }
 }

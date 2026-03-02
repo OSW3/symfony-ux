@@ -20,121 +20,17 @@
 @use "sass:math";
 @use "./display" as *;
 @use "./gaps" as *;
-@use "./../helpers/helpers" as helpers;
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-// Si true, les valeurs null n’émettent pas de propriété
-$props-skip-null: true !default;
 
 // Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
 $length-default-unit: 1px !default;
 
-// Activer les fallbacks legacy (IE10/11, vieux WebKit)
-$enable-css-fallbacks: true !default;
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null/'' (si activé)
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($props-skip-null and ($val == null or $val == '')) {
-    @if $important {
-      #{$prop}: $val !important;
-    } @else {
-      #{$prop}: $val;
-    }
-  }
-}
-
-// Nombre → longueur (unitless -> $length-default-unit), conserve 0 unitless
-@function _normalize-length($value, $default-unit: $length-default-unit) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value;
-  }
-  @return $value; // mots-clés, calc(), variables, etc.
-}
-
-// Liste d'espaces de longueurs (1..n) ou scalaire
-@function _normalize-length-list($values, $default-unit: $length-default-unit) {
-  @if meta.type-of($values) == 'list' {
-    $out: ();
-    @for $i from 1 through list.length($values) {
-      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
-    }
-    @return $out;
-  }
-  @return _normalize-length($values, $default-unit);
-}
-
-// Mapping direction -> vieux WebKit box-orient/box-direction
-@function _webkit-box-orient($direction) {
-  @if $direction == row or $direction == row-reverse { @return horizontal; }
-  @if $direction == column or $direction == column-reverse { @return vertical; }
-  @return null;
-}
-@function _webkit-box-direction($direction) {
-  @if $direction == row or $direction == column { @return normal; }
-  @if $direction == row-reverse or $direction == column-reverse { @return reverse; }
-  @return null;
-}
-
-// Mapping justify-content -> -ms-flex-pack
-@function _ms-pack($value) {
-  @if $value == flex-start { @return start; }
-  @if $value == flex-end { @return end; }
-  @if $value == center { @return center; }
-  @if $value == space-between { @return justify; }
-  @if $value == space-around { @return distribute; }
-  @if $value == space-evenly { @return distribute; } // approx
-  @return null;
-}
-
-// Mapping align-items -> -ms-flex-align
-@function _ms-align($value) {
-  @if $value == flex-start { @return start; }
-  @if $value == flex-end { @return end; }
-  @if $value == center or $value == baseline or $value == stretch { @return $value; }
-  @return null;
-}
-
-// Mapping align-content -> -ms-flex-line-pack
-@function _ms-line-pack($value) {
-  @if $value == flex-start { @return start; }
-  @if $value == flex-end { @return end; }
-  @if $value == center { @return center; }
-  @if $value == space-between { @return justify; }
-  @if $value == space-around { @return distribute; }
-  @if $value == stretch { @return stretch; }
-  @return null;
-}
-
-// Mapping align-self -> -ms-flex-item-align (même mapping que align-items)
-@function _ms-item-align($value) {
-  @return _ms-align($value);
-}
-
-// Parse flex shorthand en triplet (grow, shrink, basis) si possible
-// - number -> (number, 1, 0)
-// - liste >= 3 -> (n1, n2, n3)
-// - sinon -> null (on n’émet que la version moderne)
-@function _flex-parse($value) {
-  @if meta.type-of($value) == 'number' {
-    @return ($value, 1, 0);
-  }
-  @if meta.type-of($value) == 'list' and list.length($value) >= 3 {
-    @return (list.nth($value, 1), list.nth($value, 2), list.nth($value, 3));
-  }
-  @return null;
-}
 
 
 // * ------------------------------------------------------------------------ //
@@ -176,31 +72,31 @@ $enable-css-fallbacks: true !default;
 /// );
 ///
 @mixin flex-container(
-    $display: flex,
-    $direction: null,
-    $wrap: null,
-    $justify: null,
-    $align-items: null,
-    $align-content: null,
-    $gap: null,
-    $row-gap: null,
-    $column-gap: null,
-    $important: false,
-    // pour fallbacks gap à base de marges/paddings
-    $gap-child-selector: null,
-    $row-gap-child-selector: null,
-    $column-gap-child-selector: null
+  $display: flex,
+  $direction: null,
+  $wrap: null,
+  $justify: null,
+  $align-items: null,
+  $align-content: null,
+  $gap: null,
+  $row-gap: null,
+  $column-gap: null,
+  $important: false,
+  // pour fallbacks gap à base de marges/paddings
+  $gap-child-selector: null,
+  $row-gap-child-selector: null,
+  $column-gap-child-selector: null
 ) {
-    @include display-flex($display, $important);
-    @include flex-direction($direction, $important);
-    @include flex-wrap($wrap, $important);
-    @include flex-justify-content($justify, $important);
-    @include flex-align-items($align-items, $important);
-    @include flex-align-content($align-content, $important);
-    @include gap($gap, $important, $gap-child-selector);
-    @include row-gap($row-gap, $important, $row-gap-child-selector);
-    @include column-gap($column-gap, $important, $column-gap-child-selector);
-    @if meta.content-exists() { @content; }
+  @include display-flex($display, $important);
+  @include flex-direction($direction, $important);
+  @include flex-wrap($wrap, $important);
+  @include flex-justify-content($justify, $important);
+  @include flex-align-items($align-items, $important);
+  @include flex-align-content($align-content, $important);
+  @include gap($gap, $important, $gap-child-selector);
+  @include row-gap($row-gap, $important, $row-gap-child-selector);
+  @include column-gap($column-gap, $important, $column-gap-child-selector);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -218,36 +114,31 @@ $enable-css-fallbacks: true !default;
 ///  @include flex(1); // flex: 1; (grow=1, shrink=1, basis=0)  
 /// 
 @mixin flex($value, $important: false) {
-    @include _emit('flex', $value, $important);
+  @include h.emit('flex', $value, $important);
 
-    @if $enable-css-fallbacks and $value != null {
-        $triple: _flex-parse($value);
-        @if $triple != null {
-            $grow: list.nth($triple, 1);
-            $shrk: list.nth($triple, 2);
-            $basi: _normalize-length(list.nth($triple, 3), $length-default-unit);
+  @if h.fallbacks-enabled() and $value != null {
+    $triple: h.flex-parse($value);
+    @if $triple != null {
+      $grow: list.nth($triple, 1);
+      $shrk: list.nth($triple, 2);
+      $basi: h.normalize-length(list.nth($triple, 3), $length-default-unit);
 
-            // IE10/11
-            @include _emit('-ms-flex-positive', $grow, $important);
-            @include _emit('-ms-flex-negative', $shrk, $important);
-            @include _emit('-ms-flex-preferred-size', $basi, $important);
+      // IE10/11
+      @include h.emit('-ms-flex-positive', $grow, $important);
+      @include h.emit('-ms-flex-negative', $shrk, $important);
+      @include h.emit('-ms-flex-preferred-size', $basi, $important);
 
-            // WebKit moderne préfixé
-            @include _emit('-webkit-flex-grow', $grow, $important);
-            @include _emit('-webkit-flex-shrink', $shrk, $important);
-            @include _emit('-webkit-flex-basis', $basi, $important);
+      // WebKit
+      @include h.emit('-webkit-flex-grow', $grow, $important);
+      @include h.emit('-webkit-flex-shrink', $shrk, $important);
+      @include h.emit('-webkit-flex-basis', $basi, $important);
 
-            // Très vieux WebKit (display: -webkit-box) – seulement grow
-            @include _emit('-webkit-box-flex', $grow, $important);
-        }
+      // Très vieux WebKit (display: -webkit-box) – seulement grow
+      @include h.emit('-webkit-box-flex', $grow, $important);
     }
-    @if meta.content-exists() { @content; }
+  }
+  @if meta.content-exists() { @content; }
 }
-
-
-// * ---------------------------------------------
-// * Flex Direction properties
-// * ---------------------------------------------
 
 /// Set flex-direction with necessary fallbacks for older browsers.
 /// 
@@ -259,22 +150,17 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-direction(column, true); // flex-direction: column !important;
 /// 
 @mixin flex-direction($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        $orient: _webkit-box-orient($value);
-        $dir: _webkit-box-direction($value);
-        @if $orient != null { @include _emit('-webkit-box-orient', $orient, $important); }
-        @if $dir != null    { @include _emit('-webkit-box-direction', $dir, $important); }
-        @include _emit('-webkit-flex-direction', $value, $important);
-        @include _emit('-ms-flex-direction', $value, $important);
-    }
-    @include _emit('flex-direction', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if $value != null and h.fallbacks-enabled() {
+    $orient: h.webkit-box-orient($value);
+    $dir: h.webkit-box-direction($value);
+    @if $orient != null { @include h.emit('-webkit-box-orient', $orient, $important); }
+    @if $dir != null    { @include h.emit('-webkit-box-direction', $dir, $important); }
+    @include h.emit('-webkit-flex-direction', $value, $important);
+    @include h.emit('-ms-flex-direction', $value, $important);
+  }
+  @include h.emit('flex-direction', $value, $important);
+  @if meta.content-exists() { @content; }
 }
-
-
-// * ---------------------------------------------
-// * Flex Wrap properties
-// * ---------------------------------------------
 
 /// Set flex-wrap with necessary fallbacks for older browsers.
 /// 
@@ -286,18 +172,13 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-wrap(nowrap, true); // flex-wrap: nowrap !important;
 ///
 @mixin flex-wrap($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-flex-wrap', $value, $important);
-        @include _emit('-ms-flex-wrap', $value, $important);
-    }
-    @include _emit('flex-wrap', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-wrap', $value, $important);
+    @include h.emit('-ms-flex-wrap', $value, $important);
+  }
+  @include h.emit('flex-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
 }
-
-
-// * ---------------------------------------------
-// * Flex 
-// * ---------------------------------------------
 
 /// Set flex-grow with necessary fallbacks for older browsers.
 /// 
@@ -309,12 +190,12 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-grow(0, true); // flex-grow: 0 !important;
 ///
 @mixin flex-grow($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-flex-grow', $value, $important);
-        @include _emit('-ms-flex-positive', $value, $important);
-    }
-    @include _emit('flex-grow', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-grow', $value, $important);
+    @include h.emit('-ms-flex-positive', $value, $important);
+  }
+  @include h.emit('flex-grow', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Set flex-shrink with necessary fallbacks for older browsers.
@@ -327,12 +208,12 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-shrink(0, true); // flex-shrink: 0 !important;
 ///
 @mixin flex-shrink($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-flex-shrink', $value, $important);
-        @include _emit('-ms-flex-negative', $value, $important);
-    }
-    @include _emit('flex-shrink', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-shrink', $value, $important);
+    @include h.emit('-ms-flex-negative', $value, $important);
+  }
+  @include h.emit('flex-shrink', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Set flex-basis with necessary fallbacks for older browsers.
@@ -346,13 +227,13 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-basis(auto); // flex-basis: auto;
 ///
 @mixin flex-basis($value, $important: false) {
-    $v: _normalize-length($value, $length-default-unit);
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-flex-basis', $v, $important);
-        @include _emit('-ms-flex-preferred-size', $v, $important);
-    }
-    @include _emit('flex-basis', $v, $important);
-    @if meta.content-exists() { @content; }
+  $v: h.normalize-length($value, $length-default-unit);
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-basis', $v, $important);
+    @include h.emit('-ms-flex-preferred-size', $v, $important);
+  }
+  @include h.emit('flex-basis', $v, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -370,28 +251,28 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-justify-content(space-between, true); // justify-content: space-between !important;
 ///
 @mixin flex-justify-content($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @if $value == flex-start { 
-            @include _emit('-webkit-box-pack', start, $important); 
-        }
-        @else if $value == flex-end { 
-            @include _emit('-webkit-box-pack', end, $important); 
-        }
-        @else if $value == center { 
-            @include _emit('-webkit-box-pack', center, $important); 
-        }
-        @else if $value == space-between or $value == space-around or $value == space-evenly {
-            @include _emit('-webkit-box-pack', justify, $important);
-        }
-
-        // IE10/11
-        $ms: _ms-pack($value);
-        @if $ms != null { 
-            @include _emit('-ms-flex-pack', $ms, $important); 
-        }
+  @if $value != null and h.fallbacks-enabled() {
+    @if $value == flex-start { 
+      @include h.emit('-webkit-box-pack', start, $important); 
     }
-    @include _emit('justify-content', $value, $important);
-    @if meta.content-exists() { @content; }
+    @else if $value == flex-end { 
+      @include h.emit('-webkit-box-pack', end, $important); 
+    }
+    @else if $value == center { 
+      @include h.emit('-webkit-box-pack', center, $important); 
+    }
+    @else if $value == space-between or $value == space-around or $value == space-evenly {
+      @include h.emit('-webkit-box-pack', justify, $important);
+    }
+
+    // IE10/11
+    $ms: h.ms-pack($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-pack', $ms, $important); 
+    }
+  }
+  @include h.emit('justify-content', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Set align-items with necessary fallbacks for older browsers.
@@ -404,15 +285,15 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-align-items(flex-start, true); // align-items: flex-start !important;
 ///
 @mixin flex-align-items($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-align-items', $value, $important);
-        $ms: _ms-align($value);
-        @if $ms != null { 
-            @include _emit('-ms-flex-align', $ms, $important); 
-        }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-items', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-align', $ms, $important); 
     }
-    @include _emit('align-items', $value, $important);
-    @if meta.content-exists() { @content; }
+  }
+  @include h.emit('align-items', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Set align-content with necessary fallbacks for older browsers.
@@ -425,15 +306,15 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-align-content(space-between, true); // align-content: space-between !important;
 ///
 @mixin flex-align-content($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-align-content', $value, $important);
-        $ms: _ms-line-pack($value);
-        @if $ms != null { 
-            @include _emit('-ms-flex-line-pack', $ms, $important); 
-        }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-content', $value, $important);
+    $ms: h.ms-line-pack($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-line-pack', $ms, $important); 
     }
-    @include _emit('align-content', $value, $important);
-    @if meta.content-exists() { @content; }
+  }
+  @include h.emit('align-content', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Set align-self with necessary fallbacks for older browsers.
@@ -446,15 +327,15 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-align-self(flex-end, true); // align-self: flex-end !important;
 /// 
 @mixin flex-align-self($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-align-self', $value, $important);
-        $ms: _ms-item-align($value);
-        @if $ms != null { 
-            @include _emit('-ms-flex-item-align', $ms, $important); 
-        }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-self', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-item-align', $ms, $important); 
     }
-    @include _emit('align-self', $value, $important);
-    @if meta.content-exists() { @content; }
+  }
+  @include h.emit('align-self', $value, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -472,10 +353,10 @@ $enable-css-fallbacks: true !default;
 ///  @include flex-order(0, true); // order: 0 !important;
 ///
 @mixin flex-order($value, $important: false) {
-    @if $value != null and $enable-css-fallbacks {
-        @include _emit('-webkit-order', $value, $important);
-        @include _emit('-ms-flex-order', $value, $important);
-    }
-    @include _emit('order', $value, $important);
-    @if meta.content-exists() { @content; }
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-order', $value, $important);
+    @include h.emit('-ms-flex-order', $value, $important);
+  }
+  @include h.emit('order', $value, $important);
+  @if meta.content-exists() { @content; }
 }

@@ -12,6 +12,7 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
+@use "./../helpers/helpers" as h;
 
 
 
@@ -19,100 +20,10 @@
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-/// Si true, les valeurs null/'' n’émettent pas de propriété
-$trans-skip-null: true !default;
-
 /// Unité par défaut pour convertir les nombres unitless en temps.
 /// Recommandation: `1ms` pour pouvoir écrire `200` -> `200ms`.
 $transition-time-default-unit: 1ms !default;
 
-/// Accessibilité : garde “réduction de mouvement”
-/// - remove  : enlève les transitions (transition: none)
-/// - shorten : raccourcit drastiquement les durées (voir $reduced-motion-duration)
-$enable-reduced-motion-guard: true !default;
-$reduced-motion-strategy: remove !default; // remove|shorten
-$reduced-motion-duration: 67ms !default;   // si strategy=shorten
-
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null/''
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($trans-skip-null and ($val == null or $val == '')) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
-
-// Extrait un booléen final d’une liste varargs. Retourne (liste-sans-bool, important-bool)
-@function _pop-trailing-bool($values) {
-  $argc: list.length($values);
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important: list.nth($values, $argc);
-    $trimmed: ();
-    @for $i from 1 through ($argc - 1) {
-      $trimmed: list.append($trimmed, list.nth($values, $i), comma);
-    }
-    @return ($trimmed, $important);
-  }
-  @return ($values, false);
-}
-
-// Normalise un temps (nombre → temps avec unité par défaut)
-// - 0 -> 0 (sans unité)
-// - nombre unitless -> * $transition-time-default-unit
-// - déjà unités, keywords, calc(), var() -> inchangés
-@function _normalize-time($value) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $transition-time-default-unit; }
-    @return $value;
-  }
-  @return $value;
-}
-
-// Applique _normalize-time à une **liste séparée par virgules** OU un scalaire
-@function _normalize-time-comma-list($values) {
-  @if meta.type-of($values) != 'list' {
-    @return _normalize-time($values);
-  }
-
-  $out: ();
-  @for $i from 1 through list.length($values) {
-    $out: list.append($out, _normalize-time(list.nth($values, $i)), comma);
-  }
-  @return $out;
-}
-
-// Force une liste **virgule** (gardée telle quelle si déjà liste)
-@function _as-comma-list($values) {
-  @if meta.type-of($values) != 'list' { @return $values; }
-  $out: ();
-  @for $i from 1 through list.length($values) {
-    $out: list.append($out, list.nth($values, $i), comma);
-  }
-  @return $out;
-}
-
-// Garde prefers-reduced-motion (remove|shorten). Utilisé par transition()/transition-ease().
-@mixin _guard-reduced-motion($important: false) {
-  @if $enable-reduced-motion-guard {
-    @media (prefers-reduced-motion: reduce) {
-      @if $reduced-motion-strategy == remove {
-        @include _emit('transition', none, $important);
-      } @else if $reduced-motion-strategy == shorten {
-        // Réduit toutes les durées / délais au minimum
-        // NB: On n’essaie pas de parser la valeur existante ; on couvre le cas générique.
-        @include _emit('transition-duration', $reduced-motion-duration, $important);
-        @include _emit('transition-delay', 0ms, $important);
-      }
-    }
-  }
-}
 
 
 // * ------------------------------------------------------------------------ //
@@ -133,13 +44,12 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition(opacity 200ms ease); // without !important
 /// 
 @mixin transition($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    @include _emit('transition', _as-comma-list($vals), $important-flag);
-    @include _guard-reduced-motion($important-flag);
-    @if meta.content-exists() { @content; }
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  @include h.emit('transition', h.as-comma-list($vals), $important-flag);
+  @include h.guard-reduced-motion($important-flag);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -161,18 +71,17 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-ease(color, 0.5s, ease-in-out, null, true); // with !important and no delay
 ///
 @mixin transition-ease($property, $duration, $timing: ease, $delay: null, $important: false) {
-  $d: _normalize-time($duration);
-  $dl: _normalize-time($delay);
-
+  $d: h.normalize-time($duration);
+  $dl: h.normalize-time($delay);
   $val: $property $d;
-  @if $timing != null { $val: $val $timing; }
-  @if $dl != null     { $val: $val $dl; }
-
-  @include _emit('transition', $val, $important);
-
-  // Garde reduced motion
-  @include _guard-reduced-motion($important);
-
+  @if $timing != null {
+    $val: $val $timing;
+  }
+  @if $dl != null {
+    $val: $val $dl;
+  }
+  @include h.emit('transition', $val, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
@@ -185,11 +94,10 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-property((opacity, transform)); // without !important
 /// 
 @mixin transition-property($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
-
-  @include _emit('transition-property', _as-comma-list($vals), $important-flag);
+  @include h.emit('transition-property', h.as-comma-list($vals), $important-flag);
   @if meta.content-exists() { @content; }
 }
 
@@ -202,11 +110,10 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-duration((200, 300ms)); // without !important
 ///
 @mixin transition-duration($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
-
-  @include _emit('transition-duration', _normalize-time-comma-list(_as-comma-list($vals)), $important-flag);
+  @include h.emit('transition-duration', h.normalize-time-comma-list(h.as-comma-list($vals)), $important-flag);
   @if meta.content-exists() { @content; }
 }
 
@@ -219,11 +126,10 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-delay((100, 200ms)); // without !important
 ///
 @mixin transition-delay($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
-
-  @include _emit('transition-delay', _normalize-time-comma-list(_as-comma-list($vals)), $important-flag);
+  @include h.emit('transition-delay', h.normalize-time-comma-list(h.as-comma-list($vals)), $important-flag);
   @if meta.content-exists() { @content; }
 }
 
@@ -236,12 +142,12 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-timing-function((ease, linear)); // without !important
 ///
 @mixin transition-timing-function($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
   $important-flag: list.nth($pair, 2);
 
-  // Accepte keywords (ease, linear, ease-in-out), cubic-bezier(), steps()
-  @include _emit('transition-timing-function', _as-comma-list($vals), $important-flag);
+  // TODO: Accepte keywords (ease, linear, ease-in-out), cubic-bezier(), steps()
+  @include h.emit('transition-timing-function', h.as-comma-list($vals), $important-flag);
   @if meta.content-exists() { @content; }
 }
 
@@ -254,11 +160,8 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-none(); // without !important
 ///
 @mixin transition-none($important: false) {
-  @include _emit('transition', none, $important);
-
-  // Même si already none, on garde le guard pour cohérence (ne fera rien de plus)
-  @include _guard-reduced-motion($important);
-
+  @include h.emit('transition', none, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
@@ -275,19 +178,14 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-set((opacity, transform)); // with !important and default duration and timing
 ///
 @mixin transition-set($properties: (), $delay: .3s, $timing: ease-in-out, $important: false) {
-  $d: _normalize-time($delay);
+  $d: h.normalize-time($delay);
   $transitions: ();
-
   @each $property in $properties {
     $item: $property $d $timing;
     $transitions: list.append($transitions, $item, comma);
   }
-
-  @include _emit('transition', $transitions, $important);
-
-  // Guard reduced motion
-  @include _guard-reduced-motion($important);
-
+  @include h.emit('transition', $transitions, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
@@ -307,20 +205,15 @@ $reduced-motion-duration: 67ms !default;   // si strategy=shorten
 ///   @include transition-vars((opacity, transform)); // without !important and default duration, timing, and delay
 ///
 @mixin transition-vars($properties: (), $duration: 200, $timing: ease, $delay: null, $important: false) {
-  $d: _normalize-time($duration);
-  $dl: _normalize-time($delay);
-
+  $d: h.normalize-time($duration);
+  $dl: h.normalize-time($delay);
   $items: ();
   @each $prop in $properties {
     $val: $prop $d $timing;
     @if $dl != null { $val: $val $dl; }
     $items: list.append($items, $val, comma);
   }
-
-  @include _emit('transition', $items, $important);
-
-  // Guard reduced motion
-  @include _guard-reduced-motion($important);
-
+  @include h.emit('transition', $items, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }

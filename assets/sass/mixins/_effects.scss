@@ -14,172 +14,137 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-// Si true, les valeurs null n’émettent pas de propriété
-$props-skip-null: true !default;
-
 // Unités par défaut
 $length-default-unit: 1px !default; // ex: 10 -> 10px
 $angle-default-unit: 1deg !default; // ex: 45 -> 45deg
-
-// Activer les fallbacks legacy (webkit, transform de repli pour propriétés individuelles)
-$enable-css-fallbacks: true !default;
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-// Émet une propriété avec ou sans !important, et skip si null/''
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($props-skip-null and ($val == null or $val == '')) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
-
-// Nombre -> longueur (unitless -> $length-default-unit), conserve 0 unitless
-@function _normalize-length($value, $default-unit: $length-default-unit) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value;
-  }
-  @return $value; // keywords, calc(), var(), etc.
-}
-
-// Nombre -> angle (unitless -> $angle-default-unit), 0 gardé
-@function _normalize-angle($value, $default-unit: $angle-default-unit) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value;
-  }
-  @return $value;
-}
-
-// Force une comma-list (si $values est déjà une liste, convertit son séparateur -> comma)
-@function _as-comma-list($values) {
-  @if meta.type-of($values) != 'list' { @return $values; }
-  $out: ();
-  @for $i from 1 through list.length($values) {
-    $out: list.append($out, list.nth($values, $i), comma);
-  }
-  @return $out;
-}
-
-// Construit un transform fallback à partir de segments non nuls
-@function _join-transform($parts...) {
-  @if list.length($parts) == 0 { @return null; }
-  $out: ();
-  @for $i from 1 through list.length($parts) {
-    $part: list.nth($parts, $i);
-    @if $part != null {
-      $out: list.append($out, $part, space);
-    }
-  }
-  @return $out;
-}
-
-// Extrait un booléen final optionnel des varargs : retourne (liste-sans-bool, bool)
-@function _pop-trailing-bool($values) {
-  $argc: list.length($values);
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important: list.nth($values, $argc);
-    $trimmed: ();
-    @for $i from 1 through ($argc - 1) {
-      $trimmed: list.append($trimmed, list.nth($values, $i), space);
-    }
-    @return ($trimmed, $important);
-  }
-  @return ($values, false);
-}
 
 // * ------------------------------------------------------------------------ //
 // * - API: Effects                                                         - //
 // * ------------------------------------------------------------------------ //
 
+/// Set opacity with optional !important
+///
+/// @param $value Opacity value (0..1, %, var(), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include opacity(0.5);
+///  @include opacity(50%);
+///  @include opacity(var(--my-opacity));
+///  @include opacity(0.5, true); // with !important
+/// 
 @mixin opacity($value, $important: false) {
-  // Laisse passer nombres (0..1), %, var(), etc.
-  @include _emit('opacity', $value, $important);
+  @include h.emit('opacity', $value, $important);
   @if meta.content-exists() { @content; }
 }
 
-/// Set filter
-/// 
-/// @param $values... List of filter functions and values, e.g. blur(5px) grayscale(50%) brightness(150%).
-/// 
+/// Set filter with optional !important
+///
+/// @param $values One or more filter functions (e.g. blur(5px), brightness(0.8), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
 /// Usage:
-///   @include filter(blur(5px) grayscale(50%) brightness(150%));
-///   @include filter(blur(5px) grayscale(50%) brightness(150%), true); // with !important
+///  @include filter(blur(5px));
+///  @include filter(blur(5px), brightness(0.8));
+///  @include filter(blur(5px), true); // with !important
+///  @include filter(blur(5px), brightness(0.8), true); // multiple values with !important
 /// 
 @mixin filter($values...) {
-  $argc: list.length($values);
-  $important-flag: false;
-  $vals: $values;
-
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important-flag: list.nth($values, $argc);
-    // reconstruire la liste sans le dernier bool
-    $tmp: ();
-    @for $i from 1 through ($argc - 1) {
-      $tmp: list.append($tmp, list.nth($values, $i), space);
-    }
-    $vals: $tmp;
-  }
-
-  $v: _as-comma-list($vals);
-  @include _emit('filter', $v, $important-flag);
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('filter', $v, $important);
   @if meta.content-exists() { @content; }
 }
 
-// backdrop-filter (+ prefix WebKit optionnel)
+/// Set backdrop-filter with optional !important and fallbacks
+///
+/// @param $values One or more filter functions (e.g. blur(5px), brightness(0.8), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// Usage:
+///  @include backdrop-filter(blur(5px));
+///  @include backdrop-filter(blur(5px), brightness(0.8));
+///  @include backdrop-filter(blur(5px), true); // with !important
+///  @include backdrop-filter(blur(5px), brightness(0.8), true); // multiple values with !important
+/// 
 @mixin backdrop-filter($values...) {
-  $argc: list.length($values);
-  $important-flag: false;
-  $vals: $values;
-
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important-flag: list.nth($values, $argc);
-    $tmp: ();
-    @for $i from 1 through ($argc - 1) {
-      $tmp: list.append($tmp, list.nth($values, $i), space);
-    }
-    $vals: $tmp;
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-backdrop-filter', $v, $important); 
   }
-
-  $v: _as-comma-list($vals);
-  @if $enable-css-fallbacks { @include _emit('-webkit-backdrop-filter', $v, $important-flag); }
-  @include _emit('backdrop-filter', $v, $important-flag);
+  @include h.emit('backdrop-filter', $v, $important);
   @if meta.content-exists() { @content; }
 }
 
+/// Set mix-blend-mode with optional !important
+///
+/// @param $value Blend mode value (e.g. normal, multiply, screen, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include mix-blend-mode(multiply);
+///  @include mix-blend-mode(screen, true); // with !important
+///
 @mixin mix-blend-mode($value, $important: false) { 
-  @include _emit('mix-blend-mode', $value, $important); 
-  @if meta.content-exists() { @content; } 
-}
-@mixin isolation($value, $important: false)      { 
-  @include _emit('isolation', $value, $important);      
+  @include h.emit('mix-blend-mode', $value, $important); 
   @if meta.content-exists() { @content; } 
 }
 
-// Perf hints utiles
+/// Set isolation with optional !important
+///
+/// @param $value Isolation value (e.g. auto, isolate)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include isolation(isolate);
+///  @include isolation(auto, true); // with !important
+///
+@mixin isolation($value, $important: false) { 
+  @include h.emit('isolation', $value, $important);      
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set will-change with optional !important
+///
+/// @param $values One or more property names or 'auto'
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include will-change(transform);
+///  @include will-change(transform, opacity);
+///  @include will-change(transform, true); // with !important
+///  @include will-change(transform, opacity, true); // multiple values with !important
+///
 @mixin will-change($values...) { 
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    @include _emit('will-change', _as-comma-list($vals), $important-flag); 
-    @if meta.content-exists() { @content; } 
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('will-change', h.as-comma-list($vals), $important); 
+  @if meta.content-exists() { @content; } 
 }
+
+/// Set transform-box with optional !important
+///
+/// @param $value Transform box value (e.g. border-box, fill-box, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform-box(border-box);
+///  @include transform-box(fill-box, true); // with !important
+///
 @mixin transform-box($value, $important: false)   { 
-  @include _emit('transform-box', $value, $important);   
+  @include h.emit('transform-box', $value, $important);   
   @if meta.content-exists() { @content; } 
 }
 
@@ -188,62 +153,114 @@ $enable-css-fallbacks: true !default;
 // * - API: Transform & 3D                                                  - //
 // * ------------------------------------------------------------------------ //
 
-// transform (shorthand libre)
+/// Set transform property with optional !important
+///
+/// @param $value Transform value (e.g. translate(10px, 20px), rotate(45deg), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform(translate(10px, 20px));
+///  @include transform(rotate(45deg), true); // with !important
+///
 @mixin transform($value, $important: false) { 
-  @include _emit('transform', $value, $important); 
+  @include h.emit('transform', $value, $important); 
   @if meta.content-exists() { @content; } 
 }
 
-// transform-origin : 1..3 valeurs (x y [z]) — normalise les nombres nus
+/// Set transform-origin with optional !important
+///
+/// @param $values One or more values for transform-origin (e.g. 'center', 'top left', '50% 50%', etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform-origin(center);
+///  @include transform-origin(top left, true); // with !important
+///  @include transform-origin(50% 50%, true); // with !important
+///
 @mixin transform-origin($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-    
-    $len: list.length($vals);
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $len: list.length($vals);
 
-    @if $len == 0 {
-        @include _emit('transform-origin', null, $important-flag);
-    } @else {
-        // On construit une liste espace normalisée
-        $out: ();
-        @for $i from 1 through $len {
-        $tok: list.nth($vals, $i);
-        @if meta.type-of($tok) == 'number' and math.is-unitless($tok) {
-            // x/y -> longueurs / z -> longueur (spéc autorise aussi %/keywords)
-            $tok: _normalize-length($tok, $length-default-unit);
-        }
-        $out: list.append($out, $tok, space);
-        }
-        @include _emit('transform-origin', $out, $important-flag);
+  @if $len == 0 {
+    @include h.emit('transform-origin', null, $important);
+  } @else {
+    // On construit une liste espace normalisée
+    $out: ();
+    @for $i from 1 through $len {
+      $tok: list.nth($vals, $i);
+      @if meta.type-of($tok) == 'number' and math.is-unitless($tok) {
+        // x/y -> longueurs / z -> longueur (spéc autorise aussi %/keywords)
+        $tok: _normalize-length($tok, $length-default-unit);
+      }
+      $out: list.append($out, $tok, space);
     }
+    @include h.emit('transform-origin', $out, $important);
+  }
 
-    @if meta.content-exists() { @content; }
-}
-
-@mixin transform-style($value, $important: false) { 
-    @include _emit('transform-style', $value, $important); 
-    @if meta.content-exists() { @content; } 
-}
-
-@mixin perspective($value, $important: false) {
-  $v: _normalize-length($value, $length-default-unit);
-  @include _emit('perspective', $v, $important);
   @if meta.content-exists() { @content; }
 }
 
-// perspective-origin : 1..2 valeurs, même logique de normalisation que transform-origin
-@mixin perspective-origin($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    // @include transform-origin($vals..., $important-flag);
-    @if meta.content-exists() { @content; }
+/// Set transform-style with optional !important
+///
+/// @param $value Transform style value (e.g. flat, preserve-3d)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform-style(flat);
+///  @include transform-style(preserve-3d, true); // with !important
+///
+@mixin transform-style($value, $important: false) { 
+  @include h.emit('transform-style', $value, $important); 
+  @if meta.content-exists() { @content; } 
 }
 
+/// Set perspective with optional !important
+///
+/// @param $value Perspective value (e.g. 500px, none, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include perspective(500px);
+///  @include perspective(none, true); // with !important
+///
+@mixin perspective($value, $important: false) {
+  $v: h.normalize-length($value, $length-default-unit);
+  @include h.emit('perspective', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set perspective-origin with optional !important
+///
+/// @param $values One or more values for perspective-origin (e.g. 'center', 'top left', '50% 50%', etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include perspective-origin(center);
+///  @include perspective-origin(top left, true); // with !important
+///  @include perspective-origin(50% 50%, true); // with !important
+///
+@mixin perspective-origin($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+
+  @include transform-origin($vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backface-visibility with optional !important
+///
+/// @param $value Backface visibility value (e.g. visible, hidden)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include backface-visibility(visible);
+///  @include backface-visibility(hidden, true); // with !important
+///
 @mixin backface-visibility($value, $important: false) { 
-  @include _emit('backface-visibility', $value, $important); 
+  @include h.emit('backface-visibility', $value, $important); 
   @if meta.content-exists() { @content; } 
 }
 
@@ -252,37 +269,49 @@ $enable-css-fallbacks: true !default;
 // * - API: Propriétés transform individuelles + fallbacks                   - //
 // * ------------------------------------------------------------------------ //
 
-// translate(x [, y] [, z])
-// - Exige au moins x ; si y est null mais z non null, on force y=0 pour un 3D cohérent.
-// - Normalise longueurs (unitless -> $length-default-unit)
+/// Set translate with optional !important and fallbacks
+///
+/// @param $x X-axis translation (e.g. 10px, 50%, var(--my-x), etc.)
+/// @param $y Y-axis translation (optional, e.g. 20px, 50%, var(--my-y), etc.)
+/// @param $z Z-axis translation (optional, e.g. 30px, 50%, var(--my-z), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include translate(10px);
+///  @include translate(10px, 20px);
+///  @include translate(10px, 20px, 30px);
+///  @include translate(10px, 20px, 30px, true); // with !important
+///  @include translate(10px, null, 30px); // y is null but z is not, so y will be treated as 0 for a consistent 3D transform
+///  @include translate(10px, null, 30px, true); // with !important
+///
 @mixin translate($x, $y: null, $z: null, $important: false) {
-  $nx: _normalize-length($x, $length-default-unit);
+  $nx: h.normalize-length($x, $length-default-unit);
   $ny: null;
   $nz: null;
 
-  @if $y != null { $ny: _normalize-length($y, $length-default-unit); }
+  @if $y != null { $ny: h.normalize-length($y, $length-default-unit); }
   @if $z != null {
-    $nz: _normalize-length($z, $length-default-unit);
+    $nz: h.normalize-length($z, $length-default-unit);
     @if $ny == null { $ny: 0; } // garde-fou : si z spécifié sans y
   }
 
   // Propriété moderne (translate / translate(x y) / translate(x y z))
   @if $nz != null {
-    @include _emit('translate', $nx $ny $nz, $important);
+    @include h.emit('translate', $nx $ny $nz, $important);
   } @else if $ny != null {
-    @include _emit('translate', $nx $ny, $important);
+    @include h.emit('translate', $nx $ny, $important);
   } @else {
-    @include _emit('translate', $nx, $important);
+    @include h.emit('translate', $nx, $important);
   }
 
   // Fallback transform
-  @if $enable-css-fallbacks {
+  @if h.fallbacks-enabled() {
     @if $nz != null {
-      @include _emit('transform', translate3d($nx, $ny, $nz), $important);
+      @include h.emit('transform', translate3d($nx, $ny, $nz), $important);
     } @else if $ny != null {
-      @include _emit('transform', translate($nx, $ny), $important);
+      @include h.emit('transform', translate($nx, $ny), $important);
     } @else {
-      @include _emit('transform', translate($nx), $important);
+      @include h.emit('transform', translate($nx), $important);
     }
   }
 
@@ -290,20 +319,40 @@ $enable-css-fallbacks: true !default;
 }
 
 // rotate(angle | x y z angle) → on ne gère que l’angle scalaire ici
+
+/// Set rotate with optional !important and fallbacks
+///
+/// @param $angle Rotation angle (e.g. 45deg, var(--my-angle), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include rotate(45deg);
+///  @include rotate(var(--my-angle), true); // with !important
+///
 @mixin rotate($angle, $important: false) {
-  $a: _normalize-angle($angle, $angle-default-unit);
-
-  @include _emit('rotate', $a, $important);
-
-  @if $enable-css-fallbacks {
-    @include _emit('transform', rotate($a), $important);
+  $a: h.normalize-angle($angle, $angle-default-unit);
+  @include h.emit('rotate', $a, $important);
+  @if h.fallbacks-enabled() {
+    @include h.emit('transform', rotate($a), $important);
   }
-
   @if meta.content-exists() { @content; }
 }
 
-// scale(x [, y] [, z]) — sans unité ; y null => y=x (convention CSS si transform(), pas pour la prop individuelle)
-// Pour la propriété individuelle, si y est omis, on émet juste "scale: x" ; si z présent sans y, on force y=1.
+/// Set scale with optional !important and fallbacks
+///
+/// @param $x X-axis scale factor (e.g. 1.5, var(--my-scale), etc.)
+/// @param $y Y-axis scale factor (optional, e.g. 1.5, var(--my-scale), etc.)
+/// @param $z Z-axis scale factor (optional, e.g. 1.5, var(--my-scale), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include scale(1.5);
+///  @include scale(1.5, 2);
+///  @include scale(1.5, 2, 0.5);
+///  @include scale(1.5, 2, 0.5, true); // with !important
+///  @include scale(1.5, null, 0.5); // y is null but z is not, so y will be treated as 1 for a consistent 3D transform
+///  @include scale(1.5, null, 0.5, true); // with !important
+///
 @mixin scale($x, $y: null, $z: null, $important: false) {
   $sx: $x;
   $sy: $y;
@@ -313,21 +362,21 @@ $enable-css-fallbacks: true !default;
 
   // Propriété moderne
   @if $sz != null {
-    @include _emit('scale', $sx $sy $sz, $important);
+    @include h.emit('scale', $sx $sy $sz, $important);
   } @else if $sy != null {
-    @include _emit('scale', $sx $sy, $important);
+    @include h.emit('scale', $sx $sy, $important);
   } @else {
-    @include _emit('scale', $sx, $important);
+    @include h.emit('scale', $sx, $important);
   }
 
   // Fallback transform
-  @if $enable-css-fallbacks {
+  @if h.fallbacks-enabled() {
     @if $sz != null {
-      @include _emit('transform', scale3d($sx, $sy, $sz), $important);
+      @include h.emit('transform', scale3d($sx, $sy, $sz), $important);
     } @else if $sy != null {
-      @include _emit('transform', scale($sx, $sy), $important);
+      @include h.emit('transform', scale($sx, $sy), $important);
     } @else {
-      @include _emit('transform', scale($sx), $important);
+      @include h.emit('transform', scale($sx), $important);
     }
   }
 

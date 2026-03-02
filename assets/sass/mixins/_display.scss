@@ -11,44 +11,13 @@
 @charset 'utf-8';
 @use "sass:meta";
 @use "sass:string";
-
-
-// * ------------------------------------------------------------------------ //
-// * - Settings                                                             - //
-// * ------------------------------------------------------------------------ //
-
-$enable-css-fallbacks: true !default;
+@use "./../helpers/helpers" as h;
 
 
 
 // * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
+// * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
-
-@function _important-flag($important) {
-    @if $important {
-        @return " !important";
-    }
-    @else {
-        @return "";
-    }
-}
-
-@function _is-global-keyword($value) {
-    @return index((initial, inherit, unset, revert, revert-layer), $value) != null;
-}
-
-@mixin _emit($prop, $val, $important: false) {
-    #{$prop}: #{$val}#{_important-flag($important)};
-}
-
-
-
-
-// * ------------------------------------------------------------------------ //
-// * - Display API                                                          - //
-// * ------------------------------------------------------------------------ //
-
 
 /// Sets the display property.
 /// 
@@ -56,37 +25,44 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display(block); // display: block;
-///    @include display(inline, true); // display: inline !important
+///   @include display(block); // display: block;
+///   @include display(inline, true); // display: inline !important
 /// 
 @mixin display($value, $important: false) {
-    @if $value == null {
-        @warn "display(): value is null.";
-    }
-    @else {
+  @if $value == null {
+    @warn "display(): value is null.";
+  }
+  @else {
 
-        @if $enable-css-fallbacks {
-            @if $value == flex {
-                display: -webkit-box;
-                display: -webkit-flex;
-                display: -ms-flexbox;
-            } 
-            @else if $value == inline-flex {
-                display: -webkit-inline-box;
-                display: -webkit-inline-flex;
-                display: -ms-inline-flexbox;
-            } 
-            @else if $value == contents {
-                @supports not (display: contents) {
-                    display: block #{_important-flag($important)};
-                }
-            }
+    @if h.fallbacks-enabled() {
+      @if $value == flex {
+
+        @include h.emit('display', -webkit-box);
+        @include h.emit('display', -webkit-flex);
+        @include h.emit('display', -ms-flexbox);
+        // display: -webkit-box;
+        // display: -webkit-flex;
+        // display: -ms-flexbox;
+      } 
+      @else if $value == inline-flex {
+        @include h.emit('display', -webkit-inline-box);
+        @include h.emit('display', -webkit-inline-flex);
+        @include h.emit('display', -ms-inline-flexbox);
+        // display: -webkit-inline-box;
+        // display: -webkit-inline-flex;
+        // display: -ms-inline-flexbox;
+      } 
+      @else if $value == contents {
+        @supports not (display: contents) {
+          display: block #{h.important-flag($important)};
         }
-
-        display: $value #{_important-flag($important)};
+      }
     }
 
-    @if meta.content-exists() { @content; }
+    display: $value #{h.important-flag($important)};
+  }
+
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'block'.
@@ -94,12 +70,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-block(); // display: block;
-///    @include display-block(true); // display: block !important
+///   @include display-block(); // display: block;
+///   @include display-block(true); // display: block !important
 ///
 @mixin display-block($important: false) {
-    @include display(block, $important);
-    @if meta.content-exists() { @content; }
+  @include display(block, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'inline'.
@@ -107,12 +83,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-inline(); // display: inline;
-///    @include display-inline(true); // display: inline !important
+///   @include display-inline(); // display: inline;
+///   @include display-inline(true); // display: inline !important
 ///
 @mixin display-inline($important: false) {
-    @include display(inline, $important);
-    @if meta.content-exists() { @content; }
+  @include display(inline, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'inline-block'.
@@ -120,12 +96,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-inline-block(); // display: inline-block;
-///    @include display-inline-block(true); // display: inline-block !important
+///   @include display-inline-block(); // display: inline-block;
+///   @include display-inline-block(true); // display: inline-block !important
 ///
 @mixin display-inline-block($important: false) {
-    @include display(inline-block, $important);
-    @if meta.content-exists() { @content; }
+  @include display(inline-block, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'inline-flex'.
@@ -133,12 +109,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-inline-flex(); // display: inline-flex;
-///    @include display-inline-flex(true); // display: inline-flex !important
+///   @include display-inline-flex(); // display: inline-flex;
+///   @include display-inline-flex(true); // display: inline-flex !important
 ///
 @mixin display-inline-flex($important: false) {
-    @include display(inline-flex, $important);
-    @if meta.content-exists() { @content; }
+  @include display(inline-flex, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'none'.
@@ -146,12 +122,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-none(); // display: none;
-///    @include display-none(true); // display: none !important
+///   @include display-none(); // display: none;
+///   @include display-none(true); // display: none !important
 ///
 @mixin display-none($important: false) {
-    @include display(none, $important);
-    @if meta.content-exists() { @content; }
+  @include display(none, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'contents'.
@@ -159,12 +135,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-contents(); // display: contents;
-///    @include display-contents(true); // display: contents !important
+///   @include display-contents(); // display: contents;
+///   @include display-contents(true); // display: contents !important
 ///
 @mixin display-contents($important: false) {
-    @include display(contents, $important);
-    @if meta.content-exists() { @content; }
+  @include display(contents, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'flex' or 'inline-flex'.
@@ -173,20 +149,20 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-flex(); // display: flex;
-///    @include display-flex('inline', true); // display: inline-flex !important
+///   @include display-flex(); // display: flex;
+///   @include display-flex('inline', true); // display: inline-flex !important
 ///
 @mixin display-flex($type: flex, $important: false) {
-    @if $type == 'flex' {
-        @include display(flex, $important);
-    } 
-    @else if $type == 'inline' or $type == 'inline-flex' {
-        @include display(inline-flex, $important);
-    } 
-    @else {
-        @warn "Invalid flex display type: #{$type}. Expected 'flex' or 'inline'.";
-    }
-    @if meta.content-exists() { @content; }
+  @if $type == 'flex' {
+    @include display(flex, $important);
+  } 
+  @else if $type == 'inline' or $type == 'inline-flex' {
+    @include display(inline-flex, $important);
+  } 
+  @else {
+    @warn "Invalid flex display type: #{$type}. Expected 'flex' or 'inline'.";
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'grid' or 'inline-grid'.
@@ -195,18 +171,20 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-grid(); // display: grid;
-///    @include display-grid('inline', true); // display: inline-grid !important
+///   @include display-grid(); // display: grid;
+///   @include display-grid('inline', true); // display: inline-grid !important
 ///
 @mixin display-grid($type: grid, $important: false) {
-    @if $type == 'grid' {
-        @include display(grid, $important);
-    } @else if $type == 'inline' or $type == 'inline-grid' {
-        @include display(inline-grid, $important);
-    } @else {
-        @warn "Invalid grid display type: #{$type}. Expected 'grid' or 'inline'/'inline-grid'.";
-    }
-    @if meta.content-exists() { @content; }
+  @if $type == 'grid' {
+    @include display(grid, $important);
+  } 
+  @else if $type == 'inline' or $type == 'inline-grid' {
+    @include display(inline-grid, $important);
+  } 
+  @else {
+    @warn "Invalid grid display type: #{$type}. Expected 'grid' or 'inline'/'inline-grid'.";
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'list-item'.
@@ -214,12 +192,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-list(); // display: list-item;
-///    @include display-list(true); // display: list-item !important
+///   @include display-list(); // display: list-item;
+///   @include display-list(true); // display: list-item !important
 ///
 @mixin display-list($important: false) {
-    @include display(list-item, $important);
-    @if meta.content-exists() { @content; }
+  @include display(list-item, $important);
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to various table display types (e.g., 'table', 'inline-table', 'table-row', 'table-cell').
@@ -228,22 +206,25 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-table(); // display: table;
-///    @include display-table('inline-table', true); // display: inline-table !important
+///   @include display-table(); // display: table;
+///   @include display-table('inline-table', true); // display: inline-table !important
 ///
 @mixin display-table($type: table, $important: false) {
-    @if $type == 'table' {
-        @include display(table, $important);
-    } @else if $type == 'inline' or $type == 'inline-table' {
-        @include display(inline-table, $important);
-    } @else if $type == 'row' or $type == 'table-row' {
-        @include display(table-row, $important);
-    } @else if $type == 'cell' or $type == 'table-cell' {
-        @include display(table-cell, $important);
-    } @else {
-        @warn "Invalid table display type: #{$type}. Expected 'table', 'inline-table', 'table-row', or 'table-cell'.";
-    }
-    @if meta.content-exists() { @content; }
+  @if $type == 'table' {
+    @include display(table, $important);
+  } 
+  @else if $type == 'inline' or $type == 'inline-table' {
+    @include display(inline-table, $important);
+  } @else if $type == 'row' or $type == 'table-row' {
+    @include display(table-row, $important);
+  } 
+  @else if $type == 'cell' or $type == 'table-cell' {
+    @include display(table-cell, $important);
+  } 
+  @else {
+    @warn "Invalid table display type: #{$type}. Expected 'table', 'inline-table', 'table-row', or 'table-cell'.";
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to various ruby display types (e.g., 'ruby', 'inline-ruby', 'ruby-base', 'ruby-text', 'ruby-group').
@@ -252,24 +233,29 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-ruby(); // display: ruby;
-///    @include display-ruby('inline-ruby', true); // display: inline-ruby !important
+///   @include display-ruby(); // display: ruby;
+///   @include display-ruby('inline-ruby', true); // display: inline-ruby !important
 ///
 @mixin display-ruby($type: ruby, $important: false) {
-    @if $type == 'ruby' {
-        @include display(ruby, $important);
-    } @else if $type == 'inline' or $type == 'inline-ruby' {
-        @include display(inline-ruby, $important);
-    } @else if $type == 'base' or $type == 'ruby-base' {
-        @include display(ruby-base, $important);
-    } @else if $type == 'text' or $type == 'ruby-text' {
-        @include display(ruby-text, $important);
-    } @else if $type == 'group' or $type == 'ruby-group' {
-        @include display(ruby-group, $important);
-    } @else {
-        @warn "Invalid ruby display type: #{$type}. Expected 'ruby', 'inline-ruby', 'ruby-base', 'ruby-text', or 'ruby-group'.";
-    }
-    @if meta.content-exists() { @content; }
+  @if $type == 'ruby' {
+    @include display(ruby, $important);
+  } 
+  @else if $type == 'inline' or $type == 'inline-ruby' {
+    @include display(inline-ruby, $important);
+  } 
+  @else if $type == 'base' or $type == 'ruby-base' {
+    @include display(ruby-base, $important);
+  } 
+  @else if $type == 'text' or $type == 'ruby-text' {
+    @include display(ruby-text, $important);
+  } 
+  @else if $type == 'group' or $type == 'ruby-group' {
+    @include display(ruby-group, $important);
+  } 
+  @else {
+    @warn "Invalid ruby display type: #{$type}. Expected 'ruby', 'inline-ruby', 'ruby-base', 'ruby-text', or 'ruby-group'.";
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// Sets the display property to 'flow-root'.
@@ -277,10 +263,10 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add the !important flag (default: false).
 /// 
 /// Usage example:
-///    @include display-flow-root(); // display: flow-root;
-///    @include display-flow-root(true); // display: flow-root !important
+///   @include display-flow-root(); // display: flow-root;
+///   @include display-flow-root(true); // display: flow-root !important
 ///
 @mixin display-flow-root($important: false) {
-    @include display(flow-root, $important);
-    @if meta.content-exists() { @content; }
+  @include display(flow-root, $important);
+  @if meta.content-exists() { @content; }
 }

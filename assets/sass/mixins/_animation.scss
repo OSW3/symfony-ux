@@ -12,329 +12,408 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
+@use "./../helpers/helpers" as h;
+
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-// Si true, les valeurs null/'' n’émettent pas de propriété
-$props-skip-null: true !default;
-
-// Unité par défaut pour les temps (unitless -> temps)
-// Recommandé: 1ms (écrire 200 -> 200ms). Mets 0.001s si tu préfères en secondes.
-$time-default-unit: 1ms !default;
-
-// Activer les fallbacks legacy (-webkit-*)
-$enable-css-fallbacks: true !default;
 
 // Accessibilité : stratégie prefers-reduced-motion
 // - remove  : animation: none;
 // - shorten : réduit fortement durées/délais/itérations
-$enable-reduced-motion-guard: true !default;
-$reduced-motion-strategy: remove !default;     // remove | shorten
-$reduced-motion-duration: 67ms !default;       // si shorten
+// $enable-reduced-motion-guard: true !default;
+// $reduced-motion-strategy: remove !default;     // remove | shorten
+// $reduced-motion-duration: 67ms !default;       // si shorten
 $reduced-motion-iteration-count: 1 !default;   // si shorten (évite infinite)
 
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null/''
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($props-skip-null and ($val == null or $val == '')) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
-
-// Nombre -> temps (unitless -> $time-default-unit), 0 intact
-@function _normalize-time($value, $default-unit: $time-default-unit) {
-  @if $value == null { @return null; }
-  @if meta.type-of($value) == 'number' {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value;
-  }
-  @return $value; // keywords, calc(), var(), etc.
-}
-
-// Comma-list de durées/délais : normalise chaque item
-@function _normalize-time-comma-list($values, $default-unit: $time-default-unit) {
-  @if meta.type-of($values) != 'list' {
-    @return _normalize-time($values, $default-unit);
-  }
-
-  // Force une liste à séparateur virgule
-  $out: ();
-  @for $i from 1 through list.length($values) {
-    $out: list.append($out, _normalize-time(list.nth($values, $i), $default-unit), comma);
-  }
-  @return $out;
-}
-
-// Force une comma-list (si $values est déjà une liste, convertit son sep -> comma)
-@function _as-comma-list($values) {
-  @if meta.type-of($values) != 'list' { @return $values; }
-  $out: ();
-  @for $i from 1 through list.length($values) {
-    $out: list.append($out, list.nth($values, $i), comma);
-  }
-  @return $out;
-}
-
-// Extrait un booléen final optionnel depuis des varargs : (liste-sans-bool, important-bool)
-@function _pop-trailing-bool($values) {
-  $argc: list.length($values);
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important: list.nth($values, $argc);
-    $trimmed: ();
-    @for $i from 1 through ($argc - 1) {
-      $trimmed: list.append($trimmed, list.nth($values, $i), space);
-    }
-    @return ($trimmed, $important);
-  }
-  @return ($values, false);
-}
-
-// Guard prefers-reduced-motion : remove|shorten
-@mixin _guard-reduced-motion($important: false) {
-  @if $enable-reduced-motion-guard {
-    @media (prefers-reduced-motion: reduce) {
-      @if $reduced-motion-strategy == remove {
-        @include _emit('animation', none, $important);
-      } @else if $reduced-motion-strategy == shorten {
-        // On ne tente pas de parser finement l’état courant ; on impose un profil réduit.
-        @include _emit('animation-duration', $reduced-motion-duration, $important);
-        @include _emit('animation-delay', 0ms, $important);
-        @include _emit('animation-iteration-count', $reduced-motion-iteration-count, $important);
-      }
-    }
-  }
-}
-
-
-// Extrait un booléen final optionnel depuis des varargs
-// Retourne (liste-sans-bool, important-bool)
-@function _pop-trailing-bool($values) {
-  $argc: list.length($values);
-
-  @if $argc >= 1 and meta.type-of(list.nth($values, $argc)) == 'bool' {
-    $important: list.nth($values, $argc);
-    $trimmed: ();
-    @for $i from 1 through ($argc - 1) {
-      $trimmed: list.append($trimmed, list.nth($values, $i), space);
-    }
-    @return ($trimmed, $important);
-  }
-
-  @return ($values, false);
-}
 
 
 // * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
-// ---------------------------------------------
-// Shorthand : animation (libre)
-// ---------------------------------------------
-
-/// Supporte plusieurs animations (séparées par virgules) + bool final.
-/// Exemples :
-///   @include animation(fade-in 300ms ease-in 0s 1 normal both running);
-///   @include animation(fade-in 300ms ease, move 2s linear 200ms 3 alternate both, true);
+/// Set animation with flexible syntax (supports multiple animations + optional final boolean for !important).
+/// 
+/// @param {String...} $values - The animation values (e.g., 'fade-in 300ms ease', 'move 2s linear 200ms 3 alternate both') followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation(fade-in 300ms ease-in 0s 1 normal both running);
+///  @include animation(fade-in 300ms ease, move 2s linear 200ms 3 alternate both);
+/// 
 @mixin animation($values...) {
-  $pair: _pop-trailing-bool($values);
+  $pair: h.pop-trailing-bool($values...);
   $vals: list.nth($pair, 1);
-  $important-flag: list.nth($pair, 2);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
 
-  $v: _as-comma-list($vals);
+  @if h.fallbacks-enabled() { 
+    @include h.emit('-webkit-animation', $v, $important);
+  }
 
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation', $v, $important-flag); }
-  @include _emit('animation', $v, $important-flag);
-
-  @include _guard-reduced-motion($important-flag);
-
+  @include h.emit('animation', $v, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
-// ---------------------------------------------
-// Shorthands assistés & utilitaires
-// ---------------------------------------------
 
-/// animation-ease(name, duration[, timing=ease][, delay]) -> construit proprement
-/// @example @include animation-ease(fade-in, 200ms);
+
+// * ---------------------------------------------
+// * Shorthand
+// * ---------------------------------------------
+
+/// Set animation with common syntax (name + duration + optional timing/delay) and proper normalization of time values.
+/// 
+/// @param {String} $name - The name of the animation (e.g., 'fade-in').
+/// @param {String} $duration - The duration of the animation (e.g., '200ms', '0.5s', or unitless number which will be multiplied by $time-default-unit).
+/// @param {String} $timing - The timing function (e.g., 'ease', 'linear', 'ease-in-out') (optional, default: 'ease').
+/// @param {String} $delay - The delay before the animation starts (e.g., '100ms', '0.2s', or unitless number) (optional).
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+///
+/// Usage:
+///   @include animation-ease(fade-in, 200ms); // animation: fade-in 200ms ease;
+///   @include animation-ease(fade-in, 200ms, linear); // animation: fade-in 200ms linear;
+///   @include animation-ease(fade-in, 200ms, ease-in-out, 100ms); // animation: fade-in 200ms ease-in-out 100ms;
+///   @include animation-ease(fade-in, 200ms, ease-in-out, 100ms, true); // animation: fade-in 200ms ease-in-out 100ms !important;
+///
 @mixin animation-ease($name, $duration, $timing: ease, $delay: null, $important: false) {
-  $d: _normalize-time($duration, $time-default-unit);
-  $dl: _normalize-time($delay, $time-default-unit);
-
+  $d: h.normalize-time($duration);
+  $dl: h.normalize-time($delay);
   $val: $name $d;
-  @if $timing != null { $val: $val $timing; }
-  @if $dl != null     { $val: $val $dl; }
 
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation', $val, $important); }
-  @include _emit('animation', $val, $important);
+  @if not h.is-nullish($timing) {
+    $val: $val $timing;
+  }
+  @if not h.is-nullish($dl) {
+    $val: $val $dl;
+  }
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation', $val, $important);
+  }
 
-  @include _guard-reduced-motion($important);
+  @include h.emit('animation', $val, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
-/// animation-steps(name, steps[, pos]) -> steps()
-/// @example @include animation-steps(blink, 2, end);
+/// Set animation with steps timing function, proper normalization of time values, and optional !important flag.
+/// 
+/// @param {String} $name - The name of the animation (e.g., 'fade-in').
+/// @param {String} $steps - The number of steps and position (e.g., '4 end') for the steps() timing function.
+/// @param {String} $duration - The duration of the animation (e.g., '200ms', '0.5s', or unitless number which will be multiplied by $time-default-unit) (optional, default: '200ms').
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
+/// Usage:
+///   @include animation-steps(fade-in, 4 end); // animation: fade-in 200ms steps(4, end);
+///   @include animation-steps(fade-in, 4 end, 500ms); // animation: fade-in 500ms steps(4, end);
+///   @include animation-steps(fade-in, 4 end, 500ms, true); // animation: fade-in 500ms steps(4, end) !important;
+///
 @mixin animation-steps($name, $steps, $position: end, $duration: 200ms, $important: false) {
-  $d: _normalize-time($duration, $time-default-unit);
+  $d: h.normalize-time($duration);
   $val: $name $d steps($steps, $position);
 
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation', $val, $important); }
-  @include _emit('animation', $val, $important);
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation', $val, $important);
+  }
 
-  @include _guard-reduced-motion($important);
+  @include h.emit('animation', $val, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
-/// animation-iterate(name, count|infinite)
+/// Set animation with iteration count (number of iterations or 'infinite') and proper normalization of time values.
+/// 
+/// @param {String} $name - The name of the animation (e.g., 'fade-in').
+/// @param {String} $count - The iteration count (e.g., '1', '3', 'infinite').
+/// @param {String} $duration - The duration of the animation (e.g., '200ms', '0.5s', or unitless number which will be multiplied by $time-default-unit) (optional, default: '200ms').
+/// @param {String} $timing - The timing function (e.g., 'ease', 'linear') (optional, default: 'linear').
+/// @param {String} $delay - The delay before the animation starts (e.g., '100ms', '0.2s', or unitless number) (optional).
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
+/// Usage:
+///   @include animation-iterate(fade-in, 3); // animation: fade-in 200ms linear 3;
+///   @include animation-iterate(fade-in, infinite, 500ms, ease-in-out); // animation: fade-in 500ms ease-in-out infinite;
+///   @include animation-iterate(fade-in, 3, 500ms, ease-in-out, 100ms, true); // animation: fade-in 500ms ease-in-out 100ms 3 !important;
+///
 @mixin animation-iterate($name, $count, $duration: 200ms, $timing: linear, $delay: null, $important: false) {
-  $d: _normalize-time($duration, $time-default-unit);
-  $dl: _normalize-time($delay, $time-default-unit);
+  $d: h.normalize-time($duration);
+  $dl: h.normalize-time($delay);
   $val: $name $d $timing;
-  @if $dl != null { $val: $val $dl; }
+  @if $dl != null { 
+    $val: $val $dl; 
+  }
   $val: $val $count;
 
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation', $val, $important); }
-  @include _emit('animation', $val, $important);
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation', $val, $important);
+  }
 
-  @include _guard-reduced-motion($important);
+  @include h.emit('animation', $val, $important);
+  @include h.guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
 
-/// pause / run helpers
-@mixin animation-paused($important: false)  {
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation-play-state', paused, $important); }
-  @include _emit('animation-play-state', paused, $important);
-  @if meta.content-exists() { @content; }
-}
-@mixin animation-running($important: false) {
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation-play-state', running, $important); }
-  @include _emit('animation-play-state', running, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Supprime les animations (utile pour composants sensibles / perf / states)
-@mixin animation-none($important: false) {
-  @if $enable-css-fallbacks { @include _emit('-webkit-animation', none, $important); }
-  @include _emit('animation', none, $important);
-  // Même si none, on laisse le guard pour cohérence
-  @include _guard-reduced-motion($important);
-  @if meta.content-exists() { @content; }
-}
-
-// ---------------------------------------------
-// Atomiques
-// ---------------------------------------------
-
-@mixin animation-name($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $names: _as-comma-list($vals);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-name', $names, $important-flag); }
-    @include _emit('animation-name', $names, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-duration($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $raw: _as-comma-list($vals);
-    $v: _normalize-time-comma-list($raw, $time-default-unit);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-duration', $v, $important-flag); }
-    @include _emit('animation-duration', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-delay($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $raw: _as-comma-list($vals);
-    $v: _normalize-time-comma-list($raw, $time-default-unit);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-delay', $v, $important-flag); }
-    @include _emit('animation-delay', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-timing-function($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $v: _as-comma-list($vals);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-timing-function', $v, $important-flag); }
-    @include _emit('animation-timing-function', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-iteration-count($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $v: _as-comma-list($vals);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-iteration-count', $v, $important-flag); }
-    @include _emit('animation-iteration-count', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-direction($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $v: _as-comma-list($vals);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-direction', $v, $important-flag); }
-    @include _emit('animation-direction', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-fill-mode($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $v: _as-comma-list($vals);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-fill-mode', $v, $important-flag); }
-    @include _emit('animation-fill-mode', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-@mixin animation-play-state($values...) {
-    $pair: _pop-trailing-bool($values);
-    $vals: list.nth($pair, 1);
-    $important-flag: list.nth($pair, 2);
-
-    $v: _as-comma-list($vals);
-    @if $enable-css-fallbacks { @include _emit('-webkit-animation-play-state', $v, $important-flag); }
-    @include _emit('animation-play-state', $v, $important-flag);
-    @if meta.content-exists() { @content; }
-}
-
-// ---------------------------------------------
-// Keyframes (at-rule)
-// ---------------------------------------------
-
-/// Génère @keyframes (+ @-webkit-keyframes si fallbacks activés).
+/// Set animation to none with optional !important flag.
+/// 
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+/// 
 /// Usage:
-///   @include keyframes(fade-in) { from {opacity:0;} to {opacity:1;} }
+///  @include animation-none(); // animation: none;
+///  @include animation-none(true); // animation: none !important;
+/// 
+@mixin animation-none($important: false) {
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation', none, $important);
+  }
+  @include h.emit('animation', none, $important);
+  @include h.guard-reduced-motion($important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * Atomic
+// * ---------------------------------------------
+
+/// Set animation name(s) with optional !important flag.
+/// 
+/// @param {String...} $values - The animation name values followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-name(fade-in); // animation-name: fade-in;
+///  @include animation-name(fade-in, move); // animation-name: fade-in, move;
+///  @include animation-name(fade-in, move, true); // animation-name: fade-in, move !important;
+///
+@mixin animation-name($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $names: h.as-comma-list($vals);
+
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-name', $names, $important);
+  }
+
+  @include h.emit('animation-name', $names, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation duration with proper normalization of time values and optional !important flag.
+/// 
+/// @param {String...} $values - The duration values (e.g., '200ms', '0.5s', or unitless number) followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-duration(200ms); // animation-duration: 200ms;
+///  @include animation-duration(0.5s, true); // animation-duration: 0.5s !important;
+///  @include animation-duration(200, 500ms, true); // animation-duration: 200ms, 500ms !important; (for multiple animations)
+///
+@mixin animation-duration($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $raw: h.as-comma-list($vals);
+  $v: h.normalize-time-comma-list($raw);
+
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-duration', $v, $important);
+  }
+
+  @include h.emit('animation-duration', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation delay with proper normalization of time values and optional !important flag.
+/// 
+/// @param {String...} $values - The delay values (e.g., '100ms', '0.2s', or unitless number) followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-delay(100ms); // animation-delay: 100ms;
+///  @include animation-delay(0.2s, true); // animation-delay: 0.2s !important;
+///  @include animation-delay(100, 200ms, true); // animation-delay: 100ms, 200ms !important; (for multiple animations)
+///
+@mixin animation-delay($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $raw: h.as-comma-list($vals);
+  $v: h.normalize-time-comma-list($raw);
+
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-delay', $v, $important);
+  }
+  
+  @include h.emit('animation-delay', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation timing function (e.g., ease, linear, steps(4), cubic-bezier(0.1, 0.7, 1.0, 0.1)) with optional !important flag.
+/// 
+/// @param {String...} $values - The timing function values followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-timing(ease); // animation-timing-function: ease;
+///  @include animation-timing(linear, true); // animation-timing-function: linear !important;
+///  @include animation-timing(steps(4), true); // animation-timing-function: steps(4) !important;
+///  @include animation-timing(cubic-bezier(0.1, 0.7, 1.0, 0.1), true); // animation-timing-function: cubic-bezier(0.1, 0.7, 1.0, 0.1) !important;
+///  @include animation-timing(ease, steps(4), true); // animation-timing-function: ease, steps(4) !important; (for multiple animations)
+///
+@mixin animation-timing($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-timing-function', $v, $important);
+  }
+
+  @include h.emit('animation-timing-function', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation iteration count (number or infinite) with optional !important flag.
+/// 
+/// @param {String...} $values - The iteration count values (e.g., '1', '3', 'infinite') followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-iteration-count(1); // animation-iteration-count: 1;
+///  @include animation-iteration-count(infinite, true); // animation-iteration-count: infinite !important;
+///  @include animation-iteration-count(1, 3, infinite, true); // animation-iteration-count: 1, 3, infinite !important; (for multiple animations)
+///
+@mixin animation-iteration-count($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  
+  @if h.fallbacks-enabled() { 
+    @include h.emit('-webkit-animation-iteration-count', $v, $important);
+  }
+
+  @include h.emit('animation-iteration-count', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation direction (normal, reverse, alternate, alternate-reverse) with optional !important flag.
+/// 
+/// @param {String...} $values - The direction values (e.g., 'normal', 'reverse', 'alternate', 'alternate-reverse') followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-direction(normal); // animation-direction: normal;
+///  @include animation-direction(reverse, true); // animation-direction: reverse !important;
+///  @include animation-direction(alternate, alternate-reverse, true); // animation-direction: alternate, alternate-reverse !important; (for multiple animations)
+///
+@mixin animation-direction($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-direction', $v, $important);
+  }
+  
+  @include h.emit('animation-direction', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation play state (paused or running)
+/// 
+/// @param {String...} $values - The fill mode values (e.g., 'none', 'forwards', 'backwards', 'both') followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-fill-mode(none); // animation-fill-mode: none;
+///  @include animation-fill-mode(forwards, true); // animation-fill-mode: forwards !important;
+///  @include animation-fill-mode(none, forwards, true); // animation-fill-mode: none, forwards !important; (for multiple animations)
+///
+@mixin animation-fill-mode($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-fill-mode', $v, $important);
+  }
+  
+  @include h.emit('animation-fill-mode', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * States
+// * ---------------------------------------------
+
+/// Set animation play state to paused with optional !important flag.
+/// 
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+///
+/// Usage:
+///  @include animation-paused(); // animation-play-state: paused;
+///  @include animation-paused(true); // animation-play-state: paused !important;
+/// 
+@mixin animation-paused($important: false)  {
+  @include animation-play-state(paused, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation play state to running with optional !important flag.
+/// 
+/// @param {Boolean} $important - Whether to add the !important flag (default: false).
+///
+/// Usage:
+///  @include animation-running(); // animation-play-state: running;
+///  @include animation-running(true); // animation-play-state: running !important;
+///
+@mixin animation-running($important: false) {
+  @include animation-play-state(running, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set animation play state (paused/running) with optional !important flag.
+/// 
+/// @param {String...} $values - The play state values (e.g., 'paused', 'running') followed by an optional boolean for !important.
+/// 
+/// Usage:
+///  @include animation-play-state(paused, true); // animation-play-state: paused !important;
+///  @include animation-play-state(running); // animation-play-state: running;
+///  @include animation-play-state(paused, running, true); // animation-play-state: paused, running !important; (for multiple animations)
+///
+@mixin animation-play-state($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-animation-play-state', $v, $important);
+  }
+  
+  @include h.emit('animation-play-state', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * Keyframes
+// * ---------------------------------------------
+
+/// Sets @keyframes (and @-webkit-keyframes if fallbacks enabled).
+/// 
+/// @param {String} $name - The name of the keyframes animation.
+/// 
+/// Usage:
+///  @include keyframes(fade-in) { from {opacity:0;} to {opacity:1;} }
+/// 
 @mixin keyframes($name) {
-    @if $enable-css-fallbacks {
-        @-webkit-keyframes #{$name} { @content; }
-    }
-    @keyframes #{$name} { @content; }
+  @if h.fallbacks-enabled() {
+    @-webkit-keyframes #{$name} { @content; }
+  }
+  @keyframes #{$name} { @content; }
 }

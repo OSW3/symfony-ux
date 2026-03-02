@@ -14,113 +14,15 @@
 @use "sass:string";
 @use "./display" as *;
 @use "./gaps" as *;
-// @use "./../helpers/helpers";
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-// Si true, les valeurs null n’émettent pas de propriété
-$props-skip-null: true !default;
-
 // Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
 $length-default-unit: 1px !default;
-
-// Aligne la sémantique avec _display.scss (pas de préfixes grid requis)
-$enable-css-fallbacks: true !default;
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null/'' (si activé)
-@mixin _emit($prop, $val, $important: false) {
-    @if not ($props-skip-null and ($val == null or $val == '')) {
-        @if $important {
-            #{$prop}: $val !important;
-        } @else {
-            #{$prop}: $val;
-        }
-    }
-}
-
-// Nombre → longueur (unitless -> $length-default-unit), conserve 0 unitless
-@function _normalize-length($value, $default-unit: $length-default-unit) {
-    @if $value == null { @return null; }
-    @if meta.type-of($value) == 'number' {
-        @if $value == 0 { @return 0; }
-        @if math.is-unitless($value) { @return $value * $default-unit; }
-        @return $value;
-    }
-    @return $value; // mots-clés, calc(), variables, etc.
-}
-
-// Liste d'espaces de longueurs (1..n) ou scalaire
-@function _normalize-length-list($values, $default-unit: $length-default-unit) {
-    @if meta.type-of($values) == 'list' {
-        $out: ();
-        @for $i from 1 through list.length($values) {
-            $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
-        }
-        @return $out;
-    }
-    @return _normalize-length($values, $default-unit);
-}
-
-@function _str-trim($s) {
-    @if $s == null { 
-        @return null; 
-    }
-    $start: 1;
-    $end: string.length($s);
-    @while $start <= $end and string.slice($s, $start, $start) == ' ' { $start: $start + 1; }
-    @while $end >= $start and string.slice($s, $end, $end) == ' ' { $end: $end - 1; }
-
-    @if $start > $end {
-        @return '';
-    } @else {
-        @return string.slice($s, $start, $end);
-    }
-}
-
-@function _str-contains($s, $needle) {
-    @if $s == null or $needle == null { @return false; }
-    @return string.index($s, $needle) != null;
-}
-
-@function _str-compact-spaces($s) {
-    @if $s == null { @return null; }
-    $len: string.length($s);
-    $out: '';
-    $prev-space: false;
-    @for $i from 1 through $len {
-        $ch: string.slice($s, $i, $i);
-        $is-space: $ch == ' ';
-        @if $is-space {
-            @if not $prev-space { $out: $out + ' '; }
-        } 
-        @else {
-            $out: $out + $ch;
-        }
-        $prev-space: $is-space;
-    }
-    @return _str-trim($out);
-}
-
-// Découpe "A / B" -> (A, B), en respectant la première occurrence du slash
-@function _str-split-slash($s) {
-    $idx: string.index($s, '/');
-    @if $idx == null { 
-        @return ($s, null); 
-    }
-    $left: _str-trim(string.slice($s, 1, $idx - 1));
-    $right: _str-trim(string.slice($s, $idx + 1));
-    @return ($left, $right);
-}
-
-
 
 
 // * ------------------------------------------------------------------------ //
@@ -150,7 +52,7 @@ $enable-css-fallbacks: true !default;
 /// @param {String} $gap-child-selector - Optional selector for gap fallbacks (e.g., "> *")
 /// 
 /// Usage:
-///   @include grid-container(
+///  @include grid-container(
 ///     $display: grid,
 ///     $columns: 100px 1fr,
 ///     $rows: 100px 1fr,
@@ -168,37 +70,37 @@ $enable-css-fallbacks: true !default;
 ///   );
 ///
 @mixin grid-container(
-    $display: grid,
-    $columns: null,
-    $rows: null,
-    $areas: null,
-    $auto-flow: null,
-    $auto-columns: null,
-    $auto-rows: null,
-    $place-items: null,
-    $place-content: null,
-    $gap: null,
-    $row-gap: null,
-    $column-gap: null,
-    $important: false,
+  $display: grid,
+  $columns: null,
+  $rows: null,
+  $areas: null,
+  $auto-flow: null,
+  $auto-columns: null,
+  $auto-rows: null,
+  $place-items: null,
+  $place-content: null,
+  $gap: null,
+  $row-gap: null,
+  $column-gap: null,
+  $important: false,
 
-    $gap-child-selector: null,
-    $row-gap-child-selector: null,
-    $column-gap-child-selector: null
+  $gap-child-selector: null,
+  $row-gap-child-selector: null,
+  $column-gap-child-selector: null
 ) {
-    @include display-grid($display, $important);
-    @include grid-template-columns($columns, $important);
-    @include grid-template-rows($rows, $important);
-    @include grid-template-areas($areas, $important);
-    @include grid-auto-flow($auto-flow, $important);
-    @include grid-auto-columns($auto-columns, $important);
-    @include grid-auto-rows($auto-rows, $important);
-    @include grid-place-items($place-items, $important);
-    @include grid-place-content($place-content, $important);
-    @include gap($gap, $important, $gap-child-selector);
-    @include row-gap($row-gap, $important, $row-gap-child-selector);
-    @include column-gap($column-gap, $important, $column-gap-child-selector);
-    @if meta.content-exists() { @content; }
+  @include display-grid($display, $important);
+  @include grid-template-columns($columns, $important);
+  @include grid-template-rows($rows, $important);
+  @include grid-template-areas($areas, $important);
+  @include grid-auto-flow($auto-flow, $important);
+  @include grid-auto-columns($auto-columns, $important);
+  @include grid-auto-rows($auto-rows, $important);
+  @include grid-place-items($place-items, $important);
+  @include grid-place-content($place-content, $important);
+  @include gap($gap, $important, $gap-child-selector);
+  @include row-gap($row-gap, $important, $row-gap-child-selector);
+  @include column-gap($column-gap, $important, $column-gap-child-selector);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -212,108 +114,106 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid("auto-flow dense / 100px 1fr"); // grid: auto-flow dense / 100px 1fr; + grid-auto-flow: dense; grid-auto-columns: 100px; grid-auto-rows: 1fr;
+///  @include grid("auto-flow dense / 100px 1fr"); // grid: auto-flow dense / 100px 1fr; + grid-auto-flow: dense; grid-auto-columns: 100px; grid-auto-rows: 1fr;
 /// 
 @mixin grid($value, $important: false) {
-    @include _emit('grid', $value, $important);
-    // @include helpers.emit('grid', $value, $important);
+  @include h.emit('grid', $value, $important);
+  // @include h.emit('grid', $value, $important);
 
-    // Décomposition (fallbacks longhands) si activé et si on peut parser proprement
-    @if $enable-css-fallbacks and $value != null and $value != '' and meta.type-of($value) == 'string' {
-        $raw: _str-compact-spaces($value);
+  // Décomposition (fallbacks longhands) si activé et si on peut parser proprement
+  @if h.fallbacks-enabled() and $value != null and $value != '' and meta.type-of($value) == 'string' {
+    $raw: h.str-compact-spaces($value);
 
-        // 1) Cas avec slash — "X / Y"
-        @if _str-contains($raw, '/') {
-            $pair: _str-split-slash($raw);
-            $left: list.nth($pair, 1);
-            $right: list.nth($pair, 2);
+    // 1) Cas avec slash — "X / Y"
+    @if h.str-contains($raw, '/') {
+      $pair: h.str-split-slash($raw);
+      $left: list.nth($pair, 1);
+      $right: list.nth($pair, 2);
 
-            // 1.a) Forme auto-flow … / …
-            @if _str-contains($left, 'auto-flow') {
-                // auto-flow
-                @if _str-contains($left, 'dense') {
-                    @include _emit('grid-auto-flow', dense, $important);
-                } @else {
-                    @include _emit('grid-auto-flow', row, $important);
-                }
-
-                // Tenter d’extraire auto-rows = left sans "auto-flow" ni "dense"
-                // On retire le mot "auto-flow" (et "dense") grossièrement :
-                $tmp: $left;
-                // retire "auto-flow"
-                $pos: string.index($tmp, 'auto-flow');
-                @if $pos != null {
-                    $before: _str-trim(string.slice($tmp, 1, $pos - 1));
-                    $after: _str-trim(string.slice($tmp, $pos + string.length('auto-flow')));
-                    $tmp: _str-compact-spaces($before + ' ' + $after);
-                }
-                // retire "dense"
-                @if _str-contains($tmp, 'dense') {
-                    $pos: string.index($tmp, 'dense');
-                    $before: _str-trim(string.slice($tmp, 1, $pos - 1));
-                    $after: _str-trim(string.slice($tmp, $pos + string.length('dense')));
-                    $tmp: _str-compact-spaces($before + ' ' + $after);
-                }
-
-                // Ce qui reste côté gauche est potentiellement grid-auto-rows
-                @if $tmp != null and $tmp != '' {
-                    @include _emit('grid-auto-rows', $tmp, $important);
-                }
-
-                // Côté droit (après slash) -> grid-auto-columns
-                @if $right != null and $right != '' {
-                    @include _emit('grid-auto-columns', $right, $important);
-                }
-
-            } 
-            @else {
-                // 1.b) Forme "rows / columns" (cas le plus courant)
-                @if $left != null and $left != '' {
-                    @include _emit('grid-template-rows', $left, $important);
-                }
-                    @if $right != null and $right != '' {
-                    @include _emit('grid-template-columns', $right, $important);
-                }
-            }
+        // 1.a) Forme auto-flow … / …
+      @if h.str-contains($left, 'auto-flow') {
+        // auto-flow
+        @if h.str-contains($left, 'dense') {
+          @include h.emit('grid-auto-flow', dense, $important);
+        } @else {
+          @include h.emit('grid-auto-flow', row, $important);
         }
-        @else {
-            // 2) Pas de slash
-            // 2.a) auto-flow [...?] (pas de colonnes explicites)
-            @if _str-contains($raw, 'auto-flow') {
-                // auto-flow
-                @if _str-contains($raw, 'dense') {
-                @include _emit('grid-auto-flow', dense, $important);
-                } @else {
-                @include _emit('grid-auto-flow', row, $important);
-                }
 
-                // Retire "auto-flow" et "dense" pour isoler potentiels auto-rows
-                $tmp: $raw;
-                $pos: string.index($tmp, 'auto-flow');
-                @if $pos != null {
-                    $before: _str-trim(string.slice($tmp, 1, $pos - 1));
-                    $after: _str-trim(string.slice($tmp, $pos + string.length('auto-flow')));
-                    $tmp: _str-compact-spaces($before + ' ' + $after);
-                }
-                @if _str-contains($tmp, 'dense') {
-                    $pos: string.index($tmp, 'dense');
-                    $before: _str-trim(string.slice($tmp, 1, $pos - 1));
-                    $after: _str-trim(string.slice($tmp, $pos + string.length('dense')));
-                    $tmp: _str-compact-spaces($before + ' ' + $after);
-                }
-                @if $tmp != null and $tmp != '' {
-                    @include _emit('grid-auto-rows', $tmp, $important);
-                }
-
-            } 
-            @else {
-                // 2.b) Sans auto-flow ni slash -> on suppose "grid-template-rows"
-                // (cas rare mais tolérable)
-                @include _emit('grid-template-rows', $raw, $important);
-            }
+        // Tenter d’extraire auto-rows = left sans "auto-flow" ni "dense"
+        // On retire le mot "auto-flow" (et "dense") grossièrement :
+        $tmp: $left;
+        // retire "auto-flow"
+        $pos: string.index($tmp, 'auto-flow');
+        @if $pos != null {
+          $before: h.trim(string.slice($tmp, 1, $pos - 1));
+          $after: h.trim(string.slice($tmp, $pos + string.length('auto-flow')));
+          $tmp: h.str-compact-spaces($before + ' ' + $after);
         }
+        // retire "dense"
+        @if h.str-contains($tmp, 'dense') {
+          $pos: string.index($tmp, 'dense');
+          $before: h.trim(string.slice($tmp, 1, $pos - 1));
+          $after: h.trim(string.slice($tmp, $pos + string.length('dense')));
+          $tmp: h.str-compact-spaces($before + ' ' + $after);
+        }
+
+        // Ce qui reste côté gauche est potentiellement grid-auto-rows
+        @if $tmp != null and $tmp != '' {
+          @include h.emit('grid-auto-rows', $tmp, $important);
+        }
+
+        // Côté droit (après slash) -> grid-auto-columns
+        @if $right != null and $right != '' {
+          @include h.emit('grid-auto-columns', $right, $important);
+        }
+      } 
+      @else {
+        // 1.b) Forme "rows / columns" (cas le plus courant)
+        @if $left != null and $left != '' {
+          @include h.emit('grid-template-rows', $left, $important);
+        }
+          @if $right != null and $right != '' {
+          @include h.emit('grid-template-columns', $right, $important);
+        }
+      }
     }
-    @if meta.content-exists() { @content; }
+    @else {
+      // 2) Pas de slash
+      // 2.a) auto-flow [...?] (pas de colonnes explicites)
+      @if h.str-contains($raw, 'auto-flow') {
+        // auto-flow
+        @if h.str-contains($raw, 'dense') {
+          @include h.emit('grid-auto-flow', dense, $important);
+        } @else {
+          @include h.emit('grid-auto-flow', row, $important);
+        }
+
+        // Retire "auto-flow" et "dense" pour isoler potentiels auto-rows
+        $tmp: $raw;
+        $pos: string.index($tmp, 'auto-flow');
+        @if $pos != null {
+          $before: h.trim(string.slice($tmp, 1, $pos - 1));
+          $after: h.trim(string.slice($tmp, $pos + string.length('auto-flow')));
+          $tmp: h.str-compact-spaces($before + ' ' + $after);
+        }
+        @if h.str-contains($tmp, 'dense') {
+          $pos: string.index($tmp, 'dense');
+          $before: h.trim(string.slice($tmp, 1, $pos - 1));
+          $after: h.trim(string.slice($tmp, $pos + string.length('dense')));
+          $tmp: h.str-compact-spaces($before + ' ' + $after);
+        }
+        @if $tmp != null and $tmp != '' {
+          @include h.emit('grid-auto-rows', $tmp, $important);
+        }
+      } 
+      @else {
+        // 2.b) Sans auto-flow ni slash -> on suppose "grid-template-rows"
+        // (cas rare mais tolérable)
+        @include h.emit('grid-template-rows', $raw, $important);
+      }
+    }
+  }
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -327,12 +227,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-template-columns(100px 1fr 2fr); // grid-template-columns: 100px 1fr 2fr; + flex-direction: row;
-///   @include grid-template-columns(repeat(3, 1fr)); // grid-template-columns: repeat(3, 1fr); + flex-direction: row;
+///  @include grid-template-columns(100px 1fr 2fr); // grid-template-columns: 100px 1fr 2fr; + flex-direction: row;
+///  @include grid-template-columns(repeat(3, 1fr)); // grid-template-columns: repeat(3, 1fr); + flex-direction: row;
 /// 
 @mixin grid-template-columns($value, $important: false) {
-    @include _emit('grid-template-columns', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-template-columns', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// Set grid-template-rows
@@ -341,12 +241,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-template-rows(100px 1fr 2fr); // grid-template-rows: 100px 1fr 2fr;
-///   @include grid-template-rows(repeat(3, 1fr)); // grid-template-rows: repeat(3, 1fr);
+///  @include grid-template-rows(100px 1fr 2fr); // grid-template-rows: 100px 1fr 2fr;
+///  @include grid-template-rows(repeat(3, 1fr)); // grid-template-rows: repeat(3, 1fr);
 ///
 @mixin grid-template-rows($value, $important: false) {
-    @include _emit('grid-template-rows', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-template-rows', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// Set grid-template-areas
@@ -355,11 +255,11 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-template-areas("\"header header header\" \"sidebar content content\" \"footer footer footer\""); // grid-template-areas: "header header header" "sidebar content content" "footer footer footer";
+///  @include grid-template-areas("\"header header header\" \"sidebar content content\" \"footer footer footer\""); // grid-template-areas: "header header header" "sidebar content content" "footer footer footer";
 ///
 @mixin grid-template-areas($value, $important: false) {
-    @include _emit('grid-template-areas', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-template-areas', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -373,12 +273,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-auto-flow(row dense); // grid-auto-flow: row dense;
-///   @include grid-auto-flow(column); // grid-auto-flow: column;
+///  @include grid-auto-flow(row dense); // grid-auto-flow: row dense;
+///  @include grid-auto-flow(column); // grid-auto-flow: column;
 ///
 @mixin grid-auto-flow($value, $important: false) {
-    @include _emit('grid-auto-flow', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-auto-flow', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// Set grid-auto-columns
@@ -387,12 +287,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include grid-auto-columns(100px); // grid-auto-columns: 100px;
-///   @include grid-auto-columns(1fr); // grid-auto-columns: 1fr;
+///  @include grid-auto-columns(100px); // grid-auto-columns: 100px;
+///  @include grid-auto-columns(1fr); // grid-auto-columns: 1fr;
 ///
 @mixin grid-auto-columns($value, $important: false) {
-    @include _emit('grid-auto-columns', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-auto-columns', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// Set grid-auto-rows
@@ -401,12 +301,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include grid-auto-rows(100px); // grid-auto-rows: 100px;
-///   @include grid-auto-rows(1fr); // grid-auto-rows: 1fr;
+///  @include grid-auto-rows(100px); // grid-auto-rows: 100px;
+///  @include grid-auto-rows(1fr); // grid-auto-rows: 1fr;
 ///
 @mixin grid-auto-rows($value, $important: false) {
-    @include _emit('grid-auto-rows', $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-auto-rows', $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -420,21 +320,16 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
 ///  Usage:
-///   @include grid-place-items(center); // place-items: center;
-///   @include grid-place-items(start end); // place-items: start end;
+///  @include grid-place-items(center); // place-items: center;
+///  @include grid-place-items(start end); // place-items: start end;
 ///
-// @mixin grid-place-items($value, $important: false) {
-//     @include _emit('place-items', $value, $important); 
-//     @if meta.content-exists() { @content; }
-// }
 @mixin grid-place-items($value, $important: false) {
-    @include _emit('place-items', $value, $important);
-    // Optionnel : éclater en align-items / justify-items si valeur en 2 mots
-    @if $enable-css-fallbacks and meta.type-of($value) == 'list' and list.length($value) == 2 {
-        @include _emit('align-items', list.nth($value, 1), $important);
-        @include _emit('justify-items', list.nth($value, 2), $important);
-    }
-    @if meta.content-exists() { @content; }
+  @include h.emit('place-items', $value, $important);
+  @if h.fallbacks-enabled() and meta.type-of($value) == 'list' and list.length($value) == 2 {
+    @include h.emit('align-items', list.nth($value, 1), $important);
+    @include h.emit('justify-items', list.nth($value, 2), $important);
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// Set place-content
@@ -443,21 +338,16 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
 ///  Usage:
-///   @include grid-place-content(center); // place-content: center;
-///   @include grid-place-content(start end); // place-content: start end;
+///  @include grid-place-content(center); // place-content: center;
+///  @include grid-place-content(start end); // place-content: start end;
 ///
-// @mixin grid-place-content($value, $important: false) {
-//     @include _emit('place-content', $value, $important); 
-//     @if meta.content-exists() { @content; }
-// }
 @mixin grid-place-content($value, $important: false) {
-    @include _emit('place-content', $value, $important);
-    // Optionnel : éclater en align-content / justify-content si valeur en 2 mots
-    @if $enable-css-fallbacks and meta.type-of($value) == 'list' and list.length($value) == 2 {
-        @include _emit('align-content', list.nth($value, 1), $important);
-        @include _emit('justify-content', list.nth($value, 2), $important);
-    }
-    @if meta.content-exists() { @content; }
+  @include h.emit('place-content', $value, $important);
+  @if h.fallbacks-enabled() and meta.type-of($value) == 'list' and list.length($value) == 2 {
+    @include h.emit('align-content', list.nth($value, 1), $important);
+    @include h.emit('justify-content', list.nth($value, 2), $important);
+  }
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -470,12 +360,12 @@ $enable-css-fallbacks: true !default;
 /// @param {String} $name - The name of the grid area (e.g., "header", "content", etc.)
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// Usage:
-///   @include grid-area(header); // grid-area: header;
-///   @include grid-area(content); // grid-area: content;
+///  @include grid-area(header); // grid-area: header;
+///  @include grid-area(content); // grid-area: content;
 ///
 @mixin grid-area($name, $important: false) {
-    @include _emit('grid-area', $name, $important);
-    @if meta.content-exists() { @content; }
+  @include h.emit('grid-area', $name, $important);
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -489,13 +379,13 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-column(header); // grid-column: header;
-///   @include grid-column(1 / 3); // grid-column: 1 / 3;
-///   @include grid-column(span 2); // grid-column: span 2;
+///  @include grid-column(header); // grid-column: header;
+///  @include grid-column(1 / 3); // grid-column: 1 / 3;
+///  @include grid-column(span 2); // grid-column: span 2;
 ///
 @mixin grid-column($value, $important: false) {
-    @include _emit('grid-column', $value, $important); 
-    @if meta.content-exists() { @content; } 
+  @include h.emit('grid-column', $value, $important); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Set grid-column-start
@@ -504,12 +394,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-column-start(header); // grid-column-start: header;
-///   @include grid-column-start(1); // grid-column-start: 1;
+///  @include grid-column-start(header); // grid-column-start: header;
+///  @include grid-column-start(1); // grid-column-start: 1;
 ///
 @mixin grid-column-start($value, $important: false) { 
-    @include _emit('grid-column-start', $value, $important); 
-    @if meta.content-exists() { @content; } 
+  @include h.emit('grid-column-start', $value, $important); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Set grid-column-end
@@ -518,12 +408,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include grid-column-end(header); // grid-column-end: header;
-///   @include grid-column-end(3); // grid-column-end: 3;
+///  @include grid-column-end(header); // grid-column-end: header;
+///  @include grid-column-end(3); // grid-column-end: 3;
 ///
 @mixin grid-column-end($value, $important: false) { 
-    @include _emit('grid-column-end', $value, $important);
-    @if meta.content-exists() { @content; } 
+  @include h.emit('grid-column-end', $value, $important);
+  @if meta.content-exists() { @content; } 
 }
 
 
@@ -537,13 +427,13 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
 /// Usage:
-///   @include grid-row(header); // grid-row: header;
-///   @include grid-row(1 / 3); // grid-row: 1 / 3;
-///   @include grid-row(span 2); // grid-row: span 2;
+///  @include grid-row(header); // grid-row: header;
+///  @include grid-row(1 / 3); // grid-row: 1 / 3;
+///  @include grid-row(span 2); // grid-row: span 2;
 ///
 @mixin grid-row($value, $important: false) { 
-    @include _emit('grid-row', $value, $important);
-    @if meta.content-exists() { @content; } 
+  @include h.emit('grid-row', $value, $important);
+  @if meta.content-exists() { @content; } 
 }
 
 /// Set grid-row-start
@@ -552,12 +442,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-row-start(header); // grid-row-start: header;
-///   @include grid-row-start(1); // grid-row-start: 1;
+///  @include grid-row-start(header); // grid-row-start: header;
+///  @include grid-row-start(1); // grid-row-start: 1;
 ///
 @mixin grid-row-start($value, $important: false) { 
-    @include _emit('grid-row-start', $value, $important);
-    @if meta.content-exists() { @content; } 
+  @include h.emit('grid-row-start', $value, $important);
+  @if meta.content-exists() { @content; } 
 }
 
 /// Set grid-row-end
@@ -566,12 +456,12 @@ $enable-css-fallbacks: true !default;
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 /// 
 /// Usage:
-///   @include grid-row-end(header); // grid-row-end: header;
-///   @include grid-row-end(3); // grid-row-end: 3;
+///  @include grid-row-end(header); // grid-row-end: header;
+///  @include grid-row-end(3); // grid-row-end: 3;
 ///
 @mixin grid-row-end($value, $important: false) { 
-    @include _emit('grid-row-end', $value, $important);
-    @if meta.content-exists() { @content; } 
+  @include h.emit('grid-row-end', $value, $important);
+  @if meta.content-exists() { @content; } 
 }
 
 
@@ -579,42 +469,38 @@ $enable-css-fallbacks: true !default;
 // * Grid Alignment properties
 // * ---------------------------------------------
 
+/// Set place-self
+/// 
+/// @param {String} $value - The value for place-self (e.g., "center", "start end", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include place-self(center); // place-self: center;
+///  @include place-self(start end); // place-self: start end;
+///
+@mixin place-self($value, $important: false) { 
+  @include h.emit('place-self', $value, $important);
+  @if h.fallbacks-enabled() and meta.type-of($value) == 'list' and list.length($value) == 2 {
+    @include h.emit('align-self',   list.nth($value, 1), $important);
+    @include h.emit('justify-self', list.nth($value, 2), $important);
+  }
+  @if meta.content-exists() { @content; } 
+}
+
 /// Set justify-self
 /// 
 /// @param {String} $value - The value for justify-self (e.g., "start", "center", "end", "stretch")
 /// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
 ///
-///  Usage:
-///   @include justify-self(start); // justify-self: start;
-///   @include justify-self(center); // justify-self: center;
-///   @include justify-self(end); // justify-self: end;
-///   @include justify-self(stretch); // justify-self: stretch;
-///
-@mixin place-self($value, $important: false) { 
-    @include _emit('place-self', $value, $important);
-
-    @if $enable-css-fallbacks and meta.type-of($value) == 'list' and list.length($value) == 2 {
-        @include _emit('align-self',   list.nth($value, 1), $important);
-        @include _emit('justify-self', list.nth($value, 2), $important);
-    }
-
-    @if meta.content-exists() { @content; } 
-}
-
-/// Set align-self
-/// 
-/// @param {String} $value - The value for align-self (e.g., "start", "center", "end", "stretch")
-/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
-///
-/// Usage:
-///  @include align-self(start); // align-self: start;
-///  @include align-self(center); // align-self: center;
-///  @include align-self(end); // align-self: end;
-///  @include align-self(stretch); // align-self: stretch;
+/// Usage: 
+///  @include justify-self(start); // justify-self: start;
+///  @include justify-self(center); // justify-self: center;
+///  @include justify-self(end); // justify-self: end;
+///  @include justify-self(stretch); // justify-self: stretch;
 ///
 @mixin justify-self($value, $important: false) { 
-    @include _emit('justify-self', $value, $important);
-    @if meta.content-exists() { @content; } 
+  @include h.emit('justify-self', $value, $important);
+  @if meta.content-exists() { @content; } 
 }
 
 /// Set align-self
@@ -628,7 +514,11 @@ $enable-css-fallbacks: true !default;
 ///  @include align-self(end); // align-self: end;
 ///  @include align-self(stretch); // align-self: stretch;
 ///
-@mixin align-self($value, $important: false) { 
-    @include _emit('align-self', $value, $important);
-    @if meta.content-exists() { @content; } 
+@mixin align-self($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-self', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { @include h.emit('-ms-flex-item-align', $ms, $important); }
+  }
+  @include h.emit('align-self', $value, $important);
 }

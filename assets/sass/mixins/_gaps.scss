@@ -10,36 +10,17 @@
 @charset 'utf-8';
 @use "sass:meta";
 @use "sass:list";
+@use "./../helpers/helpers" as h;
 
 
 // * ------------------------------------------------------------------------ //
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-// Si true, les valeurs null n’émettent pas de propriété
-$_props-skip-null: true !default;
 
 // Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
 $_length-default-unit: 1px !default;
 
-// Activer les fallbacks legacy (IE10/11, vieux WebKit)
-$_enable-css-fallbacks: true !default;
-
-
-// * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet une propriété avec ou sans !important, et skip si null/'' (si activé)
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($_props-skip-null and ($val == null or $val == '')) {
-    @if $important {
-      #{$prop}: $val !important;
-    } @else {
-      #{$prop}: $val;
-    }
-  }
-}
 
 
 // * ------------------------------------------------------------------------ //
@@ -60,9 +41,9 @@ $_enable-css-fallbacks: true !default;
 ///
 @mixin gap($value, $important: false, $child-selector: null) {
     $v: _normalize-length-list($value, $_length-default-unit);
-    @include _emit('gap', $v, $important);
+    @include h.emit('gap', $v, $important);
 
-    @if $_enable-css-fallbacks and $child-selector != null and $v != null and $v != '' {
+    @if h.fallbacks-enabled() and $child-selector != null and $v != null and $v != '' {
         $rg: null;
         $cg: null;
 
@@ -113,23 +94,23 @@ $_enable-css-fallbacks: true !default;
 ///  @include row-gap(10px, false, '> *'); // row-gap: 10px; with fallback using margins/paddings on direct children
 ///
 @mixin row-gap($value, $important: false, $child-selector: null) {
-    $v: _normalize-length-list($value, $_length-default-unit);
-    @include _emit('row-gap', $v, $important);
+  $v: _normalize-length-list($value, $_length-default-unit);
+  @include h.emit('row-gap', $v, $important);
 
-    @if $_enable-css-fallbacks and $child-selector != null and $v != null and $v != '' {
-        $h: $v;
-        @if meta.type-of($v) == 'number' {
-            $h: $v / 2;
-        }
-
-        margin-top: -#{$h};
-        margin-bottom: -#{$h};
-        #{$child-selector} {
-            padding-top: #{$h};
-            padding-bottom: #{$h};
-        }
+  @if h.fallbacks-enabled() and $child-selector != null and $v != null and $v != '' {
+    $h: $v;
+    @if meta.type-of($v) == 'number' {
+      $h: $v / 2;
     }
-    @if meta.content-exists() { @content; }
+
+    margin-top: -#{$h};
+    margin-bottom: -#{$h};
+    #{$child-selector} {
+      padding-top: #{$h};
+      padding-bottom: #{$h};
+    }
+  }
+  @if meta.content-exists() { @content; }
 }
 
 /// Set column-gap with necessary fallbacks for older browsers using margins/paddings.
@@ -144,21 +125,21 @@ $_enable-css-fallbacks: true !default;
 ///  @include column-gap(10px, false, '> *'); // column-gap: 10px; with fallback using margins/paddings on direct children
 /// 
 @mixin column-gap($value, $important: false, $child-selector: null) {
-    $v: _normalize-length-list($value, $_length-default-unit);
-    @include _emit('column-gap', $v, $important);
+  $v: _normalize-length-list($value, $_length-default-unit);
+  @include h.emit('column-gap', $v, $important);
 
-    @if $_enable-css-fallbacks and $child-selector != null and $v != null and $v != '' {
-        $h: $v;
-        @if meta.type-of($v) == 'number' {
-            $h: $v / 2;
-        }
-
-        margin-left: -#{$h};
-        margin-right: -#{$h};
-        #{$child-selector} {
-            padding-left: #{$h};
-            padding-right: #{$h};
-        }
+  @if h.fallbacks-enabled() and $child-selector != null and $v != null and $v != '' {
+    $h: $v;
+    @if meta.type-of($v) == 'number' {
+      $h: $v / 2;
     }
-    @if meta.content-exists() { @content; }
+
+    margin-left: -#{$h};
+    margin-right: -#{$h};
+    #{$child-selector} {
+      padding-left: #{$h};
+      padding-right: #{$h};
+    }
+  }
+  @if meta.content-exists() { @content; }
 }

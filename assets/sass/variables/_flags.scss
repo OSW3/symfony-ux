@@ -1,0 +1,22 @@
+
+// Si true, les valeurs null n’émettent pas de propriété
+$props-skip-null: true !default;
+
+// Activer les fallbacks legacy (webkit/ms quand pertinent)
+$enable-css-fallbacks: true !default;
+
+// set true if you need RTL transforms
+$rtl-enabled: false !default;
+
+
+
+$enable-reduced-motion-guard: true !default;
+
+$reduced-motion-strategy: remove !default;
+
+// $reduced-motion-duration: 1ms !default;
+$reduced-motion-duration: 67ms !default;
+
+
+
+// ----------

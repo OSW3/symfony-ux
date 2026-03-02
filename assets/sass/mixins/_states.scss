@@ -13,6 +13,7 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:string";
+@use "./../helpers/helpers" as h;
 
 
 
@@ -20,7 +21,6 @@
 // * - Settings                                                             - //
 // * ------------------------------------------------------------------------ //
 
-$states-skip-null: true !default;  // ne rien émettre pour les valeurs null
 $states-important-default: false !default; // important global par défaut
 
 // Ordre canonique d’émission
@@ -61,229 +61,6 @@ $states-aliases-extra: (
 
 
 // * ------------------------------------------------------------------------ //
-// * - Helpers                                                              - //
-// * ------------------------------------------------------------------------ //
-
-// Émet prop: val [!important] si val est significatif
-@mixin _emit($prop, $val, $important: false) {
-  @if not ($states-skip-null and ($val == null or $val == '')) {
-    @if $important { #{$prop}: $val !important; }
-    @else          { #{$prop}: $val; }
-  }
-}
-
-// Trim simple (enlève espaces au début/fin)
-@function _trim($s) {
-  @if $s == null { @return null; }
-  $start: 1;
-  $end: string.length($s);
-  @while $start <= $end and string.slice($s, $start, $start) == ' ' { $start: $start + 1; }
-  @while $end >= $start and string.slice($s, $end, $end) == ' ' { $end: $end - 1; }
-  @if $start > $end { @return ''; } @else { @return string.slice($s, $start, $end); }
-}
-
-// Découpe une string CSV (séparée par virgules) en liste, en respectant () [] {} "" ''
-@function _split-selectors($selectors) {
-  // si déjà une liste, renvoyer telle quelle
-  @if meta.type-of($selectors) == 'list' { @return $selectors; }
-
-  // null -> liste vide
-  @if $selectors == null { @return (); }
-
-  $s: #{$selectors};
-  $len: string.length($s);
-
-  $out: ();
-  $buf: "";
-
-  $depth-paren: 0;  // ()
-  $depth-brack: 0;  // []
-  $depth-brace: 0;  // {}
-  $in-string: false;
-  $quote: null;     // ' ou "
-
-  @for $i from 1 through $len {
-    $ch: string.slice($s, $i, $i);
-
-    @if $in-string {
-      $buf: $buf + $ch;
-      @if $ch == $quote {
-        $in-string: false;
-        $quote: null;
-      }
-    } @else if ($ch == "'" or $ch == '"') {
-      $in-string: true;
-      $quote: $ch;
-      $buf: $buf + $ch;
-
-    } @else if $ch == "(" {
-      $depth-paren: $depth-paren + 1; $buf: $buf + $ch;
-    } @else if $ch == ")" {
-      $depth-paren: $depth-paren - 1; $buf: $buf + $ch;
-
-    } @else if $ch == "[" {
-      $depth-brack: $depth-brack + 1; $buf: $buf + $ch;
-    } @else if $ch == "]" {
-      $depth-brack: $depth-brack - 1; $buf: $buf + $ch;
-
-    } @else if $ch == "{" {
-      $depth-brace: $depth-brace + 1; $buf: $buf + $ch;
-    } @else if $ch == "}" {
-      $depth-brace: $depth-brace - 1; $buf: $buf + $ch;
-
-    } @else if $ch == "," and $depth-paren == 0 and $depth-brack == 0 and $depth-brace == 0 {
-      $segment: _trim(string.slice($buf, 1));
-      @if string.length($segment) > 0 {
-        $out: list.append($out, $segment, comma);
-      }
-      $buf: "";
-    } @else {
-      $buf: $buf + $ch;
-    }
-  }
-
-  // dernier segment
-  @if string.length($buf) > 0 {
-    $out: list.append($out, _trim(string.slice($buf, 1)), comma);
-  }
-
-  @return $out;
-}
-
-// Récupère les sélecteurs pour un état (map par défaut, alias extra, sinon brut)
-@function _selectors-for($state) {
-  @if map.has-key($states-selectors, $state) { @return map.get($states-selectors, $state); }
-  @if map.has-key($states-aliases-extra, $state) { @return map.get($states-aliases-extra, $state); }
-  @return $state; // brut (permet des sélecteurs custom)
-}
-
-// Injection d’un seul jeton STATE
-@function _inject-state($base, $state) {
-  $base-str: #{$base};
-  $state-str: #{$state};
-
-  $pos: string.index($base-str, "STATE");
-  @if $pos == null { @return $base + $state; }
-
-  // y avait-il un ":" juste avant STATE ?
-  $has-leading-colon: false;
-  @if $pos > 1 and string.slice($base-str, $pos - 1, $pos - 1) == ":" {
-    $has-leading-colon: true;
-  }
-
-  // calcul du head end en fonction de l’état
-  $head-end: $pos - 1;
-  @if $has-leading-colon and ($state-str == "" or string.slice($state-str, 1, 1) == ":") {
-    $head-end: $head-end - 1;
-  }
-
-  $head: "";
-  @if $head-end >= 1 { $head: string.slice($base-str, 1, $head-end); }
-
-  $tail-start: $pos + string.length("STATE");
-  $tail: "";
-  @if $tail-start <= string.length($base-str) { $tail: string.slice($base-str, $tail-start); }
-
-  @return $head + $state-str + $tail;
-}
-
-// Remplace TOUTES les occurrences de STATE
-@function _inject-state-all($base, $state) {
-  $result: #{$base};
-  $needle: "STATE";
-  $state-str: #{$state};
-
-  $pos: string.index($result, $needle);
-  @while $pos != null {
-    $has-leading-colon: false;
-    @if $pos > 1 and string.slice($result, $pos - 1, $pos - 1) == ":" {
-      $has-leading-colon: true;
-    }
-
-    $head-end: $pos - 1;
-    @if $has-leading-colon and ($state-str == "" or string.slice($state-str, 1, 1) == ":") {
-      $head-end: $head-end - 1;
-    }
-
-    $head: "";
-    @if $head-end >= 1 { $head: string.slice($result, 1, $head-end); }
-
-    $tail-start: $pos + string.length($needle);
-    $tail: "";
-    @if $tail-start <= string.length($result) { $tail: string.slice($result, $tail-start); }
-
-    $result: $head + $state-str + $tail;
-    $pos: string.index($result, $needle);
-  }
-
-  @if $result == #{$base} { @return $base + $state; }
-  @return $result;
-}
-
-// Compose la/les règles finales à partir d’un base selector et d’un pseudo/alias (CSV possible)
-@function _compose-selectors($base-selector, $state-selector) {
-  @if $state-selector == "" { @return (_inject-state($base-selector, ""),); }
-  $parts: _split-selectors($state-selector);
-  $out: ();
-  @for $i from 1 through list.length($parts) {
-    $s: list.nth($parts, $i);
-    $out: list.append($out, _inject-state($base-selector, $s), comma);
-  }
-  @return $out;
-}
-
-// Extraire (valeur, important) depuis un scalaire / une liste (val, bool) / une map (value:, important:)
-// Extraire (valeur, important) depuis un scalaire / une liste (val, bool) / une map (value:, important:)
-@function _extract-val-important($raw, $important-default: false) {
-  // map ?
-  @if meta.type-of($raw) == 'map' {
-    $v: null;
-    @if map.has-key($raw, value) {
-      $v: map.get($raw, value);
-    } @else {
-      $v: null;
-    }
-
-    $imp: null;
-    @if map.has-key($raw, important) {
-      $imp: map.get($raw, important);
-    } @else {
-      $imp: $important-default;
-    }
-
-    @return ($v, $imp);
-  }
-
-  // liste ? (valeur, bool)
-  @if meta.type-of($raw) == 'list' and list.length($raw) == 2 and meta.type-of(list.nth($raw, 2)) == 'bool' {
-    @return (list.nth($raw, 1), list.nth($raw, 2));
-  }
-
-  // scalaire
-  @return ($raw, $important-default);
-}
-
-// Wrap forced-colors
-@mixin _maybe-forced-colors($forced-colors: false) {
-  @if $forced-colors == true {
-    @media (forced-colors: active) { @content; }
-  } @else {
-    @content;
-  }
-}
-
-// Wrap prefers-color-scheme
-@mixin _maybe-color-scheme($scheme: null) {
-  @if $scheme == dark {
-    @media (prefers-color-scheme: dark) { @content; }
-  } @else if $scheme == light {
-    @media (prefers-color-scheme: light) { @content; }
-  } @else {
-    @content;
-  }
-}
-
-// * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
 
@@ -298,70 +75,74 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include states('color', (base: #222, hover: #000)); 
-///   @include states('color', (base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include states('color', (base: #222, hover: (#000, true)), (important: false)); // important par état    
-///   @include states('color', (base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur   
-///   @include states('color', (base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include states('color', (base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
-///   @include states('color', (base: #222, hover: #000), (scheme: dark)); // wrapper prefers-color-scheme: dark
+///  @include states('color', (base: #222, hover: #000)); 
+///  @include states('color', (base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include states('color', (base: #222, hover: (#000, true)), (important: false)); // important par état    
+///  @include states('color', (base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur   
+///  @include states('color', (base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include states('color', (base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include states('color', (base: #222, hover: #000), (scheme: dark)); // wrapper prefers-color-scheme: dark
 /// 
 @mixin states($property, $values, $options: ()) {
-    // options
-    $selector: map.get($options, selector);
-    @if $selector == null { $selector: '&'; }
+  // options
+  $selector: map.get($options, selector);
+  @if $selector == null { $selector: '&'; }
 
-    $order: map.get($options, order);
-    @if $order == null { $order: $states-default-order; }
+  $order: map.get($options, order);
+  @if $order == null { $order: $states-default-order; }
 
-    $important-global: map.get($options, important);
-    @if $important-global == null { $important-global: $states-important-default; }
+  $important-global: map.get($options, important);
+  @if $important-global == null { $important-global: $states-important-default; }
 
-    $forced-colors: map.get($options, forced-colors);
-    $scheme: map.get($options, scheme);
+  $forced-colors: map.get($options, forced-colors);
+  $scheme: map.get($options, scheme);
 
-    @include _maybe-forced-colors($forced-colors) {
-        @include _maybe-color-scheme($scheme) {
+  @include h.maybe-forced-colors($forced-colors) {
+    @include h.maybe-color-scheme($scheme) {
 
-            // 1) États dans l’ordre canonique
-            @each $st in $order {
-                @if map.has-key($values, $st) {
-                    $raw: map.get($values, $st);
-                    $pair: _extract-val-important($raw, $important-global);
-                    $val: list.nth($pair, 1);
-                    $imp: list.nth($pair, 2);
+      // 1) États dans l’ordre canonique
+      @each $st in $order {
+        @if map.has-key($values, $st) {
+          $raw: map.get($values, $st);
+          $pair: h.extract-val-important($raw, $important-global);
+          $val: list.nth($pair, 1);
+          $imp: list.nth($pair, 2);
 
-                    @if not ($states-skip-null and ($val == null or $val == '')) {
-                        $state-sel: _selectors-for($st);
-                        $fulls: _compose-selectors($selector, $state-sel);
-                        @each $fs in $fulls {
-                        #{$fs} { @include _emit($property, $val, $imp); }
-                        }
-                    }
-                }
+          @if not (h.props-skip-null() and ($val == null or $val == '')) {
+            $state-sel: h.selectors-for($st);
+            $fulls: h.compose-selectors($selector, $state-sel);
+            @each $fs in $fulls {
+              #{$fs} {
+                @include h.emit($property, $val, $imp);
+              }
             }
+          }
+        }
+      }
 
-            // 2) États custom (non présents dans $order)
-            @each $k, $raw in $values {
-                @if list.index($order, $k) == null {
-                    $pair: _extract-val-important($raw, $important-global);
-                    $val: list.nth($pair, 1);
-                    $imp: list.nth($pair, 2);
+      // 2) États custom (non présents dans $order)
+      @each $k, $raw in $values {
+        @if list.index($order, $k) == null {
+          $pair: h.extract-val-important($raw, $important-global);
+          $val: list.nth($pair, 1);
+          $imp: list.nth($pair, 2);
 
-                    @if not ($states-skip-null and ($val == null or $val == '')) {
-                        $state-sel: _selectors-for($k);
-                        $fulls: _compose-selectors($selector, $state-sel);
-                        @each $fs in $fulls {
-                        #{$fs} { @include _emit($property, $val, $imp); }
-                        }
-                    }
-                }
+          @if not (h.props-skip-null() and ($val == null or $val == '')) {
+            $state-sel: h.selectors-for($k);
+            $fulls: h.compose-selectors($selector, $state-sel);
+            @each $fs in $fulls {
+              #{$fs} {
+                @include h.emit($property, $val, $imp);
+              }
             }
+          }
+        }
+      }
 
-        } // end _maybe-color-scheme
-    } // end _maybe-forced-colors
+    } // end _maybe-color-scheme
+  } // end _maybe-forced-colors
 
-    @if meta.content-exists() { @content; }
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -370,46 +151,46 @@ $states-aliases-extra: (
 /// @param {map} $decls - A map of "property -> map of states" (e.g., (color: (base: var(--c), hover: var(--c-hover))), 'background-color': (base: var(--bg), focus: var(--bg-focus)))) 
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// Usage:
-///   @include states-decls((
+///  @include states-decls((
 ///     color: (base: var(--c), hover: var(--c-hover)),
 ///     'background-color': (base: var(--bg), focus: var(--bg-focus))
 ///   ), (selector: '&'));
 /// 
-///   @include states-decls((
+///  @include states-decls((
 ///     color: (base: var(--c), hover: (var(--c-hover), true)),
 ///     'background-color': (base: var(--bg), focus: (var(--bg-focus), true))
 ///  ), (important: true)); // important global
 /// 
-///   @include states-decls((
+///  @include states-decls((
 ///     color: (base: var(--c), hover: (var(--c-hover), true)),
 ///     'background-color': (base: var(--bg), focus: (var(--bg-focus), false))
 ///   ), (important: false)); // important par état
 /// 
-///   @include states-decls((
+///  @include states-decls((
 ///     color: (base: var(--c), hover: var(--c-hover)),
 ///     'background-color': (base: var(--bg), focus: var(--bg-focus))
 ///   ), (selector: '&:STATE')); // template de sélecteur
 /// 
-///   @include states-decls((
+///  @include states-decls((
 ///     color: (base: var(--c), hover: var(--c-hover)),
 ///     'background-color': (base: var(--bg), focus: var(--bg-focus))
 ///   ), (order: (focus, hover, base))); // ordre personnalisé
 /// 
-///   @include states-decls(( 
+///  @include states-decls(( 
 ///     color: (base: var(--c), hover: var(--c-hover)),
 ///     'background-color': (base: var(--bg), focus: var(--bg-focus))
 ///   ), (forced-colors: true)); // wrapper forced-colors
 /// 
-///   @include states-decls(( 
+///  @include states-decls(( 
 ///     color: (base: var(--c), hover: var(--c-hover)),
 ///    'background-color': (base: var(--bg), focus: var(--bg-focus))
 ///   ), (scheme: dark)); // wrapper prefers-color-scheme: dark
 ///
 @mixin states-decls($decls, $options: ()) {
-    @each $prop, $map-values in $decls {
-        @include states($prop, $map-values, $options);
-    }
-    @if meta.content-exists() { @content; }
+  @each $prop, $map-values in $decls {
+    @include states($prop, $map-values, $options);
+  }
+  @if meta.content-exists() { @content; }
 }
 
 
@@ -423,16 +204,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include color-states((base: #222, hover: #000)); 
-///   @include color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include color-states((base: #222, hover: #000)); 
+///  @include color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin color-states($map-values, $options: ()) {
-    @include states('color', $map-values, $options);
-    @if meta.content-exists() { @content; }
+  @include states('color', $map-values, $options);
+  @if meta.content-exists() { @content; }
 }
 
 /// Shorthand for caret-color states.
@@ -441,16 +222,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include caret-color-states((base: #222, hover: #000)); 
-///   @include caret-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include caret-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include caret-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include caret-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include caret-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include caret-color-states((base: #222, hover: #000)); 
+///  @include caret-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include caret-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include caret-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include caret-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include caret-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin caret-color-states($map-values, $options: ()) { 
-    @include states('caret-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('caret-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for accent-color states.
@@ -459,16 +240,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include accent-color-states((base: #222, hover: #000)); 
-///   @include accent-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include accent-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include accent-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include accent-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include accent-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include accent-color-states((base: #222, hover: #000)); 
+///  @include accent-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include accent-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include accent-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include accent-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include accent-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin accent-color-states($map-values, $options: ()) { 
-    @include states('accent-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('accent-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for text-decoration-color states.
@@ -477,16 +258,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include text-decoration-color-states((base: #222, hover: #000)); 
-///   @include text-decoration-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include text-decoration-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include text-decoration-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include text-decoration-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include text-decoration-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include text-decoration-color-states((base: #222, hover: #000)); 
+///  @include text-decoration-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include text-decoration-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include text-decoration-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include text-decoration-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include text-decoration-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin text-decoration-color-states($map-values, $options: ()) { 
-    @include states('text-decoration-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('text-decoration-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for text-emphasis-color states.
@@ -495,16 +276,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include text-emphasis-color-states((base: #222, hover: #000)); 
-///   @include text-emphasis-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include text-emphasis-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include text-emphasis-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include text-emphasis-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include text-emphasis-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include text-emphasis-color-states((base: #222, hover: #000)); 
+///  @include text-emphasis-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include text-emphasis-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include text-emphasis-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include text-emphasis-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include text-emphasis-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin text-emphasis-color-states($map-values, $options: ()) { 
-    @include states('text-emphasis-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('text-emphasis-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for text-shadow states.
@@ -513,16 +294,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include text-shadow-states((base: none, hover: 1px 1px 2px #000)); 
-///   @include text-shadow-states((base: none, hover: (1px 1px 2px #000, true)), (important: true)); // important global
-///   @include text-shadow-states((base: none, hover: (1px 1px 2px #000, true)), (important: false)); // important par état
-///   @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (selector: '&:STATE')); // template de sélecteur
-///   @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (order: (hover, base))); // ordre personnalisé
-///   @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (forced-colors: true)); // wrapper forced-colors
+///  @include text-shadow-states((base: none, hover: 1px 1px 2px #000)); 
+///  @include text-shadow-states((base: none, hover: (1px 1px 2px #000, true)), (important: true)); // important global
+///  @include text-shadow-states((base: none, hover: (1px 1px 2px #000, true)), (important: false)); // important par état
+///  @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (selector: '&:STATE')); // template de sélecteur
+///  @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (order: (hover, base))); // ordre personnalisé
+///  @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin text-shadow-states($map-values, $options: ()) { 
-    @include states('text-shadow', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('text-shadow', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for -webkit-text-stroke-color states.
@@ -531,16 +312,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include text-stroke-color-states((base: #222, hover: #000)); 
-///   @include text-stroke-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include text-stroke-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include text-stroke-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include text-stroke-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include text-stroke-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include text-stroke-color-states((base: #222, hover: #000)); 
+///  @include text-stroke-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include text-stroke-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include text-stroke-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include text-stroke-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include text-stroke-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin text-stroke-color-states($map-values, $options: ()) { 
-    @include states('-webkit-text-stroke-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('-webkit-text-stroke-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 
@@ -554,16 +335,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-color-states((base: #fff, hover: #eee));
-///   @include background-color-states((base: #fff, hover: (#eee, true)), (important: true)); // important global
-///   @include background-color-states((base: #fff, hover: (#eee, true)), (important: false)); // important par état
-///   @include background-color-states((base: #fff, hover: #eee), (selector: '&:STATE')); // template de sélecteur
-///   @include background-color-states((base: #fff, hover: #eee), (order: (hover, base))); // ordre personnalisé
-///   @include background-color-states((base: #fff, hover: #eee), (forced-colors: true)); // wrapper forced-colors
+///  @include background-color-states((base: #fff, hover: #eee));
+///  @include background-color-states((base: #fff, hover: (#eee, true)), (important: true)); // important global
+///  @include background-color-states((base: #fff, hover: (#eee, true)), (important: false)); // important par état
+///  @include background-color-states((base: #fff, hover: #eee), (selector: '&:STATE')); // template de sélecteur
+///  @include background-color-states((base: #fff, hover: #eee), (order: (hover, base))); // ordre personnalisé
+///  @include background-color-states((base: #fff, hover: #eee), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-color-states($map-values, $options: ()) {
-    @include states('background-color', $map-values, $options);
-    @if meta.content-exists() { @content; }
+  @include states('background-color', $map-values, $options);
+  @if meta.content-exists() { @content; }
 }
 
 /// Shorthand for background states (all-in-one).
@@ -572,16 +353,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat));
-///   @include background-states((base: #fff url(img.png) no-repeat, hover: (#eee url(img-hover.png) repeat, true)), (important: true)); // important global
-///   @include background-states((base: #fff url(img.png) no-repeat, hover: (#eee url(img-hover.png) repeat, true)), (important: false)); // important par état
-///   @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (selector: '&:STATE')); // template de sélecteur
-///   @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (order: (hover, base))); // ordre personnalisé
-///   @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (forced-colors: true)); // wrapper forced-colors
+///  @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat));
+///  @include background-states((base: #fff url(img.png) no-repeat, hover: (#eee url(img-hover.png) repeat, true)), (important: true)); // important global
+///  @include background-states((base: #fff url(img.png) no-repeat, hover: (#eee url(img-hover.png) repeat, true)), (important: false)); // important par état
+///  @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (selector: '&:STATE')); // template de sélecteur
+///  @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (order: (hover, base))); // ordre personnalisé
+///  @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-states($map-values, $options: ()) { 
-    @include states('background', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-image states.
@@ -590,16 +371,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-image-states((base: url(img.png), hover: url(img-hover.png)));
-///   @include background-image-states((base: url(img.png), hover: (url(img-hover.png), true)), (important: true)); // important global
-///   @include background-image-states((base: url(img.png), hover: (url(img-hover.png), true)), (important: false)); // important par état
-///   @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (selector: '&:STATE ')); // template de sélecteur
-///   @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (order: (hover, base))); // ordre personnalisé
-///   @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (forced-colors: true)); // wrapper forced-colors
+///  @include background-image-states((base: url(img.png), hover: url(img-hover.png)));
+///  @include background-image-states((base: url(img.png), hover: (url(img-hover.png), true)), (important: true)); // important global
+///  @include background-image-states((base: url(img.png), hover: (url(img-hover.png), true)), (important: false)); // important par état
+///  @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (selector: '&:STATE ')); // template de sélecteur
+///  @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (order: (hover, base))); // ordre personnalisé
+///  @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-image-states($map-values, $options: ()) { 
-    @include states('background-image', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-image', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-position states.
@@ -608,16 +389,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-position-states((base: '0 0', hover: '10px 10px'));
-///   @include background-position-states((base: '0 0', hover: ('10px 10px', true)), (important: true)); // important global
-///   @include background-position-states((base: '0 0', hover: ('10px 10px', true)), (important: false)); // important par état
-///   @include background-position-states((base: '0 0', hover: '10px 10px'), (selector: '&:STATE')); // template de sélecteur
-///   @include background-position-states((base: '0 0', hover: '10px 10px'), (order: (hover, base))); // ordre personnalisé
-///   @include background-position-states((base: '0 0', hover: '10px 10px'), (forced-colors: true)); // wrapper forced-colors
+///  @include background-position-states((base: '0 0', hover: '10px 10px'));
+///  @include background-position-states((base: '0 0', hover: ('10px 10px', true)), (important: true)); // important global
+///  @include background-position-states((base: '0 0', hover: ('10px 10px', true)), (important: false)); // important par état
+///  @include background-position-states((base: '0 0', hover: '10px 10px'), (selector: '&:STATE')); // template de sélecteur
+///  @include background-position-states((base: '0 0', hover: '10px 10px'), (order: (hover, base))); // ordre personnalisé
+///  @include background-position-states((base: '0 0', hover: '10px 10px'), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin background-position-states($map-values, $options: ()) { 
-    @include states('background-position', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-position', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-size states.
@@ -626,16 +407,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-size-states((base: 'auto', hover: 'cover'));
-///   @include background-size-states((base: 'auto', hover: ('cover', true)), (important: true)); // important global
-///   @include background-size-states((base: 'auto', hover: ('cover', true)), (important: false)); // important par état
-///   @include background-size-states((base: 'auto', hover: 'cover'), (selector: '&:STATE')); // template de sélecteur
-///   @include background-size-states((base: 'auto', hover: 'cover'), (order: (hover, base))); // ordre personnalisé
-///   @include background-size-states((base: 'auto', hover: 'cover'), (forced-colors: true)); // wrapper forced-colors
+///  @include background-size-states((base: 'auto', hover: 'cover'));
+///  @include background-size-states((base: 'auto', hover: ('cover', true)), (important: true)); // important global
+///  @include background-size-states((base: 'auto', hover: ('cover', true)), (important: false)); // important par état
+///  @include background-size-states((base: 'auto', hover: 'cover'), (selector: '&:STATE')); // template de sélecteur
+///  @include background-size-states((base: 'auto', hover: 'cover'), (order: (hover, base))); // ordre personnalisé
+///  @include background-size-states((base: 'auto', hover: 'cover'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-size-states($map-values, $options: ()) { 
-    @include states('background-size', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-size', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-repeat states.
@@ -644,16 +425,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'));
-///   @include background-repeat-states((base: 'no-repeat', hover: ('repeat-x', true)), (important: true)); // important global
-///   @include background-repeat-states((base: 'no-repeat', hover: ('repeat-x', true)), (important: false)); // important par état
-///   @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (selector: '&:STATE')); // template de sélecteur
-///   @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (order: (hover, base))); // ordre personnalisé
-///   @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (forced-colors: true)); // wrapper forced-colors
+///  @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'));
+///  @include background-repeat-states((base: 'no-repeat', hover: ('repeat-x', true)), (important: true)); // important global
+///  @include background-repeat-states((base: 'no-repeat', hover: ('repeat-x', true)), (important: false)); // important par état
+///  @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (selector: '&:STATE')); // template de sélecteur
+///  @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (order: (hover, base))); // ordre personnalisé
+///  @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-repeat-states($map-values, $options: ()) { 
-    @include states('background-repeat', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-repeat', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-attachment states.
@@ -662,16 +443,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-attachment-states((base: 'scroll', hover: 'fixed'));
-///   @include background-attachment-states((base: 'scroll', hover: ('fixed', true)), (important: true)); // important global
-///   @include background-attachment-states((base: 'scroll', hover: ('fixed', true)), (important: false)); // important par état
-///   @include background-attachment-states((base: 'scroll', hover: 'fixed'), (selector: '&:STATE')); // template de sélecteur
-///   @include background-attachment-states((base: 'scroll', hover: 'fixed'), (order: (hover, base))); // ordre personnalisé
-///   @include background-attachment-states((base: 'scroll', hover: 'fixed'), (forced-colors: true)); // wrapper forced-colors
+///  @include background-attachment-states((base: 'scroll', hover: 'fixed'));
+///  @include background-attachment-states((base: 'scroll', hover: ('fixed', true)), (important: true)); // important global
+///  @include background-attachment-states((base: 'scroll', hover: ('fixed', true)), (important: false)); // important par état
+///  @include background-attachment-states((base: 'scroll', hover: 'fixed'), (selector: '&:STATE')); // template de sélecteur
+///  @include background-attachment-states((base: 'scroll', hover: 'fixed'), (order: (hover, base))); // ordre personnalisé
+///  @include background-attachment-states((base: 'scroll', hover: 'fixed'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-attachment-states($map-values, $options: ()) { 
-    @include states('background-attachment', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-attachment', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-clip states.
@@ -680,16 +461,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-clip-states((base: 'border-box', hover: 'padding-box'));
-///   @include background-clip-states((base: 'border-box', hover: ('padding-box', true)), (important: true)); // important global
-///   @include background-clip-states((base: 'border-box', hover: ('padding-box', true)), (important: false)); // important par état
-///   @include background-clip-states((base: 'border-box', hover: 'padding-box'), (selector: '&:STATE')); // template de sélecteur
-///   @include background-clip-states((base: 'border-box', hover: 'padding-box'), (order: (hover, base))); // ordre personnalisé
-///   @include background-clip-states((base: 'border-box', hover: 'padding-box'), (forced-colors: true)); // wrapper forced-colors
+///  @include background-clip-states((base: 'border-box', hover: 'padding-box'));
+///  @include background-clip-states((base: 'border-box', hover: ('padding-box', true)), (important: true)); // important global
+///  @include background-clip-states((base: 'border-box', hover: ('padding-box', true)), (important: false)); // important par état
+///  @include background-clip-states((base: 'border-box', hover: 'padding-box'), (selector: '&:STATE')); // template de sélecteur
+///  @include background-clip-states((base: 'border-box', hover: 'padding-box'), (order: (hover, base))); // ordre personnalisé
+///  @include background-clip-states((base: 'border-box', hover: 'padding-box'), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin background-clip-states($map-values, $options: ()) { 
-    @include states('background-clip', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-clip', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for background-origin states.
@@ -698,18 +479,17 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include background-origin-states((base: 'border-box', hover: 'padding-box'));
-///   @include background-origin-states((base: 'border-box', hover: ('padding-box', true)), (important: true)); // important global
-///   @include background-origin-states((base: 'border-box', hover: ('padding-box', true)), (important: false)); // important par état
-///   @include background-origin-states((base: 'border-box', hover: 'padding-box'), (selector: '&:STATE')); // template de sélecteur
-///   @include background-origin-states((base: 'border-box', hover: 'padding-box'), (order: (hover, base))); // ordre personnalisé
-///   @include background-origin-states((base: 'border-box', hover: 'padding-box'), (forced-colors: true)); // wrapper forced-colors
+///  @include background-origin-states((base: 'border-box', hover: 'padding-box'));
+///  @include background-origin-states((base: 'border-box', hover: ('padding-box', true)), (important: true)); // important global
+///  @include background-origin-states((base: 'border-box', hover: ('padding-box', true)), (important: false)); // important par état
+///  @include background-origin-states((base: 'border-box', hover: 'padding-box'), (selector: '&:STATE')); // template de sélecteur
+///  @include background-origin-states((base: 'border-box', hover: 'padding-box'), (order: (hover, base))); // ordre personnalisé
+///  @include background-origin-states((base: 'border-box', hover: 'padding-box'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin background-origin-states($map-values, $options: ()) { 
-    @include states('background-origin', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('background-origin', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
-
 
 
 // * ---------------------------------------------
@@ -722,16 +502,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-color-states((base: #ccc, focus: #999));
-///   @include border-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
-///   @include border-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
-///   @include border-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
-///   @include border-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
-///   @include border-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
+///  @include border-color-states((base: #ccc, focus: #999));
+///  @include border-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
+///  @include border-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
+///  @include border-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
+///  @include border-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
+///  @include border-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-color-states($map-values, $options: ()) {
-    @include states('border-color', $map-values, $options);
-    @if meta.content-exists() { @content; }
+  @include states('border-color', $map-values, $options);
+  @if meta.content-exists() { @content; }
 }
 
 /// Shorthand for border-width states.
@@ -740,16 +520,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-width-states((base: '1px', focus: '2px'));
-///   @include border-width-states((base: '1px', focus: ('2px', true)), (important: true)); // important global
-///   @include border-width-states((base: '1px', focus: ('2px', true)), (important: false)); // important par état
-///   @include border-width-states((base: '1px', focus: '2px'), (selector: '&:STATE')); // template de sélecteur
-///   @include border-width-states((base: '1px', focus: '2px'), (order: (focus, base))); // ordre personnalisé
-///   @include border-width-states((base: '1px', focus: '2px'), (forced-colors: true)); // wrapper forced-colors
+///  @include border-width-states((base: '1px', focus: '2px'));
+///  @include border-width-states((base: '1px', focus: ('2px', true)), (important: true)); // important global
+///  @include border-width-states((base: '1px', focus: ('2px', true)), (important: false)); // important par état
+///  @include border-width-states((base: '1px', focus: '2px'), (selector: '&:STATE')); // template de sélecteur
+///  @include border-width-states((base: '1px', focus: '2px'), (order: (focus, base))); // ordre personnalisé
+///  @include border-width-states((base: '1px', focus: '2px'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-width-states($map-values, $options: ()) { 
-    @include states('border-width', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-width', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for border-style states.
@@ -758,16 +538,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-style-states((base: 'solid', focus: 'dashed'));
-///   @include border-style-states((base: 'solid', focus: ('dashed', true)), (important: true)); // important global
-///   @include border-style-states((base: 'solid', focus: ('dashed', true)), (important: false)); // important par état
-///   @include border-style-states((base: 'solid', focus: 'dashed'), (selector: '&:STATE')); // template de sélecteur
-///   @include border-style-states((base: 'solid', focus: 'dashed'), (order: (focus, base))); // ordre personnalisé
-///   @include border-style-states((base: 'solid', focus: 'dashed'), (forced-colors: true)); // wrapper forced-colors
+///  @include border-style-states((base: 'solid', focus: 'dashed'));
+///  @include border-style-states((base: 'solid', focus: ('dashed', true)), (important: true)); // important global
+///  @include border-style-states((base: 'solid', focus: ('dashed', true)), (important: false)); // important par état
+///  @include border-style-states((base: 'solid', focus: 'dashed'), (selector: '&:STATE')); // template de sélecteur
+///  @include border-style-states((base: 'solid', focus: 'dashed'), (order: (focus, base))); // ordre personnalisé
+///  @include border-style-states((base: 'solid', focus: 'dashed'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-style-states($map-values, $options: ()) { 
-    @include states('border-style', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-style', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for border-radius states.
@@ -776,16 +556,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-radius-states((base: '4px', focus: '8px'));
-///   @include border-radius-states((base: '4px', focus: ('8px', true)), (important: true)); // important global
-///   @include border-radius-states((base: '4px', focus: ('8px', true)), (important: false)); // important par état
-///   @include border-radius-states((base: '4px', focus: '8px'), (selector: '&:STATE')); // template de sélecteur
-///   @include border-radius-states((base: '4px', focus: '8px'), (order: (focus, base))); // ordre personnalisé
-///   @include border-radius-states((base: '4px', focus: '8px'), (forced-colors: true)); // wrapper forced-colors
+///  @include border-radius-states((base: '4px', focus: '8px'));
+///  @include border-radius-states((base: '4px', focus: ('8px', true)), (important: true)); // important global
+///  @include border-radius-states((base: '4px', focus: ('8px', true)), (important: false)); // important par état
+///  @include border-radius-states((base: '4px', focus: '8px'), (selector: '&:STATE')); // template de sélecteur
+///  @include border-radius-states((base: '4px', focus: '8px'), (order: (focus, base))); // ordre personnalisé
+///  @include border-radius-states((base: '4px', focus: '8px'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-radius-states($map-values, $options: ()) { 
-    @include states('border-radius', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-radius', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for border-top-color
@@ -794,16 +574,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-top-color-states((base: #ccc, focus: #999));
-///   @include border-top-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
-///   @include border-top-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
-///   @include border-top-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
-///   @include border-top-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
-///   @include border-top-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
+///  @include border-top-color-states((base: #ccc, focus: #999));
+///  @include border-top-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
+///  @include border-top-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
+///  @include border-top-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
+///  @include border-top-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
+///  @include border-top-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-top-color-states($map-values, $options: ()) { 
-    @include states('border-top-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-top-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for border-right-color
@@ -812,16 +592,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-right-color-states((base: #ccc, focus: #999));
-///   @include border-right-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
-///   @include border-right-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
-///   @include border-right-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
-///   @include border-right-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
-///   @include border-right-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
+///  @include border-right-color-states((base: #ccc, focus: #999));
+///  @include border-right-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
+///  @include border-right-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
+///  @include border-right-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
+///  @include border-right-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
+///  @include border-right-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-right-color-states($map-values, $options: ()) { 
-    @include states('border-right-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-right-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for border-bottom-color
@@ -830,16 +610,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-bottom-color-states((base: #ccc, focus: #999));
-///   @include border-bottom-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
-///   @include border-bottom-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
-///   @include border-bottom-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
-///   @include border-bottom-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
-///   @include border-bottom-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
+///  @include border-bottom-color-states((base: #ccc, focus: #999));
+///  @include border-bottom-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
+///  @include border-bottom-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
+///  @include border-bottom-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
+///  @include border-bottom-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
+///  @include border-bottom-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin border-bottom-color-states($map-values, $options: ()) { 
-    @include states('border-bottom-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-bottom-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for border-left-color
@@ -848,18 +628,17 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include border-left-color-states((base: #ccc, focus: #999));
-///   @include border-left-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
-///   @include border-left-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
-///   @include border-left-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
-///   @include border-left-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
-///   @include border-left-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
+///  @include border-left-color-states((base: #ccc, focus: #999));
+///  @include border-left-color-states((base: #ccc, focus: (#999, true)), (important: true)); // important global
+///  @include border-left-color-states((base: #ccc, focus: (#999, true)), (important: false)); // important par état
+///  @include border-left-color-states((base: #ccc, focus: #999), (selector: '&:STATE')); // template de sélecteur
+///  @include border-left-color-states((base: #ccc, focus: #999), (order: (focus, base))); // ordre personnalisé
+///  @include border-left-color-states((base: #ccc, focus: #999), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin border-left-color-states($map-values, $options: ()) { 
-    @include states('border-left-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('border-left-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
-
 
 
 // * ---------------------------------------------
@@ -872,16 +651,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include outline-color-states((base: #222, hover: #000));
-///   @include outline-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
-///   @include outline-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
-///   @include outline-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
-///   @include outline-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
-///   @include outline-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
+///  @include outline-color-states((base: #222, hover: #000));
+///  @include outline-color-states((base: #222, hover: (#000, true)), (important: true)); // important global
+///  @include outline-color-states((base: #222, hover: (#000, true)), (important: false)); // important par état
+///  @include outline-color-states((base: #222, hover: #000), (selector: '&:STATE')); // template de sélecteur
+///  @include outline-color-states((base: #222, hover: #000), (order: (hover, base))); // ordre personnalisé
+///  @include outline-color-states((base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin outline-color-states($map-values, $options: ()) { 
-    @include states('outline-color', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('outline-color', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for outline-width states.
@@ -890,16 +669,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include outline-width-states((base: '1px', hover: '2px'));
-///   @include outline-width-states((base: '1px', hover: ('2px', true)), (important: true)); // important global
-///   @include outline-width-states((base: '1px', hover: ('2px', true)), (important: false)); // important par état
-///   @include outline-width-states((base: '1px', hover: '2px'), (selector: '&:STATE')); // template de sélecteur
-///   @include outline-width-states((base: '1px', hover: '2px'), (order: (hover, base))); // ordre personnalisé
-///   @include outline-width-states((base: '1px', hover: '2px'), (forced-colors: true)); // wrapper forced-colors
+///  @include outline-width-states((base: '1px', hover: '2px'));
+///  @include outline-width-states((base: '1px', hover: ('2px', true)), (important: true)); // important global
+///  @include outline-width-states((base: '1px', hover: ('2px', true)), (important: false)); // important par état
+///  @include outline-width-states((base: '1px', hover: '2px'), (selector: '&:STATE')); // template de sélecteur
+///  @include outline-width-states((base: '1px', hover: '2px'), (order: (hover, base))); // ordre personnalisé
+///  @include outline-width-states((base: '1px', hover: '2px'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin outline-width-states($map-values, $options: ()) { 
-    @include states('outline-width', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('outline-width', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for outline-style states.
@@ -908,35 +687,35 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include outline-style-states((base: 'solid', hover: 'dashed'));
-///   @include outline-style-states((base: 'solid', hover: ('dashed', true)), (important: true)); // important global
-///   @include outline-style-states((base: 'solid', hover: ('dashed', true)), (important: false)); // important par état
-///   @include outline-style-states((base: 'solid', hover: 'dashed'), (selector: '&:STATE')); // template de sélecteur
-///   @include outline-style-states((base: 'solid', hover: 'dashed'), (order: (hover, base))); // ordre personnalisé
-///   @include outline-style-states((base: 'solid', hover: 'dashed'), (forced-colors: true)); // wrapper forced-colors
+///  @include outline-style-states((base: 'solid', hover: 'dashed'));
+///  @include outline-style-states((base: 'solid', hover: ('dashed', true)), (important: true)); // important global
+///  @include outline-style-states((base: 'solid', hover: ('dashed', true)), (important: false)); // important par état
+///  @include outline-style-states((base: 'solid', hover: 'dashed'), (selector: '&:STATE')); // template de sélecteur
+///  @include outline-style-states((base: 'solid', hover: 'dashed'), (order: (hover, base))); // ordre personnalisé
+///  @include outline-style-states((base: 'solid', hover: 'dashed'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin outline-style-states($map-values, $options: ()) { 
-    @include states('outline-style', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('outline-style', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
-/// Shorthand for outline states (all-in-one).
+/// Shorthand for outline-offset states.
 /// 
-/// @param {map} $map-values - A map of state to value (e.g., (base: '1px solid #222', hover: '2px dashed #000'))
+/// @param {map} $map-values - A map of state to value (e.g., (base: '0px', hover: '4px'))
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include outline-states((base: '1px solid #222', hover: '2px dashed #000'));
-///   @include outline-states((base: '1px solid #222', hover: ('2px dashed #000', true)), (important: true)); // important global
-///   @include outline-states((base: '1px solid #222', hover: ('2px dashed #000', true)), (important: false)); // important par état
-///   @include outline-states((base: '1px solid #222', hover: '2px dashed #000'), (selector: '&:STATE')); // template de sélecteur
-///   @include outline-states((base: '1px solid #222', hover: '2px dashed #000'), (order: (hover, base))); // ordre personnalisé
-/// 
+///  @include outline-offset-states((base: '0px', hover: '4px'));
+///  @include outline-offset-states((base: '0px', hover: ('4px', true)), (important: true)); // important global
+///  @include outline-offset-states((base: '0px', hover: ('4px', true)), (important: false)); // important par état
+///  @include outline-offset-states((base: '0px', hover: '4px'), (selector: '&:STATE')); // template de sélecteur
+///  @include outline-offset-states((base: '0px', hover: '4px'), (order: (hover, base))); // ordre personnalisé
+///  @include outline-offset-states((base: '0px', hover: '4px'), (forced-colors: true)); // wrapper forced-colors
+///
 @mixin outline-offset-states($map-values, $options: ()) { 
-    @include states('outline-offset', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('outline-offset', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
-
 
 
 // * ---------------------------------------------
@@ -949,16 +728,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include fill-states((base: #000, hover: #555));
-///   @include fill-states((base: #000, hover: (#555, true)), (important: true)); // important global
-///   @include fill-states((base: #000, hover: (#555, true)), (important: false)); // important par état
-///   @include fill-states((base: #000, hover: #555), (selector: '&:STATE')); // template de sélecteur
-///   @include fill-states((base: #000, hover: #555), (order: (hover, base))); // ordre personnalisé
-///   @include fill-states((base: #000, hover: #555), (forced-colors: true)); // wrapper forced-colors
+///  @include fill-states((base: #000, hover: #555));
+///  @include fill-states((base: #000, hover: (#555, true)), (important: true)); // important global
+///  @include fill-states((base: #000, hover: (#555, true)), (important: false)); // important par état
+///  @include fill-states((base: #000, hover: #555), (selector: '&:STATE')); // template de sélecteur
+///  @include fill-states((base: #000, hover: #555), (order: (hover, base))); // ordre personnalisé
+///  @include fill-states((base: #000, hover: #555), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin fill-states($map-values, $options: ()) { 
-    @include states('fill', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('fill', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for stroke states.
@@ -967,16 +746,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include stroke-states((base: #000, hover: #555));
-///   @include stroke-states((base: #000, hover: (#555, true)), (important: true)); // important global
-///   @include stroke-states((base: #000, hover: (#555, true)), (important: false)); // important par état
-///   @include stroke-states((base: #000, hover: #555), (selector: '&:STATE')); // template de sélecteur
-///   @include stroke-states((base: #000, hover: #555), (order: (hover, base))); // ordre personnalisé
-///   @include stroke-states((base: #000, hover: #555), (forced-colors: true)); // wrapper forced-colors
+///  @include stroke-states((base: #000, hover: #555));
+///  @include stroke-states((base: #000, hover: (#555, true)), (important: true)); // important global
+///  @include stroke-states((base: #000, hover: (#555, true)), (important: false)); // important par état
+///  @include stroke-states((base: #000, hover: #555), (selector: '&:STATE')); // template de sélecteur
+///  @include stroke-states((base: #000, hover: #555), (order: (hover, base))); // ordre personnalisé
+///  @include stroke-states((base: #000, hover: #555), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin stroke-states($map-values, $options: ()) { 
-    @include states('stroke', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('stroke', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for stroke-width states.
@@ -985,18 +764,17 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include stroke-width-states((base: '1px', hover: '2px'));
-///   @include stroke-width-states((base: '1px', hover: ('2px', true)), (important: true)); // important global
-///   @include stroke-width-states((base: '1px', hover: ('2px', true)), (important: false)); // important par état
-///   @include stroke-width-states((base: '1px', hover: '2px'), (selector: '&:STATE')); // template de sélecteur
-///   @include stroke-width-states((base: '1px', hover: '2px'), (order: (hover, base))); // ordre personnalisé
-///   @include stroke-width-states((base: '1px', hover: '2px'), (forced-colors: true)); // wrapper forced-colors
+///  @include stroke-width-states((base: '1px', hover: '2px'));
+///  @include stroke-width-states((base: '1px', hover: ('2px', true)), (important: true)); // important global
+///  @include stroke-width-states((base: '1px', hover: ('2px', true)), (important: false)); // important par état
+///  @include stroke-width-states((base: '1px', hover: '2px'), (selector: '&:STATE')); // template de sélecteur
+///  @include stroke-width-states((base: '1px', hover: '2px'), (order: (hover, base))); // ordre personnalisé
+///  @include stroke-width-states((base: '1px', hover: '2px'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin stroke-width-states($map-values, $options: ()) { 
-    @include states('stroke-width', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('stroke-width', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
-
 
 
 // * ---------------------------------------------
@@ -1009,16 +787,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include opacity-states((base: 1, hover: 0.8));
-///   @include opacity-states((base: 1, hover: (0.8, true)), (important: true)); // important global
-///   @include opacity-states((base: 1, hover: (0.8, true)), (important: false)); // important par état
-///   @include opacity-states((base: 1, hover: 0.8), (selector: '&:STATE')); // template de sélecteur
-///   @include opacity-states((base: 1, hover: 0.8), (order: (hover, base))); // ordre personnalisé
-///   @include opacity-states((base: 1, hover: 0.8), (forced-colors: true)); // wrapper forced-colors
+///  @include opacity-states((base: 1, hover: 0.8));
+///  @include opacity-states((base: 1, hover: (0.8, true)), (important: true)); // important global
+///  @include opacity-states((base: 1, hover: (0.8, true)), (important: false)); // important par état
+///  @include opacity-states((base: 1, hover: 0.8), (selector: '&:STATE')); // template de sélecteur
+///  @include opacity-states((base: 1, hover: 0.8), (order: (hover, base))); // ordre personnalisé
+///  @include opacity-states((base: 1, hover: 0.8), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin opacity-states($map-values, $options: ()) { 
-    @include states('opacity', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('opacity', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for box-shadow states.
@@ -1027,16 +805,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'));
-///   @include box-shadow-states((base: 'none', hover: ('0 4px 6px rgba(0,0,0,0.1)', true)), (important: true)); // important global
-///   @include box-shadow-states((base: 'none', hover: ('0 4px 6px rgba(0,0,0,0.1)', true)), (important: false)); // important par état
-///   @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (selector: '&:STATE')); // template de sélecteur
-///   @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (order: (hover, base))); // ordre personnalisé
-///   @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (forced-colors: true)); // wrapper forced-colors
+///  @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'));
+///  @include box-shadow-states((base: 'none', hover: ('0 4px 6px rgba(0,0,0,0.1)', true)), (important: true)); // important global
+///  @include box-shadow-states((base: 'none', hover: ('0 4px 6px rgba(0,0,0,0.1)', true)), (important: false)); // important par état
+///  @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (selector: '&:STATE')); // template de sélecteur
+///  @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (order: (hover, base))); // ordre personnalisé
+///  @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin box-shadow-states($map-values, $options: ()) { 
-    @include states('box-shadow', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('box-shadow', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for filter states.
@@ -1045,16 +823,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include filter-states((base: 'none', hover: 'blur(5px)'));
-///   @include filter-states((base: 'none', hover: ('blur(5px)', true)), (important: true)); // important global
-///   @include filter-states((base: 'none', hover: ('blur(5px)', true)), (important: false)); // important par état
-///   @include filter-states((base: 'none', hover: 'blur(5px)'), (selector: '&:STATE')); // template de sélecteur
-///   @include filter-states((base: 'none', hover: 'blur(5px)'), (order: (hover, base))); // ordre personnalisé
-///   @include filter-states((base: 'none', hover: 'blur(5px)'), (forced-colors: true)); // wrapper forced-colors
+///  @include filter-states((base: 'none', hover: 'blur(5px)'));
+///  @include filter-states((base: 'none', hover: ('blur(5px)', true)), (important: true)); // important global
+///  @include filter-states((base: 'none', hover: ('blur(5px)', true)), (important: false)); // important par état
+///  @include filter-states((base: 'none', hover: 'blur(5px)'), (selector: '&:STATE')); // template de sélecteur
+///  @include filter-states((base: 'none', hover: 'blur(5px)'), (order: (hover, base))); // ordre personnalisé
+///  @include filter-states((base: 'none', hover: 'blur(5px)'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin filter-states($map-values, $options: ()) { 
-    @include states('filter', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('filter', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for backdrop-filter states.
@@ -1063,16 +841,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'));
-///   @include backdrop-filter-states((base: 'none', hover: ('blur(5px)', true)), (important: true)); // important global
-///   @include backdrop-filter-states((base: 'none', hover: ('blur(5px)', true)), (important: false)); // important par état
-///   @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (selector: '&:STATE')); // template de sélecteur
-///   @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (order: (hover, base))); // ordre personnalisé
-///   @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (forced-colors: true)); // wrapper forced-colors
+///  @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'));
+///  @include backdrop-filter-states((base: 'none', hover: ('blur(5px)', true)), (important: true)); // important global
+///  @include backdrop-filter-states((base: 'none', hover: ('blur(5px)', true)), (important: false)); // important par état
+///  @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (selector: '&:STATE')); // template de sélecteur
+///  @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (order: (hover, base))); // ordre personnalisé
+///  @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin backdrop-filter-states($map-values, $options: ()) { 
-    @include states('backdrop-filter', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('backdrop-filter', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for mix-blend-mode states.
@@ -1081,16 +859,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include mix-blend-mode-states((base: 'normal', hover: 'multiply'));
-///   @include mix-blend-mode-states((base: 'normal', hover: ('multiply', true)), (important: true)); // important global
-///   @include mix-blend-mode-states((base: 'normal', hover: ('multiply', true)), (important: false)); // important par état
-///   @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (selector: '&:STATE')); // template de sélecteur
-///   @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (order: (hover, base))); // ordre personnalisé
-///   @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (forced-colors: true)); // wrapper forced-colors
+///  @include mix-blend-mode-states((base: 'normal', hover: 'multiply'));
+///  @include mix-blend-mode-states((base: 'normal', hover: ('multiply', true)), (important: true)); // important global
+///  @include mix-blend-mode-states((base: 'normal', hover: ('multiply', true)), (important: false)); // important par état
+///  @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (selector: '&:STATE')); // template de sélecteur
+///  @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (order: (hover, base))); // ordre personnalisé
+///  @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin mix-blend-mode-states($map-values, $options: ()) { 
-    @include states('mix-blend-mode', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('mix-blend-mode', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for isolation states.
@@ -1099,18 +877,17 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include isolation-states((base: 'auto', hover: 'isolate'));
-///   @include isolation-states((base: 'auto', hover: ('isolate', true)), (important: true)); // important global
-///   @include isolation-states((base: 'auto', hover: ('isolate', true)), (important: false)); // important par état
-///   @include isolation-states((base: 'auto', hover: 'isolate'), (selector: '&:STATE')); // template de sélecteur
-///   @include isolation-states((base: 'auto', hover: 'isolate'), (order: (hover, base))); // ordre personnalisé
-///   @include isolation-states((base: 'auto', hover: 'isolate'), (forced-colors: true)); // wrapper forced-colors
+///  @include isolation-states((base: 'auto', hover: 'isolate'));
+///  @include isolation-states((base: 'auto', hover: ('isolate', true)), (important: true)); // important global
+///  @include isolation-states((base: 'auto', hover: ('isolate', true)), (important: false)); // important par état
+///  @include isolation-states((base: 'auto', hover: 'isolate'), (selector: '&:STATE')); // template de sélecteur
+///  @include isolation-states((base: 'auto', hover: 'isolate'), (order: (hover, base))); // ordre personnalisé
+///  @include isolation-states((base: 'auto', hover: 'isolate'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin isolation-states($map-values, $options: ()) { 
-    @include states('isolation', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('isolation', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
-
 
 
 // * ---------------------------------------------
@@ -1123,16 +900,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include cursor-states((base: 'default', hover: 'pointer'));
-///   @include cursor-states((base: 'default', hover: ('pointer', true)), (important: true)); // important global
-///   @include cursor-states((base: 'default', hover: ('pointer', true)), (important: false)); // important par état    
-///   @include cursor-states((base: 'default', hover: 'pointer'), (selector: '&:STATE')); // template de sélecteur
-///   @include cursor-states((base: 'default', hover: 'pointer'), (order: (hover, base))); // ordre personnalisé
-///   @include cursor-states((base: 'default', hover: 'pointer'), (forced-colors: true)); // wrapper forced-colors
+///  @include cursor-states((base: 'default', hover: 'pointer'));
+///  @include cursor-states((base: 'default', hover: ('pointer', true)), (important: true)); // important global
+///  @include cursor-states((base: 'default', hover: ('pointer', true)), (important: false)); // important par état    
+///  @include cursor-states((base: 'default', hover: 'pointer'), (selector: '&:STATE')); // template de sélecteur
+///  @include cursor-states((base: 'default', hover: 'pointer'), (order: (hover, base))); // ordre personnalisé
+///  @include cursor-states((base: 'default', hover: 'pointer'), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin cursor-states($map-values, $options: ()) { 
-    @include states('cursor', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('cursor', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for pointer-events states.
@@ -1141,16 +918,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include pointer-events-states((base: 'auto', hover: 'none'));
-///   @include pointer-events-states((base: 'auto', hover: ('none', true)), (important: true)); // important global
-///   @include pointer-events-states((base: 'auto', hover: ('none', true)), (important: false)); // important par état
-///   @include pointer-events-states((base: 'auto', hover: 'none'), (selector: '&:STATE')); // template de sélecteur
-///   @include pointer-events-states((base: 'auto', hover: 'none'), (order: (hover, base))); // ordre personnalisé
-///   @include pointer-events-states((base: 'auto', hover: 'none'), (forced-colors: true)); // wrapper forced-colors
+///  @include pointer-events-states((base: 'auto', hover: 'none'));
+///  @include pointer-events-states((base: 'auto', hover: ('none', true)), (important: true)); // important global
+///  @include pointer-events-states((base: 'auto', hover: ('none', true)), (important: false)); // important par état
+///  @include pointer-events-states((base: 'auto', hover: 'none'), (selector: '&:STATE')); // template de sélecteur
+///  @include pointer-events-states((base: 'auto', hover: 'none'), (order: (hover, base))); // ordre personnalisé
+///  @include pointer-events-states((base: 'auto', hover: 'none'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin pointer-events-states($map-values, $options: ()) { 
-    @include states('pointer-events', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('pointer-events', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for user-select states.
@@ -1159,16 +936,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include user-select-states((base: 'auto', hover: 'none'));
-///   @include user-select-states((base: 'auto', hover: ('none', true)), (important: true)); // important global
-///   @include user-select-states((base: 'auto', hover: ('none', true)), (important: false)); // important par état
-///   @include user-select-states((base: 'auto', hover: 'none'), (selector: '&:STATE')); // template de sélecteur
-///   @include user-select-states((base: 'auto', hover: 'none'), (order: (hover, base))); // ordre personnalisé
-///   @include user-select-states((base: 'auto', hover: 'none'), (forced-colors: true)); // wrapper forced-colors
+///  @include user-select-states((base: 'auto', hover: 'none'));
+///  @include user-select-states((base: 'auto', hover: ('none', true)), (important: true)); // important global
+///  @include user-select-states((base: 'auto', hover: ('none', true)), (important: false)); // important par état
+///  @include user-select-states((base: 'auto', hover: 'none'), (selector: '&:STATE')); // template de sélecteur
+///  @include user-select-states((base: 'auto', hover: 'none'), (order: (hover, base))); // ordre personnalisé
+///  @include user-select-states((base: 'auto', hover: 'none'), (forced-colors: true)); // wrapper forced-colors
 ///
 @mixin user-select-states($map-values, $options: ()) { 
-    @include states('user-select', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('user-select', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for touch-action states.
@@ -1177,17 +954,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'));
-///   @include touch-action-states((base: 'auto', touch-drag: ('pan-x pinch-zoom', true)), (important: true)); // important global
-///   @include touch-action-states((base: 'auto', touch-drag: ('pan-x pinch-zoom', true)), (important: false)); // important par état
-///   @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'), (selector: '&:STATE')); // template de sélecteur
-///   @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'), (order: (touch-drag, base))); // ordre personnalisé
+///  @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'));
+///  @include touch-action-states((base: 'auto', touch-drag: ('pan-x pinch-zoom', true)), (important: true)); // important global
+///  @include touch-action-states((base: 'auto', touch-drag: ('pan-x pinch-zoom', true)), (important: false)); // important par état
+///  @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'), (selector: '&:STATE')); // template de sélecteur
+///  @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'), (order: (touch-drag, base))); // ordre personnalisé
 ///
 @mixin touch-action-states($map-values, $options: ()) { 
-    @include states('touch-action', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('touch-action', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
-
 
 
 // * ---------------------------------------------
@@ -1200,16 +976,16 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include display-states((base: 'block', hover: 'none'));
-///   @include display-states((base: 'block', hover: ('none', true)), (important: true)); // important global
-///   @include display-states((base: 'block', hover: ('none', true)), (important: false)); // important par état
-///   @include display-states((base: 'block', hover: 'none'), (selector: '&:STATE')); // template de sélecteur
-///   @include display-states((base: 'block', hover: 'none'), (order: (hover, base))); // ordre personnalisé
-///   @include display-states((base: 'block', hover: 'none'), (forced-colors: true)); // wrapper forced-colors
+///  @include display-states((base: 'block', hover: 'none'));
+///  @include display-states((base: 'block', hover: ('none', true)), (important: true)); // important global
+///  @include display-states((base: 'block', hover: ('none', true)), (important: false)); // important par état
+///  @include display-states((base: 'block', hover: 'none'), (selector: '&:STATE')); // template de sélecteur
+///  @include display-states((base: 'block', hover: 'none'), (order: (hover, base))); // ordre personnalisé
+///  @include display-states((base: 'block', hover: 'none'), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin display-states($map-values, $options: ()) { 
-    @include states('display', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('display', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
 
 /// Shorthand for visibility states.
@@ -1218,14 +994,14 @@ $states-aliases-extra: (
 /// @param {map} $options - Additional options (selector, order, important, forced-colors, scheme)
 /// 
 /// Usage:
-///   @include visibility-states((base: 'visible', hover: 'hidden'));
-///   @include visibility-states((base: 'visible', hover: ('hidden', true)), (important: true)); // important global
-///   @include visibility-states((base: 'visible', hover: ('hidden', true)), (important: false)); // important par état
-///   @include visibility-states((base: 'visible', hover: 'hidden'), (selector: '&:STATE')); // template de sélecteur
-///   @include visibility-states((base: 'visible', hover: 'hidden'), (order: (hover, base))); // ordre personnalisé
-///   @include visibility-states((base: 'visible', hover: 'hidden'), (forced-colors: true)); // wrapper forced-colors
+///  @include visibility-states((base: 'visible', hover: 'hidden'));
+///  @include visibility-states((base: 'visible', hover: ('hidden', true)), (important: true)); // important global
+///  @include visibility-states((base: 'visible', hover: ('hidden', true)), (important: false)); // important par état
+///  @include visibility-states((base: 'visible', hover: 'hidden'), (selector: '&:STATE')); // template de sélecteur
+///  @include visibility-states((base: 'visible', hover: 'hidden'), (order: (hover, base))); // ordre personnalisé
+///  @include visibility-states((base: 'visible', hover: 'hidden'), (forced-colors: true)); // wrapper forced-colors
 /// 
 @mixin visibility-states($map-values, $options: ()) { 
-    @include states('visibility', $map-values, $options); 
-    @if meta.content-exists() { @content; } 
+  @include states('visibility', $map-values, $options); 
+  @if meta.content-exists() { @content; } 
 }
