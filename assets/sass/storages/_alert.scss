@@ -1,282 +1,546 @@
-// * ------------- @osw3/symfony-ux/assets/sass/storages/alert.scss ------------
+// * ===========================================================================
+// *  Alert Storage
+// * ===========================================================================
 // *
-// *    Alert Storage
+// *  This file defines the storage for alert components, which is responsible 
+// *  for generating the CSS variables for the alert styles used throughout the 
+// *  framework.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use 'sass:meta';
+
 @use './../generated';
+
+// Helpers
+@use './../helpers/helpers' as *;
+@use './../helpers/null' as *;
+
 @use './../storages/fonts';
 @use './../storages/spaces';
 @use './../storages/prefix';
 $prefix: prefix.$prefix;
 
 
-// * Define storage data
+
+// * ------------------------------------------------------------------------ //
+// * - Storage values                                                       - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Border properties
 // * ---------------------------------------------
 
-/// Width of the border around the element.
+/// Border width for the component container. 
+/// 
 /// @type length
+/// @default value: 1px
 //
 $border-width: 1px;
 
-/// Style of the border around the element.
+/// Border style
+/// 
 /// @type string
-//
+/// @default value: solid
+/// @values none | hidden | dotted | dashed | solid | double | groove | ridge | inset | outset
+/// 
 $border-style: solid;
 
-/// Radius of the border corners, using a CSS variable.
+/// Border radius
+/// 
 /// @type length
+/// @default value: var(--border-radius-normal)
 //
 $border-radius: var(--#{$prefix}border-radius-normal);
 
-/// Horizontal padding for the element.
+
+// * ---------------------------------------------
+// * Spacing properties
+// * ---------------------------------------------
+
+/// Horizontal padding for the component container.
+/// The horizontal padding is calculated based on a base spacing value defined 
+/// in the spaces storage, multiplied by a factor of 0.94 to provide a 
+/// consistent padding size for the alert component. 
+/// 
+/// This allows for easy adjustment of the padding by changing the base spacing 
+/// value or the multiplier.
+/// 
 /// @type length
-//
+/// @default value: spaces.$base * .94
+///
 $padding-x: spaces.$base * .94;
 
-/// Vertical padding for the element.
+/// Vertical padding for the component container.
+/// The vertical padding is calculated based on a base spacing value defined 
+/// in the spaces storage, multiplied by a factor of 1.25 to provide a 
+/// consistent padding size for the alert component. 
+/// 
+/// This allows for easy adjustment of the padding by changing the base spacing 
+/// value or the multiplier.
+/// 
 /// @type length
-//
+/// @default value: spaces.$base * 1.25
+///
 $padding-y: spaces.$base * 1.25;
 
-/// Horizontal padding for small elements.
+/// Horizontal padding for the small component container.
+/// 
 /// @type length
-//
+/// @default value: spaces.$base * .6
+/// 
 $padding-x-small: spaces.$base * .6;
 
-/// Vertical padding for small elements.
+/// Vertical padding for the small component container.
+/// 
 /// @type length
-//
+/// @default value: spaces.$base * 1
+///
 $padding-y-small: spaces.$base * 1;
 
-/// Horizontal padding for large elements.
+/// Horizontal padding for the large component container.
+/// 
 /// @type length
-//
+/// @default value: spaces.$base * 1
+///
 $padding-x-large: spaces.$base * 1;
 
-/// Vertical padding for large elements.
+/// Vertical padding for the large component container.
+/// 
 /// @type length
-//
+/// @default value: spaces.$base * 1.6
+///
 $padding-y-large: spaces.$base * 1.6;
 
+
+// * ---------------------------------------------
+// * Font properties
+// * ---------------------------------------------
+
 /// Font family for the text, inheriting from the parent element.
+/// 
 /// @type string
-//
+/// @default value: inherit
+///
 $font-family: inherit;
 
 /// Base font size for the text.
+/// 
 /// @type length
-//
+/// @default value: fonts.$scale-base
+///
 $font-size: fonts.$scale-base * 1;
 
 /// Font size for small text.
+/// 
 /// @type length
-//
+/// @default value: fonts.$scale-base * .95
+///
 $font-size-small: fonts.$scale-base * .95;
 
 /// Font size for large text.
+/// 
 /// @type length
-//
+/// @default value: fonts.$scale-base * 1.2
+///
 $font-size-large: fonts.$scale-base * 1.2;
 
 /// Base font weight for the text.
+/// 
 /// @type number
-//
+/// @default value: 400
+///
 $font-weight: 400;
 
 /// Font weight for small text.
+/// 
 /// @type number
-//
+/// @default value: 400
+///
 $font-weight-small: 400;
 
 /// Font weight for large text.
+/// 
 /// @type number
-//
+/// @default value: 400
+///
 $font-weight-large: 400;
 
 /// Base line height for the text.
+/// 
 /// @type number
-//
+/// @default value: 1.5
+///
 $line-height: 1.5;
 
 /// Line height for small text.
+/// 
 /// @type number
-//
+/// @default value: 1
+///
 $line-height-small: 1;
 
 /// Line height for large text.
+/// 
 /// @type number
-//
+/// @default value: 1.6
+///
 $line-height-large: 1.6;
 
-/// Enables or disables the use of a color palette.
-/// @type boolean
-//
-$enable-palette: if(sass(meta.global-variable-exists('alerts--enable-palette', $module: generated)): generated.$alerts--enable-palette; else: true);
 
-/// Enables or disables the use of sizes.
-/// @type boolean
-//
-$enable-sizes: if(sass(meta.global-variable-exists('alerts--enable-sizes', $module: generated)): generated.$alerts--enable-sizes; else: true);
+// * ---------------------------------------------
+// * Box shadow properties
+// * ---------------------------------------------
 
 /// Box shadow effect for the element.
+/// 
 /// @type string
-//
+/// @default value: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075)
+///
 $box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 1px 1px rgba(0, 0, 0, 0.075);
 
-/// Delay for the transition effect, using a CSS variable.
+
+// * ---------------------------------------------
+// * Transition properties
+// * ---------------------------------------------
+
+/// Transition duration 
+/// 
 /// @type time
-//
+/// @default value: var(--transition-duration-normal)
+/// 
+$transition-duration: var(--#{$prefix}transition-duration-normal);
+
+/// Delay for the transition effect, using a CSS variable.
+/// 
+/// @type time
+/// @default value: var(--transition-normal)
+///
 $transition-delay: var(--#{$prefix}transition-normal);
 
 /// Type of transition timing function.
+/// 
 /// @type string
-//
+/// @default value: ease-in-out
+///
 $transition-type: ease-in-out;
 
 
-// * Storage Mixins definition
+// * ---------------------------------------------
+// * Other properties
 // * ---------------------------------------------
 
-/// Sets the width of the border around the element.
+/// Enables or disables the use of a color palette.
+/// 
+/// @type boolean
+/// @default value: true
+///
+$enable-palette: if(sass(meta.global-variable-exists('alerts--enable-palette', $module: generated)): generated.$alerts--enable-palette; else: true);
+
+/// Enables or disables the use of sizes.
+/// 
+/// @type boolean
+/// @default value: true
+///
+$enable-sizes: if(sass(meta.global-variable-exists('alerts--enable-sizes', $module: generated)): generated.$alerts--enable-sizes; else: true);
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers.                                                             - //
+// * ------------------------------------------------------------------------ //
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Public setters                                                       - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Border properties
+// * ---------------------------------------------
+
+/// Sets the border width.
 /// @param {Length} $width - The border width value to set.
-//
+/// 
+/// @usage @include setBorderWidth(2px);
+/// @usage @include setBorderWidth(0); // for no border
+/// 
 @mixin setBorderWidth($width) {
-    $border-width: $width !global;
+  $border-width: set-border-width($width) !global;
 }
 
-
-/// Sets the style of the border around the element.
-/// @param {String} $style - The border style value to set.
-//
+/// Sets the border style.
+/// @param {String} $style - The border style value to set, e.g., `solid`, `dashed`, `dotted`, etc.
+/// 
+/// @usage @include setBorderStyle('solid');
+/// @usage @include setBorderStyle('dashed');
+/// @usage @include setBorderStyle('none'); // for no border
+///
 @mixin setBorderStyle($style) {
-    $border-style: $style !global;
+  $border-style: set-border-style($style) !global;
 }
 
-
-/// Sets the radius of the border corners, using a CSS variable.
-/// @param {Length} $radius - The border radius value to set.
-//
+/// Sets the border radius.
+/// @param {Length} $radius - The border radius value to set, e.g., `4px`, `50%`, etc.
+/// 
+/// @usage @include setBorderRadius(4px);
+/// @usage @include setBorderRadius(0); // for no border radius
+/// @usage @include setBorderRadius(var(--border-radius-normal)); // using CSS variable
+///
 @mixin setBorderRadius($radius) {
-    $border-radius: $radius !global;
+  $border-radius: set-border-radius($radius) !global;
 }
 
 
-/// Sets the horizontal padding for the element.
-/// @param {Length} $normal - The horizontal padding value to set.
-/// @param {Length} $small - The horizontal small padding value to set.
-/// @param {Length} $large - The horizontal large padding value to set.
-//
-@mixin setPaddingX($normal, $small: null, $large: null) {
-    $padding-x: $normal !global;
+// * ---------------------------------------------
+// * Spacing properties
+// * ---------------------------------------------
 
-    @if $small {
-        $padding-x-small: $small !global;
-    }
+/// Sets the horizontal padding.
+/// @param {Length} $width - The horizontal padding value to set.
+/// 
+/// @usage @include setPaddingX(10px);
+/// @usage @include setPaddingX(0); // for no padding
+/// @usage @include setPaddingX(var(--padding-normal)); // using CSS variable
+///
+@mixin setPaddingX($width) {
+  $padding-x: set-padding($width) !global;
+}
 
-    @if $large {
-        $padding-x-large: $large !global;
-    }
+/// Sets the horizontal padding for small size.
+/// @param {Length} $width - The horizontal padding value for small size to set.
+/// 
+/// @usage @include setSmallPaddingX(5px);
+/// @usage @include setSmallPaddingX(0); // for no padding
+/// @usage @include setSmallPaddingX(var(--padding-small)); // using CSS variable
+///
+@mixin setSmallPaddingX($width) {
+  $padding-x-small: set-padding($width) !global;
+}
+
+/// Sets the horizontal padding for large size.
+/// @param {Length} $width - The horizontal padding value for large size to set.
+/// 
+/// @usage @include setLargePaddingX(15px);
+/// @usage @include setLargePaddingX(0); // for no padding
+/// @usage @include setLargePaddingX(var(--padding-large)); // using CSS variable
+///
+@mixin setLargePaddingX($width) {
+  $padding-x-large: set-padding($width) !global;
+}
+
+/// Sets the vertical padding.
+/// @param {Length} $width - The vertical padding value to set.
+/// 
+/// @usage @include setPaddingY(12px);
+/// @usage @include setPaddingY(0); // for no padding
+/// @usage @include setPaddingY(var(--padding-normal)); // using CSS variable
+///
+@mixin setPaddingY($width) {
+  $padding-y: set-padding($width) !global;
+}
+
+/// Sets the vertical padding for small size.
+/// @param {Length} $width - The vertical padding value for small size to set.
+/// @usage @include setSmallPaddingY(6px);
+/// @usage @include setSmallPaddingY(0); // for no padding
+/// @usage @include setSmallPaddingY(var(--padding-small)); // using CSS variable
+///
+@mixin setSmallPaddingY($width) {
+  $padding-y-small: set-padding($width) !global;
+}
+
+/// Sets the vertical padding for large size.
+/// @param {Length} $width - The vertical padding value for large size to set.
+/// @usage @include setLargePaddingY(12px);
+/// @usage @include setLargePaddingY(0); // for no padding
+/// @usage @include setLargePaddingY(var(--padding-large)); // using CSS variable
+///
+@mixin setLargePaddingY($width) {
+  $padding-y-large: set-padding($width) !global;
 }
 
 
-/// Sets the vertical padding for the element.
-/// @param {Length} $padding - The vertical padding value to set.
-/// @param {Length} $padding - The vertical small padding value to set.
-/// @param {Length} $padding - The vertical large padding value to set.
-//
-@mixin setPaddingY($normal, $small: null, $large: null) {
-    $padding-y: $normal !global;
-
-    @if $small {
-        $padding-y-small: $small !global;
-    }
-
-    @if $large {
-        $padding-y-large: $large !global;
-    }
-}
-
+// * ---------------------------------------------
+// * Font properties
+// * ---------------------------------------------
 
 /// Sets the font family for the text.
 /// @param {String} $family - The font family value to set.
-//
+/// 
+/// @usage @include setFontFamily('Arial, sans-serif');
+/// @usage @include setFontFamily('inherit'); // to inherit from parent element
+/// @usage @include setFontFamily(var(--font-family-base)); // using CSS variable
+/// 
 @mixin setFontFamily($family) {
-    $font-family: $family !global;
+  $font-family: set-font-family($family) !global;
 }
-
 
 /// Sets the base font size for the text.
 /// @param {Length} $size - The base font size value to set.
-//
+/// 
+/// @usage @include setFontSize(16px);
+/// @usage @include setFontSize(0); // for no font size (not recommended
+/// @usage @include setFontSize(var(--font-size-base)); // using CSS variable
+/// 
 @mixin setFontSize($size) {
-    $font-size: $size !global;
+  $font-size: set-font-size($size) !global;
 }
-
 
 /// Sets the font size for small text.
 /// @param {Length} $size - The font size value for small text to set.
-//
+/// 
+/// @usage @include setFontSizeSmall(14px);
+/// @usage @include setFontSizeSmall(0); // for no font size (not recommended
+/// @usage @include setFontSizeSmall(var(--font-size-small)); // using CSS variable
+///
 @mixin setFontSizeSmall($size) {
-    $font-size-small: $size !global;
+  $font-size-small: set-font-size($size) !global;
 }
-
 
 /// Sets the font size for large text.
 /// @param {Length} $size - The font size value for large text to set.
-//
+/// 
+/// @usage @include setFontSizeLarge(18px);
+/// @usage @include setFontSizeLarge(0); // for no font size (not recommended
+/// @usage @include setFontSizeLarge(var(--font-size-large)); // using CSS variable
+///
 @mixin setFontSizeLarge($size) {
-    $font-size-large: $size !global;
+  $font-size-large: set-font-size($size) !global;
 }
-
 
 /// Sets the base font weight for the text.
 /// @param {Number} $weight - The base font weight value to set.
-//
+/// 
+/// @usage @include setFontWeight(400);
+/// @usage @include setFontWeight(0); // for no font weight (not recommended)
+/// @usage @include setFontWeight(var(--font-weight-normal)); // using CSS variable
+///
 @mixin setFontWeight($weight) {
-    $font-weight: $weight !global;
+  $font-weight: set-font-weight($weight) !global;
 }
-
 
 /// Sets the font weight for small text.
 /// @param {Number} $weight - The font weight value for small text to set.
-//
+/// 
+/// @usage @include setFontWeightSmall(300);
+/// @usage @include setFontWeightSmall(0); // for no font weight (not recommended)
+/// @usage @include setFontWeightSmall(var(--font-weight-light)); // using CSS variable
+/// 
 @mixin setFontWeightSmall($weight) {
-    $font-weight-small: $weight !global;
+  $font-weight-small: set-font-weight($weight) !global;
 }
-
 
 /// Sets the font weight for large text.
 /// @param {Number} $weight - The font weight value for large text to set.
-//
+/// 
+/// @usage @include setFontWeightLarge(500);
+/// @usage @include setFontWeightLarge(0); // for no font weight (not recommended)
+/// @usage @include setFontWeightLarge(var(--font-weight-medium)); // using CSS variable
+///
 @mixin setFontWeightLarge($weight) {
-    $font-weight-large: $weight !global;
+  $font-weight-large: set-font-weight($weight) !global;
 }
-
 
 /// Sets the base line height for the text.
 /// @param {Number} $height - The base line height value to set.
-//
+/// 
+/// @usage @include setLineHeight(1.5);
+/// @usage @include setLineHeight(0); // for no line height (not recommended)
+/// @usage @include setLineHeight(var(--line-height-normal)); // using CSS variable
+///
 @mixin setLineHeight($height) {
-    $line-height: $height !global;
+  $line-height: $height !global;
 }
-
 
 /// Sets the line height for small text.
 /// @param {Number} $height - The line height value for small text to set.
-//
+/// 
+/// @usage @include setLineHeightSmall(1.2);
+/// @usage @include setLineHeightSmall(0); // for no line height (not recommended)
+/// @usage @include setLineHeightSmall(var(--line-height-small)); // using CSS variable
+///
 @mixin setLineHeightSmall($height) {
-    $line-height-small: $height !global;
+  $line-height-small: $height !global;
 }
-
 
 /// Sets the line height for large text.
 /// @param {Number} $height - The line height value for large text to set.
-//
+/// 
+/// @usage @include setLineHeightLarge(1.8);
+/// @usage @include setLineHeightLarge(0); // for no line height (not recommended)
+/// @usage @include setLineHeightLarge(var(--line-height-large)); // using CSS variable
+///
 @mixin setLineHeightLarge($height) {
-    $line-height-large: $height !global;
+  $line-height-large: $height !global;
 }
+
+
+// * ---------------------------------------------
+// * Box shadow properties
+// * ---------------------------------------------
+
+/// Sets the box shadow effect for the element.
+/// @param {String} $shadow - The box shadow value to set.
+/// 
+/// @usage @include setBoxShadow('0 1px 3px rgba(0, 0, 0, 0.1)');
+/// @usage @include setBoxShadow('none'); // for no box shadow
+/// @usage @include setBoxShadow(var(--box-shadow)); // using CSS variable
+///
+@mixin setBoxShadow($shadow) {
+  $box-shadow: set-box-shadow($shadow) !global;
+}
+
+
+// * ---------------------------------------------
+// * Transition properties
+// * ---------------------------------------------
+
+/// Sets the transition duration for the brand's elements.
+/// @param {Length} $duration - The duration of the transition, typically a CSS variable.
+///
+/// @usage @include setTransitionDuration(var(--transition-duration-normal));
+/// @usage @include setTransitionDuration(0); // for no transition duration (not recommended)
+/// @usage @include setTransitionDuration(200ms); // using a specific time value
+///
+@mixin setTransitionDuration($duration) {
+  $transition-duration: $duration !global;
+}
+
+/// Sets the transition delay for the brand's elements.
+/// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
+/// 
+/// @usage @include setTransitionDelay(var(--transition-normal));
+/// @usage @include setTransitionDelay(0); // for no transition delay (not recommended)
+/// @usage @include setTransitionDelay(200ms); // using a specific time value
+///
+@mixin setTransitionDelay($delay) {
+  $transition-delay: $delay !global;
+}
+
+/// Sets the type of transition timing function.
+/// @param {String} $type - The type of easing, e.g., `ease-in-out`.
+/// 
+/// @usage @include setTransitionType(var(--transition-type-normal));
+/// @usage @include setTransitionType(ease-in-out); // using a specific easing type
+///
+@mixin setTransitionType($type) {
+  $transition-type: $type !global;
+}
+
+
+// * ---------------------------------------------
+// * Transition properties
+// * ---------------------------------------------
+
+
+
+
+
 
 
 /// Enables or disables the use of a color palette.
@@ -294,26 +558,3 @@ $transition-type: ease-in-out;
     $enable-sizes: $enabled !global;
 }
 
-
-/// Sets the box shadow effect for the element.
-/// @param {String} $shadow - The box shadow value to set.
-//
-@mixin setBoxShadow($shadow) {
-    $box-shadow: $shadow !global;
-}
-
-
-/// Sets the transition delay for the brand's elements.
-/// @param {Length} $delay - The duration of the transition delay, typically a CSS variable.
-//
-@mixin setTransitionDelay($delay) {
-    $transition-delay: $delay !global;
-}
-
-
-/// Sets the type of transition timing function.
-/// @param {String} $type - The type of easing, e.g., `ease-in-out`.
-//
-@mixin setTransitionType($type) {
-    $transition-type: $type !global;
-}

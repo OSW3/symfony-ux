@@ -15,6 +15,7 @@
 @use "sass:list";
 @use "sass:math";
 @use "./../helpers/helpers" as h;
+@use "./../helpers/length" as *;
 
 
 // * ------------------------------------------------------------------------ //
@@ -24,6 +25,8 @@
 // Unités par défaut
 $length-default-unit: 1px !default; // ex: 10 -> 10px
 $angle-default-unit: 1deg !default; // ex: 45 -> 45deg
+
+
 
 // * ------------------------------------------------------------------------ //
 // * - API: Effects                                                         - //
@@ -192,7 +195,7 @@ $angle-default-unit: 1deg !default; // ex: 45 -> 45deg
       $tok: list.nth($vals, $i);
       @if meta.type-of($tok) == 'number' and math.is-unitless($tok) {
         // x/y -> longueurs / z -> longueur (spéc autorise aussi %/keywords)
-        $tok: _normalize-length($tok, $length-default-unit);
+        $tok: _to-length($tok, $length-default-unit);
       }
       $out: list.append($out, $tok, space);
     }
@@ -226,7 +229,7 @@ $angle-default-unit: 1deg !default; // ex: 45 -> 45deg
 ///  @include perspective(none, true); // with !important
 ///
 @mixin perspective($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: to-length($value, $length-default-unit);
   @include h.emit('perspective', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -285,13 +288,13 @@ $angle-default-unit: 1deg !default; // ex: 45 -> 45deg
 ///  @include translate(10px, null, 30px, true); // with !important
 ///
 @mixin translate($x, $y: null, $z: null, $important: false) {
-  $nx: h.normalize-length($x, $length-default-unit);
+  $nx: to-length($x, $length-default-unit);
   $ny: null;
   $nz: null;
 
-  @if $y != null { $ny: h.normalize-length($y, $length-default-unit); }
+  @if $y != null { $ny: to-length($y, $length-default-unit); }
   @if $z != null {
-    $nz: h.normalize-length($z, $length-default-unit);
+    $nz: to-length($z, $length-default-unit);
     @if $ny == null { $ny: 0; } // garde-fou : si z spécifié sans y
   }
 

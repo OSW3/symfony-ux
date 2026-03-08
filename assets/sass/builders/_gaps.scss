@@ -1,46 +1,73 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builders/grid.scss -------------
+// * ===========================================================================
+// *  Gaps - Builder
+// * ===========================================================================
 // *
-// *    Builder for CSS Grid
+// *  This file defines the gap utilities of the framework, which are used to 
+// *  create consistent spacing between elements in a grid layout. The gap 
+// *  utilities are defined based on the spacing values stored in the storage 
+// *  files.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
-@use './../builders/banner';
-@use './../storages/prefix';
-@use './../storages/spaces' as stored-spaces;
+@charset 'utf-8';
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
+@use './../storages/spaces' as spaces-store;
 @use './../storages/gaps' as store;
+
+// Helpers
+@use './../helpers/boolean' as *;
+@use './../helpers/list' as *;
+@use './../mixins/spacing' as *;
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
 @include banner.header('Gaps');
-$prefix: prefix.$prefix;
 
 
-// * Build CSS
-// * ---------------------------------------------
 
-// * Generate Gaps
-// * --
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
 
-// @include banner.section('Grid gaps');
-@if store.$enable-gaps-class {
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'gap';
 
-    $selector-group : '';
 
-    .#{$prefix}gap {
-        @each $key, $value in stored-spaces.$spaces {
-            // $margin: calc(-1 * $value);
-            $padding: $value;
-            $selector-group: $selector-group + '#{&}-#{$key}, ';
+/// Gaps selectors string
+/// 
+$selectors: '';
+@each $name, $value in spaces-store.$spaces {$selectors: add-to-list($selectors, '.#{prefix($_component)}-#{$name}');}
 
-        
-            &-#{$key}, &-x-#{$key} {
-                --#{$prefix}gap-x: #{$padding};
-            }
-            &-#{$key}, &-y-#{$key} {
-                --#{$prefix}gap-y: #{$padding};
-            }
-        }
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+@if is-true(store.$enable-gaps-class) {
+
+  .#{prefix($_component)} {
+    @each $name, $value in spaces-store.$spaces {
+      $padding: $value;
+      &-#{$name}, &-x-#{$name} { --#{prefix(gap-x)}: #{$padding}; }
+      &-#{$name}, &-y-#{$name} { --#{prefix(gap-y)}: #{$padding}; }
     }
+  }
 
-    #{$selector-group} {
-        margin-left: calc(var(--#{$prefix}gap-x) * -1);
-        margin-right: calc(var(--#{$prefix}gap-x) * -1);
-    }
+  #{$selectors} {
+    @include margin-left(calc(var(--#{$prefix}gap-x) * -1));
+    @include margin-right(calc(var(--#{$prefix}gap-x) * -1));
+  }
+  
 }

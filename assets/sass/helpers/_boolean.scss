@@ -1,0 +1,87 @@
+// * ===========================================================================
+// *  Boolean helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for working with boolean values in 
+// *  Sass. These functions allow you to check if a value is a boolean, if it's 
+// *  true or false, and to coerce values to boolean.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:meta';
+@use './null' as *;
+@use './number' as *;
+@use './string' as *;
+
+/// Is bool
+/// @param $v Any value
+/// @return bool True if $v is a boolean, false otherwise
+/// 
+/// @usage is-bool(true) // true
+/// @usage is-bool(false) // true
+/// @usage is-bool(1) // false
+/// @usage is-bool('true') // false
+/// 
+@function is-bool($v) {
+  @return meta.type-of($v) == 'bool';
+}
+
+/// Is true
+/// @param $v Any value
+/// @return bool True if $v is the boolean true, false otherwise
+/// 
+/// @usage is-true(true) // true
+/// @usage is-true(false) // false
+/// @usage is-true(1) // false
+/// @usage is-true('true') // false
+/// 
+@function is-true($v) {
+  @return is-bool($v) and $v == true;
+}
+
+/// Is false
+/// @param $v Any value
+/// @return bool True if $v is the boolean false, false otherwise
+/// 
+/// @usage is-false(true) // false
+/// @usage is-false(false) // true
+/// @usage is-false(0) // false
+/// @usage is-false('false') // false
+/// 
+@function is-false($v) {
+  @return is-bool($v) and $v == false;
+}
+
+/// Coerce to bool
+/// @param $v Any value
+/// @param $default bool Default value to return if $v is nullish (null or undefined)
+/// @return bool Coerced boolean value
+///
+/// @usage to-bool(true) // true
+/// @usage to-bool(false) // false
+/// @usage to-bool(1) // true
+/// @usage to-bool(0) // false
+/// @usage to-bool('true') // true
+/// @usage to-bool('false') // false
+/// @usage to-bool('yes') // true
+/// @usage to-bool('no') // false
+/// @usage to-bool(null) // false
+/// @usage to-bool(null, true) // true
+/// 
+@function to-bool($v, $default: false) {
+  @if is-bool($v) { 
+    @return $v;
+  }
+  @if is-null($v) { 
+    @return $default; 
+  }
+  @if is-string($v) {
+    $lv: to-lower-case($v);
+    @return $lv == 'true' or $lv == '1' or $lv == 'yes';
+  }
+  @if is-number($v) { 
+    @return $v != 0;
+  }
+  @return $default;
+}

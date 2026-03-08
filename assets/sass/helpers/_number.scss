@@ -1,0 +1,108 @@
+// * ===========================================================================
+// *  Number helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for working with numbers in 
+// *  Sass. These functions allow you to check if a value is a number, if it's 
+// *  not a number, and to coerce values to numbers.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:math';
+@use 'sass:meta';
+
+/// Is number
+/// @param $v Any value
+/// @return bool True if $v is a number, false otherwise
+/// 
+/// @usage is-number(10) // true
+/// @usage is-number('10') // false
+/// @usage is-number(10px) // true
+/// @usage is-number('10px') // false
+/// @usage is-number(10%) // true
+/// @usage is-number('10%') // false
+/// 
+@function is-number($v) {
+  @return meta.type-of($v) == 'number';
+}
+
+/// Is not number
+/// @param $v Any value
+/// @return bool True if $v is not a number, false otherwise
+/// 
+/// @usage is-not-number(10) // false
+/// @usage is-not-number('10') // true
+/// @usage is-not-number(10px) // false
+/// @usage is-not-number('10px') // true
+/// @usage is-not-number(10%) // false
+/// @usage is-not-number('10%') // true
+/// 
+@function is-not-number($v) {
+  @return not is-number($v);
+}
+
+/// Is zero (unitless or with any unit)
+/// @param $v Any value
+/// @return bool True if $v is the number zero (with or without units), false otherwise
+/// 
+/// @usage is-zero(0) // true
+/// @usage is-zero(0px) // true
+/// @usage is-zero(0%) // true
+/// @usage is-zero(1) // false
+/// @usage is-zero('0') // false
+/// @usage is-zero('0px') // false
+/// @usage is-zero('0%') // false
+///
+@function is-zero($v) {
+  @return is-number($v) and $v == 0; 
+}
+
+
+
+
+
+
+
+
+
+/// @private Clamp a numeric value between min and max
+/// @return number
+@function clamp-number($v, $min, $max) {
+
+  @if is-not-number($v) {
+    @error 'Expected a number for value, got #{meta.type-of($v)} (#{$v}).';
+  }
+
+  @if $v > $max {
+    @return $max;
+  } @else if $v < $min {
+    @return $min;
+  } @else {
+    @return $v;
+  }
+
+  // @return if($v < $min, $min, if($v > $max, $max, $v));
+}
+
+/// @private Normalize a weight/percentage argument
+/// Accepts 0..1 (unitless) or 0%..100% (percentage).
+/// Returns a percentage (0%..100%).
+@function normalize-percent($w) {
+  @if meta.type-of($w) != 'number' {
+    @error 'Expected a number or percentage for weight, got #{meta.type-of($w)} (#{$w}).';
+  }
+
+  @if math.is-unitless($w) {
+    // Interpret 0..1 as 0%..100%
+    @if $w < 0 or $w > 1 {
+      @error 'Unitless weight must be in [0..1]. Got #{$w}.';
+    }
+    @return clamp-number($w * 100%, 0%, 100%);
+  } @else if math.compatible($w, 100%) {
+    // Already a percentage
+    @return clamp-number($w, 0%, 100%);
+  } @else {
+    @error 'Weight must be unitless (0..1) or a percentage (0%..100%). Got #{$w}.';
+  }
+}

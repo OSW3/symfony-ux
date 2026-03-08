@@ -1,0 +1,235 @@
+// * ===========================================================================
+// *  String helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for working with strings in 
+// *  Sass. These functions allow you to check if a value is a string, if it's 
+// *  not a string, and to coerce values to strings.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:meta';
+@use 'sass:string';
+@use './null' as *;
+
+/// Is string
+/// @param $v Any value
+/// @return bool True if $v is a string, false otherwise
+/// 
+/// @usage is-string(10) // false
+/// @usage is-string('10') // true
+/// @usage is-string(auto) // true
+/// @usage is-string(var(--my-var)) // true
+/// 
+@function is-string($v) {
+  @return meta.type-of($v) == 'string';
+}
+
+/// Is not string
+/// @param $v Any value
+/// @return bool True if $v is not a string, false otherwise
+/// 
+/// @usage is-not-string(10) // true
+/// @usage is-not-string('10') // false
+/// @usage is-not-string(auto) // false
+/// @usage is-not-string(var(--my-var)) // false
+///
+@function is-not-string($v) {
+  @return not is-string($v);
+}
+
+/// Is a space character
+/// @param $v Any value
+/// @return bool True if $v is a space character, false otherwise
+/// 
+/// @usage is-space(' ') // true
+/// @usage is-space('') // false
+/// @usage is-space('  ') // false
+/// @usage is-space(10) // false
+///
+@function is-space($v) {
+  @return is-string($v) and $v == ' ';
+}
+
+/// To lower case if string, pass-through otherwise
+/// @param $v Any value
+/// @return string Lower-case string if $v is a string, $v otherwise
+///
+/// @usage to-lower-case('HELLO') // 'hello'
+/// 
+@function to-lower-case($v) {
+  @if meta.type-of($v) == 'string' { @return string.to-lower-case($v); }
+  @return $v;
+}
+
+/// To upper case if string, pass-through otherwise
+/// @param $v Any value
+/// @return string Upper-case string if $v is a string, $v otherwise
+/// 
+/// @usage to-upper-case('hello') // 'HELLO'
+///
+@function to-upper-case($v) {
+  @if meta.type-of($v) == 'string' { @return string.to-upper-case($v); }
+  @return $v;
+}
+
+/// Trim whitespace from a string
+/// @param $s Any value
+/// @return string Trimmed string if $s is a string, $s otherwise
+///
+/// @usage trim('  hello  ') // 'hello'
+///
+@function trim($s) {
+  @if is-not-string($s) {@return $s; }
+  $s: l-trim($s);
+  $s: r-trim($s);
+  @return $s;
+}
+
+/// Left trim
+/// @param $s Any value
+/// @return string Left-trimmed string if $s is a string, $s otherwise
+///
+/// @usage l-trim('  hello  ') // 'hello  '
+///
+@function l-trim($s) {
+  @if is-not-string($s) {@return $s; }
+
+  $start: 1;
+  $end: string.length($s);
+  // left
+  @while $start <= $end and string.slice($s, $start, $start) == ' ' { $start: $start + 1; }
+
+  @if $start > $end { @return ''; }
+  @return string.slice($s, $start, $end);
+}
+
+/// Right trim
+/// @param $s Any value
+/// @return string Right-trimmed string if $s is a string, $s otherwise
+/// 
+/// @usage r-trim('  hello  ') // '  hello'
+/// 
+@function r-trim($s) {
+  @if is-not-string($s) {@return $s; }
+
+  $start: 1;
+  $end: string.length($s);
+  // right
+  @while $end >= $start and string.slice($s, $end, $end) == ' ' { $end: $end - 1; }
+
+  @if $start > $end { @return ''; }
+  @return string.slice($s, $start, $end);
+}
+
+/// Compact spaces
+/// @param $s Any value
+/// @return string String with compacted spaces if $s is a string, $s otherwise
+///
+/// @usage compact-spaces('  hello   world  ') // 'hello world'
+///
+@function compact-spaces($s) {
+  @if is-null($s) {
+    @return null;
+  }
+
+  $len: string.length($s);
+  $out: '';
+  $prev-space: false;
+
+  @for $i from 1 through $len {
+    $ch: string.slice($s, $i, $i);
+    @if is-space($ch) {
+      @if not $prev-space { $out: $out + ' '; }
+    } @else {
+      $out: $out + $ch;
+    }
+    $prev-space: is-space($ch);
+  }
+
+  @return trim($out);
+}
+
+/// Split a string into two parts by the first occurrence of a slash
+/// @param $s Any value
+/// @return list A list of two elements: the part before the slash and the part after
+///
+/// @usage split-slash('10px / 20px') // ('10px', '20px')
+/// 
+@function split-slash($s) {
+  $idx: string.index($s, '/');
+  @if $idx == null { @return ($s, null); }
+  $left: trim(string.slice($s, 1, $idx - 1));
+  $right: trim(string.slice($s, $idx + 1));
+  @return ($left, $right);
+}
+
+/// Split a string by spaces into a list of strings
+/// @param $s Any value
+/// @return list A list of strings split by spaces, or $s if it's not a string
+/// 
+/// @usage split-spaces('  hello   world  ') // ('hello', 'world')
+/// 
+@function split-spaces($s) {
+  $s: compact-spaces(#{$s});
+  $len: string.length($s);
+  $buf: '';
+  $out: ();
+  @for $i from 1 through $len {
+    $ch: string.slice($s, $i, $i);
+    @if $ch == ' ' {
+      @if string.length($buf) > 0 { $out: list.append($out, $buf, space); $buf: ''; }
+    } @else { $buf: $buf + $ch; }
+  }
+  @if string.length($buf) > 0 { $out: list.append($out, $buf, space); }
+  @return $out;
+}
+
+/// Split a string by commas into a list of strings
+/// @param $s Any value
+/// @return list A list of strings split by commas, or $s if it's not a string
+///
+/// @usage split-comma('  hello,   world  ') // ('hello', 'world')
+///
+@function split-comma($s) {
+  $len: string.length($s);
+  $buf: '';
+  $out: ();
+  @for $i from 1 through $len {
+    $ch: string.slice($s, $i, $i);
+    @if $ch == ',' {
+      @if string.length($buf) > 0 { $out: list.append($out, trim($buf), space); $buf: ''; }
+    } @else { $buf: $buf + $ch; }
+  }
+  @if string.length($buf) > 0 { $out: list.append($out, trim($buf), space); }
+  @return $out;
+}
+
+/// Check if a string contains a substring
+/// @param $s Any value
+/// @param $needle Any value
+/// @return bool True if $s contains $needle, false otherwise, or false if $s or $needle is not a string
+/// 
+/// @usage str-contains('hello world', 'world') // true
+/// @usage str-contains('hello world', 'foo') // false
+///
+@function str-contains($s, $needle) {
+  @if is-not-string($s) or is-not-string($needle) {@return false; }
+  @return string.index(#{$s}, #{$needle}) != null;
+}
+
+/// Replace all occurrences of a substring in a string with another substring
+/// @param $s Any value
+/// @param $search Any value
+/// @param $replace Any value
+/// @return string A new string with all occurrences of $search replaced by $replace if $s is a string, $s otherwise
+///
+/// @usage str-replace('hello world', 'world', 'there') // 'hello there'
+///
+@function str-replace($s, $search, $replace) {
+  @if is-not-string($s) {@return $s; }
+  $idx: string.index($s, $search);
+  @if $idx == null { @return $s; }
+  @return string.slice($s, 1, $idx - 1) + $replace + str-replace(string.slice($s, $idx + string.length($search)), $search, $replace);
+}

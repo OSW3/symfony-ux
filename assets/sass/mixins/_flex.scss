@@ -21,6 +21,7 @@
 @use "./display" as *;
 @use "./gaps" as *;
 @use "./../helpers/helpers" as h;
+@use "./../helpers/length" as *;
 
 
 // * ------------------------------------------------------------------------ //
@@ -121,7 +122,7 @@ $length-default-unit: 1px !default;
     @if $triple != null {
       $grow: list.nth($triple, 1);
       $shrk: list.nth($triple, 2);
-      $basi: h.normalize-length(list.nth($triple, 3), $length-default-unit);
+      $basi: to-length(list.nth($triple, 3), $length-default-unit);
 
       // IE10/11
       @include h.emit('-ms-flex-positive', $grow, $important);
@@ -227,7 +228,7 @@ $length-default-unit: 1px !default;
 ///  @include flex-basis(auto); // flex-basis: auto;
 ///
 @mixin flex-basis($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: to-length($value, $length-default-unit);
   @if $value != null and h.fallbacks-enabled() {
     @include h.emit('-webkit-flex-basis', $v, $important);
     @include h.emit('-ms-flex-preferred-size', $v, $important);

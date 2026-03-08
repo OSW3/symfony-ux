@@ -1,0 +1,74 @@
+// * ===========================================================================
+// *  List helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for lists, such as checking if a list
+// *  is empty or not.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:map';
+@use 'sass:meta';
+@use 'sass:list';
+
+/// is list
+/// @param $v Any value
+/// @return bool True if $v is a list, false otherwise
+/// 
+/// @usage is-list(1) // false
+/// @usage is-list('a, b, c') // false
+/// @usage is-list((a, b, c)) // true
+/// @usage is-list((a b c)) // true
+/// 
+@function is-list($v) {
+  @return meta.type-of($v) == 'list';
+}
+
+/// Is not list
+/// @param $v Any value
+/// @return bool True if $v is not a list, false otherwise
+/// 
+/// @usage is-not-list(1) // true
+/// @usage is-not-list('a, b, c') // true
+/// @usage is-not-list((a, b, c)) // false
+/// @usage is-not-list((a b c)) // false
+/// 
+@function is-not-list($v) {
+  @return not is-list($v);
+}
+
+/// In list
+/// @param $l Any value
+/// @param $v Any value
+/// @return bool True if $value is in $list, false otherwise
+/// 
+/// @usage in-list((a, b, c), a) // true
+/// @usage in-list((a, b, c), d) // false
+/// 
+@function in-list($l, $v) {
+  @if is-not-list($l) { @return false; }
+  @return list.index($l, $v) != null;
+}
+
+/// Not in list
+/// @param $l Any value
+/// @param $v Any value
+/// @return bool True if $value is not in $list, false otherwise
+/// 
+/// @usage not-in-list((a, b, c), a) // false
+/// @usage not-in-list((a, b, c), d) // true
+/// 
+@function not-in-list($l, $v) {
+  @return not in-list($l, $v);
+}
+
+@function add-to-list($l, $v) {
+  @if is-not-list($l) {
+    @return ($v,);
+  }
+  @if not-in-list($l, $v) {
+    @return list.append($l, $v);
+  }
+  @return $l;
+}

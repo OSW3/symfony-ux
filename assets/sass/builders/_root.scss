@@ -1,175 +1,211 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builders/root.scss -------------
+// * ===========================================================================
+// *  :root Builder
+// * ===========================================================================
 // *
-// *    Builder for CSS variables
+// *  This file defines the :root builder, which is responsible for generating 
+// *  the CSS variables used throughout the framework. 
+// *  
+// *  The variables are defined based on the values stored in the storage files, 
+// *  and are generated using mixins and functions to ensure consistency and
+// *  maintainability.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use "sass:map";
 @use "sass:list";
 @use "sass:meta";
 @use "sass:color";
 @use "sass:string";
+
 @use './../builders/banner';
-@use './../functions/color' as fnColor;
-@use './../functions/collection' as fnCollection;
-@use './../functions/map' as fnMap;
+@use './../storages/prefix' as *;
+
+// Data storage
 @use './../storages/fonts';
 @use './../storages/colors';
-@use './../storages/prefix';
 @use './../storages/themes';
 @use './../storages/transitions';
 
-@use './../components/alert';
-@use './../components/announcement';
-@use './../components/brand';
-@use './../components/breadcrumb';
-@use './../components/button';
-@use './../components/callout';
-@use './../components/copyright';
-@use './../components/form';
-@use './../components/navbar';
-@use './../components/link';
-@use './../components/menu';
-@use './../components/nav';
-@use './../components/offcanvas';
-@use './../components/scroll-to-top';
-@use './../components/toast';
-$prefix: prefix.$prefix;
+// Helpers
+@use './../helpers/color' as *;
+@use './../helpers/empty' as *;
+@use './../helpers/list' as *;
+@use './../helpers/map' as *;
+// @use './../functions/map' as fnMap;
+
+// @use './../components/alert';
+// @use './../components/announcement';
+// @use './../components/brand';
+// @use './../components/breadcrumb';
+// @use './../components/button';
+// @use './../components/callout';
+// @use './../components/copyright';
+// @use './../components/form';
+// @use './../components/navbar';
+// @use './../components/link';
+// @use './../components/menu';
+// @use './../components/nav';
+// @use './../components/offcanvas';
+// @use './../components/scroll-to-top';
+// @use './../components/toast';
 
 
-$base-radius: 6px; // todo; move this definition
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Root base');
 
 
 
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
 
-// * Colors
-// * ---------------------------------------------
-
+/// Colors
+/// 
+/// A map of color names and their corresponding color values, defined in the
+/// storage file. The colors are used to generate the CSS variables for the 
+/// color palette, as well as their declinations and contrasts. The colors can 
+/// be customized by the user by modifying the storage file, and can be 
+/// accessed in the components and mixins using the css-var() function with the
+/// appropriate variable name (e.g. css-var('primary') for the primary color).
+///
 $colors : colors.$colors;
 
-// * Unset useless colors
-@if fnCollection.notEmpty(colors.$useless) {
-    @each $key, $value in $colors {
-        @if fnCollection.keyExists(colors.$useless, $key) {
-            $colors: fnCollection.unset($colors, $key);
-        }
+
+// $base-radius: 6px; // todo; move this definition
+
+// * ---------------------------------------------
+
+// $themes: fnMap.merge-multiple(
+//     // alert.$theme-properties, 
+//     // announcement.$theme-properties, 
+//     // brand.$theme-properties, 
+//     // breadcrumb.$theme-properties, 
+//     // button.$theme-properties, 
+//     // callout.$theme-properties, 
+//     // copyright.$theme-properties, 
+//     // form.$theme-properties, 
+//     // navbar.$theme-properties, 
+//     // link.$theme-properties, 
+//     // menu.$theme-properties, 
+//     // nav.$theme-properties, 
+//     // offcanvas.$theme-properties, 
+//     // scroll-to-top.$theme-properties, 
+//     // toast.$theme-properties, 
+//     // map.get(themes.$themes, themes.$default)
+// );
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Remove useless colors from colors list
+/// 
+@if is-not-empty(colors.$useless) {
+  @each $key, $value in $colors {
+    @if in-list(colors.$useless, $key) {
+      $colors: unset-key($colors, $key);
     }
+  }
 }
 
-
-
-// * Components Theme
-// * ---------------------------------------------
-
-$themes: fnMap.merge-multiple(
-    alert.$theme-properties, 
-    announcement.$theme-properties, 
-    brand.$theme-properties, 
-    breadcrumb.$theme-properties, 
-    button.$theme-properties, 
-    callout.$theme-properties, 
-    copyright.$theme-properties, 
-    form.$theme-properties, 
-    navbar.$theme-properties, 
-    link.$theme-properties, 
-    menu.$theme-properties, 
-    nav.$theme-properties, 
-    offcanvas.$theme-properties, 
-    scroll-to-top.$theme-properties, 
-    toast.$theme-properties, 
-    map.get(themes.$themes, themes.$default)
-);
-
-
-// * Build CSS
-// * ---------------------------------------------
-
+/// Build the css variables
+///
 :root {
-    // --#{$prefix}inherit: inherit;
+  // --#{$prefix}inherit: inherit;
 
-    // Border Radius
-    // --
+  // Border Radius
+  // --
 
-    --#{$prefix}border-radius-none       : 0px;
-    --#{$prefix}border-radius-small      : #{$base-radius * 0.5};
-    --#{$prefix}border-radius-normal     : #{$base-radius * 1};
-    --#{$prefix}border-radius-large      : #{$base-radius * 2};
-    --#{$prefix}border-radius-pill       : 50%;
-    --#{$prefix}border-radius-half-pill  : 9999px;
-    --#{$prefix}border-radius-half-circle: 9999px 0;
+  // --#{$prefix}border-radius-none       : 0px;
+  // --#{$prefix}border-radius-small      : #{$base-radius * 0.5};
+  // --#{$prefix}border-radius-normal     : #{$base-radius * 1};
+  // --#{$prefix}border-radius-large      : #{$base-radius * 2};
+  // --#{$prefix}border-radius-pill       : 50%;
+  // --#{$prefix}border-radius-half-pill  : 9999px;
+  // --#{$prefix}border-radius-half-circle: 9999px 0;
 
 
-    // Colors
-    // --
+  /// Build colors css variables
+  /// 
+  @each $color-name, $color-value in $colors {
+    --#{prefix($color-name)}: #{$color-value};
+  }
 
-    @each $color-name, $color-value in $colors {
+  /// Build colors declinations css variables (tints / shades)
+  /// 
+  @each $color-name, $color-value in $colors {
+    @each $declination-name, $declination-rules in colors.$declinations {
+      @if $color-name == $declination-name {
+        @each $declination in $declination-rules {
 
-        --#{$prefix}#{$color-name}: #{$color-value};
+          $mode : list.nth($declination, 1);
+          $value: list.nth($declination, 2);
 
-        @each $declination-name, $declination-rules in colors.$declinations {
-            @if $color-name == $declination-name {
-                @each $declination in $declination-rules {
+          @if $mode == tint {
+            $color: color-tint($color-value, $value);
+            --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+          }
+          @else {
+            $color: color-shade($color-value, $value);
+            --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
+          }
 
-                    $mode : list.nth($declination, 1);
-                    $value: list.nth($declination, 2);
-
-                    @if $mode == tint {
-                        $color: fnColor.tint($color-value, $value);
-                        // $color: fnColor.rgb-to-hex($color);
-                        --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
-                    }
-                    @else {
-                        $color: fnColor.shade($color-value, $value);
-                        // $color: fnColor.rgb-to-hex($color);
-                        --#{$prefix}#{$color-name}-#{$mode}-#{string.slice(#{$value}, 1, -2)}: #{$color};
-                    }
-
-                }
-            }
         }
+      }
     }
+  }
+
+  /// Build transitions css variables
+  /// 
+  @each $transition-name, $transition-value in transitions.$transitions {
+    $delay: $transition-value * transitions.$base;
+    --#{prefix(transition-#{$transition-name})}: #{$delay};
+  }
+
+  /// Build fonts css variables
+  /// 
+  @each $font-name, $font-properties in fonts.$fonts {
+    --#{$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
+  }
 
 
-    // Transition Delays
-    // --
+  // Components Themes
+  // --
+  
+  // // * Default components themes
+  // @each $name, $value in $themes {
+  //     @if $value {
+  //         --#{$prefix}#{$name}: #{$value};
+  //     }
+  // }
 
-    @each $transition-name, $transition-value in transitions.$transitions {
-        $delay: $transition-value * transitions.$base;
-        --#{$prefix}transition-#{$transition-name}: #{$delay};
-    }
-
-
-    // Font families
-    // --
-
-    @each $font-name, $font-properties in fonts.$fonts {
-        --#{$prefix}font-#{$font-name}: #{map.get($font-properties, family)};
-    }
-
-
-    // Components Themes
-    // --
-    
-    // * Default components themes
-    @each $name, $value in $themes {
-        @if $value {
-            --#{$prefix}#{$name}: #{$value};
-        }
-    }
-
-    // * Redefined Default components themes from themes definitions
-    @each $theme-name, $properties in themes.$themes {
-        @if $theme-name != themes.$default {
-            &[data-theme=#{$theme-name}] {
-                @each $property-name, $value in $properties {
-    
-                    @if map.has-key($themes, $property-name) and $value {
-                        --#{$prefix}#{$property-name}: #{$value};
-                    }
-    
-                }
-            }
-        }
-    }
+  // // * Redefined Default components themes from themes definitions
+  // @each $theme-name, $properties in themes.$themes {
+  //     @if $theme-name != themes.$default {
+  //         &[data-theme=#{$theme-name}] {
+  //             @each $property-name, $value in $properties {
+  
+  //                 @if map.has-key($themes, $property-name) and $value {
+  //                     --#{$prefix}#{$property-name}: #{$value};
+  //                 }
+  
+  //             }
+  //         }
+  //     }
+  // }
 
 }

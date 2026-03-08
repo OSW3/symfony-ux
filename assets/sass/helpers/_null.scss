@@ -1,0 +1,37 @@
+// * ===========================================================================
+// *  Null helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for working with null values in 
+// *  Sass. These functions allow you to check if a value is null, if it's 
+// *  not null, and to coerce values to null.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+/// Is null
+/// @param $v Any value
+/// @return bool True if $v is null, false otherwise
+/// 
+/// @usage is-null(null) // true
+/// @usage is-null('') // false
+/// @usage is-null(0) // false
+/// @usage is-null(false) // false
+/// 
+@function is-null($v) {
+  @return $v == null or $v == '';
+}
+
+/// Is not null
+/// @param $v Any value
+/// @return bool True if $v is not null, false otherwise
+/// 
+/// @usage is-not-null(null) // false
+/// @usage is-not-null('') // false
+/// @usage is-not-null(0) // true
+/// @usage is-not-null(false) // true
+/// 
+@function is-not-null($v) {
+  @return not is-null($v);
+}

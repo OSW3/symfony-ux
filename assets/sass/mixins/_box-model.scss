@@ -50,9 +50,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include width(100); // width: 100px;
-///   @include width(100px); // width: 100px;
-///   @include width(100%, true); // width: 100% !important;
+///  @include width(100); // width: 100px;
+///  @include width(100px); // width: 100px;
+///  @include width(100%, true); // width: 100% !important;
 /// 
 @mixin width($value, $important: false) { 
   @include h.dim(width, $value, $important); 
@@ -66,13 +66,13 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include min-width(100); // min-width: 100px;
-///   @include min-width(100px); // min-width: 100px;
-///   @include min-width(100%, true); // min-width: 100% !important
+///  @include min-width(100); // min-width: 100px;
+///  @include min-width(100px); // min-width: 100px;
+///  @include min-width(100%, true); // min-width: 100% !important
 ///
 @mixin min-width($value, $important: false) {
-    @include h.dim(min-width, $value, $important); 
-    @if meta.content-exists() { @content; }
+  @include h.dim(min-width, $value, $important); 
+  @if meta.content-exists() { @content; }
 }
 
 /// Defines the maximum width of an element.
@@ -82,25 +82,20 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include max-width(100); // max-width: 100px;
-///   @include max-width(100px); // max-width: 100px;
-///   @include max-width(100%, true); // max-width: 100% !important
+///  @include max-width(100); // max-width: 100px;
+///  @include max-width(100px); // max-width: 100px;
+///  @include max-width(100%, true); // max-width: 100% !important
 ///
 @mixin max-width($value, $important: false) {
   @include h.dim(max-width, $value, $important); 
   @if meta.content-exists() { @content; }
 }
 
-
-// * ---------------------------------------------
-// * Width (aliases)
-// * ---------------------------------------------
-
 /// Alias for width: auto.
 /// 
 /// Usage:
-///   @include width-auto; // width: auto;
-///   @include width-auto(true); // width: auto !important
+///  @include width-auto; // width: auto;
+///  @include width-auto(true); // width: auto !important
 ///
 @mixin width-auto($important: false) {
   @include width(auto, $important);
@@ -110,8 +105,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for width: 100%.
 /// 
 /// Usage:
-///   @include width-full; // width: 100%;
-///   @include width-full(true); // width: 100% !important
+///  @include width-full; // width: 100%;
+///  @include width-full(true); // width: 100% !important
 ///
 @mixin width-full($important: false) {
   @include width(100%, $important); 
@@ -121,8 +116,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for width: fit-content.
 /// 
 /// Usage:
-///   @include width-fit; // width: fit-content;
-///   @include width-fit(true); // width: fit-content !important
+///  @include width-fit; // width: fit-content;
+///  @include width-fit(true); // width: fit-content !important
 ///
 @mixin width-fit($important: false) {
   @if h.fallbacks-enabled() {
@@ -135,8 +130,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for width: min-content.
 /// 
 /// Usage:
-///   @include width-min-content; // width: min-content;
-///   @include width-min-content(true); // width: min-content !important
+///  @include width-min-content; // width: min-content;
+///  @include width-min-content(true); // width: min-content !important
 ///
 @mixin width-min-content($important: false) {
   @if h.fallbacks-enabled() {
@@ -149,8 +144,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for width: max-content.
 /// 
 /// Usage:
-///   @include width-max-content; // width: max-content;
-///   @include width-max-content(true); // width: max-content !important
+///  @include width-max-content; // width: max-content;
+///  @include width-max-content(true); // width: max-content !important
 ///
 @mixin width-max-content($important: false) {
   @if h.fallbacks-enabled() {
@@ -172,9 +167,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include height(100); // height: 100px;
-///   @include height(100px); // height: 100px;
-///   @include height(100%, true); // height: 100% !important
+///  @include height(100); // height: 100px;
+///  @include height(100px); // height: 100px;
+///  @include height(100%, true); // height: 100% !important
 ///
 @mixin height($value, $important: false) {
   @include h.dim(height, $value, $important);
@@ -188,9 +183,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include min-height(100); // min-height: 100px;
-///   @include min-height(100px); // min-height: 100px;
-///   @include min-height(100%, true); // min-height: 100% !important
+///  @include min-height(100); // min-height: 100px;
+///  @include min-height(100px); // min-height: 100px;
+///  @include min-height(100%, true); // min-height: 100% !important
 ///
 @mixin min-height($value, $important: false) {
   @include h.dim(min-height, $value, $important);
@@ -204,25 +199,20 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include max-height(100); // max-height: 100px;
-///   @include max-height(100px); // max-height: 100px;
-///   @include max-height(100%, true); // max-height: 100% !important
+///  @include max-height(100); // max-height: 100px;
+///  @include max-height(100px); // max-height: 100px;
+///  @include max-height(100%, true); // max-height: 100% !important
 ///
 @mixin max-height($value, $important: false) {
   @include h.dim(max-height, $value, $important);
   @if meta.content-exists() { @content; }
 }
 
-
-// * ---------------------------------------------
-// * Height (aliases)
-// * ---------------------------------------------
-
 /// Alias for height: auto.
 /// 
 /// Usage:
-///   @include height-auto; // height: auto;
-///   @include height-auto(true); // height: auto !important
+///  @include height-auto; // height: auto;
+///  @include height-auto(true); // height: auto !important
 ///
 @mixin height-auto($important: false) {
   @include height(auto, $important);
@@ -232,8 +222,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for height: fit-content.
 /// 
 /// Usage:
-///   @include height-fit; // height: fit-content;
-///   @include height-fit(true); // height: fit-content !important
+///  @include height-fit; // height: fit-content;
+///  @include height-fit(true); // height: fit-content !important
 ///
 @mixin height-fit($important: false) {
   @if h.fallbacks-enabled() { 
@@ -246,8 +236,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for height: min-content.
 /// 
 /// Usage:
-///   @include height-min-content; // height: min-content;
-///   @include height-min-content(true); // height: min-content !important
+///  @include height-min-content; // height: min-content;
+///  @include height-min-content(true); // height: min-content !important
 ///
 @mixin height-min-content($important: false) {
   @include height(min-content, $important);
@@ -257,8 +247,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// Alias for height: max-content.
 /// 
 /// Usage:
-///   @include height-max-content; // height: max-content;
-///   @include height-max-content(true); // height: max-content !important
+///  @include height-max-content; // height: max-content;
+///  @include height-max-content(true); // height: max-content !important
 ///
 @mixin height-max-content($important: false) {
   @include height(max-content, $important);
@@ -279,9 +269,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include viewport(100, 100); // width: 100vw; height: 100vh;
-///   @include viewport(100px, 50%); // width: 100px; height: 50%;
-///   @include viewport(100, 100, true); // with !important
+///  @include viewport(100, 100); // width: 100vw; height: 100vh;
+///  @include viewport(100px, 50%); // width: 100px; height: 50%;
+///  @include viewport(100, 100, true); // with !important
 ///
 @mixin viewport($width: null, $height: null, $important: false) {
   @include width-viewport($width, $important);
@@ -296,9 +286,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include height-viewport(100); // height: 100vh;
-///   @include height-viewport(100px); // height: 100px;
-///   @include height-viewport(100%, true); // height: 100% !important
+///  @include height-viewport(100); // height: 100vh;
+///  @include height-viewport(100px); // height: 100px;
+///  @include height-viewport(100%, true); // height: 100% !important
 ///
 @mixin height-viewport($units: 100, $important: false) {
   @if $use-modern-viewport-units {
@@ -324,9 +314,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include width-viewport(100); // width: 100vw;
-///   @include width-viewport(100px); // width: 100px;
-///   @include width-viewport(100%, true); // width: 100% !important
+///  @include width-viewport(100); // width: 100vw;
+///  @include width-viewport(100px); // width: 100px;
+///  @include width-viewport(100%, true); // width: 100% !important
 ///
 @mixin width-viewport($units: 100, $important: false) {
   @if $use-modern-viewport-units {
@@ -358,9 +348,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include size(100, 200); // width: 100px; height: 200px;
-///   @include size(100px, 50%); // width: 100px; height: 50%;
-///   @include size(100, 200, true); // width: 100px; height: 200px; with !important
+///  @include size(100, 200); // width: 100px; height: 200px;
+///  @include size(100px, 50%); // width: 100px; height: 50%;
+///  @include size(100, 200, true); // width: 100px; height: 200px; with !important
 ///
 @mixin size($width: null, $height: null, $important: false) {
   @include width($width, $important);
@@ -376,9 +366,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include min-size(100, 200); // min-width: 100px; min-height: 200px;
-///   @include min-size(100px, 50%); // min-width: 100px; min-height: 50%;
-///   @include min-size(100, 200, true); // min-width: 100px; min-height: 200px; with !important
+///  @include min-size(100, 200); // min-width: 100px; min-height: 200px;
+///  @include min-size(100px, 50%); // min-width: 100px; min-height: 50%;
+///  @include min-size(100, 200, true); // min-width: 100px; min-height: 200px; with !important
 ///
 @mixin min-size($min-width: null, $min-height: null, $important: false) {
   @include min-width($min-width, $important);
@@ -394,9 +384,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include max-size(100, 200); // max-width: 100px; max-height: 200px;
-///   @include max-size(100px, 50%); // max-width: 100px; max-height: 50%;
-///   @include max-size(100, 200, true); // max-width: 100px; max-height: 200px; with !important
+///  @include max-size(100, 200); // max-width: 100px; max-height: 200px;
+///  @include max-size(100px, 50%); // max-width: 100px; max-height: 50%;
+///  @include max-size(100, 200, true); // max-width: 100px; max-height: 200px; with !important
 ///
 @mixin max-size($max-width: null, $max-height: null, $important: false) {
   @include max-width($max-width, $important);
@@ -411,9 +401,9 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include square(100); // width: 100px; height: 100px;
-///   @include square(100px); // width: 100px; height: 100px;
-///   @include square(100%, true); // width: 100%; height: 100%; with !important
+///  @include square(100); // width: 100px; height: 100px;
+///  @include square(100px); // width: 100px; height: 100px;
+///  @include square(100%, true); // width: 100%; height: 100%; with !important
 ///
 @mixin square($size, $important: false) {
   @include size($size, $size, $important);
@@ -426,8 +416,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include content-size; // width: max-content; height: auto;
-///   @include content-size(true); // width: max-content; height: auto; with !important
+///  @include content-size; // width: max-content; height: auto;
+///  @include content-size(true); // width: max-content; height: auto; with !important
 ///
 @mixin content-size($important: false) {
   @include width(max-content, $important);
@@ -441,8 +431,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include size-auto; // width: auto; height: auto;
-///   @include size-auto(true); // width: auto; height: auto; with !important
+///  @include size-auto; // width: auto; height: auto;
+///  @include size-auto(true); // width: auto; height: auto; with !important
 ///
 @mixin size-auto($important: false) {
   @include size(auto, auto, $important);
@@ -455,8 +445,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declarations (default: false).
 /// 
 /// Usage:
-///   @include full-size; // width: 100%; height: 100%;
-///   @include full-size(true); // width: 100%; height: 100%; with !important
+///  @include full-size; // width: 100%; height: 100%;
+///  @include full-size(true); // width: 100%; height: 100%; with !important
 ///
 @mixin full-size($important: false) {
   @include size(100%, 100%, $important);
@@ -476,8 +466,8 @@ $emit-viewport-svh-lvh: false !default; // désactivé par défaut
 /// @param {boolean} $important - Whether to add !important to the declaration (default: false).
 /// 
 /// Usage:
-///   @include box-sizing(border-box); // box-sizing: border-box;
-///   @include box-sizing(content-box, true); // box-sizing: content-box !important;
+///  @include box-sizing(border-box); // box-sizing: border-box;
+///  @include box-sizing(content-box, true); // box-sizing: content-box !important;
 ///
 @mixin box-sizing($value: border-box, $important: false) {
   @if not ($value == border-box or $value == content-box) {

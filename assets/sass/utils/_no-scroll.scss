@@ -4,13 +4,38 @@
 // *
 // * ---------------------------------------------------------------------------
 
-@use './../builders/banner';
-@use './../storages/prefix';
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
 
-@include banner.header('Utils No Scroll');
-$prefix: prefix.$prefix;
+@use './../mixins/overflow' as *;
+@use './../mixins/box-model' as *;
 
-.#{$prefix}no-scroll {
-    overflow: hidden;
-    height: 100%;
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Component name
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'no-scroll';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('No Scroll');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+.#{prefix($_component)} {
+  @include overflow-hidden;
+  @include height(100%);
 }

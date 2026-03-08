@@ -1,36 +1,36 @@
 @use 'sass:string';
 @use 'sass:meta';
 
-@function is-empty($var) {
-    @return $var == null or $var == "" or (meta.type-of($var) == 'list' and length($var) == 0) or (type-of($var) == 'map' and length($var) == 0);
-}
+// @function is-empty($var) {
+//     @return $var == null or $var == "" or (meta.type-of($var) == 'list' and length($var) == 0) or (type-of($var) == 'map' and length($var) == 0);
+// }
 
-@function not-empty($var) {
-    @return $var != null and $var != "" and (meta.type-of($var) != 'list' or length($var) != 0) and (type-of($var) != 'map' or length($var) != 0);
-}  
+// @function not-empty($var) {
+//     @return $var != null and $var != "" and (meta.type-of($var) != 'list' or length($var) != 0) and (type-of($var) != 'map' or length($var) != 0);
+// }  
 
-@function str-replace($string, $search, $replace: '') {
-    // @if meta.type-of($string) == "string" {
-    //     $string: string.unquote($string);
-    // } 
-    $index: string.index($string, $search);
+// @function str-replace($string, $search, $replace: '') {
+//     // @if meta.type-of($string) == "string" {
+//     //     $string: string.unquote($string);
+//     // } 
+//     $index: string.index($string, $search);
   
-    @if $index {
-      @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
-    }
+//     @if $index {
+//       @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+//     }
   
-    @return $string;
-}
+//     @return $string;
+// }
 
 @function px-to-rem($px, $base: 16px) {
     @return calc($px / $base) * 1rem;
 }
 
 
-@function is_important($isImportant) {
-  @if $isImportant {
-    @return "!important";
-  } @else {
-    @return "";
-  }
-}
+// @function is_important($isImportant) {
+//   @if $isImportant {
+//     @return "!important";
+//   } @else {
+//     @return "";
+//   }
+// }

@@ -15,6 +15,7 @@
 @use "./display" as *;
 @use "./gaps" as *;
 @use "./../helpers/helpers" as h;
+@use "./../helpers/string" as *;
 
 
 // * ------------------------------------------------------------------------ //
@@ -122,18 +123,18 @@ $length-default-unit: 1px !default;
 
   // Décomposition (fallbacks longhands) si activé et si on peut parser proprement
   @if h.fallbacks-enabled() and $value != null and $value != '' and meta.type-of($value) == 'string' {
-    $raw: h.str-compact-spaces($value);
+    $raw: compact-spaces($value);
 
     // 1) Cas avec slash — "X / Y"
-    @if h.str-contains($raw, '/') {
-      $pair: h.str-split-slash($raw);
+    @if str-contains($raw, '/') {
+      $pair: split-slash($raw);
       $left: list.nth($pair, 1);
       $right: list.nth($pair, 2);
 
         // 1.a) Forme auto-flow … / …
-      @if h.str-contains($left, 'auto-flow') {
+      @if str-contains($left, 'auto-flow') {
         // auto-flow
-        @if h.str-contains($left, 'dense') {
+        @if str-contains($left, 'dense') {
           @include h.emit('grid-auto-flow', dense, $important);
         } @else {
           @include h.emit('grid-auto-flow', row, $important);
@@ -145,16 +146,16 @@ $length-default-unit: 1px !default;
         // retire "auto-flow"
         $pos: string.index($tmp, 'auto-flow');
         @if $pos != null {
-          $before: h.trim(string.slice($tmp, 1, $pos - 1));
-          $after: h.trim(string.slice($tmp, $pos + string.length('auto-flow')));
-          $tmp: h.str-compact-spaces($before + ' ' + $after);
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('auto-flow')));
+          $tmp: compact-spaces($before + ' ' + $after);
         }
         // retire "dense"
-        @if h.str-contains($tmp, 'dense') {
+        @if str-contains($tmp, 'dense') {
           $pos: string.index($tmp, 'dense');
-          $before: h.trim(string.slice($tmp, 1, $pos - 1));
-          $after: h.trim(string.slice($tmp, $pos + string.length('dense')));
-          $tmp: h.str-compact-spaces($before + ' ' + $after);
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('dense')));
+          $tmp: compact-spaces($before + ' ' + $after);
         }
 
         // Ce qui reste côté gauche est potentiellement grid-auto-rows
@@ -180,9 +181,9 @@ $length-default-unit: 1px !default;
     @else {
       // 2) Pas de slash
       // 2.a) auto-flow [...?] (pas de colonnes explicites)
-      @if h.str-contains($raw, 'auto-flow') {
+      @if str-contains($raw, 'auto-flow') {
         // auto-flow
-        @if h.str-contains($raw, 'dense') {
+        @if str-contains($raw, 'dense') {
           @include h.emit('grid-auto-flow', dense, $important);
         } @else {
           @include h.emit('grid-auto-flow', row, $important);
@@ -192,15 +193,15 @@ $length-default-unit: 1px !default;
         $tmp: $raw;
         $pos: string.index($tmp, 'auto-flow');
         @if $pos != null {
-          $before: h.trim(string.slice($tmp, 1, $pos - 1));
-          $after: h.trim(string.slice($tmp, $pos + string.length('auto-flow')));
-          $tmp: h.str-compact-spaces($before + ' ' + $after);
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('auto-flow')));
+          $tmp: compact-spaces($before + ' ' + $after);
         }
-        @if h.str-contains($tmp, 'dense') {
+        @if str-contains($tmp, 'dense') {
           $pos: string.index($tmp, 'dense');
-          $before: h.trim(string.slice($tmp, 1, $pos - 1));
-          $after: h.trim(string.slice($tmp, $pos + string.length('dense')));
-          $tmp: h.str-compact-spaces($before + ' ' + $after);
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('dense')));
+          $tmp: compact-spaces($before + ' ' + $after);
         }
         @if $tmp != null and $tmp != '' {
           @include h.emit('grid-auto-rows', $tmp, $important);

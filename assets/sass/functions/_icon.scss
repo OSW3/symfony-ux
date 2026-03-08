@@ -3,6 +3,7 @@
 @use './color';
 @use './utils';
 // @use './../../variables/icons';
+@use './../helpers/string' as *;
 
 
 @function get ($icon, $fill-color: null) {
@@ -12,7 +13,7 @@
 
     $fill-color: color.encode($fill-color);
     // $icon: map.get(icons.$icons, $icon-name);;
-    $icon: utils.str-replace($icon, '#fill-color', $fill-color);
+    $icon: str-replace($icon, '#fill-color', $fill-color);
 
     @return $icon;
 }

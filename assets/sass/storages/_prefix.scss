@@ -18,3 +18,8 @@ $prefix: '' !default;
 @if meta.type-of(default.$prefix) == 'string' and default.$prefix != '' {
     $prefix: '#{default.$prefix}-';
 }
+
+
+@function prefix($name) {
+    @return '#{$prefix}#{$name}';
+}

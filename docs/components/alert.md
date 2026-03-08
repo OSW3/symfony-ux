@@ -76,7 +76,7 @@ symfony_ux:
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/themes';
 @use '<vendor-path>/osw3/symfony-ux/assets/sass/storages/prefix';
 @include themes.add('light', (
-    'alert--color': var(--#{$prefix}black),
+    'alert-color': var(--#{$prefix}black),
     // ...
 ));
 ```
@@ -387,15 +387,15 @@ Sets the type of transition timing function.
 
 ### **SASS Theme**
 
-#### `alert--color`
+#### `alert-color`
 Defines the text color of the alert. The default value is set to `var(--black)`, ensuring high readability.
 <hr>
 
-#### `alert--bg-color`
+#### `alert-bg-color`
 Specifies the background color of the alert. The default value is `var(--gray-300)`, providing a neutral and subtle contrast.
 <hr>
 
-#### `alert--border-color`
+#### `alert-border-color`
 Sets the border color of the alert. The default value is `var(--black)`, ensuring clear visual separation from surrounding elements.
 
 <!-- tabs:end -->

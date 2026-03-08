@@ -1,0 +1,82 @@
+// * ===========================================================================
+// *  Map helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for maps, such as checking if a map
+// *  is empty or not, and getting the length of a map.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:map';
+@use 'sass:meta';
+
+/// Is map
+/// @param $v Any value
+/// @return bool True if $v is a map, false otherwise
+///
+/// @usage is-map(1) // false
+/// @usage is-map('a, b, c') // false
+/// @usage is-map((a: 1, b: 2)) // true
+/// @usage is-map((a b c)) // false
+///
+@function is-map($v) {
+  @return meta.type-of($v) == 'map';
+}
+
+/// Is not map
+/// @param $v Any value
+/// @return bool True if $v is not a map, false otherwise
+/// 
+/// @usage is-not-map(1) // true
+/// @usage is-not-map('a, b, c') // true
+/// @usage is-not-map((a: 1, b: 2)) // false
+/// @usage is-not-map((a b c)) // true
+/// 
+@function is-not-map($v) {
+  @return not is-map($v);
+}
+
+/// Has key
+/// @param $map Any value
+/// @param $key Any value
+/// @return bool True if $map has the key $key, false otherwise
+/// 
+/// @usage has-key((a: 1, b: 2), a) // true
+/// @usage has-key((a: 1, b: 2), c) // false
+/// 
+@function has-key($map, $key) {
+  @if is-not-map($map) { @return false; }
+  @return map.has-key($map, $key);
+}
+
+/// Unset map key
+/// @param $map Any value
+/// @param $key Any value
+/// @return map A new map with the key $key removed from $map, or $map if $map is not a map
+/// 
+/// @usage unset-key((a: 1, b: 2), a) // (b: 2)
+/// @usage unset-key((a: 1, b: 2), c) // (a: 1, b: 2)
+/// @usage unset-key(1, a) // 1
+///
+@function unset-key($map, $key) {
+  @if not is-map($map) { @return $map; }
+  $new-map: ();
+  @each $k, $v in $map {
+    @if $k != $key {
+      $new-map: map.merge($new-map, ($k: $v));
+    }
+  }
+  @return $new-map;
+}
+
+
+@function get-key($map, $value) {
+  @if not is-map($map) { @return null; }
+  @each $k, $v in $map {
+    @if $v == $value {
+      @return $k;
+    }
+  }
+  @return null;
+};

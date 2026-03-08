@@ -1,208 +1,258 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builders/grid.scss -------------
+// * ===========================================================================
+// *  Structural Grid
+// * ===========================================================================
 // *
-// *    Builder for CSS Grid
+// *  This file defines the grid system of the framework, which is used to 
+// *  create a responsive layout. 
+// *  
+// *  The grid is based on the flexbox layout and is built using mixins and 
+// *  functions to ensure consistency and maintainability.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use "sass:math";
 @use "sass:map";
-@use './../mixins/flex' as *;
-@use './../mixins/box-model' as size;
-@use './../mixins/display' as *;
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
 @use './../storages/grid' as store;
-@use './../mixins/spacing' as *;
-@use './../builders/banner';
-@use './../storages/prefix';
-@use './../storages/spaces' as stored-spaces;
-@use './../storages/breakpoints' as stored-breakpoints;
+// @use './../storages/spaces' as stored-spaces;
+@use './../storages/breakpoints' as breakpoints-store;
 @use './../variables/alignments';
+
+// Helpers
+@use './../mixins/box-model' as *;
+@use './../mixins/display' as *;
+@use './../mixins/flex' as *;
+@use './../mixins/misc' as *;
+@use './../mixins/spacing' as *;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
 @include banner.header('Grid & Columns');
-$prefix: prefix.$prefix;
 
 
-// * Retrieve stored data
-// * ---------------------------------------------
 
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'grid';
+
+/// Number of divisions for the grid system
+/// e.g.: $divisions: 12 => .ui-column-1, ..., .ui-column-12
+/// 
 $divisions: store.$divisions;
-$breakpoints: stored-breakpoints.$breakpoints;
+
+/// Breakpoints
+/// 
+/// A map of breakpoints used in the framework, where the key is the breakpoint
+/// name and the value is the breakpoint value. The breakpoints are defined in
+/// the storage file and can be customized by the user. The breakpoints are 
+/// used to generate the CSS variables for the breakpoints, as well as their
+/// declinations and contrasts.
+/// 
+$breakpoints: breakpoints-store.$breakpoints;
 
 
-// * Grid mixins
-// * ---------------------------------------------
 
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
 
-
-// * Build CSS
-// * ---------------------------------------------
-
-// * Generate the Grid
-// * --
-
-.#{$prefix}grid {
-    @include display-flex();
-    @include flex-direction(row);
-    @include flex-wrap(wrap);
-
-    // Make grid direct children as wrapped
-    & > * {
-        @include flex-grow(1);
-        @include flex-shrink(0);
-        @include flex-basis(0%);
-        @include size.width(100%);
-        @include size.max-width(100%);
-        @include padding-x(var(--#{$prefix}gap-x, 0));
-        @include margin-y(var(--#{$prefix}gap-y, 0));
-    }
+@function use-var($c, $p, $fallback: null) {
+  @if $fallback != null {
+    @return var(--#{prefix($c)}-#{$p}, #{$fallback});
+  }
+  @return var(--#{prefix($c)}-#{$p});
 }
 
 
-// * Grid columns class
-// * --
 
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Build the CSS for the grid system
+/// The grid system is based on the flexbox layout and is built using mixins and functions to ensure consistency and maintainability.
+/// The grid system is composed of the following classes:
+/// - .ui-grid: the main grid container
+/// 
+.#{prefix($_component)} {
+  @include display-flex();
+  @include flex-direction(row);
+  @include flex-wrap(wrap);
+
+  // Make grid direct children as wrapped
+  & > * {
+    @include flex-grow(1);
+    @include flex-shrink(0);
+    @include flex-basis(0%);
+    @include width(100%);
+    @include max-width(100%);
+    @include padding-x(use-var($_component, 'gap-x', 0));
+    @include margin-y(use-var($_component, 'gap-y', 0));
+  }
+}
+
+/// Generate columns classes
+/// The columns classes are generated based on the number of divisions defined in the settings (e.g
+/// .ui-grid-column-1, ..., .ui-grid-column-12)
+/// 
 @if store.$enable-grid-columns-class {
-    .#{$prefix}grid {
+  .#{prefix($_component)} {
 
-        $selector-group : '';
+    $selector-group : '';
 
-        @for $i from 1 through $divisions {
-            $selector-group: $selector-group + '&-columns-#{$i}>*, ';
-        }
-
-        #{$selector-group} {
-            @include flex-grow(0);
-            @include flex-shrink(0);
-            @include flex-basis(auto);
-        }
-
-        @for $i from 1 through $divisions {
-            &-columns-#{$i}>* {
-                @include size.width(math.percentage(math.div(1,$i)));
-            }
-        }
+    @for $i from 1 through $divisions {
+      $selector-group: $selector-group + '&-columns-#{$i}>*, ';
     }
+
+    #{$selector-group} {
+      @include flex-grow(0);
+      @include flex-shrink(0);
+      @include flex-basis(auto);
+    }
+
+    @for $i from 1 through $divisions {
+      &-columns-#{$i}>* {
+        @include width(math.percentage(math.div(1,$i)));
+      }
+    }
+  }
 }
 
-
-// * Grid alignments classes
-// * --
-
+/// Generate grid alignments classes
+/// The grid alignments classes are generated based on the alignments defined in the settings (e
+/// e.g. .ui-grid-content-start, .ui-grid-content-center, .ui-grid-content-end, .ui-grid-content-space-between, .ui-grid-content-space-around, .ui-grid-content-space-evenly)
+/// 
 @if store.$enable-grid-alignments-class {
-    .#{$prefix}grid {
-        @each $name, $value in alignments.$flex-alignments {
-            &-content-#{$name} {
-                @include flex-justify-content($value, true);
-            }
-        }
+  .#{prefix($_component)} {
+    @each $name, $value in alignments.$flex-alignments {
+      &-content-#{$name} {
+        @include flex-justify-content($value, true);
+      }
     }
+  }
 }
 
-
-// * Columns sizes classes
-// * --
-
+/// Generate column classes
+/// The column classes are generated based on the number of divisions defined in the settings (e.g. .ui-column-1, .ui-column-2, ..., .ui-column-12)
+/// The column classes are also generated for each breakpoint defined in the settings (e.g. .ui-column-phone-1, .ui-column-phone-2, ..., .ui-column-phone-12, .ui-column-tablet-1, .ui-column-tablet-2, ..., .ui-column-tablet-12, ...)
+///
 @if store.$enable-column-sizes-class {
-    .#{$prefix}column {
-        content: '';
-        $selector-group : '';
+  .#{prefix(column)} {
 
-        @for $i from 1 through $divisions {
-            $selector-group: $selector-group + '&-#{$i}, ';
-        }
-
-        #{$selector-group} {
-            @include flex-grow(0);
-            @include flex-shrink(0);
-            @include flex-basis(var(--#{$prefix}column-width));
-            @include size.max-width(var(--#{$prefix}column-width));
-        }
-
-        // .column-xx
-        @for $i from 1 through $divisions {
-            &-#{$i} {
-                --#{$prefix}column-width: #{math.percentage(math.div($i, $divisions))};
-            }
-        }
-    
-        // .column-break
-        &-break {
-            @include flex-basis(100%);
-            @include size.height(0);
-            @include size.width(100%);
-            @include padding(0, 0, 0, 0, true);
-            @include margin(0, 0, 0, 0, true);
-        }
-
-
-        // Responsive columns
-        // --
-
-
-        $selector-group : '';
-
-        @each $key, $value in $breakpoints {
-            @for $i from 1 through $divisions {
-                $selector-group: $selector-group + '&-#{$key}-#{$i}, ';
-            }
-        }
-
-        #{$selector-group} {
-            @include flex-grow(0);
-            @include flex-shrink(0);
-            @include flex-basis(var(--#{$prefix}column-media-width));
-            @include size.max-width(var(--#{$prefix}column-media-width));
-        }
-
-        @each $key, $value in $breakpoints {
-            @media (min-width: map.get($breakpoints, $key)) {
-                @for $i from 1 through $divisions {
-                    &-#{$key}-#{$i} {
-                        --#{$prefix}column-media-width: #{math.percentage(math.div($i, $divisions))};
-
-                    }
-                }
-            }
-        }
+    $selector-group : '';
+    @for $i from 1 through $divisions {
+      $selector-group: $selector-group + '&-#{$i}, ';
     }
+
+    content: '';
+
+    #{$selector-group} {
+      @include flex-grow(0);
+      @include flex-shrink(0);
+      @include flex-basis(var(--#{$prefix}column-width));
+      @include max-width(var(--#{$prefix}column-width));
+    }
+
+    // .column-xx
+    @for $i from 1 through $divisions {
+      &-#{$i} {
+        --#{$prefix}column-width: #{math.percentage(math.div($i, $divisions))};
+      }
+    }
+
+    // .column-break
+    &-break {
+      @include flex-basis(100%);
+      @include height(0);
+      @include width(100%);
+      @include padding(0, 0, 0, 0, true);
+      @include margin(0, 0, 0, 0, true);
+    }
+
+
+    // Responsive columns
+    // --
+
+    $selector-group : '';
+
+    @each $key, $value in $breakpoints {
+      @for $i from 1 through $divisions {
+        $selector-group: $selector-group + '&-#{$key}-#{$i}, ';
+      }
+    }
+
+    #{$selector-group} {
+      @include flex-grow(0);
+      @include flex-shrink(0);
+      @include flex-basis(var(--#{$prefix}column-media-width));
+      @include max-width(var(--#{$prefix}column-media-width));
+    }
+
+    @each $key, $value in $breakpoints {
+      @media (min-width: map.get($breakpoints, $key)) {
+        @for $i from 1 through $divisions {
+          &-#{$key}-#{$i} {
+            --#{$prefix}column-media-width: #{math.percentage(math.div($i, $divisions))};
+          }
+        }
+      }
+    }
+  }
 }
 
-
-// * Generate Offset classes
-// * --
-
+/// Generate offset classes
+/// The offset classes are generated based on the number of divisions defined in the settings (e.g. .ui-column-offset-1, .ui-column-offset-2, ..., .ui-column-offset-12)
+/// The offset classes are also generated for each breakpoint defined in the settings (e.g. .ui-column-offset-phone-1, .ui-column-offset-phone-2, ..., .ui-column-offset-phone-12, .ui-column-offset-tablet-1, .ui-column-offset-tablet-2, ..., .ui-column-offset-tablet-12, ...)
+/// 
 @if store.$enable-column-offset-class {
-    .#{$prefix}offset {
-        @for $i from 1 through $divisions {
-            &-#{$i} {
-                margin-left: math.percentage(math.div($i, $divisions));
-            }
-        }
-
-        // Responsive offsets
-        @each $key, $values in $breakpoints {
-            @media (min-width: map.get($breakpoints, $key)) {
-                @for $i from 1 through $divisions {
-                    &-#{$key}-#{$i} {
-                        margin-left: math.percentage(math.div($i, $divisions));
-                    }
-                }
-            }
-        }
+  .#{prefix(offset)} {
+    @for $i from 1 through $divisions {
+      &-#{$i} {
+        @include margin-left(math.percentage(math.div($i, $divisions)));
+      }
     }
+
+    // Responsive offsets
+    @each $key, $values in $breakpoints {
+      @media (min-width: map.get($breakpoints, $key)) {
+        @for $i from 1 through $divisions {
+          &-#{$key}-#{$i} {
+            @include margin-left(math.percentage(math.div($i, $divisions)));
+          }
+        }
+      }
+    }
+  }
 }
 
-
-// * Generate Shift classes
-// * --
-
+/// Generate shift classes
+/// The shift classes are generated based on the number of divisions defined in the settings (e.g. .ui-shift-1, .ui-shift-2, ..., .ui-shift-12)
+/// The shift classes are also generated for each breakpoint defined in the settings (e.g. .ui-shift-phone-1, .ui-shift-phone-2, ..., .ui-shift-phone-12, .ui-shift-tablet-1, .ui-shift-table
+/// 
 @if store.$enable-column-shift-class {
-    .#{$prefix} {
-        &shift {
-            margin-right: 100%;
-            @for $i from 1 through $divisions {
-                &-#{$i} {
-                    margin-right: #{math.percentage(1 - math.div($i, $divisions))}; 
-                }
-            }
-        }
+  .#{prefix(shift)} {
+    @include margin-right(100%);
+
+    @for $i from 1 through $divisions {
+      &-#{$i} {
+        @include margin-right(#{math.percentage(1 - math.div($i, $divisions))});
+      }
     }
+  }
 }

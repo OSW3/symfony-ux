@@ -13,6 +13,7 @@
 @use "sass:list";
 @use "sass:math";
 @use "./../helpers/helpers" as h;
+@use "./../helpers/length" as *;
 
 
 // * ------------------------------------------------------------------------ //
@@ -133,7 +134,7 @@ $length-default-unit: 1px !default;
 ///  @include top(10px, true); // top: 10px !important
 ///
 @mixin top($value, $important: false) {
-  @include h.emit('top', h.normalize-length($value, $length-default-unit), $important);
+  @include h.emit('top', to-length($value, $length-default-unit), $important);
   @if meta.content-exists() { @content; }
 }
 
@@ -150,7 +151,7 @@ $length-default-unit: 1px !default;
 ///  @include right(10px, true); // right: 10px !important
 ///
 @mixin right($value, $important: false) {
-  @include h.emit('right', h.normalize-length($value, $length-default-unit), $important);
+  @include h.emit('right', to-length($value, $length-default-unit), $important);
   @if meta.content-exists() { @content; }
 }
 
@@ -166,7 +167,7 @@ $length-default-unit: 1px !default;
 ///  @include bottom(10px, true); // bottom: 10px !important
 ///
 @mixin bottom($value, $important: false) {
-  @include h.emit('bottom', h.normalize-length($value, $length-default-unit), $important);
+  @include h.emit('bottom', to-length($value, $length-default-unit), $important);
   @if meta.content-exists() { @content; }
 }
 
@@ -182,7 +183,7 @@ $length-default-unit: 1px !default;
 ///  @include left(10px, true); // left: 10px !important
 ///
 @mixin left($value, $important: false) {
-  @include h.emit('left', h.normalize-length($value, $length-default-unit), $important);
+  @include h.emit('left', to-length($value, $length-default-unit), $important);
   @if meta.content-exists() { @content; }
 }
 
@@ -324,7 +325,7 @@ $length-default-unit: 1px !default;
 ///  @include inset-inline-start(10px, true); // inset-inline-start: 10px !important;
 ///
 @mixin inset-inline-start($value, $important: false) {
-  @include h.emit('inset-inline-start', h.normalize-length($value, $length-default-unit), $important); 
+  @include h.emit('inset-inline-start', to-length($value, $length-default-unit), $important); 
   @if meta.content-exists() { @content; } 
 }
 
@@ -338,7 +339,7 @@ $length-default-unit: 1px !default;
 ///  @include inset-inline-end(10px, true); // inset-inline-end: 10px !important;
 ///
 @mixin inset-inline-end($value, $important: false) {
-  @include h.emit('inset-inline-end', h.normalize-length($value, $length-default-unit), $important); 
+  @include h.emit('inset-inline-end', to-length($value, $length-default-unit), $important); 
   @if meta.content-exists() { @content; } 
 }
 
@@ -352,7 +353,7 @@ $length-default-unit: 1px !default;
 ///  @include inset-block-start(10px, true); // inset-block-start: 10px !important;
 ///
 @mixin inset-block-start($value, $important: false) {
-  @include h.emit('inset-block-start',  h.normalize-length($value, $length-default-unit), $important); 
+  @include h.emit('inset-block-start',  to-length($value, $length-default-unit), $important); 
   @if meta.content-exists() { @content; } 
 }
 
@@ -366,6 +367,6 @@ $length-default-unit: 1px !default;
 ///  @include inset-block-end(10px, true); // inset-block-end: 10px !important;
 ///
 @mixin inset-block-end($value, $important: false) {
-  @include h.emit('inset-block-end', h.normalize-length($value, $length-default-unit), $important); 
+  @include h.emit('inset-block-end', to-length($value, $length-default-unit), $important); 
   @if meta.content-exists() { @content; } 
 }

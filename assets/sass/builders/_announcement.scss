@@ -10,24 +10,26 @@
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:map";
 @use "sass:meta";
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
+@use './../storages/announcement' as store;
+
+// Helpers
+@use './../mixins/box-model' as *;
+@use './../mixins/display' as *;
+@use './../mixins/flex' as *;
+@use './../mixins/states' as *;
+@use './../mixins/transition' as *;
+@use './../mixins/visual' as *;
+
+// @use './../components/announcement';
 @use './ticker';
 @use './rotator';
-@use './../mixins/flex' as *;
-@use './../builders/banner';
-@use './../storages/prefix';
-@use './../mixins/transition' as *;
-@use './../storages/announcement' as store;
-// @use './../components/announcement';
-
-@use './../mixins/display' as *;
-@use './../mixins/box-model' as *;
-@use './../mixins/visual' as *;
-@use './../mixins/states' as *;
-
-$prefix: prefix.$prefix;
 
 
 
@@ -39,12 +41,25 @@ $prefix: prefix.$prefix;
 
 
 
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'announcement';
+
+
 
 // * ------------------------------------------------------------------------ //
 // * - Component Styles                                                     - //
 // * ------------------------------------------------------------------------ //
 
-.#{$prefix}announcement {
+.#{prefix($_component)} {
+    
     /* Layout */
     @include display-flex();
     @include flex-justify-content(center);

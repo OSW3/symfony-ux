@@ -60,6 +60,114 @@ $states-aliases-extra: (
 
 
 
+
+
+
+
+@mixin _maybe-forced-colors($forced-colors: false) {
+  @if $forced-colors == true { @media (forced-colors: active) { @content; } }
+  @else { @content; }
+}
+@mixin _maybe-color-scheme($scheme: null) {
+  @if $scheme == dark   { @media (prefers-color-scheme: dark)  { @content; } }
+  @else if $scheme == light { @media (prefers-color-scheme: light) { @content; } }
+  @else { @content; }
+}
+
+
+/// Normalise une clé d’état en **chaîne** (supporte identifiant ou string)
+@function _state-key-normalize($k) {
+  @if meta.type-of($k) == 'string' { @return $k; }
+  @return meta.inspect($k); // ex. hover -> "hover", focus-within -> "focus-within"
+}
+
+/// Retourne la **liste de sélecteurs** (non vides) pour un état donné (string)
+/// Lit $states-selectors puis $states-aliases-extra.
+/// Supporte les valeurs multi-sélecteurs séparés par des virgules.
+@function _state-selectors($k-str) {
+  @if map.has-key($states-selectors, $k-str) {
+    $raw: map.get($states-selectors, $k-str);
+    @return _split-selectors($raw);
+  }
+  @if map.has-key($states-aliases-extra, $k-str) {
+    $raw: map.get($states-aliases-extra, $k-str);
+    @return _split-selectors($raw);
+  }
+  // fallback : si inconnu, on traite la clé comme sélecteur littéral
+  @return _split-selectors($k-str);
+}
+
+/// Split une chaîne potentiellement multi-sélecteurs (séparés par virgules)
+/// et retourne **une liste** propre (sans blancs autour).
+@function _split-selectors($raw) {
+  @if $raw == null or $raw == "" { @return (""); }
+  $s: string.unquote($raw);
+  $parts: ();
+  $start: 1;
+  $len: string.length($s);
+  @for $i from 1 through $len {
+    @if string.slice($s, $i, $i) == "," {
+      $seg: string.slice($s, $start, $i - 1);
+      $parts: list.append($parts, _trim($seg), comma);
+      $start: $i + 1;
+    }
+  }
+  // dernier segment
+  $seg: string.slice($s, $start, $len);
+  $parts: list.append($parts, _trim($seg), comma);
+
+  // filtre les vides
+  $clean: ();
+  @each $p in $parts {
+    @if $p != "" { $clean: list.append($clean, $p, comma); }
+  }
+  @if list.length($clean) == 0 { @return (""); }
+  @return $clean;
+}
+
+/// Trim rudimentaire (début/fin) – évite dépendances externes
+@function _trim($s) {
+  @if meta.type-of($s) != 'string' { @return $s; }
+  $left: 1;
+  $right: string.length($s);
+
+  // trim left
+  @while $left <= $right and string.slice($s, $left, $left) == " " {
+    $left: $left + 1;
+  }
+  // trim right
+  @while $right >= $left and string.slice($s, $right, $right) == " " {
+    $right: $right - 1;
+  }
+  @return string.slice($s, $left, $right);
+}
+
+/// Compose un **sélecteur final** à partir du template `$selector`
+/// - Si `$selector` contient `:STATE`, on remplace `:STATE` par `$state`
+/// - Sinon, on concatène intelligemment :
+///    - si `$state` == "" → renvoie `$selector`
+///    - sinon            → renvoie `#{$selector}#{$state}`
+/// Retourne une **liste** (pour traiter multi-sélecteurs state).
+@function _compose-selectors($selector, $state) {
+  $sel: string.unquote($selector);
+  $state-list: _split-selectors($state);
+  $out: ();
+  @each $st in $state-list {
+    @if string.index($sel, ":STATE") {
+      $out: list.append($out, string.replace($sel, ":STATE", $st), comma);
+    } @else {
+      @if $st == "" {
+        $out: list.append($out, $sel, comma);
+      } @else {
+        $out: list.append($out, "#{$sel}#{$st}", comma);
+      }
+    }
+  }
+  @return $out;
+}
+
+
+
 // * ------------------------------------------------------------------------ //
 // * - API                                                                  - //
 // * ------------------------------------------------------------------------ //
@@ -86,7 +194,7 @@ $states-aliases-extra: (
 @mixin states($property, $values, $options: ()) {
   // options
   $selector: map.get($options, selector);
-  @if $selector == null { $selector: '&'; }
+  @if $selector == null { $selector: '&'; } // ⚠️ pas de &amp;
 
   $order: map.get($options, order);
   @if $order == null { $order: $states-default-order; }
@@ -97,23 +205,33 @@ $states-aliases-extra: (
   $forced-colors: map.get($options, forced-colors);
   $scheme: map.get($options, scheme);
 
-  @include h.maybe-forced-colors($forced-colors) {
-    @include h.maybe-color-scheme($scheme) {
+  @include _maybe-forced-colors($forced-colors) {
+    @include _maybe-color-scheme($scheme) {
 
       // 1) États dans l’ordre canonique
       @each $st in $order {
-        @if map.has-key($values, $st) {
-          $raw: map.get($values, $st);
+        @if map.has-key($values, $st) or map.has-key($values, _state-key-normalize($st)) {
+
+          // Récupération de la valeur via clé identifiante ou string
+          $raw: map.get($values, _state-key-normalize($st));
+          @if map.has-key($values, $st) { 
+            $raw: map.get($values, $st); 
+          }
+          // $raw: if(map.has-key($values, $st), map.get($values, $st), map.get($values, _state-key-normalize($st)));
+
           $pair: h.extract-val-important($raw, $important-global);
           $val: list.nth($pair, 1);
           $imp: list.nth($pair, 2);
 
           @if not (h.props-skip-null() and ($val == null or $val == '')) {
-            $state-sel: h.selectors-for($st);
-            $fulls: h.compose-selectors($selector, $state-sel);
-            @each $fs in $fulls {
-              #{$fs} {
-                @include h.emit($property, $val, $imp);
+            $k-str: _state-key-normalize($st);
+            $state-sels: _state-selectors($k-str);
+            @each $state-sel in $state-sels {
+              $fulls: _compose-selectors($selector, $state-sel);
+              @each $fs in $fulls {
+                #{$fs} {
+                  @include h.emit($property, $val, $imp);
+                }
               }
             }
           }
@@ -122,17 +240,21 @@ $states-aliases-extra: (
 
       // 2) États custom (non présents dans $order)
       @each $k, $raw in $values {
-        @if list.index($order, $k) == null {
+        $k-str: _state-key-normalize($k);
+        // si l’état n’est pas déjà dans l’ordre canonique
+        @if list.index($order, $k) == null and list.index($order, $k-str) == null {
           $pair: h.extract-val-important($raw, $important-global);
           $val: list.nth($pair, 1);
           $imp: list.nth($pair, 2);
 
           @if not (h.props-skip-null() and ($val == null or $val == '')) {
-            $state-sel: h.selectors-for($k);
-            $fulls: h.compose-selectors($selector, $state-sel);
-            @each $fs in $fulls {
-              #{$fs} {
-                @include h.emit($property, $val, $imp);
+            $state-sels: _state-selectors($k-str);
+            @each $state-sel in $state-sels {
+              $fulls: _compose-selectors($selector, $state-sel);
+              @each $fs in $fulls {
+                #{$fs} {
+                  @include h.emit($property, $val, $imp);
+                }
               }
             }
           }

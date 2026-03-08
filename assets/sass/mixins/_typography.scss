@@ -13,6 +13,7 @@
 @use "sass:list";
 @use "sass:math";
 @use "./../helpers/helpers" as h;
+@use "./../helpers/length" as *;
 
 
 // * ------------------------------------------------------------------------ //
@@ -68,7 +69,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include font-size(1.5); // font-size: 1.5; (unitless number treated as length using $length-default-unit)
 /// 
 @mixin font-size($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: to-length($value, $length-default-unit);
   @include h.emit('font-size', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -148,7 +149,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include line-height(20, true); // line-height: 20px !important; (number normalized to length using $length-default-unit)
 ///
 @mixin line-height($value, $important: false) {
-  $v: h.length-or-number($value, $length-default-unit);
+  $v: length-or-number($value, $length-default-unit);
   @include h.emit('line-height', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -165,7 +166,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include letter-spacing(normal, true); // letter-spacing: normal !important;
 ///
 @mixin letter-spacing($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: length-or-number($value, $length-default-unit);
   @include h.emit('letter-spacing', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -182,7 +183,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include word-spacing(normal, true); // word-spacing: normal !important;
 ///
 @mixin word-spacing($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: length-or-number($value, $length-default-unit);
   @include h.emit('word-spacing', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -262,8 +263,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
     @include h.emit('text-indent--', $out, $important);
   } 
   @else {
-    // $v: h.normalize-length($value, $length-default-unit);
-    $v: h.normalize-length($value, $length-default-unit);
+    $v: to-length($value, $length-default-unit);
     @include h.emit('text-indent', $v, $important);
   }
   @if meta.content-exists() { @content; }
@@ -389,7 +389,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include text-decoration-thickness(auto, true); // text-decoration-thickness: auto !important;
 /// 
 @mixin text-decoration-thickness($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: to-length($value, $length-default-unit);
   @include h.emit('text-decoration-thickness', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -406,7 +406,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include text-underline-offset(auto, true); // text-underline-offset: auto !important;
 /// 
 @mixin text-underline-offset($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: to-length($value, $length-default-unit);
   @include h.emit('text-underline-offset', $v, $important);
   @if meta.content-exists() { @content; }
 }
@@ -521,7 +521,7 @@ $enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-
 ///  @include tab-size(4ch, true); // tab-size: 4ch !important;
 ///
 @mixin tab-size($value, $important: false) {
-  $v: h.normalize-length($value, $tab-size-default-unit);
+  $v: to-length($value, $tab-size-default-unit);
   @include h.emit('tab-size', $v, $important);
   @if meta.content-exists() { @content; }
 }

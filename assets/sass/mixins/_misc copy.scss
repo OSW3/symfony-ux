@@ -1,0 +1,217 @@
+// * ------------------------------------------------------------------------ //
+// * - Settings - Animations
+// * ------------------------------------------------------------------------ //
+
+
+// Accessibilité : stratégie prefers-reduced-motion
+// - remove  : animation: none;
+// - shorten : réduit fortement durées/délais/itérations
+// $enable-reduced-motion-guard: true !default;
+// $reduced-motion-strategy: remove !default;     // remove | shorten
+// $reduced-motion-duration: 67ms !default;       // si shorten
+$reduced-motion-iteration-count: 1 !default;   // si shorten (évite infinite)
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Box Model
+// * ------------------------------------------------------------------------ //
+
+
+/// Utiliser les unités viewport modernes (dvh/dvw) pour la hauteur/largeur plein écran.
+/// Si true: on émet dvh/dvw + fallback vh/vw (le dernier gagne).
+$use-modern-viewport-units: true !default;
+
+/// Activer un fallback explicite quand $use-modern-viewport-units est true.
+/// Si true: on émet d'abord vh/vw puis dvh/dvw.
+$emit-viewport-fallback: true !default;
+
+
+$emit-viewport-svh-lvh: false !default; // désactivé par défaut
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Corner
+// * ------------------------------------------------------------------------ //
+
+// Unité par défaut pour convertir les nombres unitless (ex: 8 -> 8px)
+$corners-default-unit: 1px !default;
+
+// Valeur par défaut utilisée quand aucun rayon n'est fourni aux mixins (peut rester null)
+$corners-default-radius: null !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Effects
+// * ------------------------------------------------------------------------ //
+
+// Unités par défaut
+$length-default-unit: 1px !default; // ex: 10 -> 10px
+$angle-default-unit: 1deg !default; // ex: 45 -> 45deg
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Flex
+// * ------------------------------------------------------------------------ //
+
+
+// Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
+$length-default-unit: 1px !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Gaps
+// * ------------------------------------------------------------------------ //
+
+
+// Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
+$_length-default-unit: 1px !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Grid
+// * ------------------------------------------------------------------------ //
+
+// Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
+$length-default-unit: 1px !default;
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Interaction
+// * ------------------------------------------------------------------------ //
+
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Overflow
+// * ------------------------------------------------------------------------ //
+
+/// Avertir si une valeur inattendue est passée aux mixins overflow*/visibility.
+$overflow-warn-on-invalid: true !default;
+
+/// Méthode de masquage des scrollbars pour overflow-scrollbars-hide()
+/// - "all"      : WebKit + Firefox
+/// - "webkit"   : uniquement ::-webkit-scrollbar
+/// - "firefox"  : uniquement scrollbar-width
+/// - "minimal"  : même comportement que "firefox" (alias)
+$overflow-hide-scrollbars-strategy: "all" !default;
+
+/// Activer les propriétés logiques quand dispo (émises **en plus** du fallback x/y)
+$overflow-enable-modern: true !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Position
+// * ------------------------------------------------------------------------ //
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Rendering
+// * ------------------------------------------------------------------------ //
+
+
+// Si true, les valeurs null n’émettent pas de propriété
+// $props-skip-null: true !default;
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Spacing
+// * ------------------------------------------------------------------------ //
+
+// Unité par défaut pour les valeurs *numériques sans unité* (ex: 8 -> 8 * 1rem => 8rem)
+$spacing-default-unit: 1rem !default;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - States
+// * ------------------------------------------------------------------------ //
+
+$states-important-default: false !default; // important global par défaut
+
+// Ordre canonique d’émission
+$states-default-order: (
+  "base",
+  "hover",
+  "focus",
+  "focus-visible",
+  "active",
+  "visited",
+  "disabled",
+  "checked",
+  "focus-within"
+) !default;
+
+// Pseudo-classes / sélecteurs mappés
+$states-selectors: (
+  "base": "",
+  "hover": ":hover",
+  "focus": ":focus",
+  "focus-visible": ":focus-visible",
+  "active": ":active",
+  "visited": ":visited",
+  "disabled": ":disabled, [aria-disabled='true'], :where(button, input, select, textarea)[disabled]",
+  "checked": ":checked, [aria-checked='true']",
+  "focus-within": ":focus-within"
+) !default;
+
+// Aliases supplémentaires
+$states-aliases-extra: (
+  "aria-expanded": "[aria-expanded='true']",
+  "aria-selected": "[aria-selected='true']",
+  "aria-current":  "[aria-current='true']",
+  "data-open":     "[data-state='open'], [data-open='true']",
+  "data-closed":   "[data-state='closed'], [data-open='false']"
+) !default;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Transition
+// * ------------------------------------------------------------------------ //
+
+/// Unité par défaut pour convertir les nombres unitless en temps.
+/// Recommandation: `1ms` pour pouvoir écrire `200` -> `200ms`.
+$transition-time-default-unit: 1ms !default;
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Typography
+// * ------------------------------------------------------------------------ //
+
+
+// Unité par défaut pour les longueurs (ex: px)
+$length-default-unit: 1px !default;
+
+// tab-size: par défaut 1ch (plus logique que px)
+$tab-size-default-unit: 1ch !default; 
+
+// Flag global pour émettre (ou pas) des propriétés non standard
+$enable-typography-nonstandard: true !default; // -webkit-font-smoothing / -moz-osx-font-smoothing
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings - Visual
+// * ------------------------------------------------------------------------ //
+
+// Unité par défaut pour convertir les nombres unitless → longueurs
+$length-default-unit: 1px !default;
+// Unité par défaut pour les rayons (par défaut = même que length)
+$radius-default-unit: $length-default-unit !default;
+
+// Ajouter des préfixes pour `appearance`
+$appearance-add-prefixes: true !default;
+
+
+
+
+
+
+

@@ -1,0 +1,61 @@
+// * ===========================================================================
+// *  Length helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for working with lengths in 
+// *  Sass. These functions allow you to check if a value is a length, if it's 
+// *  not a length, and to coerce values to lengths.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:math';
+@use './null' as *;
+@use './number' as *;
+
+/// Is length (number with length unit or 0)
+/// @param $v Any value
+/// @return bool True if $v is a length, false otherwise
+/// 
+/// @usage is-length(10px) // true
+/// @usage is-length(0) // true
+/// @usage is-length(1) // false
+/// @usage is-length('10px') // false
+/// 
+@function is-length($v) {
+  @return is-number($v) and (math.is-unitless($v) == false or is-zero($v));
+}
+
+/// Convert numbers to lengths (px) when unitless, keep existing units/keywords.
+/// This is useful for properties that accept lengths but where we want to allow unitless numbers for convenience, treating them as lengths using a default unit.
+/// 
+/// @usage to-length(10) // 10px (unitless number treated as length using $default-unit)
+/// @usage to-length(10em) // 10em
+/// @usage to-length(auto) // auto
+/// @usage to-length(null) // null
+///
+@function to-length($v, $default-unit: $length-default-unit) {
+  @if is-null($v) { @return null; }
+  @if is-global-keyword($v) { @return $v; }
+  @if is-number($v) {
+    @if is-zero($v) { @return 0; }
+    @if math.is-unitless($v) { @return $v * $default-unit; }
+    @return $v;
+  }
+  @return $v;
+}
+
+
+/// If $value is a number, return it as-is (unitless), otherwise normalize it as a length.
+/// This is useful for properties like line-height that can accept either a unitless number or a length.
+/// 
+/// @usage length-or-number(1.5) // 1.5 (unitless number treated as number)
+/// @usage length-or-number(1.5em) // 1.5em
+/// @usage length-or-number(auto) // auto
+/// @usage length-or-number(null) // null
+/// 
+@function length-or-number($v, $default-unit: $length-default-unit) {
+  @if $v == null { @return null; }
+  @if is-number($v) and math.is-unitless($v) { @return $v; }
+  @return to-length($v, $default-unit);
+}

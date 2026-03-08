@@ -1,3 +1,13 @@
+// * ===========================================================================
+// *  Helpers
+// * ===========================================================================
+// *
+// *  This file contains useful Sass functions and mixins used across the 
+// *  codebase, such as type guards, unit normalization, and CSS property 
+// *  helpers.
+// *
+// * ===========================================================================
+
 @charset 'utf-8';
 @use 'sass:meta';
 @use 'sass:map';
@@ -5,6 +15,13 @@
 @use 'sass:string';
 @use 'sass:math';
 @use './../variables/flags' as flags;
+@use './boolean' as *;
+@use './empty' as *;
+@use './map' as *;
+@use './null' as *;
+@use './number' as *;
+@use './length' as *;
+@use './string' as *;
 
 
 
@@ -62,183 +79,250 @@ $corners-default-unit: 1px !default;
 $corners-logical: false !default;
 
 
+// Keywords
+$global-keyword        : (initial, inherit, unset, revert, revert-layer);
+$contain-token         : (none, strict, content, size, inline-size, layout, paint, style);
+$scrollbar-gutter-token: (auto, stable, both-edges);
+$valid-overflow        : (visible, hidden, clip, scroll, auto);
+$valid-visibility      : (visible, hidden, collapse);
+
+
 // * ------------------------------------------------------------------------ //
 // * - TYPE GUARDS
 // * ------------------------------------------------------------------------ //
 
-@function is-number($v) {
-  @return meta.type-of($v) == 'number';
+
+/// Is color
+/// @param $v Any value
+/// @return bool True if $v is a color, false otherwise
+/// 
+/// @usage is-color(red) // true
+/// @usage is-color(#ff0000) // true
+/// @usage is-color(rgb(255, 0, 0)) // true
+/// @usage is-color('red') // false
+/// 
+// @function is-color($v) {
+//   @return meta.type-of($v) == 'color';
+// }
+
+
+/// Is map
+/// @param $v Any value
+/// @return bool True if $v is a map, false otherwise
+/// 
+/// @usage is-map(1) // false
+/// @usage is-map('a: 1, b: 2') // false
+/// @usage is-map((a: 1, b: 2)) // true
+/// @usage is-map((a b c)) // false
+/// 
+// @function is-map($v) {
+//   @return meta.type-of($v) == 'map';
+// }
+
+
+/// Is keyword
+/// @param $v Any value
+/// @param $scopes (optional) A keyword or list of keywords to check against (default: all)
+/// @return bool True if $v is a keyword in the specified scopes, false otherwise
+/// 
+/// @usage is-keyword(auto) // true (global keyword)
+/// @usage is-keyword(inline-size) // true (contain token)
+/// @usage is-keyword(1px) // false (not a keyword)
+/// @usage is-keyword(hidden) // true (valid overflow)
+/// @usage is-keyword(auto, 'overflow') // true
+/// @usage is-keyword(auto, 'visibility') // false
+/// @usage is-keyword(hidden, 'overflow') // true
+/// 
+@function is-keyword($v, $scopes: all) {
+  @if not is-string($v) { @return false; }
+
+  // Normalise les scopes
+  @if $scopes == all { $scopes: ('global', 'contain', 'scrollbar-gutter', 'overflow', 'visibility'); }
+  @if not is-list($scopes) { $scopes: ($scopes,); }
+
+  $val: $v;
+
+  // Vérifie selon les scopes demandés
+  @each $scope in $scopes {
+    @if $scope == 'global' and is-global-keyword($val) { @return true; }
+    @else if $scope == 'contain' and is-contain-token($val) { @return true; }
+    @else if $scope == 'scrollbar-gutter' and is-scrollbar-gutter-token($val) { @return true; }
+    @else if $scope == 'overflow' and is-valid-overflow($val) { @return true; }
+    @else if $scope == 'visibility' and is-valid-visibility($val) { @return true; }
+  }
+
+  @return false;
 }
-@function is-string($v) {
-  @return meta.type-of($v) == 'string';
+
+/// Is valid overflow value
+/// @param $v Any value
+/// @return bool True if $v is a valid overflow value, false otherwise
+/// 
+/// @usage is-valid-overflow(auto) // true
+/// @usage is-valid-overflow(hidden) // true
+/// @usage is-valid-overflow(1) // false
+/// @usage is-valid-overflow('auto') // false
+///
+@function is-valid-overflow($v) {
+  @return list.index($valid-overflow, to-lower-case($v)) != null; 
 }
-@function is-color($v) {
-  @return meta.type-of($v) == 'color';
+
+/// Is valid visibility value
+/// @param $v Any value
+/// @return bool True if $v is a valid visibility value, false otherwise
+/// 
+/// @usage is-valid-visibility(visible) // true
+/// @usage is-valid-visibility(hidden) // true
+/// @usage is-valid-visibility(1) // false
+/// @usage is-valid-visibility('visible') // false
+///
+@function is-valid-visibility($v) {
+  @return list.index($valid-visibility, to-lower-case($v)) != null; 
 }
-@function is-bool($v) {
-  @return meta.type-of($v) == 'bool';
+
+/// Is global keyword
+/// @param $v Any value
+/// @return bool True if $v is a global keyword, false otherwise
+/// 
+/// @usage is-global-keyword(initial) // true
+/// @usage is-global-keyword(inherit) // true
+/// @usage is-global-keyword(1) // false
+/// @usage is-global-keyword('initial') // false
+///
+@function is-global-keyword($v) {
+  @return list.index($global-keyword, to-lower-case($v)) != null; 
 }
-@function is-list($v) {
-  @return meta.type-of($v) == 'list';
+
+/// Is contain token
+/// @param $v Any value
+/// @return bool True if $v is a contain token, false otherwise
+/// 
+/// @usage is-contain-token(content) // true
+/// @usage is-contain-token(layout) // true
+/// @usage is-contain-token(1) // false
+/// @usage is-contain-token('content') // false
+///
+@function is-contain-token($v) {
+  @return list.index($contain-token, to-lower-case($v)) != null; 
 }
-@function is-map($v) {
-  @return meta.type-of($v) == 'map';
+
+/// Is scrollbar-gutter token
+/// @param $v Any value
+/// @return bool True if $v is a scrollbar-gutter token, false otherwise
+/// 
+/// @usage is-scrollbar-gutter-token(auto) // true
+/// @usage is-scrollbar-gutter-token(stable) // true
+/// @usage is-scrollbar-gutter-token(1) // false
+/// @usage is-scrollbar-gutter-token('auto') // false
+///
+@function is-scrollbar-gutter-token($v) {
+  @return list.index($scrollbar-gutter-token, to-lower-case($v)) != null; 
 }
-@function is-nullish($v) {
-  @return $v == null or $v == '';
-}
-@function is-keyword($v) {
-  @return is-string($v) and string.index($v, ' ') == null;
-}
-@function is-length($v) {
-  @return is-number($v) and (math.is-unitless($v) == false or $v == 0);
-}
+
+/// Is time
+/// @param $v Any value
+/// @return bool True if $v is a time, false otherwise
+/// 
+/// @usage is-time(1s) // true
+/// @usage is-time(100ms) // true
+/// @usage is-time(1) // false
+/// @usage is-time('1s') // false
+/// 
 @function is-time($v) {
   @return is-number($v) and (math.unit($v) == 's' or math.unit($v) == 'ms');
 }
+
+/// Is angle
+/// @param $v Any value
+/// @return bool True if $v is an angle, false otherwise
+/// 
+/// @usage is-angle(45deg) // true
+/// @usage is-angle(1.57rad) // true
+/// @usage is-angle(100grad) // true
+/// @usage is-angle(0.25turn) // true
+/// @usage is-angle(1) // false
+/// @usage is-angle('45deg') // false
+/// 
 @function is-angle($v) {
   $u: math.unit($v);
   @return is-number($v) and ($u == 'deg' or $u == 'rad' or $u == 'grad' or $u == 'turn');
 }
 
-
-
-
-// Global CSS keywords
-@function _is-global-keyword($value) {
-  @return list.index((initial, inherit, unset, revert, revert-layer), $value) != null;
-}
-@function is-global-keyword($value) {
-  @return _is-global-keyword($value);
-}
-
-
-@function _is-contain-token($value) {
-  @return list.index((none, strict, content, size, inline-size, layout, paint, style), $value) != null;
-}
-
-
-@function _is-scrollbar-gutter-token($value) {
-  @return list.index((auto, stable, both-edges), $value) != null;
+/// Is valid size (number, string, or specific keywords)
+@function is-valid-size($v) {
+  @return (
+    $v == auto or
+    $v == min-content or
+    $v == max-content or
+    $v == fit-content or
+    meta.type-of($v) == 'number' or
+    meta.type-of($v) == 'string'
+  );
 }
 
 
 
-@function _in($value, $list) {
-  $v: $value;
-  @if meta.type-of($value) == 'string' {
-    $v: string.to-lower-case($value);
-  }
+
+// @function _in($value, $list) {
+//   $v: $value;
+//   @if meta.type-of($value) == 'string' {
+//     $v: string.to-lower-case($value);
+//   }
   
-  @each $item in $list {
-    $t: $item;
-    @if meta.type-of($item) == 'string' {
-      $t: string.to-lower-case($item);
-    }
+//   @each $item in $list {
+//     $t: $item;
+//     @if meta.type-of($item) == 'string' {
+//       $t: string.to-lower-case($item);
+//     }
     
-    @if $v == $t {
-      @return true;
-    }
-  }
-  @return false;
-}
-
-@function _is-valid-overflow($value) { @return _in($value, (visible, hidden, clip, scroll, auto)); }
-@function is-valid-overflow($value) { @return _is-valid-overflow($value); }
-
-@function _is-valid-visibility($value) { @return _in($value, (visible, hidden, collapse)); }
-@function is-valid-visibility($value) { @return _is-valid-visibility($value); }
-
-
-
-
+//     @if $v == $t {
+//       @return true;
+//     }
+//   }
+//   @return false;
+// }
 
 
 // * ------------------------------------------------------------------------ //
-// * - STRING UTILS
+// * - NORMALIZATION & UTILITIES
 // * ------------------------------------------------------------------------ //
 
-@function trim($s) {
-  @if not is-string($s) {
-    @return $s;
-  }
-  // simple trim of spaces around; Sass has no native trim, simulate:
-  $start: 1;
-  $end: string.length($s);
-  // left
-  @while $start <= $end and string.slice($s, $start, $start) == ' ' { $start: $start + 1; }
-  // right
-  @while $end >= $start and string.slice($s, $end, $end) == ' ' { $end: $end - 1; }
+// @function to-lower-case($v) {
+//   @if meta.type-of($v) == 'string' { @return string.to-lower-case($v); }
+//   @return $v;
+// }
 
-  @if $start > $end {
-    @return '';
-  }
-  @else {
-    @return string.slice($s, $start, $end);
-  }
-}
+// @function to-bool($v, $default: false) {
+//   @if is-bool($v) { 
+//     @return $v;
+//   }
+//   @if is-nullish($v) { 
+//     @return $default; 
+//   }
+//   @if is-string($v) {
+//     $lv: string.to-lower-case($v);
+//     @return $lv == 'true' or $lv == '1' or $lv == 'yes';
+//   }
+//   @if is-number($v) { 
+//     @return $v != 0;
+//   }
+//   @return $default;
+// }
 
-
-@function str-contains($s, $needle) {
-  @if $s == null or $needle == null { @return false; }
-  @return string.index(#{$s}, #{$needle}) != null;
-}
-// alias de compat (vu dans tes helpers Grid)
-// @function _str-contains($s, $needle) { @return str-contains($s, $needle); }
-
-// Compacte les espaces successifs en un seul
-@function str-compact-spaces($s) {
-  @if $s == null { @return null; }
-  $len: string.length($s);
-  $out: '';
-  $prev-space: false;
-  @for $i from 1 through $len {
-    $ch: string.slice($s, $i, $i);
-    $is-space: $ch == ' ';
-    @if $is-space {
-      @if not $prev-space { $out: $out + ' '; }
-    } @else {
-      $out: $out + $ch;
-    }
-    $prev-space: $is-space;
-  }
-  @return trim($out);
-}
-// alias
-// @function _str-compact-spaces($s) { @return str-compact-spaces($s); }
-
-// Découpe A / B => (A, B), 1er slash
-@function str-split-slash($s) {
-  $idx: string.index($s, '/');
-  @if $idx == null { @return ($s, null); }
-  $left: trim(string.slice($s, 1, $idx - 1));
-  $right: trim(string.slice($s, $idx + 1));
-  @return ($left, $right);
-}
-// alias (Grid)
-// @function _str-split-slash($s) { @return str-split-slash($s); }
-
-// Split naïf par espaces (sans gérer parenthèses/quotes)
-@function split-spaces($s) {
-  $s: str-compact-spaces(#{$s});
-  $len: string.length($s);
-  $buf: '';
-  $out: ();
-  @for $i from 1 through $len {
-    $ch: string.slice($s, $i, $i);
-    @if $ch == ' ' {
-      @if string.length($buf) > 0 { $out: list.append($out, $buf, space); $buf: ''; }
-    } @else { $buf: $buf + $ch; }
-  }
-  @if string.length($buf) > 0 { $out: list.append($out, $buf, space); }
-  @return $out;
-}
-
-
-
-// * ------------------------------------------------------------------------ //
-// * - LIST & MAP UTILS
-// * ------------------------------------------------------------------------ //
+// Convert numbers to lengths (px) when unitless, keep existing units/keywords.
+// @function to-length($v, $unit: px) {
+//   @if is-null($v) { 
+//     @return null;
+//   }
+//   @if is-number($v) {
+//     @if math.is-unitless($v) {
+//       @return $v * 1#{$unit}; 
+//     }
+//     @return $v;
+//   }
+//   // Pass-through for keywords like auto, min-content, etc.
+//   @return $v;
+// }
 
 // Ensure list (comma-separated by default)
 @function to-list($v, $separator: comma) {
@@ -247,6 +331,33 @@ $corners-logical: false !default;
   }
   @return list.join((), ($v,), $separator);
 }
+
+@function to-length-or-keyword($value, $allow-auto: false) {
+  @if $value == null {
+    @return null;
+  }
+  @if allowed-keyword($value, $allow-auto) {
+    @return $value;
+  }
+  @if is-zero($value) {
+    @return 0; 
+  }
+  @if is-number($value) {
+    @if math.is-unitless($value) {
+      @return $value * $spacing-default-unit;
+    }
+    @else {
+      @return $value;
+    }
+  }
+  @return $value;
+}
+
+
+// * ------------------------------------------------------------------------ //
+// * - LIST & MAP UTILS
+// * ------------------------------------------------------------------------ //
+
 
 // Force une comma-list (si $values est déjà une liste, convertit son sep -> comma)
 @function as-comma-list($values) {
@@ -277,7 +388,7 @@ $corners-logical: false !default;
   $out: ();
   @for $i from 1 through list.length($vals) {
     $tok: list.nth($vals, $i);
-    @if not is-nullish($tok) { $out: list.append($out, $tok, comma); }
+    @if is-not-null($tok) { $out: list.append($out, $tok, comma); }
   }
   @return $out;
 }
@@ -290,13 +401,12 @@ $corners-logical: false !default;
   @if $len == 0 { @return ((), false); }
 
   $last: list.nth($vals, $len);
-  $is-bool: meta.type-of($last) == 'bool';
 
   // 1 seul élément et c'est un bool → (liste vide, bool)
-  @if $len == 1 and $is-bool { @return ((), $last); }
+  @if $len == 1 and is-bool($last) { @return ((), $last); }
 
   // Plusieurs éléments et dernier est un bool → recompose la tête manuellement
-  @if $len >= 2 and $is-bool {
+  @if $len >= 2 and is-bool($last) {
     $head: ();
     @for $i from 1 through ($len - 1) {
       $head: list.append($head, list.nth($vals, $i), $sep);
@@ -317,13 +427,14 @@ $corners-logical: false !default;
 @function extract-val-important($raw, $important-default: false) {
   @if is-map($raw) {
     $v: null;
-    @if map.has-key($raw, value) {
-      $v: map.get($raw, value);
+    @if has-key($raw, value) {
+      // $v: map.get($raw, value);
+      $v: get-key($raw, value);
     }
 
     $imp: $important-default;
-    @if map.has-key($raw, important) {
-      $imp: to-bool(map.get($raw, important), $important-default);
+    @if has-key($raw, important) {
+      $imp: to-bool(get-key($raw, important), $important-default);
     }
     // $v: if(map.has-key($raw, value), map.get($raw, value), null);
     // $imp: if(map.has-key($raw, important), map.get($raw, important), $important-default);
@@ -342,49 +453,27 @@ $corners-logical: false !default;
 // * ------------------------------------------------------------------------ //
 
 
-// Longueur
-@function _normalize-length($value, $default-unit: $length-default-unit) {
-  @if $value == null { @return null; }
-  @if is-global-keyword($value) { @return $value; }
-  @if is-number($value) {
-    @if $value == 0 { @return 0; }
-    @if math.is-unitless($value) { @return $value * $default-unit; }
-    @return $value;
-  }
-  @return $value;
-}
-@function normalize-length($value, $default-unit: $length-default-unit) {
-  @return _normalize-length($value, $default-unit); 
-}
-@function _normalize-length-list($values, $default-unit: $length-default-unit) {
+
+@function normalize-length-list($values, $default-unit: $length-default-unit) {
   @if is-list($values) {
     $out: ();
     @for $i from 1 through list.length($values) {
-      $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+      $out: list.append($out, to-length(list.nth($values, $i), $default-unit), space);
     }
     @return $out;
   }
-  @return _normalize-length($values, $default-unit);
+  @return to-length($values, $default-unit);
 }
-@function normalize-length-list($values, $default-unit: $length-default-unit) {
-  @return _normalize-length-list($values, $default-unit); 
-}
-
 
 // Longueur ou nombre nu (utile line-height)
-@function _length-or-number($value, $default-unit: $length-default-unit) {
+@function length-or-number($value, $default-unit: $length-default-unit) {
   @if $value == null { @return null; }
   @if is-number($value) and math.is-unitless($value) { @return $value; }
-  @return _normalize-length($value, $default-unit);
+  @return to-length($value, $default-unit);
 }
-@function length-or-number($value, $default-unit: $length-default-unit) {
-  @return _length-or-number($value, $default-unit); 
-}
-
-
 
 // Temps
-@function _normalize-time($value, $default-unit: $time-default-unit) {
+@function normalize-time($value, $default-unit: $time-default-unit) {
   @if $value == null { @return null; }
   @if is-number($value) {
     @if $value == 0 { @return 0; }
@@ -393,26 +482,20 @@ $corners-logical: false !default;
   }
   @return $value;
 }
-@function normalize-time($value, $default-unit: $time-default-unit) {
-  @return _normalize-time($value, $default-unit); 
-}
 
-@function _normalize-time-comma-list($values, $default-unit: $time-default-unit) {
-  @if not is-list($values) { @return _normalize-time($values, $default-unit); }
+@function normalize-time-comma-list($values, $default-unit: $time-default-unit) {
+  @if not is-list($values) { @return normalize-time($values, $default-unit); }
   $out: ();
   @for $i from 1 through list.length($values) {
-    $out: list.append($out, _normalize-time(list.nth($values, $i), $default-unit), comma);
+    $out: list.append($out, normalize-time(list.nth($values, $i), $default-unit), comma);
   }
   @return $out;
-}
-@function normalize-time-comma-list($values, $default-unit: $time-default-unit) {
-  @return _normalize-time-comma-list($values, $default-unit);
 }
 
 
 
 // Angle
-@function _normalize-angle($value, $default-unit: $angle-default-unit) {
+@function normalize-angle($value, $default-unit: $angle-default-unit) {
   @if $value == null { @return null; }
   @if is-number($value) {
     @if $value == 0 { @return 0; }
@@ -421,41 +504,35 @@ $corners-logical: false !default;
   }
   @return $value;
 }
-@function normalize-angle($value, $default-unit: $angle-default-unit) {
-  @return _normalize-angle($value, $default-unit); 
-}
 
 
 // Inset (TRBL 1..4)
-@function _normalize-inset-list($values, $default-unit: $length-default-unit) {
+@function normalize-inset-list($values, $default-unit: $length-default-unit) {
   @if is-list($values) and list.separator($values) == space {
     $len: list.length($values);
     @if $len >= 1 and $len <= 4 {
       $out: ();
       @for $i from 1 through $len {
-        $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+        $out: list.append($out, to-length(list.nth($values, $i), $default-unit), space);
       }
       @return $out;
     }
   }
-  @return _normalize-length($values, $default-unit);
-}
-@function normalize-inset-list($values, $default-unit: $length-default-unit) {
-  @return _normalize-inset-list($values, $default-unit); 
+  @return to-length($values, $default-unit);
 }
 
 
 
 // Rayon de coin (scalaires, listes espaces 1..4, slash x/y)
-@function _normalize-length-space-list($values, $default-unit: $corners-default-unit) {
-  @if not is-list($values) { @return _normalize-length($values, $default-unit); }
+@function normalize-length-space-list($values, $default-unit: $corners-default-unit) {
+  @if not is-list($values) { @return to-length($values, $default-unit); }
   $out: ();
   @for $i from 1 through list.length($values) {
-    $out: list.append($out, _normalize-length(list.nth($values, $i), $default-unit), space);
+    $out: list.append($out, to-length(list.nth($values, $i), $default-unit), space);
   }
   @return $out;
 }
-@function _normalize-radius($radius) {
+@function normalize-radius($radius) {
   @if $radius == null { @return null; }
   @if is-list($radius) and list.separator($radius) == slash {
     $len: list.length($radius);
@@ -463,93 +540,74 @@ $corners-logical: false !default;
       $x: list.nth($radius, 1);
       $y: list.nth($radius, 2);
       @return list.join(
-        _normalize-length-space-list($x, $corners-default-unit),
-        _normalize-length-space-list($y, $corners-default-unit),
+        normalize-length-space-list($x, $corners-default-unit),
+        normalize-length-space-list($y, $corners-default-unit),
         slash
       );
     }
     $out: ();
     @for $i from 1 through $len {
-      $out: list.append($out, _normalize-length-space-list(list.nth($radius, $i), $corners-default-unit), slash);
+      $out: list.append($out, normalize-length-space-list(list.nth($radius, $i), $corners-default-unit), slash);
     }
     @return $out;
   }
-  @if is-list($radius) { @return _normalize-length-space-list($radius, $corners-default-unit); }
-  @return _normalize-length($radius, $corners-default-unit);
+  @if is-list($radius) { @return normalize-length-space-list($radius, $corners-default-unit); }
+  @return to-length($radius, $corners-default-unit);
 }
-@function _nonnegative($v) {
+@function nonnegative($v) {
   @if $v == null { @return null; }
   @if is-number($v) and $v < 0 { @return 0; }
   @return $v;
 }
-@function _nonnegative-list($v) {
-  @if not is-list($v) { @return _nonnegative($v); }
+@function nonnegative-list($v) {
+  @if not is-list($v) { @return nonnegative($v); }
   $out: ();
   @for $i from 1 through list.length($v) {
-    $out: list.append($out, _nonnegative(list.nth($v, $i)), list.separator($v));
+    $out: list.append($out, nonnegative(list.nth($v, $i)), list.separator($v));
   }
   @return $out;
 }
 
-
-@function _valid-radius($radius) {
-  @return _nonnegative-list(_normalize-radius($radius));
-}
 @function valid-radius($radius) {
-  @return _valid-radius($radius);
+  @return nonnegative-list(normalize-radius($radius));
 }
 
 // Corner props (logiques/physiques)
-@function _prop-top-start() {
+@function prop-top-start() {
   @if $corners-logical {
     @return 'border-start-start-radius';
   } @else {
     @return 'border-top-left-radius';
   }
 }
-@function prop-top-start() {
-  @return _prop-top-start();
-}
 
-
-@function _prop-top-end() {
+@function prop-top-end() {
   @if $corners-logical {
     @return 'border-start-end-radius';
   } @else {
     @return 'border-top-right-radius';
   }
 }
-@function prop-top-end() {
-  @return _prop-top-end();
-}
 
-
-@function _prop-bottom-end() {
+@function prop-bottom-end() {
   @if $corners-logical {
     @return 'border-end-end-radius';
   } @else {
     @return 'border-bottom-right-radius';
   }
 }
-@function prop-bottom-end() {
-  @return _prop-bottom-end();
-}
 
-
-@function _prop-bottom-start() {
+@function prop-bottom-start() {
   @if $corners-logical {
     @return 'border-end-start-radius';
   } @else {
     @return 'border-bottom-left-radius';
   }
 }
-@function prop-bottom-start() {
-  @return _prop-bottom-start();
-}
 
 // Limiteur (1 ou 2 valeurs max)
-@function _limit-corner-values($values, $max: 2) {
-  @if not is-list($values) { @return _nonnegative(_normalize-length($values, $corners-default-unit)); }
+@function limit-corner-values($values, $max: 2) {
+  @if not is-list($values) { @return nonnegative(to-length($values, $corners-default-unit)); }
   $len: list.length($values);
   @if $len > $max { @warn "[corner] Trop de valeurs (#{$len}). Seules les #{$max} premières seront utilisées."; }
 
@@ -559,95 +617,59 @@ $corners-logical: false !default;
 
   $out: ();
   @for $i from 1 through $upto {
-    $out: list.append($out, _nonnegative(_normalize-length(list.nth($values, $i), $corners-default-unit)), space);
+    $out: list.append($out, nonnegative(to-length(list.nth($values, $i), $corners-default-unit)), space);
   }
   @return $out;
 }
 
-
-@function _valid-corner-pair($radius) {
-  @if $radius == null { @return null; }
-  @return _limit-corner-values($radius, 2); 
-}
 @function valid-corner-pair($radius) {
-  @return _valid-corner-pair($radius);
+  @if $radius == null { @return null; }
+  @return limit-corner-values($radius, 2); 
 }
 
-
-@function _valid-corner-single($radius) {
+@function valid-corner-single($radius) {
   @if $radius == null { @return null; }
   @if is-list($radius) and list.length($radius) > 2 {
     @warn "[corner] Trop de valeurs (#{"#{list.length($radius)}"}). Seules les 2 premières seront utilisées.";
   }
-  @return _limit-corner-values($radius, 2); 
-}
-@function valid-corner-single($radius) {
-  @return _valid-corner-single($radius);
+  @return limit-corner-values($radius, 2); 
 }
 
 // Spacing (margin/padding 1..4, auto autorisé côté margin)
-@function _allowed-keyword($value, $allow-auto: false) {
+@function allowed-keyword($value, $allow-auto: false) {
   @if meta.type-of($value) == 'string' {
     @if $allow-auto and ($value == auto) { @return true; }
     @if ($value == inherit) or ($value == initial) or ($value == unset) or ($value == revert) { @return true; }
   }
   @return false;
 }
-@function _is-length-like($value) { @return meta.type-of($value) == 'number'; }
-@function _is-zero($value) { @return _is-length-like($value) and $value == 0; }
 
 
 
-@function _to-length-or-keyword($value, $allow-auto: false) {
-  @if $value == null {
-    @return null;
-  }
-  @if _allowed-keyword($value, $allow-auto) {
-    @return $value;
-  }
-  @if _is-zero($value) {
-    @return 0; 
-  }
-  @if _is-length-like($value) {
-    @if math.is-unitless($value) {
-      @return $value * $spacing-default-unit;
-    }
-    @else {
-      @return $value;
-    }
-  }
-  @return $value;
-}
-@function to-length-or-keyword($value, $allow-auto: false) {
-  @return _to-length-or-keyword($value, $allow-auto);
-}
 
 
 
-@function _nth-or-null($values, $index, $allow-auto) {
-  @if list.length($values) >= $index { @return _to-length-or-keyword(list.nth($values, $index), $allow-auto); }
+@function nth-or-null($values, $index, $allow-auto) {
+  @if list.length($values) >= $index { @return to-length-or-keyword(list.nth($values, $index), $allow-auto); }
   @return null;
 }
 
 
-@function _normalize-spacing-list($allow-auto: false, $skip-null: true, $values...) {
+@function normalize-spacing-list($allow-auto: false, $skip-null: true, $values...) {
   @if (list.length($values) == 1) and (meta.type-of(list.nth($values, 1)) == 'list') {
     $values: list.nth($values, 1);
   }
   $len: list.length($values);
   @if $len == 0 { @return null; }
-  $v1: _nth-or-null($values, 1, $allow-auto);
-  $v2: _nth-or-null($values, 2, $allow-auto);
-  $v3: _nth-or-null($values, 3, $allow-auto);
-  $v4: _nth-or-null($values, 4, $allow-auto);
+  $v1: nth-or-null($values, 1, $allow-auto);
+  $v2: nth-or-null($values, 2, $allow-auto);
+  $v3: nth-or-null($values, 3, $allow-auto);
+  $v4: nth-or-null($values, 4, $allow-auto);
   @if $skip-null and ($v1 == null and $v2 == null and $v3 == null and $v4 == null) { @return null; }
   @if $len == 1 { @return $v1; }
   @if $len == 2 { @return $v1 $v2; }
   @if $len == 3 { @return $v1 $v2 $v3; }
   @return $v1 $v2 $v3 $v4;
-}
-@function normalize-spacing-list($allow-auto: false, $skip-null: true, $values...) {
-  @return _normalize-spacing-list($allow-auto, $skip-null, $values...);
 }
 
 
@@ -656,16 +678,18 @@ $corners-logical: false !default;
 // * ------------------------------------------------------------------------ //
 
 // Private low-level emitter
-@mixin _emit($prop, $value, $important: false) {
-  @if not is-nullish($value) { 
-    #{$prop}: #{$value}#{important-flag($important)};
-  }
-  @if meta.content-exists() { @content; }
-}
+// @mixin _emit($prop, $value, $important: false) {
+//   @if is-not-null($value) { 
+//     #{$prop}: #{$value}#{important-flag($important)};
+//   }
+//   @if meta.content-exists() { @content; }
+// }
 
 // Public alias (so mixins can call h.emit)
 @mixin emit($prop, $value, $important: false) {
-  @include _emit($prop, $value, $important);
+  @if is-not-null($value) { 
+    #{$prop}: #{$value}#{important-flag($important)};
+  }
   @if meta.content-exists() { @content; }
 }
 
@@ -694,41 +718,19 @@ $corners-logical: false !default;
 // * - ACCESSIBILITY / MEDIA WRAPPERS
 // * ------------------------------------------------------------------------ //
 
-@mixin _guard-reduced-motion($important: false) {
+@mixin guard-reduced-motion($important: false) {
   @if $enable-reduced-motion-guard {
     @media (prefers-reduced-motion: reduce) {
       @if $reduced-motion-strategy == remove {
-        @include _emit('transition', none, $important);
+        @include emit('transition', none, $important);
       } @else if $reduced-motion-strategy == shorten {
-        @include _emit('transition-duration', $reduced-motion-duration, $important);
-        @include _emit('transition-delay', 0ms, $important);
+        @include emit('transition-duration', $reduced-motion-duration, $important);
+        @include emit('transition-delay', 0ms, $important);
       }
     }
   }
-}
-@mixin guard-reduced-motion($important: false) {
-  @include _guard-reduced-motion($important);
   @if meta.content-exists() { @content; }
 }
-
-@mixin _maybe-forced-colors($forced-colors: false) {
-  @if $forced-colors == true { @media (forced-colors: active) { @content; } }
-  @else { @content; }
-}
-@mixin maybe-forced-colors($forced-colors: false) {
-  @include _maybe-forced-colors($forced-colors);
-  @if meta.content-exists() { @content; }
-}
-@mixin _maybe-color-scheme($scheme: null) {
-  @if $scheme == dark   { @media (prefers-color-scheme: dark)  { @content; } }
-  @else if $scheme == light { @media (prefers-color-scheme: light) { @content; } }
-  @else { @content; }
-}
-@mixin maybe-color-scheme($scheme: null) {
-  @include _maybe-color-scheme($scheme);
-  @if meta.content-exists() { @content; }
-}
-
 
 
 // * ------------------------------------------------------------------------ //
@@ -918,7 +920,7 @@ $corners-logical: false !default;
     @return $value;
   }
   @if not is-list($value) and string.index(#{$value}, ' ') == null {
-    @if _is-contain-token($value) {
+    @if is-contain-token($value) {
       @return $value;
     }
     @warn "contain(): unexpected token `#{$value}`.";
@@ -932,7 +934,7 @@ $corners-logical: false !default;
   $out: ();
   @each $tok in $raw-list {
     @if not ($tok == null or $tok == '') {
-      @if not _is-contain-token($tok) {
+      @if not is-contain-token($tok) {
         @warn "contain(): unexpected token `#{$tok}`.";
         $out: list.append($out, $tok, space);
       } @else if list.index($out, $tok) == null {
@@ -968,14 +970,14 @@ $corners-logical: false !default;
   @if $len >= 2 and list.nth($raw, 1) == auto {
     $out: auto;
     @for $i from 2 through $len {
-      $out: list.append($out, _normalize-length(list.nth($raw, $i), $default-unit), space);
+      $out: list.append($out, to-length(list.nth($raw, $i), $default-unit), space);
     }
     @return $out;
   }
   @if $len >= 1 and $len <= 2 {
     $out: ();
     @for $i from 1 through $len {
-      $out: list.append($out, _normalize-length(list.nth($raw, $i), $default-unit), space);
+      $out: list.append($out, to-length(list.nth($raw, $i), $default-unit), space);
     }
     @if list.length($out) == 0 { 
       @return $out;
@@ -1093,15 +1095,13 @@ $corners-logical: false !default;
 // * ------------------------------------------------------------------------ //
 
 @function _unit-token($u) {
-  @if is-string($u) {
-    @return string.unquote($u);
-  }
-
+  @if is-string($u) { @return string.unquote($u); }
   @return $u;
 }
 @function _to-value-with-unit($n, $u) {
-  $u: _unit-token($u);
-  @return string.unquote("#{$n}#{$u}");
+  // Retourne un NOMBRE avec unité (et non une string)
+  @if is-not-number($n) { @return $n; }
+  @return $n * 1#{_unit-token($u)};
 }
 @function _normalize-size($value) {
   @if $value == null { @return null; }
@@ -1124,96 +1124,111 @@ $corners-logical: false !default;
     @return $value;
   }
 }
-@function _is-valid-size($value) {
-  @return (
-    $value == auto or
-    $value == min-content or
-    $value == max-content or
-    $value == fit-content or
-    meta.type-of($value) == 'number' or
-    meta.type-of($value) == 'string'
-  );
-}
 
-// NB: _dim utilise _emit (pas _prop) pour éviter l'appel à un mixin commenté.
-@mixin _dim($prop, $value, $important: false) {
+@mixin dim($prop, $value, $important: false) {
   @if $value != null {
     $normalized: _normalize-size($value);
-    @if not _is-valid-size($normalized) {
-      @warn "[box-model] Valeur inattendue pour #{$prop}: #{meta.inspect($value)} (normalisée: #{meta.inspect($normalized)})";
+    // @if not is-valid-size($normalized) {
+    //   @warn "[box-model] Valeur inattendue pour #{$prop}: #{meta.inspect($value)} (normalisée: #{meta.inspect($normalized)})";
+    // }
+    @include emit($prop, $normalized, $important);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/// @private Validate a value against an expected Sass type.
+/// @param {string|null} $expected-type - e.g. 'number' | 'string' | 'color' | 'bool' | null
+/// Note: Sass renvoie 'number' pour les longueurs (px, rem, etc.). Si tu veux
+///       imposer une unité, on peut étendre ce helper (cf. remarque plus bas).
+// @function guard($name, $value, $expected-type: null) {
+//   @if $expected-type != null and meta.type-of($value) != $expected-type {
+//     @error 'Invalid value for #{$name}. Expected #{$expected-type}, got #{meta.type-of($value)} (#{$value}).';
+//   }
+
+//   @return $value;
+// }
+
+
+
+/// Teste si une valeur est une référence de variable CSS var(...)
+/// Ex.: var(--x), var(--x, 4px)
+@function is-css-var($v) {
+  @return meta.type-of($v) == 'string' and string.index(#{$v}, 'var(') == 1;
+}
+
+/// Valide un type (ou une liste de types) Sass.
+/// - $expected-types peut être 'number', 'string', 'color', 'bool', 'map', 'list'
+/// - Ou une liste: ('number', 'string') pour accepter l’un OU l’autre
+/// - Types spéciaux supportés:
+///     - 'css-var' : string qui commence par var(
+/// @return la valeur si valide, sinon @error
+@function guard($name, $value, $expected-types: null) {
+  @if $expected-types == null {
+    @return $value;
+  }
+
+  // Normalise en liste
+  $types: ($expected-types,);
+  @if meta.type-of($expected-types) == 'list' {
+    $types: $expected-types;
+  }
+
+  $actual: meta.type-of($value);
+
+  @each $t in $types {
+    @if $t == 'css-var' and is-css-var($value) {
+      @return $value;
     }
-    @include _emit($prop, $normalized, $important);
-  }
-}
-@mixin dim($prop, $value, $important: false) {
-  @include _dim($prop, $value, $important);
-  @if meta.content-exists() { @content; }
-}
 
-
-
-
-
-// @function is-zero($v) {
-//   @return is-number($v) and $v == 0;
-// }
-
-// ---------------------------
-// Assertions (only used during dev; optional hard guards)
-// ---------------------------
-// @mixin assert($condition, $message: 'Assertion failed') {
-//   @if not $condition {
-//     @error $message;
-//   }
-// }
-
-// @mixin assert-type($v, $types..., $label: 'value') {
-//   $ok: false;
-//   @each $t in $types {
-//     @if ($t == 'number' and is-number($v)) or
-//         ($t == 'string' and is-string($v)) or
-//         ($t == 'map'    and is-map($v)) or
-//         ($t == 'list'   and is-list($v)) or
-//         ($t == 'bool'   and is-bool($v)) or
-//         ($t == 'color'  and is-color($v)) {
-//       $ok: true;
-//     }
-//   }
-//   @if not $ok { @error '#{$label} must be one of types: #{$types}. Got: #{meta.type-of($v)}'; }
-// }
-
-// ---------------------------
-// Normalization helpers
-// ---------------------------
-@function to-bool($v, $default: false) {
-  @if is-bool($v) { 
-    @return $v;
-  }
-  @if is-nullish($v) { 
-    @return $default; 
-  }
-  @if is-string($v) {
-    $lv: string.to-lower-case($v);
-    @return $lv == 'true' or $lv == '1' or $lv == 'yes';
-  }
-  @if is-number($v) { 
-    @return $v != 0;
-  }
-  @return $default;
-}
-// Convert numbers to lengths (px) when unitless, keep existing units/keywords.
-@function to-length($v, $unit: px) {
-  @if is-nullish($v) { 
-    @return null;
-  }
-  @if is-number($v) {
-    @if math.is-unitless($v) {
-      @return $v * 1#{$unit}; 
+    @if $actual == $t {
+      @return $value;
     }
-    @return $v;
   }
-  // Pass-through for keywords like auto, min-content, etc.
-  @return $v;
+
+  // Si on arrive ici, aucun type attendu ne matche
+  @error 'Invalid value for #{$name}. Expected one of #{inspect($types)}, got #{$actual} (#{$value}).';
+}
+
+/// Valide une longueur:
+/// - autorise number avec unité (px, rem, etc.)
+/// - peut autoriser/désactiver les unitless (par défaut: interdit)
+/// - peut autoriser var(...) (par défaut: autorisé)
+/// @return la valeur si valide, sinon @error
+@function guard-length($name, $value, $allow-unitless: false, $allow-var: true) {
+  // var(...) accepté ?
+  @if $allow-var and is-css-var($value) {
+    @return $value;
+  }
+
+  // Doit être un nombre Sass
+  @if meta.type-of($value) != 'number' {
+    @error 'Invalid value for #{$name}. Expected a length number, got #{meta.type-of($value)} (#{$value}).';
+  }
+
+  // Les unitless: selon option
+  @if math.is-unitless($value) and $allow-unitless == false {
+    @error 'Invalid value for #{$name}. Unitless numbers are not allowed here (got #{$value}).';
+  }
+
+  @return $value;
 }
 
 
@@ -1221,93 +1236,48 @@ $corners-logical: false !default;
 
 
 
-// ---------------------------
-// Options map helpers
-// ---------------------------
-// @function map-deep-get($map, $keys...) {
-//   $cursor: $map;
-//   @each $k in $keys {
-//     @if not is-map($cursor) or not map.has-key($cursor, $k) { @return null; }
-//     $cursor: map.get($cursor, $k);
-//   }
-//   @return $cursor;
-// }
 
-// @function map-merge-deep($base, $ext) {
-//   $out: $base;
-//   @if not is-map($ext) { @return $out; }
-//   @each $k, $v in $ext {
-//     @if is-map(map.get($out, $k)) and is-map($v) {
-//       $out: map.merge($out, ($k: map-merge-deep(map.get($out, $k), $v)));
-//     } @else {
-//       $out: map.merge($out, ($k: $v));
-//     }
-//   }
-//   @return $out;
-// }
+@function set-border-width($width) {
+  @return guard('border-width', $width, 'number');
+}
+@function set-border-style($style) {
+  @return guard('border-style', $style, 'string');
+}
+@function set-border-radius($radius) {
+  @return guard('border-radius', $radius, ('number', 'css-var'));
+}
 
-// @function get-opt($options, $key, $fallback: null) {
-//   @return if(is-map($options) and map.has-key($options, $key), map.get($options, $key), $fallback);
-// }
+@function set-padding($padding) {
+  @return guard('padding', $padding, 'number');
+}
+@function set-margin($margin) {
+  @return guard('margin', $margin, 'number');
+}
 
-// ---------------------------
-// Emission (single source-of-truth for properties)
-// ---------------------------
+@function set-font-family($family) {
+  @return guard('font-family', $family, 'string');
+}
+@function set-font-size($size) {
+  @return guard('font-size', $size, 'number');
+}
+@function set-font-weight($weight) {
+  @return guard('font-weight', $weight, 'number');
+}
 
-// ---------------------------
-// Directionality & logical shims
-// ---------------------------
+@function set-line-height($line-height) {
+  @return guard('line-height', $line-height, 'number');
+}
 
-// Return 'left' or 'right' depending on inline start in current direction
-// @function inline-start() { @return if($rtl-enabled, right, left); }
-// @function inline-end()   { @return if($rtl-enabled, left, right); }
+@function set-box-shadow($shadow) {
+  @return guard('box-shadow', $shadow, 'string');
+}
 
-// Given 1–4 values, normalize to [top, right, bottom, left]
-// @function expand-4($values) {
-//   $vals: to-list($values);
-//   $len: list.length($vals);
-//   @if $len == 1 {
-//     $v: list.nth($vals, 1);
-//     @return ($v, $v, $v, $v);
-//   } @else if $len == 2 {
-//     $v1: list.nth($vals, 1);
-//     $v2: list.nth($vals, 2);
-//     @return ($v1, $v2, $v1, $v2);
-//   } @else if $len == 3 {
-//     $v1: list.nth($vals, 1);
-//     $v2: list.nth($vals, 2);
-//     $v3: list.nth($vals, 3);
-//     @return ($v1, $v2, $v3, $v2);
-//   } @else {
-//     @return (list.nth($vals, 1), list.nth($vals, 2), list.nth($vals, 3), list.nth($vals, 4));
-//   }
-// }
-
-// ---------------------------
-// String helpers (STATE replacement, trimming)
-// ---------------------------
-
-// Replace one 'STATE' token in a selector/frame; if not present, concat with $state
-// @function replace-state-once($base, $state) {
-//   @if is-nullish($base) { @return $state; }
-//   @if not is-string($base) or not is-string($state) { @return $base; }
-//   $idx: string.index($base, 'STATE');
-//   @if $idx == null {
-    // fallback: simple concatenation like '&' + ':hover' -> '&:hover'
-//     @return trim('#{$base}#{$state}');
-//   }
-//   $before: string.slice($base, 1, $idx - 1);
-//   $after:  string.slice($base, $idx + string.length('STATE'));
-//   @return trim('#{$before}#{$state}#{$after}');
-// }
-
-// ---------------------------
-// Numeric coercions for shorthands
-// ---------------------------
-// @function clamp-number($v, $min: null, $max: null) {
-//   @if not is-number($v) { @return $v; }
-//   @if $min != null and $v < $min { @return $min; }
-//   @if $max != null and $v > $max { @return $max; }
-//   @return $v;
-// }
-
+@function set-transition-duration($duration) {
+  @return guard('transition-duration', $duration, 'number');
+}
+@function set-transition-delay($delay) {
+  @return guard('transition-delay', $delay, 'number');
+}
+@function set-transition-type($type) {
+  @return guard('transition-type', $type, 'string');
+}

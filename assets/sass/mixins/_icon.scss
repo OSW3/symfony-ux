@@ -4,9 +4,7 @@
 @use "./../helpers/helpers" as h;
 
 
-/**
- * 
- */
+
 @mixin toFontSize() {
     height: 1em;
     display: inline-flex;

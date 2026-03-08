@@ -478,7 +478,6 @@
 
 ### State
 ```scss
-```scss
 @include states-decls((
     color: (base: var(--c), hover: var(--c-hover)),
     'background-color': (base: var(--bg), focus: var(--bg-focus))

@@ -10,24 +10,31 @@
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:map";
 @use "sass:meta";
 @use "sass:math";
-@use './../mixins/flex' as *;
-@use './../mixins/spacing' as *;
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
 @use './../storages/alert' as store;
-@use './../builders/banner';
-@use './../storages/prefix';
-@use './../mixins/position' as *;
 @use './../storages/spaces';
+
 @use './../components/alert';
+
+// Helpers
 @use './../mixins/component';
-@use './../mixins/transition' as *;
-
+@use './../mixins/box-model' as *;
 @use './../mixins/display' as *;
-
-$prefix: prefix.$prefix;
+@use './../mixins/flex' as *;
+@use './../mixins/interaction' as *;
+@use './../mixins/position' as *;
+@use './../mixins/spacing' as *;
+@use './../mixins/states' as *;
+@use './../mixins/transition' as *;
+@use './../mixins/typography' as *;
+@use './../mixins/visual' as *;
 
 
 
@@ -40,167 +47,189 @@ $prefix: prefix.$prefix;
 
 
 // * ------------------------------------------------------------------------ //
-// * - Component Mixins                                                     - //
+// * - Component settings                                                   - //
 // * ------------------------------------------------------------------------ //
 
-
-
-// * ------------------------------------------------------------------------ //
-// * - Component Styles                                                     - //
-// * ------------------------------------------------------------------------ //
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'alert';
 
 
 $btn-close-size: 24px;
 
 
 
-// * Component Mixin & Functions
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
 
 @function palette-declination($palette, $property) {
 
-    @if 'alert--color' == map.get($property, name) {
+    @if 'alert-color' == map.get($property, name) {
         @return var(--#{$prefix}black);
         // @return var(--#{$prefix}#{map.get( $palette, name )}-bw-contrast);
     }
-    @else if 'alert--bg-color' == map.get($property, name) {
+    @else if 'alert-bg-color' == map.get($property, name) {
         @return var(--#{$prefix}#{map.get( $palette, name )}-subtle);
     }
 
     @return null;
 };
 
-@mixin theme($color, $bg-color, $border-color: null) {
-    color           : $color;
-    background-color: $bg-color;
-    border-color    : $border-color;
+@function get-var($c, $p) {
+    @return var(--#{prefix($c)}-#{$p});
 }
 
 
 
-// * Component Structure
-// * ---------------------------------------------
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
 
-.#{$prefix}alert {
-    // Set layout css variables
-    // --
+/// Component CSS Var
+/// 
+.#{prefix($_component)} {
 
-    @each $name, $value in alert.$layout-properties {
-        --#{$prefix}#{$name}: #{$value};
+  @each $name, $value in alert.$layout-properties {
+    --#{prefix($name)}: #{$value};
+  }
+
+  // * Sizes declinations
+  // * --
+  @if store.$enable-sizes {
+    &-small {
+      --#{$prefix}alert-padding-x  : var(--#{$prefix}alert-small-padding-x);
+      --#{$prefix}alert-padding-y  : var(--#{$prefix}alert-small-padding-y);
+      --#{$prefix}alert-font-size  : var(--#{$prefix}alert-small-font-size);
+      --#{$prefix}alert-font-weight: var(--#{$prefix}alert-small-font-weight);
+      --#{$prefix}alert-line-height: var(--#{$prefix}alert-small-line-height);
     }
+    &-large {
+      --#{$prefix}alert-padding-x  : var(--#{$prefix}alert-large-padding-x);
+      --#{$prefix}alert-padding-y  : var(--#{$prefix}alert-large-padding-y);
+      --#{$prefix}alert-font-size  : var(--#{$prefix}alert-large-font-size);
+      --#{$prefix}alert-font-weight: var(--#{$prefix}alert-large-font-weight);
+      --#{$prefix}alert-line-height: var(--#{$prefix}alert-large-line-height);
+    }
+  }
 
-
-    // Alert layout
-    // --
-    
-    @include display-flex();
-    @include flex-direction(row);
-    @include flex-align-items(center);
-    @include padding(var(--#{$prefix}alert-padding-x));
-    @include margin-y(var(--#{$prefix}alert-padding-y));
-
-    @include theme(
-        var(--#{$prefix}alert--color),
-        var(--#{$prefix}alert--bg-color)
+  // * Palette declinations
+  // * --
+  @if store.$enable-palette {
+    @include component.palette-declination( 
+      meta.get-function(palette-declination), 
+      alert.$theme-properties
     );
-    border: store.$border-width store.$border-style var(--#{$prefix}alert--border-color);
-    border-radius: store.$border-radius;
+  }
 
-    @if store.$font-family {
-        font-family: store.$font-family;
-    }
-    font-size       : var(--#{$prefix}alert-font-size);
-    font-weight     : var(--#{$prefix}alert-font-weight);
-    line-height     : var(--#{$prefix}alert-line-height);
-    
-    box-shadow: store.$box-shadow;
-    
-
-
-    // Content
-    // --
-
-    &-icon {
-        // font-size: 24px;
-        margin-right: 10px;
-        // margin-left: 0;
-    }
-    &-message {
-        @include margin(0, auto, 0, 0, true);
-
-    }
-
-    // & + & {
-    //     @include margin(spaces.$base * .6, 0, 0, 0);
-    // }
-
-    
-    // Sizes declinations
-    // --
-
-    @if store.$enable-sizes {
-        &-small {
-            --#{$prefix}alert-padding-x  : var(--#{$prefix}alert-small-padding-x);
-            --#{$prefix}alert-padding-y  : var(--#{$prefix}alert-small-padding-y);
-            --#{$prefix}alert-font-size  : var(--#{$prefix}alert-small-font-size);
-            --#{$prefix}alert-font-weight: var(--#{$prefix}alert-small-font-weight);
-            --#{$prefix}alert-line-height: var(--#{$prefix}alert-small-line-height);
-        }
-        &-large {
-            --#{$prefix}alert-padding-x  : var(--#{$prefix}alert-large-padding-x);
-            --#{$prefix}alert-padding-y  : var(--#{$prefix}alert-large-padding-y);
-            --#{$prefix}alert-font-size  : var(--#{$prefix}alert-large-font-size);
-            --#{$prefix}alert-font-weight: var(--#{$prefix}alert-large-font-weight);
-            --#{$prefix}alert-line-height: var(--#{$prefix}alert-large-line-height);
-        }
-    }
-    
-
-    // Palette declinations
-    // --
-
-    @if store.$enable-palette {
-        @include component.palette-declination( 
-            meta.get-function(palette-declination), 
-            alert.$theme-properties
-        );
-    }
-
-    
-    // Close button
-    // --
-
-    & .#{$prefix}button-close {
-        cursor: pointer;    
-        @include display-flex();
-        @include flex-align-items(center);
-        @include flex-justify-content(center);
-        @include theme(
-            var(--#{$prefix}alert--color),
-            none
-        );
-
-        border: none;
-        z-index: 2;
-        height: $btn-close-size;
-        width: $btn-close-size;
-        line-height: math.div($btn-close-size, 1.5);
-        font-size: math.div($btn-close-size, 1.5);
-        opacity: 0;
-        
-        
-        @include transition-set(
-            (opacity), 
-            store.$transition-delay, 
-            store.$transition-type
-        );
-
-        &:hover {
-            opacity: 1 !important;
-        }
-    }
-
-    &:hover .#{$prefix}button-close {
-        opacity: .4;
-    }
 }
+
+/// Component container
+/// 
+.#{prefix($_component)} {
+
+  // * Layout
+  // * --
+  @include display-flex();
+  @include flex-direction(row);
+  @include flex-align-items(center);
+
+  // * Typography
+  // * --
+  @include font-family(store.$font-family);
+  @include font-size(get-var($_component, 'font-size'));
+  @include font-weight(get-var($_component, 'font-weight'));
+  @include line-height(get-var($_component, 'line-height'));
+
+  // * Box model
+  // * --
+  @include padding(get-var($_component, 'padding-x'));
+  @include margin-y(get-var($_component, 'padding-y'));
+
+  // * Visual
+  // * --
+  @include border-width(store.$border-width);
+  @include border-style(store.$border-style);
+  @include border-radius(store.$border-radius);
+  @include box-shadow(store.$box-shadow);
+
+  // * Theme
+  // * --
+  @include color(get-var($_component, 'color'));
+  @include background-color(get-var($_component, 'bg-color'));
+  @include border-color(get-var($_component, 'border-color'));
+
+}
+
+/// Component content
+/// 
+.#{prefix($_component)} {
+
+  // * Icon
+  // * --
+  &-icon {
+    @include margin-right(10px);
+  }
+
+  // * Message
+  // * --
+  &-message {
+    @include margin(0, auto, 0, 0, true);
+  }
+
+  // * Close button
+  // * --
+  & .#{prefix(button-close)} {
+
+    // * Layout
+    // * --
+    @include display-flex();
+    @include flex-align-items(center);
+    @include flex-justify-content(center);
+
+    // * Typography
+    // * --
+    @include font-size(math.div($btn-close-size, 1.5));
+    @include line-height(math.div($btn-close-size, 1.5));
+
+    // * Visual
+    // * --
+    @include border(none);
+    @include height($btn-close-size);
+    @include width($btn-close-size);
+
+    // * Position
+    // * --
+    @include z-index(2);
+
+    // * Interaction
+    // * --
+    @include cursor(pointer);
+
+    // * Theme
+    // * --
+    @include color(get-var($_component, 'color'));
+    @include background-color(none);
+
+    // * States
+    // * --
+    @include opacity-states((base: 0, hover: 1));
+
+    
+    
+    @include transition-set(
+      (opacity), 
+      store.$transition-delay, 
+      store.$transition-type
+    );
+  }
+
+  &:hover .#{$prefix}button-close {
+    opacity: .4;
+  }
+}
+
+

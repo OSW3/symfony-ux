@@ -1,103 +1,172 @@
-// * ---------- @osw3/symfony-ux/assets/sass/builders/containers.scss ----------
+// * ===========================================================================
+// *  Structural Containers
+// * ===========================================================================
 // *
-// *    Builder for CSS containers & breakpoints
+// *  This file defines the structural containers of the framework, which are 
+// *  used to create a responsive layout. The containers are defined based on 
+// *  the breakpoints and the container sizes stored in the storage files. 
+// *  
+// *  The containers are built using mixins and functions to ensure consistency 
+// *  and maintainability.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use 'sass:list';
 @use 'sass:map';
 @use 'sass:string';
-@use './../builders/banner';
-@use './../storages/prefix';
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
 @use './../storages/spaces' as stored-spaces;
 @use './../storages/breakpoints' as store;
-@use './../functions/collection' as fnCollection;
-@use './../mixins/box-model' as size;
+
+// Helpers
+@use './../helpers/empty' as *;
+@use './../helpers/list' as *;
+@use './../helpers/map' as *;
+@use './../mixins/box-model' as *;
+@use './../mixins/display' as *;
+@use './../mixins/position' as *;
 @use './../mixins/spacing' as *;
 
-@use './../mixins/display' as *;
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
 
 @include banner.header('Containers');
-$prefix: prefix.$prefix;
 
 
-// * Retrieve stored data
-// * ---------------------------------------------
 
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'container';
+
+/// Breakpoints 
+/// 
+/// A map of breakpoints used in the framework, where the key is the breakpoint
+/// name and the value is the breakpoint value. The breakpoints are defined in
+/// the storage file and can be customized by the user. The breakpoints are 
+/// used to generate the CSS variables for the breakpoints, as well as their 
+/// declinations and contrasts. 
+///
 $breakpoints: store.$breakpoints;
-$containers : store.$containers;
-$useless    : store.$useless;
+
+/// Containers
+/// 
+/// A map of container sizes used in the framework, where the key is the
+/// container name and the value is the container size. The containers are
+/// defined in the storage file and can be customized by the user. The 
+/// containers are used to generate the CSS variables for the containers, as 
+/// well as their declinations and contrasts. 
+/// 
+/// The containers are used to create a responsive layout, where the container 
+/// size changes based on the screen size defined by the breakpoints. 
+///
+$containers: store.$containers;
+
+/// Useless breakpoints and containers
+///
+/// A list of breakpoint and container names that are considered useless and 
+/// should be removed from the breakpoints and containers maps. This can be
+/// used to remove breakpoints and containers that are not needed in the 
+/// project, or to avoid conflicts with other breakpoint and container 
+/// definitions. 
+/// 
+/// The useless breakpoints and containers are defined in the storage file and 
+/// can be customized by the user.
+///
+$useless: store.$useless;
+
+/// Collection of selectors
+/// 
+$collection: ();
+$collection: list.append($collection, #{$_component});
+$collection: list.append($collection, #{$_component}-fluid);
+@each $k, $c in $containers {$collection: list.append($collection, #{$_component}-#{$k});}
+
+/// String of selectors
+/// 
+$selectors: '';
+@each $n in $collection {$selectors: add-to-list($selectors, '.#{prefix($n)}');}
 
 
-// * Unset useless breakpoints
-// * ---------------------------------------------
 
-@if fnCollection.notEmpty($useless) {
-    @each $key, $value in $breakpoints {
-        @if fnCollection.keyExists($useless, $key) {
-            $breakpoints: fnCollection.unset($breakpoints, $key);
-        }
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Remove useless breakpoints and containers
+/// 
+@if is-not-empty($useless) {
+  @each $key, $value in $breakpoints {
+    @if in-list($useless, $key) {
+      $breakpoints: unset-key($breakpoints, $key);
     }
-    @each $key, $value in $containers {
-        @if fnCollection.keyExists($useless, $key) {
-            $containers: fnCollection.unset($containers, $key);
-        }
+  }
+  @each $key, $value in $containers {
+    @if in-list($useless, $key) {
+      $containers: unset-key($containers, $key);
     }
+  }
 }
 
 
-// * Prepare 
-// * ---------------------------------------------
-
-// * Build the $containers-list, an array how contain names of containers
-$containers-list: ('container', 'container-fluid');
-
-@each $key, $container in $containers {
-  $containers-list: list.append($containers-list, container-#{$key});
+/// Build the CSS for the containers
+/// 
+/// e.g.: ..ui-container, .ui-container-fluid, .ui-container-phone, ...
+#{$selectors} {
+  @include display(block);
+  @include position(relative);
+  @include width(100%);
+  @include margin-x(auto);
+  @include padding-x(map.get(stored-spaces.$spaces, 3));
+  @include z-index(1);
 }
 
-
-// * Build the $container-string, a string based on containers names
-$containers-string : '';
-
-@each $_selector in $containers-list {
-    $containers-string: $containers-string + '.#{$prefix}#{$_selector}, ';
-}
-
-$containers-string: string.unquote(string.slice($containers-string, 1, -3));
-
-
-// * Build CSS
-// * ---------------------------------------------
-
-// * All containers / Common definitions
-// * --
-
-#{$containers-string} {
-    display: block;
-    position: relative;
-    @include size.width(100%);
-    @include margin-x(auto);
-    @include padding-x(map.get(stored-spaces.$spaces, 3));
-    z-index: 1;
-}
-
-
-// * Containers max width
-// * --
-
-.#{$prefix}container {
-    // Containers by breakpoints
-    @each $key, $value in $containers {
-        &-#{$key} {
-            @include size.max-width(map.get($containers, $key));
-        }
+.#{prefix($_component)} {
+  
+  /// Container declinations
+  /// 
+  /// e.g.: .ui-container-phone {max-width: 540px;}
+  /// e.g.: .ui-container-tablet {max-width: 720px;}
+  //
+  @each $key, $value in $containers {
+    &-#{$key} {
+      @include max-width(map.get($containers, $key));
     }
+  }
 
-    // Responsive containers
-    @each $key, $value in $breakpoints {
-        @media (min-width: $value) {
-            @include size.max-width(map.get($containers, $key));
-        }
+  &-fluid {
+    // Si jamais une règle en cascade ajouterait un max-width, on l’annule explicitement :
+    @include max-width(none);
+  }
+
+  /// Container declinations based on breakpoints
+  /// 
+  /// e.g.: @media (min-width: 576px) { .ui-container {max-width: 540px;} }
+  /// e.g.: @media (min-width: 768px) { .ui-container {max-width: 720px;} }
+  //
+  @each $key, $value in $breakpoints {
+    @media (min-width: $value) {
+      @include max-width(map.get($containers, $key));
     }
+  }
 }

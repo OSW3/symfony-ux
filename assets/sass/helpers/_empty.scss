@@ -1,0 +1,42 @@
+// * ===========================================================================
+// *  Empty helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for empty values, such as checking if
+// *  a value is empty.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:list';
+@use './boolean' as *;
+@use './list' as *;
+@use './null' as *;
+@use './number' as *;
+
+/// Is empty
+/// @param $v Any value
+/// @return bool True if $v is an empty string, false otherwise
+/// 
+/// @usage is-empty('') // true
+/// @usage is-empty(null) // false
+/// @usage is-empty(0) // false
+/// @usage is-empty(false) // false
+/// 
+@function is-empty($v) {
+  @if is-list($v) { @return is-zero(list.length($v)); }
+  @return is-null($v) or is-zero($v) or is-false($v);
+}
+
+/// Is not empty
+/// @param $v Any value
+/// @return bool True if $v is not an empty string, false otherwise
+///
+/// @usage is-not-empty('') // false
+/// @usage is-not-empty(null) // true
+/// @usage is-not-empty(0) // true
+/// @usage is-not-empty(false) // true
+///
+@function is-not-empty($v) {
+  @return not is-empty($v);
+}

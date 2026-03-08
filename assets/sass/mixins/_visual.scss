@@ -14,6 +14,8 @@
 @use "sass:list";
 @use "sass:math";
 @use "./../helpers/helpers" as h;
+@use "./../helpers/length" as *;
+@use "./corner" as c;
 
 
 // * ------------------------------------------------------------------------ //
@@ -310,6 +312,11 @@ $appearance-add-prefixes: true !default;
   @if meta.content-exists() { @content; }
 }
 
+@mixin border-radius($value, $important: false) {
+  @include c.corner-rounded($value, $important);
+  @if meta.content-exists() { @content; }
+}
+
 /// Set border-top-color property with optional !important flag
 /// 
 /// @param {String} $value - The border top color value to apply (e.g., 'red', '#ff0000', 'var(--my-border-top-color)')
@@ -574,7 +581,7 @@ $appearance-add-prefixes: true !default;
   @if not ($value == null and $props-skip-null) {
     $v: null;
     @if meta.type-of($value) == 'number' {
-      $v: h.to-length($value, $radius-default-unit);
+      $v: to-length($value, $radius-default-unit);
     } @else {
       $v: $value;
     }
@@ -744,7 +751,7 @@ $appearance-add-prefixes: true !default;
 ///  @include outline-offset(5, true); // outline-offset: 5px !important;
 ///
 @mixin outline-offset($value, $important: false) {
-  $v: h.normalize-length($value, $length-default-unit);
+  $v: to-length($value, $length-default-unit);
   @include h.emit('outline-offset', $v, $important);
   @if meta.content-exists() { @content; }
 }

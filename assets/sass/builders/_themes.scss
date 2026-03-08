@@ -1,0 +1,103 @@
+// * ===========================================================================
+// *  Theme Builder
+// * ===========================================================================
+// *
+// *  This file defines the theme builder, which is responsible for generating 
+// *. the CSS variables for the themes used throughout the framework. 
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:map";
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
+@use './../storages/themes' as store;
+@use './../storages/fonts' as fonts;
+
+// Helpers
+@use './../mixins/typography' as *;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
+
+@include banner.header('Themes variables');
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+
+
+
+// * Component properties
+// * ---------------------------------------------
+
+/// Theme properties
+/// 
+/// A map of theme properties used in the framework, where the key is the 
+/// property name and the value is the property value. The theme properties are
+/// defined in the storage file and can be customized by the user. The theme 
+/// properties are used to generate the CSS variables for the themes, as well 
+/// as their declinations and contrasts. 
+/// 
+$theme-properties: ();
+
+
+// $theme-properties: map.merge($theme-properties, (main-color: var(--#{$prefix}gray-800)));
+// $theme-properties: (
+//   // main-color            : var(--#{$prefix}gray-800),
+//   main-link--color      : inherit, //var(--#{$prefix}inherit),
+//   main-hover-link--color: var(--#{$prefix}blue),
+//   main--bg-color        : var(--#{$prefix}white),
+// );
+
+@if map.has-key(store.$themes, store.$default) {
+  $theme-properties: map.merge($theme-properties, map.get(store.$themes, store.$default));
+}
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Build the css variables
+///
+:root {
+  
+  /// Main theme variables
+  /// 
+  @each $name, $value in $theme-properties {
+    --#{$prefix}#{$name}: #{$value};
+  }
+
+  /// Additional themes variables
+  /// 
+  @each $theme-name, $properties in store.$themes {
+    @if $theme-name != store.$default {
+      &[data-theme=#{$theme-name}] {
+        @each $property-name, $value in $properties {
+          @if map.has-key($theme-properties, $property-name) {
+            --#{$prefix}#{$property-name}: #{$value};
+          }
+        }
+      }
+    }
+  }
+
+  // @include font-size(fonts.$base-font-size);
+  // @include line-height(fonts.$base-line-height);
+}

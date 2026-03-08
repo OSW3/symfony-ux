@@ -36,30 +36,23 @@
 
     @if h.fallbacks-enabled() {
       @if $value == flex {
-
         @include h.emit('display', -webkit-box);
         @include h.emit('display', -webkit-flex);
         @include h.emit('display', -ms-flexbox);
-        // display: -webkit-box;
-        // display: -webkit-flex;
-        // display: -ms-flexbox;
       } 
       @else if $value == inline-flex {
         @include h.emit('display', -webkit-inline-box);
         @include h.emit('display', -webkit-inline-flex);
         @include h.emit('display', -ms-inline-flexbox);
-        // display: -webkit-inline-box;
-        // display: -webkit-inline-flex;
-        // display: -ms-inline-flexbox;
       } 
       @else if $value == contents {
         @supports not (display: contents) {
-          display: block #{h.important-flag($important)};
+          @include h.emit(display, block, $important);
         }
       }
     }
 
-    display: $value #{h.important-flag($important)};
+    @include h.emit(display, $value, $important);
   }
 
   @if meta.content-exists() { @content; }

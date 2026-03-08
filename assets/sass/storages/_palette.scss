@@ -7,17 +7,26 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:string";
+
+@use './../storages/prefix' as prefix;
 @use './../variables/colors';
 @use './../variables/palette' as default;
 
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+$prefix: prefix.$prefix;
+
 @function last-index($string, $character) {
-    $index: null;
-    @for $i from 1 through string.length($string) {
-      @if string.slice($string, $i, $i) == $character {
-        $index: $i;
-      }
+  $index: null;
+  @for $i from 1 through string.length($string) {
+    @if string.slice($string, $i, $i) == $character {
+      $index: $i;
     }
-    @return if(sass($index == null): -1; else: $index);
+  }
+  @return if(sass($index == null): -1; else: $index);
 }
 
 
@@ -26,27 +35,27 @@
 
 // * UI Colors collection
 $palette: (
-    default.$ui-color-name-primary  : colors.$blue,
-    default.$ui-color-name-secondary: colors.$gray-600,
-    default.$ui-color-name-success  : colors.$green,
-    default.$ui-color-name-danger   : colors.$red,
-    default.$ui-color-name-warning  : colors.$orange,
-    default.$ui-color-name-info     : colors.$cyan,
-    default.$ui-color-name-light    : colors.$white,
-    default.$ui-color-name-dark     : colors.$black,
-    // default.$ui-color-name-muted    : colors.$gray-500,
+  default.$ui-color-name-primary  : colors.$blue,
+  default.$ui-color-name-secondary: colors.$gray-600,
+  default.$ui-color-name-success  : colors.$green,
+  default.$ui-color-name-danger   : colors.$red,
+  default.$ui-color-name-warning  : colors.$orange,
+  default.$ui-color-name-info     : colors.$cyan,
+  default.$ui-color-name-light    : colors.$white,
+  default.$ui-color-name-dark     : colors.$black,
+  // default.$ui-color-name-muted    : colors.$gray-500,
 ) !default;
 
 // * Declinations collection
 $declinations  : (
-    'dark': (
-        emphasis: tint 30%,
-        subtle: tint 70%,
-    ),
-    '*': (
-        emphasis: shade 20%,
-        subtle: tint 70%,
-    )
+  'dark': (
+    emphasis: tint 30%,
+    subtle: tint 70%,
+  ),
+  '*': (
+    emphasis: shade 20%,
+    subtle: tint 70%,
+  )
 ) !default;
 
 // * Useless UI Colors collection
@@ -57,25 +66,25 @@ $useless: () !default;
 // * ---------------------------------------------
 
 @mixin add($new-colors) {
-    $palette: map.merge($palette, $new-colors) !global;
+  $palette: map.merge($palette, $new-colors) !global;
 }
 
 @mixin replace($replacements) {
-    $new-palette: ();
-  
-    @each $key, $value in $palette {
-        $suffix: string.slice($key, last-index($key, ".") + 1);
-        $new-key: if(sass(map.has-key($replacements, $suffix)): map.get($replacements, $suffix); else: $suffix);
-        $new-palette: map.merge($new-palette, ($new-key: $value));
-    }
-  
-    $palette: $new-palette !global;
+  $new-palette: ();
+
+  @each $key, $value in $palette {
+    $suffix: string.slice($key, last-index($key, ".") + 1);
+    $new-key: if(sass(map.has-key($replacements, $suffix)): map.get($replacements, $suffix); else: $suffix);
+    $new-palette: map.merge($new-palette, ($new-key: $value));
+  }
+
+  $palette: $new-palette !global;
 }
   
 @mixin declinations($declination-map) {
-    $declinations: map.merge($declinations, $declination-map) !global;
+  $declinations: map.merge($declinations, $declination-map) !global;
 }
 
 @mixin remove($useless-colors) {
-    $useless: list.join($useless, $useless-colors, 'comma') !global;
+  $useless: list.join($useless, $useless-colors, 'comma') !global;
 }

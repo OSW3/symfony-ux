@@ -13,6 +13,7 @@
 @use "sass:list";
 @use "sass:math";
 @use "./../helpers/helpers" as h;
+@use "./../helpers/null" as _null;
 
 
 
@@ -83,10 +84,10 @@ $reduced-motion-iteration-count: 1 !default;   // si shorten (évite infinite)
   $dl: h.normalize-time($delay);
   $val: $name $d;
 
-  @if not h.is-nullish($timing) {
+  @if _null.is-not-null($timing) {
     $val: $val $timing;
   }
-  @if not h.is-nullish($dl) {
+  @if _null.is-not-null($dl) {
     $val: $val $dl;
   }
   @if h.fallbacks-enabled() {

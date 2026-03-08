@@ -17,9 +17,9 @@ $prefix: prefix.$prefix;
 // * ---------------------------------------------
 
 $theme-properties: (
-    'alert--color'       : var(--#{$prefix}black),
-    'alert--bg-color'    : var(--#{$prefix}gray-300),
-    'alert--border-color': var(--#{$prefix}black),
+    'alert-color'       : var(--#{$prefix}black),
+    'alert-bg-color'    : var(--#{$prefix}gray-300),
+    'alert-border-color': var(--#{$prefix}black),
 );
 
 

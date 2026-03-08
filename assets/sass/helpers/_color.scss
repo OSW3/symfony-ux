@@ -1,0 +1,237 @@
+// * ===========================================================================
+// *  Color helpers
+// * ===========================================================================
+// *
+// *  This file contains helper functions for working with color values in 
+// *  Sass. These functions allow you to manipulate and transform colors in 
+// *  various ways.
+
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:color";
+@use 'sass:math';
+@use 'sass:meta';
+@use './number' as *;
+
+/// Is color
+/// @param $v Any value
+/// @return bool True if $v is a color, false otherwise
+/// 
+/// @usage is-color(red) // true
+/// @usage is-color(#ff0000) // true
+/// @usage is-color(rgb(255, 0, 0)) // true
+/// @usage is-color('red') // false
+/// 
+@function is-color($v, $assert: false) {
+  @return meta.type-of($v) == 'color';
+}
+
+/// Is not color
+/// @param $v Any value
+/// @return bool True if $v is not a color, false otherwise
+/// 
+/// @usage is-not-color(red) // false
+/// @usage is-not-color(#ff0000) // false
+/// @usage is-not-color(rgb(255, 0, 0)) // false
+/// @usage is-not-color('red') // true
+/// 
+@function is-not-color($v, $assert: false) {
+  @return not is-color($v, $assert);
+}
+
+/// Assert color
+/// @param $v Any value
+/// @param $name Name of the value (for error messages)
+/// @return color The color value if $v is a color, otherwise throws an error
+/// 
+/// @usage assert-color(red) // returns red
+/// @usage assert-color('red') // throws an error
+/// @usage assert-color(10) // throws an error
+/// @usage assert-color(rgb(255, 0, 0)) // returns rgb(255, 0, 0)
+/// @usage assert-color(#ff0000) // returns #ff0000
+/// @usage assert-color(10px) // throws an error
+/// @usage assert-color(10%, 'my-color') // throws an error with message "Expected a color for "my-color", got number (10%)."
+///
+@function assert-color($v, $name: 'value') {
+  @if is-not-color($v) {
+    @error 'Expected a color for "#{$name}", got #{meta.type-of($v)} (#{$v}).';
+  }
+  @return $v;
+}
+
+/// Tint a color by mixing it with white
+/// @param $c Color to tint
+/// @param $w Percentage of tint (0-100)
+/// @return color The tinted color
+///
+/// @usage color-tint(red, 20) // returns a lighter red
+/// @usage color-tint(#ff0000, 20) // returns a lighter red
+/// @usage color-tint(rgb(255, 0, 0), 20) // returns a lighter red
+/// @usage color-tint(red, 120) // returns white
+/// @usage color-tint(red, -20) // returns red (no change)
+/// @usage color-tint('red', 20) // throws an error
+///
+@function color-tint($c, $w) {
+  $_c: assert-color($c, '$color');
+  $_w: normalize-percent($w);
+  @return color.mix(#ffffff, $_c, $_w);
+}
+
+/// Shade a color by mixing it with black
+/// @param $c Color to shade
+/// @param $w Percentage of shade (0-100)
+/// @return color The shaded color
+/// 
+/// @usage color-shade(red, 20) // returns a darker red
+/// @usage color-shade(#ff0000, 20) // returns a darker red
+/// @usage color-shade(rgb(255, 0, 0), 20) // returns a darker red
+/// @usage color-shade(red, 120) // returns black
+/// @usage color-shade(red, -20) // returns red (no change)
+/// @usage color-shade('red', 20) // throws an error
+///
+@function color-shade($c, $w) {
+  $_c: assert-color($c, '$color');
+  $_w: normalize-percent($w);
+  @return color.mix(#000000, $_c, $_w);
+}
+
+
+
+
+
+
+@function rgb-to-hex($color) {
+  $r: color.channel($color, "red", $space: rgb);
+  $g: color.channel($color, "green", $space: rgb);
+  $b: color.channel($color, "blue", $space: rgb);
+  
+  @return "#" + string.slice("00#{$r}", -2) + string.slice("00#{$g}", -2) + string.slice("00#{$b}", -2);
+}
+
+// @function rgb-to-hex($c) {
+//   $c: assert-color($c, '$color');
+
+//   // Get channels in the RGB space and round to ints
+//   $r: math.round(color.channel($c, 'red',   $space: rgb));
+//   $g: math.round(color.channel($c, 'green', $space: rgb));
+//   $b: math.round(color.channel($c, 'blue',  $space: rgb));
+
+//   // Helper to pad 2 hex digits
+//   @function _to-hex2($n) {
+//     @if meta.type-of($n) != 'number' or $n < 0 or $n > 255 {
+//       @error 'Channel out of [0..255]: #{$n}';
+//     }
+//     // Convert to hex via base16 digit mapping
+//     $digits: '0123456789abcdef';
+//     $hi: math.floor($n / 16);
+//     $lo: $n - $hi * 16;
+//     @return string.slice($digits, $hi + 1, $hi + 1) + string.slice($digits, $lo + 1, $lo + 1);
+//   }
+
+//   @return '#' + _to-hex2($r) + _to-hex2($g) + _to-hex2($b);
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/// @private Convert sRGB channel (0..255) to linear
+@function _srgb-channel-to-linear($n) {
+  $v: math.div($n, 255);
+
+  @if $v <= 0.04045 {
+    @return math.div($v, 12.92);
+  } @else {
+    // @return math.pow(($v + 0.055) / 1.055, 2.4);
+    @return math.div(($v + 0.055), 1.055); //** 2.4;
+  }
+}
+
+/// @private Relative luminance (WCAG 2.x)
+/// https://www.w3.org/TR/WCAG21/#dfn-relative-luminance
+@function _relative-luminance($c) {
+  $c: assert-color($c, '$color');
+
+  $r: math.round(color.channel($c, 'red',   $space: rgb));
+  $g: math.round(color.channel($c, 'green', $space: rgb));
+  $b: math.round(color.channel($c, 'blue',  $space: rgb));
+
+  $R: _srgb-channel-to-linear($r);
+  $G: _srgb-channel-to-linear($g);
+  $B: _srgb-channel-to-linear($b);
+
+  @return 0.2126 * $R + 0.7152 * $G + 0.0722 * $B;
+}
+
+/// Contrast ratio between two colors (>=1, <=21)
+/// https://www.w3.org/TR/WCAG21/#dfn-contrast-ratio
+@function color-contrast-ratio($c1, $c2) {
+  $c1: assert-color($c1, '$c1');
+  $c2: assert-color($c2, '$c2');
+
+  $L1: _relative-luminance($c1);
+  $L2: _relative-luminance($c2);
+
+  $lighter: $L1;
+  $darker: $L2;
+
+  @if $L1 < $L2 {
+    $lighter: $L2;
+    $darker: $L1;
+  }
+
+  // $lighter: if($L1 > $L2, $L1, $L2);
+  // $darker:  if($L1 > $L2, $L2, $L1);
+
+  @return math.div(($lighter + 0.05), ($darker + 0.05));
+  // @return ($lighter + 0.05) / ($darker + 0.05);
+}
+
+/// Pick black or white text to maximize contrast on a background.
+/// If $on is provided, we pick the text color (#000 or #fff) that yields the
+/// best ratio against $on. If omitted, it selects the best text color for $bg.
+/// @param {color} $bg      Background color
+/// @param {color} $light   Candidate light text color (default #fff)
+/// @param {color} $dark    Candidate dark text color  (default #000)
+/// @return {color} #000 or #fff (by default)
+@function color-contrast($bg, $light: #ffffff, $dark: #000000) {
+  $bg: assert-color($bg, '$bg');
+  $light: assert-color($light, '$light');
+  $dark: assert-color($dark, '$dark');
+
+  $crLight: color-contrast-ratio($bg, $light);
+  $crDark:  color-contrast-ratio($bg, $dark);
+
+  @if $crLight >= $crDark {
+    @return $light;
+  } @else {
+    @return $dark;
+  }
+
+  // @return if($crLight >= $crDark, $light, $dark);
+}
+
+// @function color-contrast($color) {
+//   $result: color.invert($color);
+//   $lightness: color.channel($result, "lightness", $space: hsl);
+
+//   @if ($lightness < 40) {
+//     $result: #000000;
+//   } @else {
+//     $result: #FFFFFF;
+//   }
+
+//   @return $result;
+// }
+

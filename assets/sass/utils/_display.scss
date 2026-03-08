@@ -1,53 +1,141 @@
-// * ------------ @osw3/symfony-ux/assets/sass/utils/display.scss ------------
+// * ===========================================================================
+// *  Display Builder
+// * ===========================================================================
 // *
-// *    Builder for Display component
+// *  This file defines the display builder, which is responsible for generating
+// *  the CSS classes for controlling the display property of elements.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use 'sass:list';
-@use './../builders/banner';
-@use './../storages/prefix';
+// @use 'sass:meta';
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data Storage
 @use './../storages/breakpoints';
-@use './../functions/collection';
+
+// Helpers
+// @use './../functions/collection';
+@use './../helpers/empty' as *;
+@use './../helpers/list' as *;
+@use './../helpers/map' as *;
+@use './../mixins/display' as *;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
 
 @include banner.header('Utils Display');
-$prefix: prefix.$prefix;
 
 
-// * Data
-// * ---------------------------------------------
 
-// $breakpoints: collection.reverse(breakpoints.$breakpoints);
+
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'display';
+
+
+/// Breakpoints
+/// 
+/// A map of breakpoints used to generate responsive display classes, where the 
+/// key is the breakpoint name and the value is the breakpoint value. The 
+/// breakpoints are defined in the storage file and can be customized by the 
+/// user. The breakpoints are used to generate responsive display classes, 
+/// e.g.: .ui-display-phone-block, .ui-display-tablet-flex, ...   
+/// 
 $breakpoints: breakpoints.$breakpoints;
-$values     : inline inline-block block grid inline-grid table table-row table-cell flex inline-flex none;
+
+/// Useless breakpoints
+///
+/// A list of breakpoints that are not used in the framework and should be 
+/// removed from the generated classes. The useless breakpoints are defined in 
+/// the storage file and can be customized by the user. The useless breakpoints 
+/// are used to remove unnecessary classes, e.g.: .ui-display-phone-block, 
+/// .ui-display-tablet-flex, ...
+///
+$useless: breakpoints.$useless;
+
+/// Display values
+/// 
+/// A list of display values used to generate the display classes, e.g.:
+/// .ui-display-block, .ui-display-flex, .ui-display-table, ... 
+/// 
+/// The display values are defined in the component file and can be customized 
+/// by the user. The display values are used to generate the display classes, 
+/// e.g.: .ui-display-block, .ui-display-flex, .ui-display-table, ...
+///
+$values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex none;
+
+/// First breakpoint value
+/// 
+/// The value of the first breakpoint defined in the breakpoints map. 
+/// This value is used to generate the non-responsive display classes, 
+/// e.g.: .ui-display-block, .ui-display-flex, .ui-display-table, ...
+/// 
+$first-breakpoint: list.nth(list.nth($breakpoints, 1), 1); 
+
+/// Previous breakpoint size
+///
+$previous-size: 0;
 
 
-// * Display definitions
-// * ---------------------------------------------
 
-.#{$prefix}display {
-    
-    // Display
-    $first-breakpoint: list.nth(list.nth($breakpoints, 1), 1); 
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
 
-    @each $key in $values {
-        &-#{$key}, &-#{$first-breakpoint}-#{$key} {
-            display: #{$key} !important;
-        }
+
+
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Remove useless breakpoints and containers
+/// 
+@if is-not-empty($useless) {
+  @each $key, $value in $breakpoints {
+    @if in-list($useless, $key) {
+      $breakpoints: unset-key($breakpoints, $key);
     }
+  }
+}
 
-    // Responsive display
-    $previous-size: 0;
-    @each $breakpoint, $size in $breakpoints {
-        @if $previous-size > 0 {
-            @media (min-width: $previous-size) {
-                @each $key in $values {
-                    &-#{$breakpoint}-#{$key} {
-                        display: #{$key} !important;
-                    }
-                }
-            }
-        }
-        $previous-size: $size;
+/// Build the display classes
+/// 
+/// e.G.: .ui-display-block, .ui-display-flex, .ui-display-phone-block, 
+/// .ui-display-tablet-flex, ...
+.#{prefix($_component)} {
+
+  @each $key in $values {
+    &-#{$key}, &-#{$first-breakpoint}-#{$key} {
+      @include display($key, true);
     }
+  }
+
+  // Responsive display
+  @each $breakpoint, $size in $breakpoints {
+    @if $previous-size > 0 {
+      @media (min-width: $previous-size) {
+        @each $key in $values {
+          &-#{$breakpoint}-#{$key} {
+            @include display($key, true);
+          }
+        }
+      }
+    }
+    $previous-size: $size;
+  }
+  
 }

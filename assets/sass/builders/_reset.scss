@@ -1,587 +1,78 @@
-// * ------------- @osw3/symfony-ux/assets/sass/builders/reset.scss ------------
+// * ===========================================================================
+// *  Reset Component
+// * ===========================================================================
 // *
-// *    Builder for CSS Reset
+// *  This file defines the reset component, which is responsible for resetting
+// *  the default styles of HTML elements.
 // *
-// * ---------------------------------------------------------------------------
+// * ===========================================================================
 
+@charset 'utf-8';
 @use "sass:map";
-@use './../mixins/spacing' as *;
+
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
 @use './../storages/fonts' as fonts;
-@use './../storages/prefix';
 @use './../storages/themes';
 
-@use './../mixins/animation' as *;
+// Helpers
 @use './../mixins/box-model' as *;
-@use './../mixins/clear' as *;
-@use './../mixins/corner' as *;
 @use './../mixins/display' as *;
 @use './../mixins/effects' as *;
-@use './../mixins/flex' as *;
-@use './../mixins/gaps' as *;
-@use './../mixins/grid' as *;
-@use './../mixins/icon' as *;
 @use './../mixins/interaction' as *;
 @use './../mixins/overflow' as *;
-@use './../mixins/position' as *;
-@use './../mixins/rendering' as *;
 @use './../mixins/scroll' as *;
 @use './../mixins/spacing' as *;
-@use './../mixins/states' as *;
-@use './../mixins/transition' as *;
 @use './../mixins/typography' as *;
 @use './../mixins/visual' as *;
 
 
 
-@use './../builders/banner';
+// * ------------------------------------------------------------------------ //
+// * - CSS Banner                                                           - //
+// * ------------------------------------------------------------------------ //
 
 @include banner.header('Component Reset');
 
-$prefix: prefix.$prefix;
 
+
+// * ------------------------------------------------------------------------ //
+// * - Component settings                                                   - //
+// * ------------------------------------------------------------------------ //
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Helpers                                                              - //
+// * ------------------------------------------------------------------------ //
+
+/// CSS Variable
+/// 
+/// @param $c Component name
+/// @param $p Property name
+/// @return string CSS variable name
+/// 
+/// @usage css-var('alert', 'color') // returns "var(--alert-color)"
+/// @usage css-var('alert', 'color') // returns "var(--prefix-alert-color)"
+/// 
+@function css-var($property, $prefix: null) {
+  @if is-not-null($prefix) {
+    @return 'var(--#{$prefix}#{$property})';
+  }
+  @return 'var(--#{$property})';
+}
 
 // @function palette-declination($palette, $property) {
 //     @return null;
 // };
 
 
-// * Component properties
-// * ---------------------------------------------
 
-$theme-properties: (
-    main-color           : var(--#{$prefix}gray-800),
-    main-link--color      : inherit, //var(--#{$prefix}inherit),
-    main-hover-link--color: var(--#{$prefix}blue),
-    main--bg-color        : var(--#{$prefix}white),
-);
-
-@if map.has-key(themes.$themes, themes.$default) {
-    $theme-properties: map.merge($theme-properties, map.get(themes.$themes, themes.$default));
-}
-
-
-
-.foo {
-
-  // ANIMATION
-  // --
-  // @include animation(fade-in 300ms ease-in 0s 1 normal both running, true);
-  // @include animation-ease(fade-in, 200ms);
-  // @include animation-steps(fade-in, 4 end, 500ms, true);
-  // @include animation-iterate(fade-in, 3, 500ms, ease-in-out, 100ms, true);
-  // @include animation-none(true);
-  // @include animation-name(fade-in, move, true);
-  // @include animation-duration(200, 500ms, true); 
-  // @include animation-delay(100, 200ms, true); 
-  // @include animation-timing(ease, steps(4), true); 
-  // @include animation-timing(cubic-bezier(0.1, 0.7, 1.0, 0.1), true);
-  // @include animation-iteration-count(1, 3, infinite, true); 
-  // @include animation-direction(alternate, alternate-reverse, true); 
-  // @include animation-fill-mode(none, forwards, true);
-  // @include animation-running();
-  // @include animation-paused(true);
-  // @include animation-play-state(paused, running, true);
-  // @include animation-play-state(running);
-
-  // BOX MODEL
-  // --
-
-  // CLEAR
-  // --
-  // @include clear(both, true);
-  // @include clear-both(true);
-  // @include clear-left(true);
-  // @include clear-right(true);
-  // @include clear-none(true);
-  // @include clear-inline-start(true);
-  // @include clear-inline-end(true);
-  // @include clearfix(true);
-
-  // CORNER
-  // --
-  // @include corner-rounded(8 16);
-  // @include corner-start(8);
-  // @include corner-end(8 12);
-  // @include corner-top(8 12);
-  // @include corner-bottom(8 12);
-  // @include corner-top-start(12); 
-  // @include corner-top-left(12); 
-  // @include corner-top-end(12); 
-  // @include corner-top-right(12); 
-  // @include corner-bottom-start(12); 
-  // @include corner-bottom-left(12); 
-  // @include corner-bottom-end(12); 
-  // @include corner-bottom-right(12); 
-  // @include corner-inline(12, 8);
-  // @include corner-block(12, 8);
-  // @include corner-rounded-full(true); 
-  // @include corner-rounded-circle(true);
-
-  // DISPLAY
-  // --
-  // @include display(inline, true);
-  // @include display-block(true);
-  // @include display-inline(true); 
-  // @include display-inline-block(true);
-  // @include display-inline-flex(true);
-  // @include display-none(true);
-  // @include display-contents(true);
-  // @include display-flex('inline', true);
-  // @include display-grid('inline', true);
-  // @include display-list(true);
-  // @include display-table('inline-table', true);
-  // @include display-ruby('inline-ruby', true);
-  // @include display-flow-root(true);
-
-  // EFFECTS
-  // --
-  // @include opacity(0.5, true);
-  // @include filter(blur(5px), brightness(0.8), true);
-  // @include backdrop-filter(blur(5px), brightness(0.8), true);
-  // @include mix-blend-mode(screen, true);
-  // @include isolation(auto, true);
-  // @include will-change(transform, opacity, true); 
-  // @include transform-box(fill-box, true);
-  // @include transform(rotate(45deg), true);
-  // @include transform-origin(50% 50%, true);
-  // @include transform-style(preserve-3d, true);
-  // @include perspective(none, true);
-  // @include perspective(10px, true);
-  // @include perspective-origin(50% 50%, true);
-  // @include backface-visibility(hidden, true);
-  // @include translate(10px, null, 30px, true);
-  // @include rotate(45deg);
-  // @include scale(1.5, null, 0.5, true);
-
-  // FLEX
-  // --
-  // @include flex-container(
-  //   $display: flex,
-  //   $direction: row,
-  //   $wrap: wrap,
-  //   $justify: space-between,
-  //   $align-items: center,
-  //   $align-content: stretch,
-  //   $gap: 10px 20px,
-  //   $row-gap: 10px,
-  //   $column-gap: 20px,
-  //   $important: true,
-  //   $gap-child-selector: '> *'
-  // );
-  // @include flex(1 3 auto);
-  // @include flex-direction(column, true);
-  // @include flex-wrap(nowrap, true);
-  // @include flex-grow(0, true);
-  // @include flex-shrink(0, true);
-  // @include flex-basis(auto);
-  // @include flex-justify-content(space-between, true);
-  // @include flex-align-items(flex-start, true);
-  // @include flex-align-content(space-between, true);
-  // @include flex-align-self(flex-end, true);
-  // @include flex-order(0, true);
-
-  // GRID
-  // --
-  // @include grid-container(
-  //   $display: grid,
-  //   $columns: 100px 1fr,
-  //   $rows: 100px 1fr,
-  //   $areas: "\"header header\" \"content content\"",
-  //   $auto-flow: row dense,
-  //   $auto-columns: 100px,
-  //   $auto-rows: 1fr,
-  //   $place-items: center,
-  //   $place-content: start end,
-  //   $gap: 10px,
-  //   $row-gap: 10px,
-  //   $column-gap: 20px,
-  //   $important: true,
-  //   $gap-child-selector: "> *"
-  // );
-  // @include grid-template-columns(repeat(3, 1fr));
-  // @include grid-template-rows(repeat(3, 1fr));
-  // @include grid-template-areas("\"header header header\" \"sidebar content content\" \"footer footer footer\"");
-  // @include grid-auto-flow(column);
-  // @include grid-auto-columns(1fr);
-  // @include grid-auto-rows(1fr);
-  // @include grid-place-items(start end);
-  // @include grid-place-content(start end);
-  // @include grid-area(content);
-  // @include grid-column(span 2);
-  // @include grid-column-start(1); 
-  // @include grid-column-end(3);
-  // @include grid-row(span 2); 
-  // @include grid-row-start(1);
-  // @include grid-row-end(3);
-  // @include place-self(start end);
-  // @include justify-self(stretch);
-  // @include align-self(stretch);
-
-  // INTERACTIONS
-  // --
-  // @include cursor(pointer, true);
-  // @include user-select(text, true);
-  // @include user-drag(element, true);
-  // @include pointer-events(none, true);
-  // @include touch-action(none, true);
-  // @include touch-callout(none, true);
-  // @include tap-highlight-color(transparent, true);
-
-  // OVERFLOW
-  // --
-  // @include overflow(visible, true);
-  // @include overflow(hidden, true);
-  // @include overflow(clip, true);
-  // @include overflow(scroll, true);
-  // @include overflow(auto, true);
-  // @include overflow-visible(true); 
-  // @include overflow-hidden(true); 
-  // @include overflow-clip(true); 
-  // @include overflow-scroll(true); 
-  // @include overflow-auto(true); 
-  // @include overflow-x(visible, true);
-  // @include overflow-x(hidden, true);
-  // @include overflow-x(clip, true);
-  // @include overflow-x(scroll, true);
-  // @include overflow-x(auto, true);
-  // @include overflow-x-visible(true);
-  // @include overflow-x-hidden(true);
-  // @include overflow-x-clip(true);
-  // @include overflow-x-scroll(true);
-  // @include overflow-x-auto(true);
-  // @include overflow-y(visible, true);
-  // @include overflow-y(hidden, true);
-  // @include overflow-y(clip, true);
-  // @include overflow-y(scroll, true);
-  // @include overflow-y(auto, true);
-  // @include overflow-y-visible(true);
-  // @include overflow-y-hidden(true);
-  // @include overflow-y-clip(true);
-  // @include overflow-y-scroll(true);
-  // @include overflow-y-auto(true);
-  // @include visibility(visible, true); 
-  // @include visibility(hidden, true); 
-  // @include visibility(collapse, true); 
-  // @include visibility-visible(true); 
-  // @include visibility-hidden(true); 
-  // @include visibility-collapse(true); 
-  // @include overflow-inline(visible, true);
-  // @include overflow-inline(hidden, true);
-  // @include overflow-inline(clip, true);
-  // @include overflow-inline(scroll, true);
-  // @include overflow-inline(auto, true);
-  // @include overflow-inline-visible(true);
-  // @include overflow-inline-hidden(true);
-  // @include overflow-inline-clip(true);
-  // @include overflow-inline-scroll(true);
-  // @include overflow-inline-auto(true);
-  // @include overflow-block(visible, true);
-  // @include overflow-block(hidden, true);
-  // @include overflow-block(clip, true);
-  // @include overflow-block(scroll, true);
-  // @include overflow-block(auto, true);
-  // @include overflow-block-visible(true);
-  // @include overflow-block-hidden(true);
-  // @include overflow-block-clip(true);
-  // @include overflow-block-scroll(true);
-  // @include overflow-block-auto(true);
-  // @include overflow-scrollbars-hide(true); 
-  // @include overflow-smooth-scroll(true); 
-  // @include overflow-contain(null);
-  // @include overflow-contain(x, true);
-  // @include overflow-contain(y, true);
-  // @include overflow-contain-x(true);
-  // @include overflow-contain-y(true);
-  // @include overflow-contain-scroll(null);
-  // @include overflow-contain-scroll(x);
-  // @include overflow-contain-scroll(y);
-  // @include overflow-touch(true);
-
-
-  // POSITION
-  // --
-  // @include position(absolute) {
-  //    @include top(10px);
-  //    @include left(20px);
-  //  }
-  // @include position(relative);
-  // @include position-static(true);
-  // @include position-relative(true);
-  // @include position-absolute(true);
-  // @include position-fixed(true);
-  // @include position-sticky(true);
-  // @include top(10px, true);
-  // @include right(10px, true);
-  // @include bottom(10px, true);
-  // @include left(10px, true);
-  // @include z-index(10, true);
-  // @include z-index(auto, true);
-  // @include z-index(unset, true);
-  // @include inset(10px auto, true);
-  // @include inset-inline(10px auto, true);
-  // @include inset-block(10px auto, true);
-  // @include inset-inline-start(10px, true);
-  // @include inset-inline-end(10px, true);
-  // @include inset-block-start(10px, true);
-  // @include inset-block-end(10px, true);
-
-  // RENDERING
-  // --
-  // @include contain('size paint', true);
-  // @include contain-none(true);
-  // @include contain-strict(true);
-  // @include contain-content(true);
-  // @include contain-size(true);
-  // @include contain-layout(true);
-  // @include contain-paint(true);
-  // @include contain-style(true);
-  // @include contain-inline-size(true);
-  // @include content-visibility('visible', true);
-  // @include content-visibility('hidden', true);
-  // @include content-visibility('auto', true);
-  // @include cv-visible(true);
-  // @include cv-hidden(true);
-  // @include cv-auto(true);
-  // @include contain-intrinsic-size('10px 20px', true);
-
-  // SCROLL
-  // --
-  // @include scrollbar-gutter(stable both-edges);
-  // @include scrollbar-gutter-stable();
-  // @include scrollbar-gutter-both-edges();
-  // @include scrollbar-gutter-auto(true);
-  // @include scroll-behavior(smooth, true);
-  // @include scroll-behavior-smooth(true);
-  // @include scroll-behavior-auto(true);
-  // @include overscroll-behavior(auto none);
-  // @include overscroll-behavior-auto(true);
-  // @include overscroll-behavior-contain(true);
-  // @include overscroll-behavior-none(true);
-  // @include overscroll-behavior-x(auto, true);
-  // @include overscroll-behavior-x-auto(true);
-  // @include overscroll-behavior-x-contain(true);
-  // @include overscroll-behavior-x-none(true);
-  // @include overscroll-behavior-y(auto, true);
-  // @include overscroll-behavior-y-auto(true);
-  // @include overscroll-behavior-y-contain(true);
-  // @include overscroll-behavior-y-none(true);
-
-  // SPACING
-  // --
-  // @include padding((10px, 20px), true);
-  // @include padding-top(10px, true);
-  // @include padding-top(auto, true);
-  // @include padding-right(10px, true);
-  // @include padding-right(auto, true);
-  // @include padding-bottom(10px, true);
-  // @include padding-bottom(auto, true);
-  // @include padding-left(10px, true);
-  // @include padding-left(auto, true);
-  // @include padding-x(10px, true); 
-  // @include padding-y(10px, true); 
-  // @include padding-inline(10px 20px, true); 
-  // @include padding-inline-start(10px, true); 
-  // @include padding-inline-end(10px, true); 
-  // @include padding-block((10px, 20px));
-  // @include padding-block-start(10px, true); 
-  // @include padding-block-end(10px, true);
-  // @include margin((10px, 20px), true);
-  // @include margin-top(10px, true);
-  // @include margin-top(auto, true);
-  // @include margin-right(10px, true);
-  // @include margin-right(auto, true);
-  // @include margin-bottom(10px, true);
-  // @include margin-bottom(auto, true);
-  // @include margin-left(10px, true);
-  // @include margin-left(auto, true);
-  // @include margin-x(10px, true); 
-  // @include margin-y(10px, true); 
-  // @include margin-inline(10px 20px, true); 
-  // @include margin-inline-start(10px, true); 
-  // @include margin-inline-end(10px, true); 
-  // @include margin-block((10px, 20px));
-  // @include margin-block-start(10px, true); 
-  // @include margin-block-end(10px, true);
-
-  // STATES
-  // --
-  // @include states('color', (base: #222, hover: #000), (scheme: dark));
-  // @include states('color', (base: #222, hover: #000), (forced-colors: true)); 
-  // @include states('color', (base: #222, hover: #000), (selector: '&:STATE'));
-  // @include states-decls(( 
-  //   color: (base: var(--c), hover: var(--c-hover)),
-  //  'background-color': (base: var(--bg), focus: var(--bg-focus))
-  // ), (scheme: dark));
-  // @include color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include caret-color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include accent-color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include text-decoration-color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include text-emphasis-color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include text-shadow-states((base: none, hover: 1px 1px 2px #000), (selector: '&:STATE'));
-  // @include text-stroke-color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include background-color-states((base: #fff, hover: #eee), (selector: '&:STATE'));
-  // // @include background-states((base: #fff url(img.png) no-repeat, hover: #eee url(img-hover.png) repeat), (selector: '&:STATE'));
-  // // @include background-image-states((base: url(img.png), hover: url(img-hover.png)), (selector: '&:STATE '))
-  // @include background-position-states((base: '0 0', hover: '10px 10px'), (selector: '&:STATE'));
-  // @include background-size-states((base: 'auto', hover: 'cover'), (selector: '&:STATE'));
-  // @include background-repeat-states((base: 'no-repeat', hover: 'repeat-x'), (selector: '&:STATE'));
-  // @include background-attachment-states((base: 'scroll', hover: 'fixed'), (selector: '&:STATE'));
-  // @include background-clip-states((base: 'border-box', hover: 'padding-box'), (selector: '&:STATE'));
-  // @include background-origin-states((base: 'border-box', hover: 'padding-box'), (selector: '&:STATE'));
-  // @include border-color-states((base: #ccc, focus: #999), (selector: '&:STATE'));
-  // @include border-width-states((base: '1px', focus: '2px'), (selector: '&:STATE'));
-  // @include border-style-states((base: 'solid', focus: 'dashed'), (selector: '&:STATE'));
-  // @include border-radius-states((base: '4px', focus: '8px'), (selector: '&:STATE'));
-  // @include border-top-color-states((base: #ccc, focus: #999), (selector: '&:STATE'));
-  // @include border-right-color-states((base: #ccc, focus: #999), (selector: '&:STATE'));
-  // @include border-bottom-color-states((base: #ccc, focus: #999), (selector: '&:STATE'));
-  // @include border-left-color-states((base: #ccc, focus: #999), (selector: '&:STATE'));
-  // @include outline-color-states((base: #222, hover: #000), (selector: '&:STATE'));
-  // @include outline-width-states((base: '1px', hover: '2px'), (selector: '&:STATE'));
-  // @include outline-style-states((base: 'solid', hover: 'dashed'), (selector: '&:STATE'));
-  // @include outline-offset-states((base: '0px', hover: '4px'), (selector: '&:STATE'));
-  // @include fill-states((base: #000, hover: #555), (selector: '&:STATE'));
-  // @include stroke-states((base: #000, hover: #555), (selector: '&:STATE'));
-  // @include stroke-width-states((base: '1px', hover: '2px'), (selector: '&:STATE'));
-  // @include opacity-states((base: 1, hover: 0.8), (selector: '&:STATE'));
-  // @include box-shadow-states((base: 'none', hover: '0 4px 6px rgba(0,0,0,0.1)'), (selector: '&:STATE'));
-  // @include filter-states((base: 'none', hover: 'blur(5px)'), (selector: '&:STATE'));
-  // @include backdrop-filter-states((base: 'none', hover: 'blur(5px)'), (selector: '&:STATE'));
-  // @include mix-blend-mode-states((base: 'normal', hover: 'multiply'), (selector: '&:STATE'));
-  // @include isolation-states((base: 'auto', hover: 'isolate'), (selector: '&:STATE'));
-  // @include cursor-states((base: 'default', hover: 'pointer'), (selector: '&:STATE'));
-  // @include pointer-events-states((base: 'auto', hover: 'none'), (selector: '&:STATE'));
-  // @include user-select-states((base: 'auto', hover: 'none'), (selector: '&:STATE'));
-  // @include touch-action-states((base: 'auto', touch-drag: 'pan-x pinch-zoom'), (selector: '&:STATE'));
-  // @include display-states((base: 'block', hover: 'none'), (selector: '&:STATE'));
-  // @include visibility-states((base: 'visible', hover: 'hidden'), (selector: '&:STATE'));
-
-  // TYPOGRAPHY
-  // --
-  // @include font-family('Open Sans', sans-serif, true);
-  // @include font-size(1.5);
-  // @include font-size(1.5rem);
-  // @include font-size(25%);
-  // @include font-weight(700, true);
-  // @include font-style(oblique, true);
-  // @include font-stretch(condensed, true);
-  // @include font-variant(small-caps, true); 
-  // @include line-height(20, true);
-  // @include letter-spacing(normal, true);
-  // @include word-spacing(normal, true);
-  // @include text-align(start, true); 
-  // @include text-transform(none, true);
-  // @include text-decoration(none, true);
-  // @include text-indent(2, true);
-  // @include text-indent(2em, true);
-  // @include text-indent(2% 4px, true);
-  // @include white-space(break-spaces, true);
-  // @include word-break(break-word, true);
-  // @include word-wrap(break-word, true); 
-  // @include overflow-wrap(anywhere, true);
-  // @include hyphens(auto, true);
-  // @include text-decoration-color(currentColor, true);
-  // @include text-decoration-thickness(2%, true);
-  // @include text-underline-offset(2%, true);
-  // @include text-underline-position(right, true);
-  // @include tab-size(4ch, true); 
-  // @include text-wrap(pretty, true);
-  // @include text-size-adjust(auto, true);
-  // @include quotes('"«' '»"' '"‹' '›"', true);
-  // @include text-rendering(optimizeLegibility, true);
-  // @include font-smoothing(antialiased, grayscale, true);
-  // @include text-readability-preset(true);
-
-  // TRANSITIONS
-  // --
-  // @include transition-ease(color, 0.5s, ease-in-out, null, true); 
-  // @include transition-property((opacity, transform));
-  // @include transition-duration((200, 300ms));
-  // @include transition-delay((100, 200ms)); 
-  // @include transition-timing-function(ease, linear, true);
-  // @include transition-none(true); 
-  // @include transition-set((opacity, transform), 200, ease, true); 
-  // @include transition-vars((opacity, transform));
-
-  // VISUAL
-  // --
-  // @include color(var(--my-color), true); 
-  // @include background(var(--my-bg), true);
-  // @include background-color(var(--my-bg-color), true); 
-  // @include background-image(var(--my-bg-image), true); 
-  // @include background-size(var(--my-bg-size), true);
-  // @include background-position(var(--my-bg-position), true); 
-  // @include background-repeat(var(--my-bg-repeat), true); 
-  // @include background-clip(var(--my-bg-clip), true); 
-  // @include background-origin(var(--my-bg-origin), true); 
-  // @include border(var(--my-border), true);
-  // @include border-color(var(--my-border-color), true); 
-  // @include border-width(var(--my-border-width), true); 
-  // @include border-style(var(--my-border-style), true);
-  // @include border-top(var(--my-border-top), true);
-  // @include border-top-color(var(--my-border-top-color), true);
-  // @include border-top-width(var(--my-border-top-width), true);
-  // @include border-top-style(var(--my-border-top-style), true);
-  // @include border-right(var(--my-border-right), true);
-  // @include border-right-color(var(--my-border-right-color), true);
-  // @include border-right-width(var(--my-border-right-width), true);
-  // @include border-right-style(var(--my-border-right-style), true);
-  // @include border-bottom(var(--my-border-bottom), true);
-  // @include border-bottom-color(var(--my-border-bottom-color), true);
-  // @include border-bottom-width(var(--my-border-bottom-width), true);
-  // @include border-bottom-style(var(--my-border-bottom-style), true);
-  // @include border-left(var(--my-border-left), true);
-  // @include border-left-color(var(--my-border-left-color), true);
-  // @include border-left-width(var(--my-border-left-width), true);
-  // @include border-left-style(var(--my-border-left-style), true);
-  // @include border-radius(1em 0.5em, true); 
-  // @include border-image-source(var(--my-border-image-source), true); 
-  // @include border-image-slice(var(--my-border-image-slice), true); 
-  // @include border-image-width(var(--my-border-image-width), true); 
-  // @include border-image-outset(var(--my-border-image-outset), true); 
-  // @include border-image-repeat(var(--my-border-image-repeat), true);
-  // @include outline(('1px solid red', '2px dashed blue'), true); 
-  // @include outline-color(var(--my-outline-color), true);
-  // @include outline-width(var(--my-outline-width), true);
-  // @include outline-style(var(--my-outline-style), true);
-  // @include outline-offset(5, true);
-  // @include box-shadow(var(--my-box-shadow), true); 
-  // @include text-shadow(var(--my-text-shadow), true);
-  // @include caret-color(var(--my-caret-color), true);
-  // @include accent-color(var(--my-accent-color), true); 
-  // @include appearance(var(--my-appearance), true);
-}
-// @include keyframes(fade-in) { from {opacity:0;} to {opacity:1;} }
-
-
-
-
-// * Build CSS
-// * ---------------------------------------------
-
-
-:root {
-  // Main theme properties
-  @each $name, $value in $theme-properties {
-    --#{$prefix}#{$name}: #{$value};
-  }
-
-  @include font-size(fonts.$base-font-size);
-  @include line-height(fonts.$base-line-height);
-
-  // Others theming properties 
-  @each $theme-name, $properties in themes.$themes {
-    @if $theme-name != themes.$default {
-      &[data-theme=#{$theme-name}] {
-        @each $property-name, $value in $properties {
-          @if map.has-key($theme-properties, $property-name) {
-            --#{$prefix}#{$property-name}: #{$value};
-          }
-        }
-      }
-    }
-  }
-}
+// * ------------------------------------------------------------------------ //
+// * - Component builder                                                    - //
+// * ------------------------------------------------------------------------ //
 
 *, *::before, *::after {
   @include margin(0);
@@ -606,14 +97,13 @@ body {
   @include padding(0);
   // @include min-width(100dvw);
   @include min-height(100dvh);
-  @include font-family(var(--#{$prefix}font-open-sans));
+  @include font-family(css-var('font-open-sans', $prefix));
   @include font-size(1rem); // todo: customize
   @include font-weight(400); // todo: customize
-  @include color(var(--#{$prefix}main-color));
-  @include background-color(var(--#{$prefix}main--bg-color));
+  @include color(css-var('main-color', $prefix));
+  @include background-color(css-var('main--bg-color', $prefix));
   @include text-rendering(optimizeLegibility);
   @include font-smoothing(antialiased);
-
   // background-color: Canvas;
   // color: CanvasText;
 }
@@ -641,12 +131,12 @@ p {
 }
 
 a {
-  @include color(var(--#{$prefix}main-link--color));
+  @include color(css-var('main-link--color', $prefix));
   @include text-decoration(none);
 }
 a:hover,
 a:focus {
-  @include color(var(--#{$prefix}main-hover-link--color));
+  @include color(css-var('main-hover-link--color', $prefix));
   @include text-decoration(underline);
   // color: var(--#{$prefix}main-hover-link--color);
   // text-decoration: underline;
