@@ -1,0 +1,84 @@
+// * ===========================================================================
+// *  Float Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the float property of elements.
+// *
+// *  These mixins provide a convenient way to apply different float values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Float API                                                            - //
+// * ------------------------------------------------------------------------ //
+
+/// Set float property.
+/// 
+/// @param {String} $value - The float value to set (e.g., left, right, none).
+/// @param {Boolean} $important - Whether to add the !important flag (default:
+/// 
+/// Usage:
+///  @include float(left); // float: left;
+///  @include float(right, true); // float: right !important;
+/// 
+@mixin float($value, $important: false) {
+  @include h.emit('float', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set float: left
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include float-left; // float: left;
+///  @include float-left(true); // float: left !important;
+/// 
+@mixin float-left($important: false) { 
+  @include float(left, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set float: right
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include float-right; // float: right;
+///  @include float-right(true); // float: right !important;
+/// 
+@mixin float-right($important: false) { 
+  @include float(right, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set float: none
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include float-none; // float: none;
+///  @include float-none(true); // float: none !important;
+/// 
+@mixin float-none($important: false) { 
+  @include float(none, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set float: inherit
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include float-inherit; // float: inherit;
+///  @include float-inherit(true); // float: inherit !important;
+/// 
+@mixin float-inherit($important: false) { 
+  @include float(inherit, $important); 
+  @if meta.content-exists() { @content; } 
+}

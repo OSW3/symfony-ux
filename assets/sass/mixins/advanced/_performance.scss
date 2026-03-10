@@ -1,0 +1,50 @@
+// * ===========================================================================
+// *  Advanced Performance Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for advanced performance optimizations, such as 
+// *  text-size-adjust and other properties that can improve rendering 
+// *  performance on certain devices.
+// *
+// *  These mixins provide a convenient way to apply performance-related 
+// *  properties with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set will-change with optional !important
+///
+/// @param $values One or more property names or 'auto'
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include will-change(transform);
+///  @include will-change(transform, opacity);
+///  @include will-change(transform, true); // with !important
+///  @include will-change(transform, opacity, true); // multiple values with !important
+///
+@mixin will-change($values...) { 
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('will-change', h.as-comma-list($vals), $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------

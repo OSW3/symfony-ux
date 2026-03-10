@@ -1,0 +1,132 @@
+// * ===========================================================================
+// *  Width Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the width property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different width styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Width API                                                            - //
+// * ------------------------------------------------------------------------ //
+
+/// Defines the width of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-width)).
+/// 
+/// @param {number|string} $value - The width value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include width(100); // width: 100px;
+///  @include width(100px); // width: 100px;
+///  @include width(100%, true); // width: 100% !important;
+/// 
+@mixin width($value, $important: false) { 
+  @include h.dim(width, $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Defines the minimum width of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-min-width)).
+/// 
+/// @param {number|string} $value - The minimum width value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include min-width(100); // min-width: 100px;
+///  @include min-width(100px); // min-width: 100px;
+///  @include min-width(100%, true); // min-width: 100% !important
+///
+@mixin min-width($value, $important: false) {
+  @include h.dim(min-width, $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Defines the maximum width of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-max-width)).
+/// 
+/// @param {number|string} $value - The maximum width value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include max-width(100); // max-width: 100px;
+///  @include max-width(100px); // max-width: 100px;
+///  @include max-width(100%, true); // max-width: 100% !important
+///
+@mixin max-width($value, $important: false) {
+  @include h.dim(max-width, $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: auto.
+/// 
+/// Usage:
+///  @include width-auto; // width: auto;
+///  @include width-auto(true); // width: auto !important
+///
+@mixin width-auto($important: false) {
+  @include width(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: 100%.
+/// 
+/// Usage:
+///  @include width-full; // width: 100%;
+///  @include width-full(true); // width: 100% !important
+///
+@mixin width-full($important: false) {
+  @include width(100%, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: fit-content.
+/// 
+/// Usage:
+///  @include width-fit; // width: fit-content;
+///  @include width-fit(true); // width: fit-content !important
+///
+@mixin width-fit($important: false) {
+  @if h.fallbacks-enabled() {
+    @include width-full($important);
+  }
+  @include width(fit-content, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: min-content.
+/// 
+/// Usage:
+///  @include min-width-content; // width: min-content;
+///  @include min-width-content(true); // width: min-content !important
+///
+@mixin min-width-content($important: false) {
+  @if h.fallbacks-enabled() {
+    @include width(auto, $important);
+  }
+  @include width(min-content, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for width: max-content.
+/// 
+/// Usage:
+///  @include max-width-content; // width: max-content;
+///  @include max-width-content(true); // width: max-content !important
+///
+@mixin max-width-content($important: false) {
+  @if h.fallbacks-enabled() {
+    @include width-full($important);
+  }
+  @include width(max-content, $important); 
+  @if meta.content-exists() { @content; }
+}

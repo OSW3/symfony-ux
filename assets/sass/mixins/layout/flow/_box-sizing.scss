@@ -1,0 +1,37 @@
+// * ===========================================================================
+// *  Box Sizing Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the box-sizing property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different box-sizing styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Box Sizing API                                                       - //
+// * ------------------------------------------------------------------------ //
+
+/// Sets the box-sizing property of an element with validation and optional !important.
+/// Note: This mixin sets the box-sizing property to either border-box or content-box, with validation to ensure only valid values are used. The $important parameter allows adding !important to the declaration if needed.
+/// 
+/// @param {string} $value - The box-sizing value (border-box or content-box).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include box-sizing(border-box); // box-sizing: border-box;
+///  @include box-sizing(content-box, true); // box-sizing: content-box !important;
+///
+@mixin box-sizing($value: border-box, $important: false) {
+  @if not ($value == border-box or $value == content-box) {
+    @warn "[box-model] box-sizing inattendu: #{meta.inspect($value)} (attendu: border-box | content-box)";
+  }
+  @include h.emit(box-sizing, $value, $important);
+  @if meta.content-exists() { @content; }
+}

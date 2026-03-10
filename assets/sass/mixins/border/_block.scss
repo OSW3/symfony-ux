@@ -1,0 +1,222 @@
+// * ===========================================================================
+// *  Border Block Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border-block property of elements.
+// *
+// *  These mixins provide a convenient way to apply border-block values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Border Block API                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Set border-block.
+/// 
+/// @param {string|list} $values - Border-block value(s). Can be a single value or multiple fallbacks as varargs.
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include border-block(1px solid red); // border-block: 1px solid red;
+///  @include border-block(1px solid red, true); // border-block: 1px solid red !important;
+///  @include border-block(1px solid red, 2px dashed blue); // border-block: 1px solid red, 2px dashed blue;
+///  @include border-block(1px solid red, 2px dashed blue, true); // border-block: 1px solid red, 2px dashed blue !important;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green); // border-block: 1px solid red, 2px dashed blue, 3px dotted green;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, true); // border-block: 1px solid red, 2px dashed blue, 3px dotted green !important;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, true); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange !important;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, true); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple !important;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, true); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan !important;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta, true); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta !important;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta, 8px outset yellow); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta, 8px outset yellow;
+///  @include border-block(1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta, 8px outset yellow, true); // border-block: 1px solid red, 2px dashed blue, 3px dotted green, 4px double orange, 5px groove purple, 6px ridge cyan, 7px inset magenta, 8px outset yellow !important;
+///
+@mixin border-block($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('border-block', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to inherit with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include border-block-inherit(); // border-block: inherit;
+///  @include border-block-inherit(true); // border-block: inherit !important;
+///
+@mixin border-block-inherit($important: false) {
+  @include border-block(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to initial with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-initial(); // border-block: initial;
+///  @include border-block-initial(true); // border-block: initial !important;
+/// 
+@mixin border-block-initial($important: false) {
+  @include border-block(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to unset with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-unset(); // border-block: unset;
+///  @include border-block-unset(true); // border-block: unset !important;
+///
+@mixin border-block-unset($important: false) {
+  @include border-block(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to revert with optional important flag.
+///
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-revert(); // border-block: revert;
+///  @include border-block-revert(true); // border-block: revert !important;
+///
+@mixin border-block-revert($important: false) {
+  @include border-block(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to none with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-none(); // border-block: none;
+///  @include border-block-none(true); // border-block: none !important;
+///
+@mixin border-block-none($important: false) {   
+  @include border-block(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to currentColor with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-currentColor(); // border-block: currentColor;
+///  @include border-block-currentColor(true); // border-block: currentColor !important;
+///
+@mixin border-block-currentColor($important: false) {
+  @include border-block(currentColor, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to default with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-default(); // border-block: default;
+///  @include border-block-default(true); // border-block: default !important;
+///
+@mixin border-block-default($important: false) {
+  @include border-block(default, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block to hidden with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-hidden(); // border-block: hidden;
+///  @include border-block-hidden(true); // border-block: hidden !important;
+///
+@mixin border-block-hidden($important: false) {
+  @include border-block(hidden, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block-width with optional important flag.
+/// 
+/// @param {string} $value - The value for border-block-width (e.g., thin, medium, thick, or any valid CSS length).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-width(thin); // border-block-width: thin;
+///  @include border-block-width(thin, true); // border-block-width: thin !important;
+///  @include border-block-width(2px); // border-block-width: 2px;
+///  @include border-block-width(2px, true); // border-block-width: 2px !important;
+///  @include border-block-width(0); // border-block-width: 0;
+///  @include border-block-width(0, true); // border-block-width: 0 !important;
+///  @include border-block-width(0px); // border-block-width: 0px;
+///  @include border-block-width(0px, true); // border-block-width: 0px !important;
+///
+@mixin border-block-width($value, $important: false) {
+  @include h.emit('border-block-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block-style with optional important flag.
+/// 
+/// @param {string} $value - The value for border-block-style (e.g., none, solid, dashed, dotted, double, groove, ridge, inset, outset).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include border-block-style(solid); // border-block-style: solid;
+///  @include border-block-style(solid, true); // border-block-style: solid !important;
+///  @include border-block-style(dashed); // border-block-style: dashed;
+///  @include border-block-style(dashed, true); // border-block-style: dashed !important;
+///  @include border-block-style(dotted); // border-block-style: dotted;
+///  @include border-block-style(dotted, true); // border-block-style: dotted !important;
+///  @include border-block-style(double); // border-block-style: double;
+///  @include border-block-style(double, true); // border-block-style: double !important;
+///  @include border-block-style(groove); // border-block-style: groove;
+///  @include border-block-style(groove, true); // border-block-style: groove !important;
+///  @include border-block-style(ridge); // border-block-style: ridge;
+///  @include border-block-style(ridge, true); // border-block-style: ridge !important;
+///  @include border-block-style(inset); // border-block-style: inset;
+///  @include border-block-style(inset, true); // border-block-style: inset !important;
+///  @include border-block-style(outset); // border-block-style: outset;
+///  @include border-block-style(outset, true); // border-block-style: outset !important;
+///
+@mixin border-block-style($value, $important: false) {
+  @include h.emit('border-block-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-block-color with optional important flag.
+/// 
+/// @param {string} $value - The value for border-block-color (e.g., any valid CSS color).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include border-block-color(red); // border-block-color: red;
+///  @include border-block-color(red, true); // border-block-color: red !important;
+///  @include border-block-color(#00ff00); // border-block-color: #00ff00;
+///  @include border-block-color(#00ff00, true); // border-block-color: #00ff00 !important;
+///  @include border-block-color(rgba(0, 0, 255, 0.5)); // border-block-color: rgba(0, 0, 255, 0.5);
+///  @include border-block-color(rgba(0, 0, 255, 0.5), true); // border-block-color: rgba(0, 0, 255, 0.5) !important;   
+/// 
+@mixin border-block-color($value, $important: false) {
+  @include h.emit('border-block-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}

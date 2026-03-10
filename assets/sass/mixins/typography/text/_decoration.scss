@@ -1,0 +1,150 @@
+// * ===========================================================================
+// *  Text Decoration Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the text decoration properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different text decoration styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Decoration API                                                  - //
+// * ------------------------------------------------------------------------ //
+
+/// text-decoration
+/// 
+/// @param {string...} $values A space-separated list of text-decoration values (e.g., underline, overline, line-through, none)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-decoration(underline); // text-decoration: underline;
+///  @include text-decoration(underline overline, true); // text-decoration: underline overline !important;
+///  @include text-decoration(none); // text-decoration: none;
+///  @include text-decoration(none, true); // text-decoration: none !important;
+///
+@mixin text-decoration($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('text-decoration', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// text-decoration-line (underline | overline | line-through | none)
+/// 
+/// @param {string} $value The value for text-decoration-line (e.g., underline, overline, line-through, none)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-decoration-line(underline); // text-decoration-line: underline;
+///  @include text-decoration-line(underline, true); // text-decoration-line: underline !important;
+///  @include text-decoration-line(none); // text-decoration-line: none;
+///  @include text-decoration-line(none, true); // text-decoration-line: none !important;
+///
+@mixin text-decoration-line($value, $important: false) { 
+  @include h.emit('text-decoration-line', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// text-decoration-color (color | currentColor)
+/// 
+/// @param {string} $value The value for text-decoration-color (e.g., red, currentColor)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-decoration-color(red); // text-decoration-color: red;
+///  @include text-decoration-color(currentColor, true); // text-decoration-color: currentColor !important;
+///
+@mixin text-decoration-color($value, $important: false) { 
+  @include h.emit('text-decoration-color', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// text-decoration-style (solid | double | dotted | dashed | wavy)
+/// 
+/// @param {string} $value The value for text-decoration-style (e.g., solid, double, dotted, dashed, wavy)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-decoration-style(solid); // text-decoration-style: solid;
+///  @include text-decoration-style(dashed, true); // text-decoration-style: dashed !important;
+///
+@mixin text-decoration-style($value, $important: false) { 
+  @include h.emit('text-decoration-style', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// text-decoration-thickness (<length> | auto)
+///
+/// @param {string|number} $value The value for text-decoration-thickness (e.g., 2px, auto)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include text-decoration-thickness(2px); // text-decoration-thickness: 2px;
+///  @include text-decoration-thickness(2, true); // text-decoration-thickness: 2px !important; (assuming $length-default-unit is 1px)
+///  @include text-decoration-thickness(auto); // text-decoration-thickness: auto;
+///  @include text-decoration-thickness(auto, true); // text-decoration-thickness: auto !important;
+/// 
+@mixin text-decoration-thickness($value, $important: false) {
+  $v: to-length($value, $length-default-unit);
+  @include h.emit('text-decoration-thickness', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-underline-offset (<length> | auto)
+/// 
+/// @param {string|number} $value The value for text-underline-offset (e.g., 2px, auto)
+/// @param {boolean} $important Whether to add !important to the declaration (default:
+/// 
+/// Usage:
+///  @include text-underline-offset(2px); // text-underline-offset: 2px;
+///  @include text-underline-offset(2, true); // text-underline-offset: 2px !important; (assuming $length-default-unit is 1px)
+///  @include text-underline-offset(auto); // text-underline-offset: auto;
+///  @include text-underline-offset(auto, true); // text-underline-offset: auto !important;
+/// 
+@mixin text-underline-offset($value, $important: false) {
+  @include h.emit('text-underline-offset', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-underline-position (auto | under | left | right)
+///
+/// @param {string} $value The value for text-underline-position (e.g., auto, under, left, right)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-underline-position(auto); // text-underline-position: auto;
+///  @include text-underline-position(auto, true); // text-underline-position: auto !important;
+///  
+@mixin text-underline-position($value, $important: false) {
+  @include h.emit('text-underline-position', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-decoration-skip-ink (auto | none)
+///
+/// @param {string} $value The value for text-decoration-skip-ink (e.g., auto, none)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-decoration-skip-ink(auto); // text-decoration-skip-ink: auto;
+///  @include text-decoration-skip-ink(auto, true); // text-decoration-skip-ink: auto !important;
+///  @include text-decoration-skip-ink(none); // text-decoration-skip-ink: none;
+///  @include text-decoration-skip-ink(none, true); // text-decoration-skip-ink: none !important;
+///
+@mixin text-decoration-skip-ink($value, $important: false) {
+  @include h.emit('text-decoration-skip-ink', $value, $important);
+  @if meta.content-exists() { @content; }
+}

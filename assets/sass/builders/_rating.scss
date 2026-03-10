@@ -15,7 +15,7 @@
 @use './../builders/banner';
 @use './../storages/prefix';
 @use './../mixins/transition' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 
 @use './../storages/rating' as store;

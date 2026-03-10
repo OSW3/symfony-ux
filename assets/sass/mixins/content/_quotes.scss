@@ -1,0 +1,188 @@
+// * ===========================================================================
+// *  Quotes Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the quotes property of elements.
+// *
+// *  These mixins provide a convenient way to apply quotes values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Quotes API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set quotes with support for multiple values and an optional !important flag.
+/// 
+/// @param {string...} $values A space-separated list of quote pairs (e.g., '"«' '»"' for English and French quotes)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include quotes('"«' '»"' '"‹' '›"'); // quotes: '"«' '»"' '"‹' '›"';
+///  @include quotes('"«' '»"' '"‹' '›"', true); // quotes: '"«' '»"' '"‹' '›" !important;
+///
+@mixin quotes($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+
+  $v: h.as-space-list($vals);
+  @if meta.type-of($vals) == 'string' or meta.type-of($vals) == 'keyword' {
+    $v: $vals;
+  }
+  
+  @include h.emit('quotes', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-inherit($important: false) {
+  @include quotes(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-initial($important: false) {
+  @include quotes(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-revert($important: false) {
+  @include quotes(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-unset($important: false) {
+  @include quotes(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-none($important: false) {
+  @include quotes(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-auto($important: false) {
+  @include quotes(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-default($important: false) {
+  @include quotes(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-english($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-french($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-german($important: false) {
+  @include quotes('"„' '“"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-japanese($important: false) {
+  @include quotes('"「' '」"' '"『' '』"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-chinese($important: false) {
+  @include quotes('"「' '」"' '"『' '』"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-spanish($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-italian($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-russian($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-arabic($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-hebrew($important: false) {
+  @include quotes('"«' '»"' '"‹' '›"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-korean($important: false) {
+  @include quotes('"「' '」"' '"『' '』"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-english-single($important: false) {
+  @include quotes('"‘' '’"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-french-single($important: false) {
+  @include quotes('"‹' '›"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-german-single($important: false) {
+  @include quotes('"‚' '‛"' '"„' '“"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-japanese-single($important: false) {
+  @include quotes('"『' '』"' '"「' '」"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-chinese-single($important: false) {
+  @include quotes('"『' '』"' '"「' '」"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-spanish-single($important: false) {
+  @include quotes('"‹' '›"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-italian-single($important: false) {
+  @include quotes('"‹' '›"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-russian-single($important: false) {
+  @include quotes('"‹' '›"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-arabic-single($important: false) {
+  @include quotes('"‹' '›"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-hebrew-single($important: false) {
+  @include quotes('"‹' '›"' '"‚' '‛"', $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin quotes-korean-single($important: false) {
+  @include quotes('"『' '』"' '"「' '」"', $important);
+  @if meta.content-exists() { @content; }
+}

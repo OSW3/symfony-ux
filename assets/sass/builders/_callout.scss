@@ -25,7 +25,7 @@
 @use './../components/callout';
 
 
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 $prefix: prefix.$prefix;
 

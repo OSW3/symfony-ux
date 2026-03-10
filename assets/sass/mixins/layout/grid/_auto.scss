@@ -1,0 +1,63 @@
+// * ===========================================================================
+// *  Cursor Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the cursor property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different cursor styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Cursor API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set grid-auto-flow
+/// 
+/// @param {String} $value - The value for grid-auto-flow (e.g., "row", "column", "dense", or combinations like "row dense")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-auto-flow(row dense); // grid-auto-flow: row dense;
+///  @include grid-auto-flow(column); // grid-auto-flow: column;
+///
+@mixin grid-auto-flow($value, $important: false) {
+  @include h.emit('grid-auto-flow', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set grid-auto-columns
+/// 
+/// @param {String} $value - The value for grid-auto-columns (e.g., "100px", "1fr", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-auto-columns(100px); // grid-auto-columns: 100px;
+///  @include grid-auto-columns(1fr); // grid-auto-columns: 1fr;
+///
+@mixin grid-auto-columns($value, $important: false) {
+  @include h.emit('grid-auto-columns', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set grid-auto-rows
+/// 
+/// @param {String} $value - The value for grid-auto-rows (e.g., "100px", "1fr", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-auto-rows(100px); // grid-auto-rows: 100px;
+///  @include grid-auto-rows(1fr); // grid-auto-rows: 1fr;
+///
+@mixin grid-auto-rows($value, $important: false) {
+  @include h.emit('grid-auto-rows', $value, $important); 
+  @if meta.content-exists() { @content; }
+}

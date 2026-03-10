@@ -1,0 +1,36 @@
+// * ===========================================================================
+// *  Flex Order Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the order property of flex items.
+// *
+// *  These mixins provide a convenient way to apply different order values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Flex Order API                                                       - //
+// * ------------------------------------------------------------------------ //
+
+/// Set order with necessary fallbacks for older browsers.
+/// 
+/// @param {number} $value An integer representing the order of the flex item
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-order(1); // order: 1;
+///  @include flex-order(0, true); // order: 0 !important;
+///
+@mixin flex-order($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-order', $value, $important);
+    @include h.emit('-ms-flex-order', $value, $important);
+  }
+  @include h.emit('order', $value, $important);
+  @if meta.content-exists() { @content; }
+}

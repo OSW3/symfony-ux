@@ -1,0 +1,101 @@
+// * ===========================================================================
+// *  Border Outline Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border outline property of elements.
+// *
+// *  These mixins provide a convenient way to apply border outline values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Border Outline API                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Set outline property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The outline value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline('1px solid red'); // outputs: outline: 1px solid red;
+///  @include outline(('1px solid red', '2px dashed blue'), true); // outputs: outline: 1px solid red, 2px dashed blue !important;
+///  @include outline(var(--my-outline)); // outputs: outline: var(--my-outline);
+///  @include outline(var(--my-outline), true); // outputs: outline: var(--my-outline) !important;
+///
+@mixin outline($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('outline', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-width property with optional !important flag
+/// 
+/// @param {String} $value - The outline width value to apply (e.g., '1px', '0', 'var(--my-outline-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline-width('1px'); // outputs: outline-width: 1px;
+///  @include outline-width('0', true); // outputs: outline-width: 0 !important;
+///  @include outline-width(var(--my-outline-width)); // outputs: outline-width: var(--my-outline-width);
+///  @include outline-width(var(--my-outline-width), true); // outputs: outline-width: var(--my-outline-width) !important;
+///
+@mixin outline-width($value, $important: false) {
+  @include h.emit('outline-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-style property with optional !important flag
+/// 
+/// @param {String} $value - The outline style value to apply (e.g., 'solid', 'dashed', 'var(--my-outline-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline-style('solid'); // outputs: outline-style: solid;
+///  @include outline-style('dashed', true); // outputs: outline-style: dashed !important;
+///  @include outline-style(var(--my-outline-style)); // outputs: outline-style: var(--my-outline-style);
+///  @include outline-style(var(--my-outline-style), true); // outputs: outline-style: var(--my-outline-style) !important;
+///
+@mixin outline-style($value, $important: false) {
+  @include h.emit('outline-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-color property with optional !important flag
+/// 
+/// @param {String} $value - The outline color value to apply (e.g., 'red', '#ff0000', 'var(--my-outline-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include outline-color('red'); // outputs: outline-color: red;
+///  @include outline-color('#ff0000', true); // outputs: outline-color: #ff0000 !important;
+///  @include outline-color(var(--my-outline-color)); // outputs: outline-color: var(--my-outline-color);
+///  @include outline-color(var(--my-outline-color), true); // outputs: outline-color: var(--my-outline-color) !important;
+/// 
+@mixin outline-color($value, $important: false) {
+  @include h.emit('outline-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set outline-offset property with optional !important.
+/// 
+/// @param {string|number} $value - The value for outline-offset (e.g., 5px, -2em, 0). Unitless numbers will be converted to $length-default-unit.
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include outline-offset(5px); // outline-offset: 5px;
+///  @include outline-offset(-2em, true); // outline-offset: -2em !important;
+///  @include outline-offset(0); // outline-offset: 0;
+///  @include outline-offset(0, true); // outline-offset: 0 !important;
+///  @include outline-offset(5, true); // outline-offset: 5px !important;
+///
+@mixin outline-offset($value, $important: false) {
+  $v: to-length($value, $length-default-unit);
+  @include h.emit('outline-offset', $v, $important);
+  @if meta.content-exists() { @content; }
+}

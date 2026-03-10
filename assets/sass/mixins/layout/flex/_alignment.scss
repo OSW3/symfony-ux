@@ -1,0 +1,116 @@
+// * ===========================================================================
+// *  Flex Alignment Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting flex alignment properties of elements.
+// *
+// *  These mixins provide a convenient way to apply different flex alignment 
+// *  values with optional !important flags, along with necessary fallbacks for 
+// * older browsers.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Flex Alignment API                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Set justify-content with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: flex-start | flex-end | center | space-between | space-around | space-evenly
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-justify-content(center); // justify-content: center;
+///  @include flex-justify-content(space-between, true); // justify-content: space-between !important;
+///
+@mixin flex-justify-content($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @if $value == flex-start { 
+      @include h.emit('-webkit-box-pack', start, $important); 
+    }
+    @else if $value == flex-end { 
+      @include h.emit('-webkit-box-pack', end, $important); 
+    }
+    @else if $value == center { 
+      @include h.emit('-webkit-box-pack', center, $important); 
+    }
+    @else if $value == space-between or $value == space-around or $value == space-evenly {
+      @include h.emit('-webkit-box-pack', justify, $important);
+    }
+
+    // IE10/11
+    $ms: h.ms-pack($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-pack', $ms, $important); 
+    }
+  }
+  @include h.emit('justify-content', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set align-items with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: flex-start | flex-end | center | baseline | stretch
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-align-items(center); // align-items: center;
+///  @include flex-align-items(flex-start, true); // align-items: flex-start !important;
+///
+@mixin flex-align-items($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-items', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-align', $ms, $important); 
+    }
+  }
+  @include h.emit('align-items', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set align-self with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: auto | flex-start | flex-end | center | baseline | stretch
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-align-self(center); // align-self: center;
+///  @include flex-align-self(flex-end, true); // align-self: flex-end !important;
+/// 
+@mixin flex-align-self($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-self', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-item-align', $ms, $important); 
+    }
+  }
+  @include h.emit('align-self', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set align-content with necessary fallbacks for older browsers.
+///
+/// @param {string} $value One of: flex-start | flex-end | center | space-between | space-around | stretch
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-align-content(center); // align-content: center;
+///  @include flex-align-content(space-between, true); // align-content: space-between !important;
+///
+@mixin flex-align-content($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-content', $value, $important);
+    $ms: h.ms-line-pack($value);
+    @if $ms != null { 
+      @include h.emit('-ms-flex-line-pack', $ms, $important); 
+    }
+  }
+  @include h.emit('align-content', $value, $important);
+  @if meta.content-exists() { @content; }
+}

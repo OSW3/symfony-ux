@@ -1,0 +1,119 @@
+// * ===========================================================================
+// *  Text Transformation Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the text transformation properties 
+// *  of elements. 
+// *
+// *  These mixins provide a convenient way to apply different text 
+// *  transformation styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Transformation API                                              - //
+// * ------------------------------------------------------------------------ //
+
+/// text-transform (none, capitalize, uppercase, lowercase, full-width, full-size-kana)
+/// 
+/// @param {string} $value The value for text-transform (e.g., none, capitalize, uppercase, lowercase, full-width, full-size-kana)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-transform(uppercase); // text-transform: uppercase;
+///  @include text-transform(lowercase, true); // text-transform: lowercase !important;
+///  @include text-transform(none); // text-transform: none;
+///  @include text-transform(none, true); // text-transform: none !important;
+///
+@mixin text-transform($value, $important: false) { 
+  @include h.emit('text-transform', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// text-transform: none - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-transform-none(); // text-transform: none;
+///  @include text-transform-none(true); // text-transform: none !important;
+/// 
+@mixin text-transform-none($important: false) {
+  @include text-transform(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-transform: uppercase - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-uppercase(); // text-transform: uppercase;
+///  @include text-uppercase(true); // text-transform: uppercase !important;
+/// 
+@mixin text-uppercase($important: false) {
+  @include text-transform(uppercase, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-transform: lowercase - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-lowercase(); // text-transform: lowercase;
+///  @include text-lowercase(true); // text-transform: lowercase !important;
+/// 
+@mixin text-lowercase($important: false) {
+  @include text-transform(lowercase, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-transform: capitalize - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-capitalize(); // text-transform: capitalize;
+///  @include text-capitalize(true); // text-transform: capitalize !important;
+/// 
+@mixin text-capitalize($important: false) {
+  @include text-transform(capitalize, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-transform: full-width - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-full-width(); // text-transform: full-width;
+///  @include text-full-width(true); // text-transform: full-width !important;
+/// 
+@mixin text-full-width($important: false) {
+  @include text-transform(full-width, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-transform: full-size-kana - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-full-size-kana(); // text-transform: full-size-kana;
+///  @include text-full-size-kana(true); // text-transform: full-size-kana !important;
+/// 
+@mixin text-full-size-kana($important: false) {
+  @include text-transform(full-size-kana, $important);
+  @if meta.content-exists() { @content; }
+}

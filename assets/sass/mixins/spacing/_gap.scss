@@ -1,0 +1,149 @@
+// * ===========================================================================
+// *  Gaps Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the gap, row-gap, and column-gap 
+// *  properties of elements, with fallbacks for older browsers using margins 
+// *  and paddings.
+// *
+// *  These mixins provide a convenient way to apply gaps with optional 
+// *  !important flags and child selectors for fallbacks.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+
+// Unité par défaut pour convertir les nombres unitless → longueurs (gap, etc.)
+$_length-default-unit: 1px !default;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+/// Set gap with necessary fallbacks for older browsers using margins/paddings.
+/// 
+/// @param {string|number|list} $value A length value (e.g., 10px) or a number (treated as length with default unit), or a list of two values for row-gap and column-gap.
+/// @param {boolean} $important Whether to add !important to the declaration
+/// @param {string} $child-selector Optional selector for child elements to apply padding for fallback (e.g., '> *')
+/// 
+/// Usage:
+///  @include gap(10px); // gap: 10px;
+///  @include gap(10); // gap: 10px; (assuming $_length-default-unit is 1px)
+///  @include gap(10px 20px); // gap: 10px 20px; (row-gap: 10px, column-gap: 20px)
+///  @include gap(10px, false, '> *'); // gap: 10px; with fallback using margins/paddings on direct children
+///
+@mixin gap($value, $important: false, $child-selector: null) {
+  $v: _normalize-length-list($value, $_length-default-unit);
+  @include h.emit('gap', $v, $important);
+
+  @if h.fallbacks-enabled() and $child-selector != null and $v != null and $v != '' {
+    $rg: null;
+    $cg: null;
+
+    @if meta.type-of($v) == 'list' and list.length($v) >= 2 {
+      $rg: list.nth($v, 1);
+      $cg: list.nth($v, 2);
+    } @else {
+      $rg: $v;
+      $cg: $v;
+    }
+
+    $rh: $rg;
+    $ch: $cg;
+
+    @if meta.type-of($rg) == 'number' {
+      $rh: $rg / 2;
+    }
+    @if meta.type-of($cg) == 'number' {
+      $ch: $cg / 2;
+    }
+
+    // Négative margins sur le conteneur
+    margin-top: -#{$rh};
+    margin-bottom: -#{$rh};
+    margin-left: -#{$ch};
+    margin-right: -#{$ch};
+
+    // Padding sur les enfants
+    #{$child-selector} {
+      padding-top: #{$rh};
+      padding-bottom: #{$rh};
+      padding-left: #{$ch};
+      padding-right: #{$ch};
+    }
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set row-gap with necessary fallbacks for older browsers using margins/paddings.
+///
+/// @param {string|number} $value A length value (e.g., 10px) or a number (treated as length with default unit)
+/// @param {boolean} $important Whether to add !important to the declaration
+/// @param {string} $child-selector Optional selector for child elements to apply padding for fallback (e.g., '> *')
+///
+/// Usage:
+///  @include row-gap(10px); // row-gap: 10px;
+///  @include row-gap(10); // row-gap: 10px; (assuming $_length-default-unit is 1px)
+///  @include row-gap(10px, false, '> *'); // row-gap: 10px; with fallback using margins/paddings on direct children
+///
+@mixin row-gap($value, $important: false, $child-selector: null) {
+  $v: _normalize-length-list($value, $_length-default-unit);
+  @include h.emit('row-gap', $v, $important);
+
+  @if h.fallbacks-enabled() and $child-selector != null and $v != null and $v != '' {
+    $h: $v;
+    @if meta.type-of($v) == 'number' {
+      $h: $v / 2;
+    }
+
+    margin-top: -#{$h};
+    margin-bottom: -#{$h};
+    #{$child-selector} {
+      padding-top: #{$h};
+      padding-bottom: #{$h};
+    }
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set column-gap with necessary fallbacks for older browsers using margins/paddings.
+/// 
+/// @param {string|number} $value A length value (e.g., 10px) or a number (treated as length with default unit)
+/// @param {boolean} $important Whether to add !important to the declaration
+/// @param {string} $child-selector Optional selector for child elements to apply padding for fallback (e.g., '> *')
+/// 
+/// Usage:
+///  @include column-gap(10px); // column-gap: 10px;
+///  @include column-gap(10); // column-gap: 10px; (assuming $_length-default-unit is 1px)
+///  @include column-gap(10px, false, '> *'); // column-gap: 10px; with fallback using margins/paddings on direct children
+/// 
+@mixin column-gap($value, $important: false, $child-selector: null) {
+  $v: _normalize-length-list($value, $_length-default-unit);
+  @include h.emit('column-gap', $v, $important);
+
+  @if h.fallbacks-enabled() and $child-selector != null and $v != null and $v != '' {
+    $h: $v;
+    @if meta.type-of($v) == 'number' {
+      $h: $v / 2;
+    }
+
+    margin-left: -#{$h};
+    margin-right: -#{$h};
+    #{$child-selector} {
+      padding-left: #{$h};
+      padding-right: #{$h};
+    }
+  }
+  @if meta.content-exists() { @content; }
+}

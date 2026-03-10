@@ -1,0 +1,62 @@
+// * ===========================================================================
+// *  Flex Wrap Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting flex wrap properties of elements.
+// *
+// *  These mixins provide a convenient way to apply different flex wrap values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Flex Wrap API                                                        - //
+// * ------------------------------------------------------------------------ //
+
+/// Set flex-wrap with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: nowrap | wrap | wrap-reverse
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-wrap(wrap); // flex-wrap: wrap;
+///  @include flex-wrap(nowrap, true); // flex-wrap: nowrap !important;
+///
+@mixin flex-wrap($value: wrap, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-wrap', $value, $important);
+    @include h.emit('-ms-flex-wrap', $value, $important);
+  }
+  @include h.emit('flex-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// flex-wrap: nowrap;
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-nowrap; // flex-wrap: nowrap;
+///  @include flex-nowrap(true); // flex-wrap: nowrap !important;
+///
+@mixin flex-nowrap($important: false) {
+  @include flex-wrap(nowrap, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// flex-wrap: wrap;
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-wrap; // flex-wrap: wrap;
+///  @include flex-wrap(true); // flex-wrap: wrap !important;
+///
+@mixin flex-wrap-inverse($important: false) {
+  @include flex-wrap(wrap-inverse, $important);
+  @if meta.content-exists() { @content; }
+}

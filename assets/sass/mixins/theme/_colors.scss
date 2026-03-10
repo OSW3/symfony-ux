@@ -1,0 +1,35 @@
+// * ===========================================================================
+// *  Color Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the color property of elements.
+// *
+// *  These mixins provide a convenient way to apply color values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Color API                                                            - //
+// * ------------------------------------------------------------------------ //
+
+/// Set color property with optional !important flag
+/// 
+/// @param {String} $value - The color value to apply (e.g., 'red', '#ff0000', 'var(--my-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include color('red'); // outputs: color: red;
+///  @include color('#ff0000', true); // outputs: color: #ff0000 !important;
+///  @include color(var(--my-color)); // outputs: color: var(--my-color);
+///  @include color(var(--my-color), true); // outputs: color: var(--my-color) !important;
+/// 
+@mixin color($value, $important: false) {
+  @include h.emit('color', $value, $important);
+  @if meta.content-exists() { @content; }
+}

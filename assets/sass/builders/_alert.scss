@@ -26,7 +26,7 @@
 // Helpers
 @use './../mixins/component';
 @use './../mixins/box-model' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 @use './../mixins/flex' as *;
 @use './../mixins/interaction' as *;
 @use './../mixins/position' as *;
@@ -89,8 +89,9 @@ $btn-close-size: 24px;
 // * - Component builder                                                    - //
 // * ------------------------------------------------------------------------ //
 
-/// Component CSS Var
-/// 
+// * ---------------------------------------------
+// * Component CSS Var
+// * ---------------------------------------------
 .#{prefix($_component)} {
 
   @each $name, $value in alert.$layout-properties {
@@ -127,8 +128,9 @@ $btn-close-size: 24px;
 
 }
 
-/// Component container
-/// 
+// * ---------------------------------------------
+// * Component container
+// * ---------------------------------------------
 .#{prefix($_component)} {
 
   // * Layout
@@ -144,7 +146,7 @@ $btn-close-size: 24px;
   @include font-weight(get-var($_component, 'font-weight'));
   @include line-height(get-var($_component, 'line-height'));
 
-  // * Box model
+  // * Spacing
   // * --
   @include padding(get-var($_component, 'padding-x'));
   @include margin-y(get-var($_component, 'padding-y'));
@@ -164,8 +166,9 @@ $btn-close-size: 24px;
 
 }
 
-/// Component content
-/// 
+// * ---------------------------------------------
+// * Component content
+// * ---------------------------------------------
 .#{prefix($_component)} {
 
   // * Icon
@@ -227,9 +230,10 @@ $btn-close-size: 24px;
     );
   }
 
-  &:hover .#{$prefix}button-close {
-    opacity: .4;
-  }
+  // &:hover .#{prefix(button-close)} {opacity: .4;}
+  @include states('opacity', (
+    hover: .4,
+  ), (
+    selector: '&:STATE .#{prefix(button-close)}'
+  ));
 }
-
-

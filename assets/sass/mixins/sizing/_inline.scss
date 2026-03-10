@@ -1,0 +1,44 @@
+// * ===========================================================================
+// *  Inline Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the height property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different height styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Height API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+
+// `inline-size`, 
+// `min-inline-size`, 
+// `max-inline-size`, 
+// `block-size`, 
+// `min-block-size`, 
+// `max-block-size`
+// 
+
+/// Defines the inline-size of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-inline-size)).
+/// 
+/// @param {number|string} $value - The inline-size value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// Usage:
+///  @include inline-size(100); // inline-size: 100px;
+///  @include inline-size(100px); // inline-size: 100px;
+///  @include inline-size(100%, true); // inline-size: 100% !important
+///
+@mixin inline-size($value, $important: false) {
+  @include h.dim(inline-size, $value, $important);
+  @if meta.content-exists() { @content; }
+}

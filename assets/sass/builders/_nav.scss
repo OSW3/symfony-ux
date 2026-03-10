@@ -22,7 +22,7 @@
 @use './../storages/breakpoints';
 @use './../storages/nav' as store;
 @use './../components/nav';
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 @include banner.header('Component Nav');
 $prefix: prefix.$prefix;

@@ -25,7 +25,7 @@
 
 // Helpers
 @use './../mixins/box-model' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 @use './../mixins/flex' as *;
 @use './../mixins/misc' as *;
 @use './../mixins/spacing' as *;

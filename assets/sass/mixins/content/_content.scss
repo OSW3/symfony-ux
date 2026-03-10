@@ -1,0 +1,40 @@
+// * ===========================================================================
+// *  Content Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the content property of elements.
+// *
+// *  These mixins provide a convenient way to apply content values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Content API                                                          - //
+// * ------------------------------------------------------------------------ //
+
+/// Set content.
+///
+/// @param {string} $value - Content value. Can be a string, keyword, or function (e.g., "Hello", "attr(data-content)", "counter(item)").
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include content("Hello"); // content: "Hello";
+///  @include content(attr(data-content)); // content: attr(data-content);
+///  @include content(counter(item), true); // content: counter(item) !important;
+///  @include content("Hello", true); // content: "Hello" !important;
+///  @include content(none); // content: none;
+///  @include content(none, true); // content: none !important;
+///  @include content("Hello " attr(data-content)); // content: "Hello " attr(data-content);
+///  @include content("Hello " attr(data-content), true); // content: "Hello " attr(data-content) !important;
+/// 
+@mixin content($value, $important: false) {
+  @include h.emit(content, $value, $important);
+  @if meta.content-exists() { @content; }
+}

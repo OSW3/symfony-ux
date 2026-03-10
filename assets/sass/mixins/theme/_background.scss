@@ -1,0 +1,243 @@
+// * ===========================================================================
+// *  Background Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the background property of elements.
+// *
+// *  These mixins provide a convenient way to apply background values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:list";
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Background API                                                        - //
+// * ------------------------------------------------------------------------ //
+
+/// Set background property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The background value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background('red'); // outputs: background: red;
+///  @include background('url(image.png) no-repeat center', true); // outputs: background: url(image.png) no-repeat center !important;
+///  @include background(('url(image1.png) no-repeat', 'url(image2.png) repeat'), true); // outputs: background: url(image1.png) no-repeat, url(image2.png) repeat !important;
+///  @include background(var(--my-bg), true); // outputs: background: var(--my-bg) !important;
+///  @include background(var(--my-bg)); // outputs: background: var(--my-bg);
+/// 
+@mixin background($value...) {
+  $pair: h.pop-trailing-bool($value...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  @include h.emit('background', $vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+
+/// Set background-color property with optional !important flag
+/// 
+/// @param {String} $value - The background color value to apply (e.g., 'red', '#ff0000', 'var(--my-bg-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-color('red'); // outputs: background-color: red;
+///  @include background-color('#ff0000', true); // outputs: background-color: #ff0000 !important;
+///  @include background-color(var(--my-bg-color)); // outputs: background-color: var(--my-bg-color);
+///  @include background-color(var(--my-bg-color), true); // outputs: background-color: var(--my-bg-color) !important;
+/// 
+@mixin background-color($value, $important: false) {
+  @include h.emit('background-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-image property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $layers - The background image value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-image('url(image.png)'); // outputs: background-image: url(image.png);
+///  @include background-image(('url(image1.png)', 'url(image2.png)')); // outputs: background-image: url(image1.png), url(image2.png);
+///  @include background-image(var(--my-bg-image), true); // outputs: background-image: var(--my-bg-image) !important;
+///  @include background-image(var(--my-bg-image)); // outputs: background-image: var(--my-bg-image);
+///
+@mixin background-image($layers...) {
+  $pair: h.pop-trailing-bool($layers...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $img: h.as-comma-list($vals);
+  @include h.emit('background-image', $img, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-position property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background position value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-position('top left'); // outputs: background-position: top left;
+///  @include background-position(('top left', 'bottom right'), true); // outputs: background-position: top left, bottom right !important;
+///  @include background-position(var(--my-bg-position)); // outputs: background-position: var(--my-bg-position);
+///  @include background-position(var(--my-bg-position), true); // outputs: background-position: var(--my-bg-position) !important;
+///
+@mixin background-position($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-position', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-position-x property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background position x value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include background-position-x('left'); // outputs: background-position-x: left;
+///  @include background-position-x(('left', 'right'), true); // outputs: background-position-x: left, right !important;
+///  @include background-position-x(var(--my-bg-position-x)); // outputs: background-position-x: var(--my-bg-position-x);
+///  @include background-position-x(var(--my-bg-position-x), true); // outputs: background-position-x: var(--my-bg-position-x) !important;
+///
+@mixin background-position-x($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-position-x', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-position-y property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background position y value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include background-position-y('top'); // outputs: background-position-y: top;
+///  @include background-position-y(('top', 'bottom'), true); // outputs: background-position-y: top, bottom !important;
+///  @include background-position-y(var(--my-bg-position-y)); // outputs: background-position-y: var(--my-bg-position-y);
+///  @include background-position-y(var(--my-bg-position-y), true); // outputs: background-position-y: var(--my-bg-position-y) !important;
+/// 
+@mixin background-position-y($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-position-y', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-size property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background size value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-size('cover'); // outputs: background-size: cover;
+///  @include background-size(('cover', 'contain'), true); // outputs: background-size: cover, contain !important;
+///  @include background-size(var(--my-bg-size)); // outputs: background-size: var(--my-bg-size);
+///  @include background-size(var(--my-bg-size), true); // outputs: background-size: var(--my-bg-size) !important;
+/// 
+@mixin background-size($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-size', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-repeat property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background repeat value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-repeat('no-repeat'); // outputs: background-repeat: no-repeat;
+///  @include background-repeat(('no-repeat', 'repeat-x'), true); // outputs: background-repeat: no-repeat, repeat-x !important;
+///  @include background-repeat(var(--my-bg-repeat)); // outputs: background-repeat: var(--my-bg-repeat);
+///  @include background-repeat(var(--my-bg-repeat), true); // outputs: background-repeat: var(--my-bg-repeat) !important;
+/// 
+@mixin background-repeat($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-repeat', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-attachment property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background attachment value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-attachment('fixed'); // outputs: background-attachment: fixed;
+///  @include background-attachment(('fixed', 'scroll'), true); // outputs: background-attachment: fixed, scroll !important;
+///  @include background-attachment(var(--my-bg-attachment)); // outputs: background-attachment: var(--my-bg-attachment);
+///  @include background-attachment(var(--my-bg-attachment), true); // outputs: background-attachment: var(--my-bg-attachment) !important;
+/// 
+@mixin background-attachment($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-attachment', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-origin property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background origin value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-origin('border-box'); // outputs: background-origin: border-box;
+///  @include background-origin(('border-box', 'padding-box'), true); // outputs: background-origin: border-box, padding-box !important;
+///  @include background-origin(var(--my-bg-origin)); // outputs: background-origin: var(--my-bg-origin);
+///  @include background-origin(var(--my-bg-origin), true); // outputs: background-origin: var(--my-bg-origin) !important;
+/// 
+@mixin background-origin($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-origin', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-clip property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The background clip value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-clip('border-box'); // outputs: background-clip: border-box;
+///  @include background-clip(('border-box', 'padding-box'), true); // outputs: background-clip: border-box, padding-box !important;
+///  @include background-clip(var(--my-bg-clip)); // outputs: background-clip: var(--my-bg-clip);
+///  @include background-clip(var(--my-bg-clip), true); // outputs: background-clip: var(--my-bg-clip) !important;
+/// 
+@mixin background-clip($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('background-clip', $v, $important);
+  @if meta.content-exists() { @content; }
+}

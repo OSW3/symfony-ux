@@ -12,7 +12,7 @@
 @use "sass:meta";
 @use "sass:list";
 @use "sass:math";
-@use "./../helpers/helpers" as h;
+
 @use "./../helpers/length" as *;
 
 
@@ -31,91 +31,6 @@ $length-default-unit: 1px !default;
 // * ---------------------------------------------
 // * Position
 // * ---------------------------------------------
-
-/// Set position property (static, relative, absolute, fixed, sticky)
-/// 
-/// @param {String} $value - Position value (static, relative, absolute, fixed, sticky)
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include position(absolute) {
-///     @include top(10px);
-///     @include left(20px);
-///   } // position: absolute; top: 10px; left: 20px;
-///  @include position(relative); // position: relative;
-/// 
-@mixin position($value, $important: false) {
-  @if h.fallbacks-enabled() and $value == sticky {
-    @include h.emit('position', -webkit-sticky, $important);
-  }
-  @include h.emit('position', $value, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Set position: static
-/// 
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include position-static; // position: static;
-///  @include position-static(true); // position: static !important;
-/// 
-@mixin position-static($important: false) {
-  @include position(static, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Set position: relative
-/// 
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include position-relative; // position: relative;
-///  @include position-relative(true); // position: relative !important;
-///
-@mixin position-relative($important: false) {
-  @include position(relative, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Set position: absolute
-/// 
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include position-absolute; // position: absolute;
-///  @include position-absolute(true); // position: absolute !important;
-///
-@mixin position-absolute($important: false) {
-  @include position(absolute, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Set position: fixed
-/// 
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include position-fixed; // position: fixed;
-///  @include position-fixed(true); // position: fixed !important;
-///
-@mixin position-fixed($important: false) {
-  @include position(fixed, $important);
-  @if meta.content-exists() { @content; }
-}
-
-/// Set position: sticky
-/// 
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include position-sticky; // position: sticky;
-///  @include position-sticky(true); // position: sticky !important;
-///
-@mixin position-sticky($important: false) {
-  @include position(sticky, $important);
-  @if meta.content-exists() { @content; }
-}
 
 
 // * ---------------------------------------------
@@ -191,32 +106,6 @@ $length-default-unit: 1px !default;
 // * ---------------------------------------------
 // * z-index
 // * ---------------------------------------------
-
-/// Set z-index property
-/// 
-/// @param {String|Number} $value - z-index value (number, auto, etc.)
-/// @param {Boolean} $important - Whether to add !important (default: false)
-/// 
-/// Usage:
-///  @include z-index(10); // z-index: 10;
-///  @include z-index(auto); // z-index: auto;
-///  @include z-index(10, true); // z-index: 10 !important
-///
-@mixin z-index($value, $important: false) {
-  @if $value == auto {
-    @include h.emit('z-index', auto, $important);
-  } 
-  @else if meta.type-of($value) == 'number' {
-    @include h.emit('z-index', $value, $important);
-  } 
-  @else if h.is-global-keyword($value) {
-    @include h.emit('z-index', $value, $important);
-  } 
-  @else {
-    @warn "z-index(): unexpected value `#{$value}` (allowed: number | auto | global keyword).";
-  }
-  @if meta.content-exists() { @content; }
-}
 
 
 // * ---------------------------------------------

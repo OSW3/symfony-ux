@@ -1,0 +1,338 @@
+// * ===========================================================================
+// *  Padding Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the padding properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different padding 
+// *  styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:list";
+@use "sass:meta";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Padding API                                                          - //
+// * ------------------------------------------------------------------------ //
+
+/// Set padding properties
+/// 
+/// @param {length|keyword} $values... - 1 to 4 values for padding (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding(10px); // padding: 10px;
+///  @include padding(10px 20px); // padding: 10px 20px;
+///  @include padding(10px 20px 30px); // padding: 10px 20px 30px;
+///  @include padding(10px 20px 30px 40px); // padding: 10px 20px 30px 40px;
+///  @include padding(10px, true); // padding: 10px !important;
+///  @include padding(10px 20px, true); // padding: 10px 20px !important;
+///  @include padding(10px 20px 30px, true); // padding: 10px 20px 30px !important;
+///  @include padding(10px 20px 30px 40px, true); // padding: 10px 20px 30px 40px !important;
+///  @include padding((10px, 20px), true); // padding: 10px 20px !important;
+///  @include padding((10px, 20px, 30px), true); // padding: 10px 20px 30px !important;
+///  @include padding((10px, 20px, 30px, 40px), true); // padding: 10px 20px 30px 40px !important;
+///  @include padding((10px, 20px, 30px, 40px)); // padding: 10px 20px 30px 40px;
+///  @include padding((10px, 20px, 30px, 40px), false); // padding: 10px 20px 30px 40px;
+///  @include padding((null, 20px, null, 40px), true); // padding: 20px 40px !important; (null values are skipped if $props-skip-null is true)
+///  @include padding((null, null, null, null), true); // (no output if $props-skip-null is true)
+///  @include padding((null, null, null, null), false); // (no output if $props-skip-null is true)
+///  @include padding(null, true); // (no output if $props-skip-null is true)
+///  @include padding(null); // (no output if $props-skip-null is true);
+///  @include padding((), true); // (no output if $props-skip-null is true);
+///  @include padding((), false); // (no output if $props-skip-null is true);
+/// 
+@mixin padding($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  $norm: h.normalize-spacing-list(false, h.props-skip-null(), $vals...);
+  @include h.emit('padding', $norm, $important-flag);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set padding-top property
+///
+/// @param {length|keyword} $value - The value for padding-top (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include padding-top(10px); // padding-top: 10px;
+///  @include padding-top(10px, true); // padding-top: 10px !important;
+///  @include padding-top(auto); // padding-top: auto;
+///  @include padding-top(auto, true); // padding-top: auto !important;
+///  @include padding-top(null); // (no output if $props-skip-null is true);
+///  @include padding-top(null, true); // (no output if $props-skip-null is true);
+///  @include padding-top(''); // (no output if $props-skip-null is true);
+///  @include padding-top('', true); // (no output if $props-skip-null is true);
+/// 
+@mixin padding-top($value, $important: false) {
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-top', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set padding-right property
+///
+/// @param {length|keyword} $value - The value for padding-right (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-right(10px); // padding-right: 10px;
+///  @include padding-right(10px, true); // padding-right: 10px !important;
+///  @include padding-right(auto); // padding-right: auto;
+///  @include padding-right(auto, true); // padding-right: auto !important;
+///  @include padding-right(null); // (no output if $props-skip-null is true);
+///  @include padding-right(null, true); // (no output if $props-skip-null is true);
+///  @include padding-right(''); // (no output if $props-skip-null is true);
+///  @include padding-right('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-right($value, $important: false) {
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-right', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set padding-bottom property
+///
+/// @param {length|keyword} $value - The value for padding-bottom (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-bottom(10px); // padding-bottom: 10px;
+///  @include padding-bottom(10px, true); // padding-bottom: 10px !important;
+///  @include padding-bottom(auto); // padding-bottom: auto;
+///  @include padding-bottom(auto, true); // padding-bottom: auto !important;
+///  @include padding-bottom(null); // (no output if $props-skip-null is true);
+///  @include padding-bottom(null, true); // (no output if $props-skip-null is true);
+///  @include padding-bottom(''); // (no output if $props-skip-null is true);
+///  @include padding-bottom('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-bottom($value, $important: false) {
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-bottom', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set padding-left property
+///
+/// @param {length|keyword} $value - The value for padding-left (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-left(10px); // padding-left: 10px;
+///  @include padding-left(10px, true); // padding-left: 10px !important;
+///  @include padding-left(auto); // padding-left: auto;
+///  @include padding-left(auto, true); // padding-left: auto !important;
+///  @include padding-left(null); // (no output if $props-skip-null is true);
+///  @include padding-left(null, true); // (no output if $props-skip-null is true);
+///  @include padding-left(''); // (no output if $props-skip-null is true);
+///  @include padding-left('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-left($value, $important: false) {
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-left', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set padding-inline property (logical properties for left/right)
+/// 
+/// @param {length|keyword} $values... - 1 to 4 values for padding-inline (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-inline(10px); // padding-inline: 10px;
+///  @include padding-inline(10px, true); // padding-inline: 10px !important;
+///  @include padding-inline(10px 20px); // padding-inline: 10px 20px;
+///  @include padding-inline(10px 20px, true); // padding-inline: 10px 20px !important;
+///  @include padding-inline((10px, 20px), true); // padding-inline: 10px 20px !important;
+///  @include padding-inline((10px, 20px)); // padding-inline: 10px 20px;
+///  @include padding-inline((null, 20px), true); // padding-inline: 20px !important; (null values are skipped if $props-skip-null is true)
+///  @include padding-inline((null, null), true); // (no output if $props-skip-null is true)
+///  @include padding-inline((null, null), false); // (no output if $props-skip-null is true)
+/// 
+@mixin padding-inline($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  $norm: h.normalize-spacing-list(false, h.props-skip-null(), $vals...);
+  @include h.emit('padding-inline', $norm, $important-flag);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set padding-inline-start property (logical property for left/start)
+///
+/// @param {length|keyword} $value - The value for padding-inline-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-inline-start(10px); // padding-inline-start: 10px;
+///  @include padding-inline-start(10px, true); // padding-inline-start: 10px !important;
+///  @include padding-inline-start(auto); // padding-inline-start: auto;
+///  @include padding-inline-start(auto, true); // padding-inline-start: auto !important;
+///  @include padding-inline-start(null); // (no output if $props-skip-null is true);
+///  @include padding-inline-start(null, true); // (no output if $props-skip-null is true);
+///  @include padding-inline-start(''); // (no output if $props-skip-null is true);
+///  @include padding-inline-start('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-inline-start($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-inline-start', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set padding-inline-end property (logical property for right/end)
+/// 
+/// @param {length|keyword} $value - The value for padding-inline-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-inline-end(10px); // padding-inline-end: 10px;
+///  @include padding-inline-end(10px, true); // padding-inline-end: 10px !important;
+///  @include padding-inline-end(auto); // padding-inline-end: auto;
+///  @include padding-inline-end(auto, true); // padding-inline-end: auto !important;
+///  @include padding-inline-end(null); // (no output if $props-skip-null is true);
+///  @include padding-inline-end(null, true); // (no output if $props-skip-null is true);
+///  @include padding-inline-end(''); // (no output if $props-skip-null is true);
+///  @include padding-inline-end('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-inline-end($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-inline-end', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set padding-block property (logical properties for top/bottom)
+/// 
+/// @param {length|keyword} $values... - 1 to 4 values for padding-block (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// Usage:
+///  @include padding-block(10px); // padding-block: 10px;
+///  @include padding-block(10px, true); // padding-block: 10px !important;
+///  @include padding-block(10px 20px); // padding-block: 10px 20px;
+///  @include padding-block(10px 20px, true); // padding-block: 10px 20px !important;
+///  @include padding-block((10px, 20px), true); // padding-block: 10px 20px !important;
+///  @include padding-block((10px, 20px)); // padding-block: 10px 20px;
+///  @include padding-block((null, 20px), true); // padding-block: 20px !important; (null values are skipped if $props-skip-null is true)
+///  @include padding-block((null, null), true); // (no output if $props-skip-null is true)
+///  @include padding-block((null, null), false); // (no output if $props-skip-null is true) 
+/// 
+@mixin padding-block($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  $norm: h.normalize-spacing-list(false, h.props-skip-null(), $vals...);
+  @include h.emit('padding-block', $norm, $important-flag);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set padding-block-start property (logical property for top/start)
+///
+/// @param {length|keyword} $value - The value for padding-block-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-block-start(10px); // padding-block-start: 10px;
+///  @include padding-block-start(10px, true); // padding-block-start: 10px !important;
+///  @include padding-block-start(auto); // padding-block-start: auto;
+///  @include padding-block-start(auto, true); // padding-block-start: auto !important;
+///  @include padding-block-start(null); // (no output if $props-skip-null is true);
+///  @include padding-block-start(null, true); // (no output if $props-skip-null is true);
+///  @include padding-block-start(''); // (no output if $props-skip-null is true);
+///  @include padding-block-start('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-block-start($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-block-start', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set padding-block-end property (logical property for bottom/end)
+/// 
+/// @param {length|keyword} $value - The value for padding-block-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-block-end(10px); // padding-block-end: 10px;
+///  @include padding-block-end(10px, true); // padding-block-end: 10px !important;
+///  @include padding-block-end(auto); // padding-block-end: auto;
+///  @include padding-block-end(auto, true); // padding-block-end: auto !important;
+///  @include padding-block-end(null); // (no output if $props-skip-null is true);
+///  @include padding-block-end(null, true); // (no output if $props-skip-null is true);
+///  @include padding-block-end(''); // (no output if $props-skip-null is true);
+///  @include padding-block-end('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-block-end($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, false);
+  @include h.emit('padding-block-end', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set padding-x (shorthand for padding-left and padding-right)
+/// 
+/// @param {length|keyword} $value - The value for padding-x (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-x(10px); // padding-left: 10px; padding-right: 10px;
+///  @include padding-x(10px, true); // padding-left: 10px !important; padding-right: 10px !important;
+///  @include padding-x(auto); // padding-left: auto; padding-right: auto;
+///  @include padding-x(auto, true); // padding-left: auto !important; padding-right: auto !important;
+///  @include padding-x(null); // (no output if $props-skip-null is true);
+///  @include padding-x(null, true); // (no output if $props-skip-null is true);
+///  @include padding-x(''); // (no output if $props-skip-null is true);
+///  @include padding-x('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-x($value: null, $important: false) {
+  @include padding-right($value, $important);
+  @include padding-left($value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set padding-y (shorthand for padding-top and padding-bottom)
+/// 
+/// @param {length|keyword} $value - The value for padding-y (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+/// 
+/// Usage:
+///  @include padding-y(10px); // padding-top: 10px; padding-bottom: 10px;
+///  @include padding-y(10px, true); // padding-top: 10px !important; padding-bottom: 10px !important;
+///  @include padding-y(auto); // padding-top: auto; padding-bottom: auto;
+///  @include padding-y(auto, true); // padding-top: auto !important; padding-bottom: auto !important;
+///  @include padding-y(null); // (no output if $props-skip-null is true);
+///  @include padding-y(null, true); // (no output if $props-skip-null is true);
+///  @include padding-y(''); // (no output if $props-skip-null is true);
+///  @include padding-y('', true); // (no output if $props-skip-null is true);
+///
+@mixin padding-y($value: null, $important: false) {
+  @include padding-top($value, $important);
+  @include padding-bottom($value, $important);
+  @if meta.content-exists() { @content; }
+}

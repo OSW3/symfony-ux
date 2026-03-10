@@ -1,5 +1,1083 @@
 # builder
 
+```txt
+  core/
+    _layering.scss        // @layer reset, base, components, utilities
+    _reset.scss           // reset + a11y-safe
+    _tokens.scss          // CSS vars : couleurs, spacing scale, radius, etc.
+    _mixins.core.scss     // mixins base (logical, clamp, mq…)
+  layout/
+    _flow.scss            // display, contain, overflow, visibility
+    _position.scss        // position, inset, z-index
+    _flex.scss
+    _grid.scss
+    _multicol.scss
+    _tables.scss
+    _aspect-media.scss    // aspect-ratio, object-*
+  spacing/
+    _margins.scss
+    _paddings.scss
+    _gap.scss
+    _scroll-spacing.scss
+  sizing/
+    _sizing.scss          // width/height + logical variants
+  borders/
+    _border.scss
+    _outline.scss
+    _radius.scss
+  typography/
+    _font.scss
+    _text.scss
+    _writing.scss
+  theme/
+    _colors.scss
+    _background.scss
+    _accents.scss
+    _svg-colors.scss
+    _scheme.scss
+  visual/
+    _shadow.scss
+    _blend.scss
+    _filter.scss
+    _clip-mask.scss
+    _opacity.scss
+  motion/
+    _transition.scss
+    _animation.scss
+    _transform.scss
+  interaction/
+    _ui.scss              // cursor, user-select, touch-action, resize…
+    _scroll.scss          // scroll-behavior, snap, overscroll, scrollbar
+  a11y/
+    _focus.scss
+    _reduced-motion.scss
+    _print.scss
+  content/
+    _generated.scss       // content, counters
+  advanced/
+    _performance.scss     // will-change, contain-intrinsic-*
+    _containers.scss      // @container helpers
+```
+
+
+
+
+
+
+
+
+> **Légende**
+>
+> *   *(logiques)* = variantes logiques `*-inline`, `*-block`, etc.
+> *   *(longhands)* = variantes longue main (ex. `margin-top`, `margin-right`…).
+> *   *(shorthand)* = forme abrégée (ex. `border`, `background`, etc.).
+> *   *(expérimental/limitée)* = support partiel, facultatif selon ton scope.
+
+***
+
+## core/
+
+
+### `core/_reset.scss` — (reset + a11y-safe)
+
+*   **Box-model & base** :  
+    `box-sizing`, `margin: 0`, `padding: 0`, `border: 0`, `outline: 0`, `background: none`, `color: inherit`, `font: inherit`, `line-height`, `vertical-align: baseline`
+*   **Images & média** :  
+    `max-width: 100%`, `height: auto`, `display: block`, `object-fit` *(rare, selon stratégie)*
+*   **Typo & texte** :  
+    `text-decoration: inherit`, `text-decoration-skip-ink: auto`, `text-rendering` *(optionnel)*, `-webkit-text-size-adjust` / `text-size-adjust`
+*   **Listes & citations** :  
+    `list-style: none`, `quotes: none`
+*   **Tables** :  
+    `border-collapse: collapse`, `border-spacing: 0`
+*   **Formulaires** :  
+    `appearance: none`, `background: none`, `border: 0`, `font: inherit`, `letter-spacing: inherit`, `color: inherit`, `-webkit-appearance: none`, `outline-offset` *(si focus visible)*
+*   **Focus** :  
+    `outline`, `outline-offset` (styles de focus visibles accessibles)
+*   **Divers safe** :  
+    `cursor: inherit` (sur éléments non interactifs si utile), `overflow-wrap: break-word` (sur `.prose`), `tab-size`
+
+
+### `core/_tokens.scss` — (variables CSS, pas de propriétés)
+
+*   Déclare **uniquement** des `--tokens` :  
+    couleurs (`--color-…`), spacing scale (`--space-1..n`), radius (`--r-…`), shadows (`--shadow-…`), z-index (`--z-…`), typo scale (`--fs-…`, `--lh-…`), durations/ easings (`--dur-…`, `--ease-…`), breakpoints / containers (`--bp-…`, `--container-…`), opacités, etc.
+*   **Aucune propriété “métier” ici**.
+
+### `core/_mixins.core.scss` — (utils & mixins, pas de propriétés directes)
+
+*   Mixins/fonctions génériques : `prop()`, `fluid-size()`, `mq()`, normalisation nombres nus, listes, maps, `clamp()` helpers, calculs `rem/em`, helpers RTL/logiques, etc.
+
+***
+
+
+
+
+## advanced/
+
+### `advanced/_performance.scss`
+  
+- ✅ `will-change`, 
+*   `contain`, 
+*   `contain-intrinsic-size`, 
+*   `contain-intrinsic-width`, 
+*   `contain-intrinsic-height`,  
+*   `contain-intrinsic-inline-size`, 
+*   `contain-intrinsic-block-size`
+
+### `advanced/_containers.scss`
+
+*   `container-type`
+*   `container-name`
+*   `container` *(shorthand : name / type)*
+*   `@container` (at-rule ; helpers/mixins associés)
+
+
+***
+
+## borders/
+
+### `border/_border.scss`
+  
+- ✅ `border`
+- ✅ `border-width`
+- ✅ `border-style`
+- ✅ `border-color`
+- ✅ `border-top`
+- ✅ `border-top-width`
+- ✅ `border-top-style`
+- ✅ `border-top-color`
+- ✅ `border-right`
+- ✅ `border-right-width`
+- ✅ `border-right-style`
+- ✅ `border-right-color`
+- ✅ `border-bottom`
+- ✅ `border-bottom-width`
+- ✅ `border-bottom-style`
+- ✅ `border-bottom-color`
+- ✅ `border-left`
+- ✅ `border-left-width`
+- ✅ `border-left-style`
+- ✅ `border-left-color`
+
+### `border/_corner.scss`
+
+- ✅ `corner-rounded`
+- ✅ `corner-start`
+- ✅ `corner-end`
+- ✅ `corner-top`
+- ✅ `corner-bottom`
+- ✅ `corner-top-start`
+- ✅ `corner-top-left`
+- ✅ `corner-top-end`
+- ✅ `corner-top-right`
+- ✅ `corner-bottom-start`
+- ✅ `corner-bottom-left`
+- ✅ `corner-bottom-end`
+- ✅ `corner-bottom-right`
+- ✅ `corner-inline`
+- ✅ `corner-block`
+- ✅ `corner-rounded-full`
+- ✅ `corner-rounded-circle`
+
+### `border/_image.scss`
+
+- ✅ `border-image`
+- ✅ `border-image-source`
+- ✅ `border-image-slice`
+- ✅ `border-image-width`
+- ✅ `border-image-outset`
+- ✅ `border-image-repeat`
+
+### `border/_outline.scss`
+
+- ✅ `outline`
+- ✅ `outline-width`
+- ✅ `outline-style`
+- ✅ `outline-color`
+- ✅ `outline-offset`
+
+### `border/_radius.scss`
+
+- ✅ `border-radius`
+- ✅ `border-top-left-radius`
+- ✅ `border-top-right-radius`
+- ✅ `border-bottom-left-radius`
+- ✅ `border-bottom-right-radius`
+
+### `border/_inline.scss`
+
+- ✅ `border-inline`
+- ✅ `border-inline-start`
+- ✅ `border-inline-end`
+- ✅ `border-inline-left`
+- ✅ `border-inline-right`
+- ✅ `border-inline-inherit`
+- ✅ `border-inline-initial`
+- ✅ `border-inline-unset`
+- ✅ `border-inline-revert`
+- ✅ `border-inline-none`
+- ✅ `border-inline-default`
+- ✅ `border-inline-width`
+- ✅ `border-inline-style`
+- ✅ `border-inline-color`
+
+### `border/_block.scss`
+
+- ✅ `border-block`
+- ✅ `border-block-inherit`
+- ✅ `border-block-initial`
+- ✅ `border-block-unset`
+- ✅ `border-block-revert`
+- ✅ `border-block-none`
+- ✅ `border-block-default`
+- ✅ `border-block-hidden`
+- ✅ `border-block-width`
+- ✅ `border-block-style`
+- ✅ `border-block-color`
+
+
+***
+
+## content/
+
+### `content/_content.scss`
+
+- ✅ `content`
+
+### `content/_counter.scss`
+
+- ✅ `counter-reset`, 
+- ✅ `counter-increment`
+- ✅ `counter-set`
+- ✅ `counters`
+- ✅ `counter`
+
+### `content/_quotes.scss`
+
+- ✅ `quotes`
+- ✅ `quotes-inherit`
+- ✅ `quotes-initial`
+- ✅ `quotes-revert`
+- ✅ `quotes-unset`
+- ✅ `quotes-none`
+- ✅ `quotes-auto`
+- ✅ `quotes-default`
+- ✅ `quotes-english`
+- ✅ `quotes-french`
+- ✅ `quotes-german`
+- ✅ `quotes-japanese`
+- ✅ `quotes-chinese`
+- ✅ `quotes-spanish`
+- ✅ `quotes-italian`
+- ✅ `quotes-russian`
+- ✅ `quotes-arabic`
+- ✅ `quotes-hebrew`
+- ✅ `quotes-korean`
+- ✅ `quotes-english-single`
+- ✅ `quotes-french-single`
+- ✅ `quotes-german-single`
+- ✅ `quotes-japanese-single`
+- ✅ `quotes-chinese-single`
+- ✅ `quotes-spanish-single`
+- ✅ `quotes-italian-single`
+- ✅ `quotes-russian-single`
+- ✅ `quotes-arabic-single`
+- ✅ `quotes-hebrew-single`
+- ✅ `quotes-korean-single`
+
+
+***
+
+## interaction/
+
+### `interaction/scroll/_scroll.scss`
+
+- ✅ `scroll,
+- ✅ `scroll-inherit`
+- ✅ `scroll-initial`
+- ✅ `scroll-revert`
+- ✅ `scroll-unset`
+- ✅ `scroll-auto`
+- ✅ `scroll-smooth`
+- ✅ `scroll-none`
+- ✅ `scroll-visible`
+- ✅ `scroll-hidden`
+- ✅ `scroll-clip`
+- ✅ `scroll-behavior`
+- ✅ `overscroll-behavior`
+- ✅ `overscroll-behavior-x`
+- ✅ `overscroll-behavior-y`
+
+### `interaction/scroll/_scrollbar.scss`
+
+- ✅ `scrollbar-gutter` *(standard)*, 
+- ✅ `scrollbar-width` *(Firefox)*, 
+- ✅ `scrollbar-color` *(Firefox)*  
+
+### `interaction/scroll/_snap.scss`
+
+- ✅ `scroll-snap-type`
+- ✅ `scroll-snap-align`
+- ✅ `scroll-snap-stop`
+- ✅ `scroll-snap-margin`
+- ✅ `scroll-snap-padding`
+- ✅ `scroll-snap-destination`
+- ✅ `scroll-snap-coordinate`
+- ✅ `scroll-snap-type-inherit`
+
+### `interaction/ui/_appearance.scss`
+
+- ✅ `appearance`
+
+### `interaction/ui/_cursor.scss`
+
+- ✅ `cursor`
+- ✅ `cursor-inherit`
+- ✅ `cursor-initial`
+- ✅ `cursor-unset`
+- ✅ `cursor-revert`
+- ✅ `cursor-default`
+- ✅ `cursor-pointer`
+- ✅ `cursor-not-allowed`
+- ✅ `cursor-wait`
+- ✅ `cursor-move`
+- ✅ `cursor-text`
+- ✅ `cursor-help`
+- ✅ `cursor-crosshair`
+- ✅ `cursor-grab`
+- ✅ `cursor-grabbing`
+- ✅ `cursor-zoom-in`
+- ✅ `cursor-zoom-out`
+- ✅ `cursor-url`
+
+### `interaction/ui/_pointer-events.scss`
+
+- ✅ `pointer-events`
+- ✅ `pointer-events($value`
+- ✅ `pointer-events-inherit`
+- ✅ `pointer-events-initial`
+- ✅ `pointer-events-revert`
+- ✅ `pointer-events-unset`
+- ✅ `pointer-events-none`
+- ✅ `pointer-events-auto`
+- ✅ `pointer-events-visible`
+- ✅ `pointer-events-visibleFill`
+- ✅ `pointer-events-visibleStroke`
+- ✅ `pointer-events-visiblePainted`
+- ✅ `pointer-events-painted`
+- ✅ `pointer-events-fill`
+- ✅ `pointer-events-stroke`
+
+### `interaction/ui/_touch-action.scss`
+
+- ✅ `touch-action`
+- ✅ `touch-callout`
+
+### `interaction/ui/_user.scss`
+
+- ✅ `user-select`
+- ✅ `user-select-inherit`
+- ✅ `user-select-initial`
+- ✅ `user-select-revert`
+- ✅ `user-drag`
+
+### `interaction/ui/_resize.scss`
+
+- ✅ `resize`
+- ✅ `resize-inherit`
+- ✅ `resize-initial`
+- ✅ `resize-revert`
+- ✅ `resize-unset`
+- ✅ `resize-none`
+
+
+***
+
+## layout/
+
+### `layout/flex/_alignment.scss`
+
+- ✅ `flex-justify-content`
+- ✅ `flex-align-items`
+- ✅ `flex-align-self`
+- ✅ `flex-align-content`
+
+### `layout/flex/_direction.scss`
+
+- ✅ `flex-direction`
+- ✅ `flex-row`
+- ✅ `flex-row-reverse`
+- ✅ `flex-column`
+- ✅ `flex-column-reverse`
+
+### `layout/flex/_flex.scss`
+
+- ✅ `flex`
+- ✅ `flex-grow`
+- ✅ `flex-shrink`
+- ✅ `flex-basis`
+
+### `layout/flex/_order.scss`
+
+- ✅ `flex-order`
+
+### `layout/flex/_wrap.scss`
+
+- ✅ `flex-wrap`
+- ✅ `flex-nowrap`
+- ✅ `flex-wrap-inverse`
+
+### `layout/flow/_box-sizing.scss`
+
+- ✅ `box-sizing`
+
+### `layout/flow/_clearfix.scss`
+
+- ✅ `clearfix`
+- ✅ `clear`
+- ✅ `clear-both`
+- ✅ `clear-left`
+- ✅ `clear-right`
+- ✅ `clear-none`
+- ✅ `clear-inherit`
+- ✅ `clear-inline-start`
+- ✅ `clear-inline-end`
+
+### `layout/flow/_contain.scss`
+
+- ✅ `contain`
+- ✅ `contain-none`
+- ✅ `contain-strict`
+- ✅ `contain-content`
+- ✅ `contain-size`
+- ✅ `contain-layout`
+- ✅ `contain-paint`
+- ✅ `contain-style`
+- ✅ `contain-intrinsic-size`
+- ✅ `contain-inline-size`
+
+### `layout/flow/_display.scss`
+
+- ✅ `display`
+- ✅ `display-block`
+- ✅ `display-inline`
+- ✅ `display-inline-block`
+- ✅ `display-inline-flex`
+- ✅ `display-none`
+- ✅ `display-content`
+- ✅ `display-flex`
+- ✅ `display-grid`
+- ✅ `display-list`
+- ✅ `display-table`
+- ✅ `display-ruby`
+- ✅ `display-flow-root`
+
+### `layout/flow/_float.scss`
+
+- ✅ `float`, 
+- ✅ `float-left`, 
+- ✅ `float-right`, 
+- ✅ `float-none`, 
+- ✅ `float-inherit`,
+
+### `layout/flow/_overflow.scss`
+
+- ✅ `overflow`
+- ✅ `overflow-visible`
+- ✅ `overflow-hidden`
+- ✅ `overflow-clip`
+- ✅ `overflow-scroll`
+- ✅ `overflow-auto`
+- ✅ `overflow-x`
+- ✅ `overflow-x-visible`
+- ✅ `overflow-x-hidden`
+- ✅ `overflow-x-clip`
+- ✅ `overflow-x-scroll`
+- ✅ `overflow-x-auto`
+- ✅ `overflow-y`
+- ✅ `overflow-y-visible`
+- ✅ `overflow-y-hidden`
+- ✅ `overflow-y-clip`
+- ✅ `overflow-y-scroll`
+- ✅ `overflow-y-auto`
+- ✅ `overflow-inline`
+- ✅ `overflow-inline-visible`
+- ✅ `overflow-inline-hidden`
+- ✅ `overflow-inline-clip`
+- ✅ `overflow-inline-scroll`
+- ✅ `overflow-inline-auto`
+- ✅ `overflow-block`
+- ✅ `overflow-block-visible`
+- ✅ `overflow-block-hidden`
+- ✅ `overflow-block-clip`
+- ✅ `overflow-block-scroll`
+- ✅ `overflow-block-auto`
+*   `overflow-clip-margin`
+*   `overflow-anchor`
+
+### `layout/flow/_visibility.scss`
+
+- ✅ `visibility`
+- ✅ `visibility-visible`
+- ✅ `visibility-hidden`
+- ✅ `visibility-collapse`
+
+### `layout/grid/_alignment.scss`
+
+- ✅ `grid-justify-self`
+- ✅ `grid-justify-items`
+- ✅ `grid-justify-content`
+- ✅ `grid-align-self`
+- ✅ `grid-align-items`
+- ✅ `grid-align-content`
+- ✅ `grid-place-self`
+- ✅ `grid-place-items`
+- ✅ `grid-place-content`
+
+### `layout/grid/_auto.scss`
+
+- ✅ `grid-auto-flow`
+- ✅ `grid-auto-columns`
+- ✅ `grid-auto-rows`
+
+### `layout/grid/_column.scss`
+
+- ✅ `grid-column`
+- ✅ `grid-column-start`
+- ✅ `grid-column-end`
+
+### `layout/grid/_grid.scss`
+
+- ✅ `grid`
+
+### `layout/grid/_row.scss`
+
+- ✅ `grid-row`
+- ✅ `grid-row-start`
+- ✅ `grid-row-end`
+
+### `layout/grid/_template_.scss`
+
+- ✅ `grid-area`
+- ✅ `grid-template-columns`
+- ✅ `grid-template-rows`
+- ✅ `grid-template-areas`
+
+### `layout/media/_ratio.scss`
+
+- ✅ `aspect-ratio`
+
+### `layout/media/_object.scss`
+
+- ✅ `object-fit`
+- ✅ `object-fit-cover`
+- ✅ `object-fit-contain`
+- ✅ `object-fit-fill`
+- ✅ `object-fit-none`
+- ✅ `object-fit-scale-down`
+- ✅ `object-position`
+- ✅ `object-position-center`
+- ✅ `object-position-top`
+- ✅ `object-position-bottom`
+- ✅ `object-position-left`
+- ✅ `object-position-right`
+- ✅ `object-fit-position`
+- ✅ `object-inherit`
+- ✅ `object-initial`
+- ✅ `object-unset`
+- ✅ `object-revert`
+
+### `layout/position/_position.scss`
+
+- ✅ `position`
+- ✅ `position-static`
+- ✅ `position-relative`
+- ✅ `position-absolute`
+- ✅ `position-fixed`
+- ✅ `position-sticky`
+- ✅ `inset`
+- ✅ `inset-top`
+- ✅ `inset-right`
+- ✅ `inset-bottom`
+- ✅ `inset-left`
+- ✅ `inset-inline`
+- ✅ `inset-block`
+- ✅ `inset-inline-start`
+- ✅ `inset-inline-end`
+- ✅ `inset-block-start`
+- ✅ `inset-block-end`
+
+### `layout/position/_z-index_.scss`
+
+- ✅ `z-index`
+
+
+### `layout/_multicol.scss` — (Multi-colonnes)
+
+*   `columns` *(shorthand)*, 
+`column-width`, 
+`column-count`
+*   `column-fill`, 
+`column-span`, 
+`column-rule`, 
+`column-rule-color`, 
+`column-rule-style`, 
+`column-rule-width`
+
+### `layout/_tables.scss` — (Tableaux)
+
+*   `table-layout`
+*   `border-collapse`
+*   `border-spacing`
+*   `caption-side`
+*   `empty-cells`
+
+
+***
+
+## motion/
+
+### `motion/_transition.scss`
+
+- ✅ `transition` *(shorthand)*
+- ✅ `transition-none`
+- ✅ `transition-property`
+- ✅ `transition-duration`
+- ✅ `transition-timing-function`
+- ✅ `transition-delay`
+
+### `motion/_animation.scss`
+
+- ✅ `animation` *(shorthand)*
+- ✅ `animation-none`
+- ✅ `animation-name`, `animation-duration`, `animation-timing`, `animation-delay`
+- ✅ `animation-iteration-count`, `animation-direction`, `animation-fill-mode`, 
+- ✅ `animation-play-state`, `animation-running`, `animation-play`, `animation-paused`, `animation-stop`
+*   *(scroll-linked / view transitions – si adoptés)* :  
+    `animation-timeline` *(si support)*, `view-transition-name`
+
+### `motion/_transform.scss`
+
+- ✅ `transform`
+- ✅ `transform-origin`
+- ✅ `transform-style`
+- ✅ `perspective`
+- ✅ `perspective-origin`
+- ✅ `backface-visibility`
+
+***
+
+
+
+## sizing/
+
+### `sizing/_height_.scss`
+
+- ✅ `height`
+- ✅ `min-height`
+- ✅ `max-height`
+- ✅ `height-auto`
+- ✅ `height-fit` 
+- ✅ `min-height-content`
+- ✅ `max-height-content`
+
+### `sizing/_sizing.scss`
+
+- ✅ `size`
+- ✅ `min-size`
+- ✅ `max-size`
+- ✅ `square`
+- ✅ `content-size`
+- ✅ `size-auto`
+- ✅ `full-size`
+
+### `sizing/_viewport_.scss`
+
+- ✅ `viewport`
+- ✅ `viewport-width`
+- ✅ `viewport-height`
+
+### `sizing/_width_.scss`
+
+- ✅ `width`
+- ✅ `min-width`
+- ✅ `max-width`
+- ✅ `width-auto`
+- ✅ `width-full`
+- ✅ `width-fit` 
+- ✅ `min-width-content`
+- ✅ `max-width-content`
+
+`inline-size`, 
+`min-inline-size`, 
+`max-inline-size`, 
+`block-size`, 
+`min-block-size`, 
+`max-block-size`
+
+
+***
+
+## spacing/
+
+### `spacing/_gap.scss`
+
+- ✅ `gap`, `row-gap`, `column-gap`  
+    *(utilisés par flex, grid, multicol — centralisés ici)*
+
+### `spacing/_margins.scss`
+
+- ✅ `margin` 
+- ✅ `margin-top`
+- ✅ `margin-right`
+- ✅ `margin-bottom`
+- ✅ `margin-left`
+- ✅ `margin-inline`
+- ✅ `margin-inline-start`
+- ✅ `margin-inline-end`
+- ✅ `margin-block`
+- ✅ `margin-block-start`
+- ✅ `margin-block-end`
+- ✅ `margin-x`
+- ✅ `margin-y`
+
+### `spacing/_paddings.scss`
+
+- ✅ `padding`
+- ✅ `padding-top`
+- ✅ `padding-right`
+- ✅ `padding-bottom`
+- ✅ `padding-left`
+- ✅ `padding-inline`
+- ✅ `padding-inline-start`
+- ✅ `padding-inline-end`
+- ✅ `padding-block`
+- ✅ `padding-block-start`
+- ✅ `padding-block-end`
+- ✅ `padding-x`
+- ✅ `padding-y`
+
+### `spacing/_scroll-spacing.scss`
+
+*   `scroll-margin`
+*   `scroll-margin-top`
+*   `scroll-margin-right`
+*   `scroll-margin-bottom`
+*   `scroll-margin-left`
+
+*   `scroll-margin-inline`
+*   `scroll-margin-inline-start`
+*   `scroll-margin-inline-end`
+*   `scroll-margin-block`
+*   `scroll-margin-block-start`
+*   `scroll-margin-block-end`
+
+*   `scroll-padding`, 
+*   `scroll-padding-top`
+*   `scroll-padding-right`
+*   `scroll-padding-bottom`
+*   `scroll-padding-left`
+
+*   `scroll-padding-inline`
+*   `scroll-padding-inline-start`
+*   `scroll-padding-inline-end`
+*   `scroll-padding-block`
+*   `scroll-padding-block-start`
+*   `scroll-padding-block-end`
+
+***
+
+
+## theme/
+
+### `theme/_accents.scss`
+
+- ✅ `accent-color`
+- ✅ `caret-color`
+*   `::selection`
+
+### `theme/_background.scss`
+
+- ✅ `background` *(shorthand)*
+- ✅ `background-color`
+- ✅ `background-image`
+- ✅ `background-position`
+- ✅ `background-position-x`
+- ✅ `background-position-y`
+- ✅ `background-size`
+- ✅ `background-repeat`
+- ✅ `background-attachment`
+- ✅ `background-origin`
+- ✅ `background-clip`
+
+> ℹ️ **Mélanges** → `background-blend-mode` est **dans `visual/_blend.scss`**.
+
+### `theme/_colors.scss`
+
+- ✅ `color` *(couleur de texte / foreground)*
+
+### `theme/_svg-colors.scss`
+
+*   `fill`
+*   `stroke`, 
+*   `stroke-width`, 
+*   `stroke-linecap`, 
+*   `stroke-linejoin`, 
+*   `stroke-miterlimit`
+*   `stroke-dasharray`, 
+*   `stroke-dashoffset`
+*   `paint-order`
+
+### `theme/_scheme.scss`
+
+*   `color-scheme`
+
+
+***
+
+## typography/
+
+### `typography/font/_accessibility.scss`
+
+- ✅ `font-size-adjust`
+
+### `typography/font/_font.scss`
+
+- ✅ `font`,
+- ✅ `font-family`, 
+- ✅ `font-size`, 
+- ✅ `font-style`, 
+- ✅ `font-weight`, 
+- ✅ `font-stretch`
+
+### `typography/font/_variant.scss`
+
+- ✅ `font-variant`, 
+- ✅ `font-variant-normal`, 
+- ✅ `font-variant-small-caps`, 
+- ✅ `font-variant-all-small-caps`, 
+- ✅ `font-variant-petite-caps`, 
+- ✅ `font-variant-all-petite-caps`, 
+- ✅ `font-variant-unicase`, 
+- ✅ `font-variant-titling-caps`
+- ✅ `font-variant-ligatures`, 
+- ✅ `font-variant-caps`, 
+- ✅ `font-variant-numeric`, 
+- ✅ `font-variant-east-asian`, 
+- ✅ `font-variant-alternates`
+
+*   `font-feature-settings`, 
+`font-kerning`
+*   **Variable fonts** : 
+`font-optical-sizing`, 
+`font-variation-settings`, 
+`font-synthesis`
+
+### `typography/text/_accessibility.scss`
+
+- ✅ `text-size-adjust`
+
+### `typography/text/_alignment.scss`
+
+- ✅ `text-align`, 
+- ✅ `text-align-left`, 
+- ✅ `text-align-right`, 
+- ✅ `text-align-center`, 
+- ✅ `text-align-start`, 
+- ✅ `text-align-end`, 
+- ✅ `text-align-first`,
+- ✅ `text-align-last`, 
+- ✅ `text-align-justify`, 
+- ✅ `text-justify`, 
+- ✅ `text-align-match-parent`, 
+
+### `typography/text/_breakup.scss`
+
+- ✅ `hyphens`, 
+- ✅ `overflow-wrap`
+- ✅ `word-wrap`, 
+- ✅ `word-break`, 
+- ✅ `line-break`
+
+### `typography/text/_decoration.scss`
+
+- ✅ `text-decoration`, 
+- ✅ `text-decoration-line`, 
+- ✅ `text-decoration-color`, 
+- ✅ `text-decoration-style`, 
+- ✅ `text-decoration-thickness`, 
+- ✅ `text-underline-offset`, 
+- ✅ `text-underline-position`, 
+- ✅ `text-decoration-skip-ink`
+
+### `typography/text/_indent.scss`
+
+- ✅ `text-indent`
+
+### `typography/text/_spacing.scss`
+
+- ✅ `line-height`, 
+- ✅ `letter-spacing`, 
+- ✅ `word-spacing`
+- ✅ `white-space`, 
+- ✅ `tab-size`, 
+
+### `typography/text/_transformation.scss`
+
+- ✅ `text-transform`, 
+- ✅ `text-transform-none`, 
+- ✅ `text-uppercase`, 
+- ✅ `text-lowercase`, 
+- ✅ `text-capitalize`, 
+- ✅ `text-full-width`, 
+- ✅ `text-full-size-kana`
+
+    `text-overflow`
+
+*   **Wrapping moderne** :  
+    `text-wrap` *(ex. `balance`)*
+
+### `typography/_writing.scss`
+
+*   `writing-mode`
+*   `direction`
+*   `unicode-bidi`
+*   `text-orientation`
+*   `hanging-punctuation`
+
+
+***
+
+## visual/
+
+### `visual/_blend.scss`
+
+- ✅ `mix-blend-mode`
+- ✅ `isolation`
+- ✅ `background-blend-mode`
+
+### `visual/_filter.scss`
+
+- ✅ `filter`
+- ✅ `filter-none`
+- ✅ `filter-initial`
+- ✅ `filter-inherit`
+- ✅ `filter-unset`
+- ✅ `filter-revert`
+- ✅ `filter-all`
+- ✅ `filter-revert-layer`
+- ✅ `filter-blur`
+- ✅ `filter-brightness`
+- ✅ `filter-contrast`
+- ✅ `filter-grayscale`
+- ✅ `filter-hue-rotate`
+- ✅ `filter-invert`
+- ✅ `filter-opacity`
+- ✅ `filter-saturate`
+- ✅ `filter-drop-shadow`
+- ✅ `filter-url`
+- ✅ `backdrop-filter`
+- ✅ `backdrop-filter-none`
+- ✅ `backdrop-filter-initial`
+- ✅ `backdrop-filter-inherit`
+- ✅ `backdrop-filter-unset`
+- ✅ `backdrop-filter-revert`
+- ✅ `backdrop-filter-all`
+- ✅ `backdrop-filter-revert-layer`
+- ✅ `backdrop-filter-blur`
+- ✅ `backdrop-filter-brightness`
+- ✅ `backdrop-filter-contrast`
+- ✅ `backdrop-filter-grayscale`
+- ✅ `backdrop-filter-hue-rotate`
+- ✅ `backdrop-filter-invert`
+- ✅ `backdrop-filter-opacity`
+- ✅ `backdrop-filter-saturate`
+- ✅ `backdrop-filter-drop-shadow`
+- ✅ `backdrop-filter-url`
+
+### `visual/_opacity.scss`
+
+- ✅ `opacity`
+
+### `visual/_shadow.scss`
+
+- ✅ `box-shadow`
+- ✅ `text-shadow`
+
+### `visual/_clip.scss`
+
+*   `clip-path`
+*   `clip`
+
+### `visual/_mask.scss`
+
+*   `mask`
+*   `mask-image`
+*   `mask-mode`
+*   `mask-repeat`
+*   `mask-position`
+*   `mask-size`,
+*   `mask-origin`
+*   `mask-clip`
+*   `mask-composite`
+
+*   `mask-border`
+*   `mask-border-source`
+*   `mask-border-mode`
+*   `mask-border-slice`
+*   `mask-border-width`
+*   `mask-border-outset`
+*   `mask-border-repeat`
+
+
+***
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*   `image-rendering` *(peut rester ici en “rendering hints”)*
+
+- `content-visibility` *(perf/skip rendering, mais placé ici pour l’usage layout)*
+
+*   **Listes** *(placées ici faute de fichier dédié “lists”)* :  
+    `list-style`, `list-style-type`, `list-style-position`, `list-style-image`  
+    *(+ `::marker` pour styliser via `color`, `font`, etc.)*
+
+
+*   **Shapes autour des floats** : `shape-outside`, `shape-image-threshold`, `shape-margin`
+
+*   **Motion path (si utilisé)** : `offset`, `offset-position`, `offset-path`, `offset-distance`, `offset-rotate`, `offset-anchor` *(souvent expérimental/partiel)*
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Structure
 
 ### Box Model 

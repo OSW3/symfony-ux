@@ -13,7 +13,7 @@
 @use "sass:list";
 @use "sass:map";
 @use "sass:string";
-@use "./../helpers/helpers" as h;
+
 
 
 
@@ -75,36 +75,35 @@ $states-aliases-extra: (
 }
 
 
-/// Normalise une clé d’état en **chaîne** (supporte identifiant ou string)
+/// Normalise une clé d’état en **chaîne** (identifiant -> string)
 @function _state-key-normalize($k) {
   @if meta.type-of($k) == 'string' { @return $k; }
-  @return meta.inspect($k); // ex. hover -> "hover", focus-within -> "focus-within"
+  @return meta.inspect($k); // ex. hover -> "hover"
 }
 
-/// Retourne la **liste de sélecteurs** (non vides) pour un état donné (string)
-/// Lit $states-selectors puis $states-aliases-extra.
-/// Supporte les valeurs multi-sélecteurs séparés par des virgules.
-@function _state-selectors($k-str) {
-  @if map.has-key($states-selectors, $k-str) {
-    $raw: map.get($states-selectors, $k-str);
-    @return _split-selectors($raw);
+/// Trim rudimentaire (début/fin) – évite dépendances externes
+@function _trim($s) {
+  @if meta.type-of($s) != 'string' { @return $s; }
+  $left: 1;
+  $right: string.length($s);
+  @while $left <= $right and string.slice($s, $left, $left) == " " {
+    $left: $left + 1;
   }
-  @if map.has-key($states-aliases-extra, $k-str) {
-    $raw: map.get($states-aliases-extra, $k-str);
-    @return _split-selectors($raw);
+  @while $right >= $left and string.slice($s, $right, $right) == " " {
+    $right: $right - 1;
   }
-  // fallback : si inconnu, on traite la clé comme sélecteur littéral
-  @return _split-selectors($k-str);
+  @return string.slice($s, $left, $right);
 }
 
-/// Split une chaîne potentiellement multi-sélecteurs (séparés par virgules)
-/// et retourne **une liste** propre (sans blancs autour).
+/// Split une chaîne potentiellement multi-sélecteurs (séparés par des virgules)
+/// et retourne une **liste** propre (sans blancs).
 @function _split-selectors($raw) {
   @if $raw == null or $raw == "" { @return (""); }
   $s: string.unquote($raw);
   $parts: ();
   $start: 1;
   $len: string.length($s);
+
   @for $i from 1 through $len {
     @if string.slice($s, $i, $i) == "," {
       $seg: string.slice($s, $start, $i - 1);
@@ -112,11 +111,9 @@ $states-aliases-extra: (
       $start: $i + 1;
     }
   }
-  // dernier segment
   $seg: string.slice($s, $start, $len);
   $parts: list.append($parts, _trim($seg), comma);
 
-  // filtre les vides
   $clean: ();
   @each $p in $parts {
     @if $p != "" { $clean: list.append($clean, $p, comma); }
@@ -125,44 +122,54 @@ $states-aliases-extra: (
   @return $clean;
 }
 
-/// Trim rudimentaire (début/fin) – évite dépendances externes
-@function _trim($s) {
-  @if meta.type-of($s) != 'string' { @return $s; }
-  $left: 1;
-  $right: string.length($s);
-
-  // trim left
-  @while $left <= $right and string.slice($s, $left, $left) == " " {
-    $left: $left + 1;
+/// Retourne la **liste de sélecteurs** pour un état donné (string)
+/// Lit $states-selectors puis $states-aliases-extra. Fallback: la clé elle‑même.
+@function _state-selectors($k-str) {
+  @if map.has-key($states-selectors, $k-str) {
+    @return _split-selectors(map.get($states-selectors, $k-str));
   }
-  // trim right
-  @while $right >= $left and string.slice($s, $right, $right) == " " {
-    $right: $right - 1;
+  @if map.has-key($states-aliases-extra, $k-str) {
+    @return _split-selectors(map.get($states-aliases-extra, $k-str));
   }
-  @return string.slice($s, $left, $right);
+  @return _split-selectors($k-str);
 }
 
-/// Compose un **sélecteur final** à partir du template `$selector`
-/// - Si `$selector` contient `:STATE`, on remplace `:STATE` par `$state`
-/// - Sinon, on concatène intelligemment :
-///    - si `$state` == "" → renvoie `$selector`
-///    - sinon            → renvoie `#{$selector}#{$state}`
-/// Retourne une **liste** (pour traiter multi-sélecteurs state).
+/// Compose la(les) chaîne(s) finale(s) à partir d’un **template** `$selector`
+/// - Si `$selector` contient `:STATE`, on remplace **chaque occurrence** par `$state`
+/// - Sinon:
+///    - si `$state == ""` → `$selector`
+///    - sinon             → `#{$selector}#{$state}`
+/// Supporte états **multi-sélecteurs** (liste en entrée) et renvoie une **liste**.
 @function _compose-selectors($selector, $state) {
   $sel: string.unquote($selector);
   $state-list: _split-selectors($state);
   $out: ();
+
   @each $st in $state-list {
-    @if string.index($sel, ":STATE") {
-      $out: list.append($out, string.replace($sel, ":STATE", $st), comma);
-    } @else {
+    // Remplace *toutes* les occurrences de :STATE (boucle tant que présent)
+    $rendered: $sel;
+    @while string.index($rendered, ":STATE") {
+      // Il n'existe pas de string.replace global en Sass, donc on remplace 1 occurrence à la fois.
+      // Astuce: split en deux segments autour de la première occurrence.
+      $idx: string.index($rendered, ":STATE");
+      $before: string.slice($rendered, 1, $idx - 1);
+      $after: string.slice($rendered, $idx + 6); // 6 = length(":STATE")
+      $rendered: "#{$before}#{$st}#{$after}";
+    }
+
+    @if $rendered == $sel {
+      // Pas de :STATE dans le template
       @if $st == "" {
         $out: list.append($out, $sel, comma);
       } @else {
         $out: list.append($out, "#{$sel}#{$st}", comma);
       }
+    } @else {
+      // Template utilisé, on ajoute rendu
+      $out: list.append($out, $rendered, comma);
     }
   }
+
   @return $out;
 }
 
@@ -191,10 +198,13 @@ $states-aliases-extra: (
 ///  @include states('color', (base: #222, hover: #000), (forced-colors: true)); // wrapper forced-colors
 ///  @include states('color', (base: #222, hover: #000), (scheme: dark)); // wrapper prefers-color-scheme: dark
 /// 
+/// &:hover .#{prefix(button-close)} {opacity: .4;}
+/// @include states('opacity', (hover: .4,), (selector: '&:STATE .#{prefix(button-close)}'));
+/// 
 @mixin states($property, $values, $options: ()) {
   // options
   $selector: map.get($options, selector);
-  @if $selector == null { $selector: '&'; } // ⚠️ pas de &amp;
+  @if $selector == null { $selector: '&'; }
 
   $order: map.get($options, order);
   @if $order == null { $order: $states-default-order; }

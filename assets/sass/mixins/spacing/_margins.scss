@@ -1,0 +1,268 @@
+// * ===========================================================================
+// *  Margin Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the margin properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different margin 
+// *  styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:list";
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Margin API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set margin properties
+///
+/// @param {length|keyword} $values... - 1 to 4 values for margin (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin(10px); // margin: 10px;
+///  @include margin(10px 20px); // margin: 10px 20px;
+///  @include margin(10px 20px 30px); // margin: 10px 20px 30px;
+///  @include margin(10px 20px 30px 40px); // margin: 10px 20px 30px 40px;
+///  @include margin(10px, true); // margin: 10px !important;
+///  @include margin((10px, 20px), true); // margin: 10px 20px !important;
+///  @include margin(auto); // margin: auto;
+///  @include margin((null, 20px, null, 40px), true); // margin: 20px 40px !important; (null values are skipped if $props-skip-null is true)
+///
+@mixin margin($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  $norm: h.normalize-spacing-list(false, h.props-skip-null(), $vals...);
+  @include h.emit('margin', $norm, $important-flag);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set margin-top property
+///
+/// @param {length|keyword} $value - The value for margin-top (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-top(10px); // margin-top: 10px;
+///  @include margin-top(auto); // margin-top: auto;
+///  @include margin-top(10px, true); // margin-top: 10px !important;
+///
+@mixin margin-top($value, $important: false) {
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-top', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set margin-right property
+///
+/// @param {length|keyword} $value - The value for margin-right (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-right(10px); // margin-right: 10px;
+///  @include margin-right(auto); // margin-right: auto;
+///  @include margin-right(10px, true); // margin-right: 10px !important;
+///
+@mixin margin-right($value, $important: false) {
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-right', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set margin-bottom property
+///
+/// @param {length|keyword} $value - The value for margin-bottom (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-bottom(10px); // margin-bottom: 10px;
+///  @include margin-bottom(auto); // margin-bottom: auto;
+///  @include margin-bottom(10px, true); // margin-bottom: 10px !important;
+///
+@mixin margin-bottom($value, $important: false) {
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-bottom', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set margin-left property
+///
+/// @param {length|keyword} $value - The value for margin-left (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-left(10px); // margin-left: 10px;
+///  @include margin-left(auto); // margin-left: auto;
+///  @include margin-left(10px, true); // margin-left: 10px !important;
+///
+@mixin margin-left($value, $important: false) {
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-left', $v, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set margin-inline property (logical properties for inline axis)
+///
+/// @param {length|keyword} $values... - 1 to 4 values for margin-inline (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-inline(10px); // margin-inline: 10px;
+///  @include margin-inline(10px 20px); // margin-inline: 10px 20px;
+///  @include margin-inline(auto); // margin-inline: auto;
+///  @include margin-inline((10px, auto), true); // margin-inline: 10px auto !important;
+///
+@mixin margin-inline($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  $norm: h.normalize-spacing-list(true, h.props-skip-null(), $vals...);
+  @include h.emit('margin-inline', $norm, $important-flag);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set margin-inline-start property
+///
+/// @param {length|keyword} $value - The value for margin-inline-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-inline-start(10px); // margin-inline-start: 10px;
+///  @include margin-inline-start(auto); // margin-inline-start: auto;
+///  @include margin-inline-start(10px, true); // margin-inline-start: 10px !important;
+///
+@mixin margin-inline-start($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-inline-start', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set margin-inline-end property
+///
+/// @param {length|keyword} $value - The value for margin-inline-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-inline-end(10px); // margin-inline-end: 10px;
+///  @include margin-inline-end(auto); // margin-inline-end: auto;
+///  @include margin-inline-end(10px, true); // margin-inline-end: 10px !important;
+///
+@mixin margin-inline-end($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-inline-end', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set margin-block property (logical properties for block axis)
+///
+/// @param {length|keyword} $values... - 1 to 4 values for margin-block (can be a single list or varargs)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-block(10px); // margin-block: 10px;
+///  @include margin-block(10px 20px); // margin-block: 10px 20px;
+///  @include margin-block(auto); // margin-block: auto;
+///  @include margin-block((auto, 20px), true); // margin-block: auto 20px !important;
+///
+@mixin margin-block($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important-flag: list.nth($pair, 2);
+  $norm: h.normalize-spacing-list(true, h.props-skip-null(), $vals...);
+  @include h.emit('margin-block', $norm, $important-flag);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set margin-block-start property
+///
+/// @param {length|keyword} $value - The value for margin-block-start (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-block-start(10px); // margin-block-start: 10px;
+///  @include margin-block-start(auto); // margin-block-start: auto;
+///  @include margin-block-start(10px, true); // margin-block-start: 10px !important;
+///
+@mixin margin-block-start($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-block-start', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set margin-block-end property
+///
+/// @param {length|keyword} $value - The value for margin-block-end (e.g., 10px, auto)
+/// @param {bool} $important (optional) - if true, adds !important to the declaration
+///
+/// Usage:
+///  @include margin-block-end(10px); // margin-block-end: 10px;
+///  @include margin-block-end(auto); // margin-block-end: auto;
+///  @include margin-block-end(10px, true); // margin-block-end: 10px !important;
+///
+@mixin margin-block-end($value, $important: false) { 
+  $v: h.to-length-or-keyword($value, true);
+  @include h.emit('margin-block-end', $v, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set margin-x (shorthand for margin-left and margin-right)
+///
+/// @param {length|keyword} $value - The value for horizontal margins
+/// @param {bool} $important (optional) - if true, adds !important to both declarations
+///
+/// Usage:
+///  @include margin-x(12px); // margin-right: 12px; margin-left: 12px;
+///  @include margin-x(auto); // margin-right: auto; margin-left: auto;
+///  @include margin-x(12px, true); // margin-right: 12px !important; margin-left: 12px !important;
+///
+@mixin margin-x($value: null, $important: false) {
+  @include margin-right($value, $important);
+  @include margin-left($value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set margin-y (shorthand for margin-top and margin-bottom)
+///
+/// @param {length|keyword} $value - The value for vertical margins
+/// @param {bool} $important (optional) - if true, adds !important to both declarations
+///
+/// Usage:
+///  @include margin-y(8px); // margin-top: 8px; margin-bottom: 8px;
+///  @include margin-y(auto); // margin-top: auto; margin-bottom: auto;
+///  @include margin-y(8px, true); // margin-top: 8px !important; margin-bottom: 8px !important;
+///
+@mixin margin-y($value: null, $important: false) {
+  @include margin-top($value, $important);
+  @include margin-bottom($value, $important);
+  @if meta.content-exists() { @content; }
+}

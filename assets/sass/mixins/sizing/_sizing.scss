@@ -1,0 +1,144 @@
+// * ===========================================================================
+// *  Size Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the size properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different size styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Size API                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+
+/// Sets both width and height of an element in one declaration.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for both width and height values.
+/// 
+/// @param {number|string} $width - The width value (e.g., 100px, 50%, auto).
+/// @param {number|string} $height - The height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include size(100, 200); // width: 100px; height: 200px;
+///  @include size(100px, 50%); // width: 100px; height: 50%;
+///  @include size(100, 200, true); // width: 100px; height: 200px; with !important
+///
+@mixin size($width: null, $height: null, $important: false) {
+  @include width($width, $important);
+  @include height($height, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets both min-width and min-height of an element in one declaration.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for both min-width and min-height values.
+/// 
+/// @param {number|string} $min-width - The minimum width value (e.g., 100px, 50%, auto).
+/// @param {number|string} $min-height - The minimum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include min-size(100, 200); // min-width: 100px; min-height: 200px;
+///  @include min-size(100px, 50%); // min-width: 100px; min-height: 50%;
+///  @include min-size(100, 200, true); // min-width: 100px; min-height: 200px; with !important
+///
+@mixin min-size($min-width: null, $min-height: null, $important: false) {
+  @include min-width($min-width, $important);
+  @include min-height($min-height, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets both max-width and max-height of an element in one declaration.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for both max-width and max-height values.
+/// 
+/// @param {number|string} $max-width - The maximum width value (e.g., 100px, 50%, auto).
+/// @param {number|string} $max-height - The maximum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include max-size(100, 200); // max-width: 100px; max-height: 200px;
+///  @include max-size(100px, 50%); // max-width: 100px; max-height: 50%;
+///  @include max-size(100, 200, true); // max-width: 100px; max-height: 200px; with !important
+///
+@mixin max-size($max-width: null, $max-height: null, $important: false) {
+  @include max-width($max-width, $important);
+  @include max-height($max-height, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Alias
+// * ---------------------------------------------
+
+/// Sets both width and height to the same value in one declaration (square).
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings for the size value.
+/// 
+/// @param {number|string} $size - The width and height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include square(100); // width: 100px; height: 100px;
+///  @include square(100px); // width: 100px; height: 100px;
+///  @include square(100%, true); // width: 100%; height: 100%; with !important
+///
+@mixin square($size, $important: false) {
+  @include size($size, $size, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets width to max-content and height to auto in one declaration (intrinsic size).
+/// Note: This mixin sets width to max-content and height to auto, which allows the element to size itself based on its content. The $important parameter can be used to add !important to the declarations if needed.
+/// 
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include content-size; // width: max-content; height: auto;
+///  @include content-size(true); // width: max-content; height: auto; with !important
+///
+@mixin content-size($important: false) {
+  @include width(max-content, $important);
+  @include height(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets width to auto and height to auto in one declaration (default size).
+/// Note: This mixin sets both width and height to auto, which allows the element to size itself based on its content and context. The $important parameter can be used to add !important to the declarations if needed.
+/// 
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include size-auto; // width: auto; height: auto;
+///  @include size-auto(true); // width: auto; height: auto; with !important
+///
+@mixin size-auto($important: false) {
+  @include size(auto, auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets width to 100% and height to 100% in one declaration (full size).
+/// Note: This mixin sets both width and height to 100%, which makes the element take up the full size of its container. The $important parameter can be used to add !important to the declarations if needed.
+/// 
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include full-size; // width: 100%; height: 100%;
+///  @include full-size(true); // width: 100%; height: 100%; with !important
+///
+@mixin full-size($important: false) {
+  @include size(100%, 100%, $important);
+  @if meta.content-exists() { @content; }
+}

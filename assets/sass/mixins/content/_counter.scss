@@ -1,0 +1,129 @@
+// * ===========================================================================
+// *  Counter Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the counter properties of elements.
+// *
+// *  These mixins provide a convenient way to apply counter values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Counter API                                                          - //
+// * ------------------------------------------------------------------------ //
+
+/// Set counter-reset.
+/// 
+/// @param {string} $name - Name of the counter to reset.
+/// @param {number} $value - Value to reset the counter to (default: 0).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include counter-reset(item); // counter-reset: item 0;
+///  @include counter-reset(section, 1); // counter-reset: section 1;
+///  @include counter-reset(item, 0, true); // counter-reset: item 0 !important;
+///  @include counter-reset(section, 1, true); // counter-reset: section 1 !important;
+///  @include counter-reset(item1 item2); // counter-reset: item1 0 item2 0;
+///  @include counter-reset(item1 0 item2 1); // counter-reset: item1 0 item2 1;
+///  @include counter-reset(item1 item2, true); // counter-reset: item1 0 item2 0 !important;
+///  @include counter-reset(item1 0 item2 1, true); // counter-reset: item1 0 item2 1 !important;
+///
+@mixin counter-reset($name, $value: 0, $important: false) {
+  @include h.emit(counter-reset, "#{$name} #{$value}", $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set counter-increment.
+/// 
+/// @param {string} $name - Name of the counter to increment.
+/// @param {number} $value - Value to increment the counter by (default: 1).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include counter-increment(item); // counter-increment: item 1;
+///  @include counter-increment(section, 2); // counter-increment: section 2;
+///  @include counter-increment(item, 1, true); // counter-increment: item 1 !important;
+///  @include counter-increment(section, 2, true); // counter-increment: section 2 !important;
+///  @include counter-increment(item1 item2); // counter-increment: item1 1 item2 1;
+///  @include counter-increment(item1 1 item2 2); // counter-increment: item1 1 item2 2;
+///  @include counter-increment(item1 item2, true); // counter-increment: item1 1 item2 1 !important;
+///  @include counter-increment(item1 1 item2 2, true); // counter-increment: item1 1 item2 2 !important;
+///
+@mixin counter-increment($name, $value: 1, $important: false) {
+  @include h.emit(counter-increment, "#{$name} #{$value}", $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set counter-set.
+/// 
+/// @param {string} $name - Name of the counter to set.
+/// @param {number} $value - Value to set the counter to (default: 0).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include counter-set(item); // counter-set: item 0;
+///  @include counter-set(section, 1); // counter-set: section 1;
+///  @include counter-set(item, 0, true); // counter-set: item 0 !important;
+///  @include counter-set(section, 1, true); // counter-set: section 1 !important;
+///  @include counter-set(item1 item2); // counter-set: item1 0 item2 0;
+///  @include counter-set(item1 0 item2 1); // counter-set: item1 0 item2 1;
+///  @include counter-set(item1 item2, true); // counter-set: item1 0 item2 0 !important;
+///  @include counter-set(item1 0 item2 1, true); // counter-set: item1 0 item2 1 !important;
+/// 
+@mixin counter-set($name, $value: 0, $important: false) {
+  @include h.emit(counter-set, "#{$name} #{$value}", $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set counters.
+/// 
+/// @param {string} $name - Name of the counter to display.
+/// @param {string} $separator - String to separate multiple counter values (default: '.').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include counters(item); // content: counters(item, '.');
+///  @include counters(section, '-'); // content: counters(section, '-');
+///  @include counters(item, '.', true); // content: counters(item, '.') !important;
+///  @include counters(section, '-', true); // content: counters(section, '-') !important;
+///  @include counters(item, ' ', true); // content: counters(item, ' ') !important;
+///  @include counters(item, '', true); // content: counters(item, '') !important;
+///  @include counters(item, ' - ', true); // content: counters(item, ' - ') !important;
+///  @include counters(item, ' / ', true); // content: counters(item, ' / ') !important;
+///  @include counters(item, ' | ', true); // content: counters(item, ' | ') !important;
+///  @include counters(item, ' > ', true); // content: counters(item, ' > ') !important;
+///  @include counters(item, ' > '); // content: counters(item, ' > ');
+///  @include counters(item, ' > ', true); // content: counters(item, ' > ') !important;
+///
+@mixin counters($name, $separator: '.', $important: false) {
+  @include h.emit(counters, "#{$name} #{$separator}", $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set counter.
+/// 
+/// @param {string} $name - Name of the counter to display.
+/// @param {string} $list-style - List style to use for the counter (default: decimal).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include counter(item); // content: counter(item, decimal);
+///  @include counter(section, lower-alpha); // content: counter(section, lower-alpha);
+///  @include counter(item, decimal, true); // content: counter(item, decimal) !important;
+///  @include counter(section, lower-alpha, true); // content: counter(section, lower-alpha) !important;
+///  @include counter(item, upper-roman); // content: counter(item, upper-roman);
+///  @include counter(item, upper-roman, true); // content: counter(item, upper-roman) !important;
+///  @include counter(item, none); // content: counter(item, none);
+///  @include counter(item, none, true); // content: counter(item, none) !important;
+///
+@mixin counter($name, $list-style: decimal, $important: false) {
+  @include h.emit(counter, "#{$name} #{$list-style}", $important);
+  @if meta.content-exists() { @content; }
+}

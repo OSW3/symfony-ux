@@ -1,0 +1,163 @@
+// * ===========================================================================
+// *  Contain Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the contain property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different contain styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Contain API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set CSS contain property.
+/// 
+/// @param {String} $value - Value for contain (e.g., 'none', 'strict', 'content', 'size', 'layout', 'paint', 'style', or combinations like 'size paint')
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include contain('none'); // contain: none;
+///  @include contain('size paint'); // contain: size paint;
+///  @include contain('layout', true); // contain: layout !important;
+///
+@mixin contain($value, $important: false) {
+  @if h.is-global-keyword($value) or $value == null {
+    @include h.emit('contain', $value, $important);
+  } @else {
+    $norm: h.normalize-contain-list($value);
+    @include h.emit('contain', $norm, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain-none property.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+/// Usage:
+///  @include contain-none(); // contain: none;
+///  @include contain-none(true); // contain: none !important;
+///
+@mixin contain-none($important: false) {
+  @include contain(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain-strict property.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+/// Usage:
+///  @include contain-strict(); // contain: strict;
+///  @include contain-strict(true); // contain: strict !important;
+///
+@mixin contain-strict($important: false) {
+  @include contain(strict, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain-content property.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+/// Usage:
+///  @include contain-content(); // contain: content;
+///  @include contain-content(true); // contain: content !important;
+///
+@mixin contain-content($important: false) {
+  @include contain(content, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain-size property.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+/// Usage:
+///  @include contain-size(); // contain: size;
+///  @include contain-size(true); // contain: size !important;
+///
+@mixin contain-size($important: false){ 
+  @include contain(size, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain: layout and related properties.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include contain-layout(); // contain: layout;
+///  @include contain-layout(true); // contain: layout !important;
+///
+@mixin contain-layout($important: false){ 
+  @include contain(layout, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain: paint and related properties.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+/// Usage:
+///  @include contain-paint(); // contain: paint;
+///  @include contain-paint(true); // contain: paint !important;
+///
+@mixin contain-paint($important: false){ 
+  @include contain(paint, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain: style and related properties.
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+/// Usage:
+///  @include contain-style(); // contain: style;
+///  @include contain-style(true); // contain: style !important;
+///
+@mixin contain-style($important: false){ 
+  @include contain(style, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain-intrinsic-size property with validation and optional !important.
+/// 
+/// @param {String} $value - Value for contain-intrinsic-size (e.g., '10px', 'auto 10px', '10px 20px', 'auto 10px 20px')
+/// @param {Boolean} $important - Whether to add !important (default: false)
+///
+///  Usage:
+///  @include contain-intrinsic-size('10px'); // contain-intrinsic-size: 10px;
+///  @include contain-intrinsic-size('auto 10px'); // contain-intrinsic-size: auto 10px;
+///  @include contain-intrinsic-size('10px 20px', true); // contain-intrinsic-size: 10px 20px !important;
+///
+@mixin contain-intrinsic-size($value, $important: false) {
+  $norm: h.normalize-cis($value, $length-default-unit);
+  @include h.emit('contain-intrinsic-size', $norm, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set contain-inline-size property with validation and optional !important.
+/// 
+/// @param {String} $value - Value for contain-inline-size (e.g., '10px', 'auto 10px', '10px 20px', 'auto 10px 20px')
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include contain-inline-size('10px'); // contain-inline-size: 10px;
+///  @include contain-inline-size('auto 10px'); // contain-inline-size: auto 10px;
+///  @include contain-inline-size('10px 20px', true); // contain-inline-size: 10px 20px !important;
+///
+@mixin contain-inline-size($value, $important: false) {
+  @include contain(inline-size $value, $important);
+  @if meta.content-exists() { @content; }
+}

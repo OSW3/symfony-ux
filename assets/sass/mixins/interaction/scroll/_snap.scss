@@ -1,0 +1,60 @@
+// * ===========================================================================
+// *  Scroll Snap Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the scroll snap properties of elements.
+// *
+// *  These mixins provide a convenient way to apply different scroll snap values 
+// *  with optional !important flags. 
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Scroll Snap API                                                      - //
+// * ------------------------------------------------------------------------ //
+
+@mixin scroll-snap-type($value, $important: false) {
+  @include h.emit('scroll-snap-type', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-align($value, $important: false) {
+  @include h.emit('scroll-snap-align', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-stop($value, $important: false) {
+  @include h.emit('scroll-snap-stop', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-margin($value, $important: false) {
+  @include h.emit('scroll-snap-margin', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-padding($value, $important: false) {
+  @include h.emit('scroll-snap-padding', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-destination($value, $important: false) {
+  @include h.emit('scroll-snap-destination', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-coordinate($value, $important: false) {
+  @include h.emit('scroll-snap-coordinate', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-snap-type-inherit($important: false) {
+  @include scroll-snap-type(inherit, $important);
+  @if meta.content-exists() { @content; }
+}

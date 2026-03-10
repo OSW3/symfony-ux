@@ -1,0 +1,269 @@
+// * ===========================================================================
+// *  Media Object Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the media object property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different media object styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Media Object API                                                     - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// *  
+// * ---------------------------------------------
+
+/// Set object-fit property.
+/// 
+/// @param {string} $value - The value for object-fit (e.g., cover, contain, fill, none, scale-down).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-fit(cover); // object-fit: cover;
+///  @include object-fit(contain, true); // object-fit: contain !important;
+///  @include object-fit(fill); // object-fit: fill;
+///  @include object-fit(none, true); // object-fit: none !important;
+/// 
+@mixin object-fit($value, $important: false) {
+  @include h.emit('object-fit', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit to cover with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include object-fit-cover(); // object-fit: cover;
+///  @include object-fit-cover(true); // object-fit: cover !important;
+/// 
+@mixin object-fit-cover($important: false) {
+  @include object-fit(cover, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit to contain with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include object-fit-contain(); // object-fit: contain;
+///  @include object-fit-contain(true); // object-fit: contain !important;
+/// 
+@mixin object-fit-contain($important: false) {
+  @include object-fit(contain, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit to fill with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include object-fit-fill(); // object-fit: fill;
+///  @include object-fit-fill(true); // object-fit: fill !important;
+/// 
+@mixin object-fit-fill($important: false) {
+  @include object-fit(fill, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit to none with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include object-fit-none(); // object-fit: none;
+///  @include object-fit-none(true); // object-fit: none !important;
+/// 
+@mixin object-fit-none($important: false) {
+  @include object-fit(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit to scale-down with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include object-fit-scale-down(); // object-fit: scale-down;
+///  @include object-fit-scale-down(true); // object-fit: scale-down !important;
+/// 
+@mixin object-fit-scale-down($important: false) {
+  @include object-fit(scale-down, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// *  
+// * ---------------------------------------------
+
+/// Set object-position property.
+/// 
+/// @param {string} $value - The value for object-position (e.g., center, top, bottom, left, right, or combinations like "top left").
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-position(center); // object-position: center;
+///  @include object-position(top right, true); // object-position: top right !important;
+///  @include object-position(bottom); // object-position: bottom;
+///  @include object-position(left, true); // object-position: left !important;
+///
+@mixin object-position($value, $important: false) {
+  @include h.emit('object-position', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-position to center with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-position-center(); // object-position: center;
+///  @include object-position-center(true); // object-position: center !important;
+///
+@mixin object-position-center($important: false) {
+  @include object-position(center, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-position to top with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-position-top(); // object-position: top;
+///  @include object-position-top(true); // object-position: top !important;
+///
+@mixin object-position-top($important: false) {
+  @include object-position(top, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-position to bottom with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-position-bottom(); // object-position: bottom;
+///  @include object-position-bottom(true); // object-position: bottom !important;
+///
+@mixin object-position-bottom($important: false) {
+  @include object-position(bottom, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-position to left with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-position-left(); // object-position: left;
+///  @include object-position-left(true); // object-position: left !important;
+///
+@mixin object-position-left($important: false) {
+  @include object-position(left, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-position to right with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-position-right(); // object-position: right;
+///  @include object-position-right(true); // object-position: right !important;
+///
+@mixin object-position-right($important: false) {
+  @include object-position(right, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// *  
+// * ---------------------------------------------
+
+/// Set both object-fit and object-position properties.
+/// 
+/// @param {string} $fit - The value for object-fit (e.g., cover, contain, fill, none, scale-down).
+/// @param {string} $position - The value for object-position (e.g., center, top, bottom, left, right, or combinations like "top left").
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include object-fit-position(cover, center); // object-fit: cover; object-position: center;
+///  @include object-fit-position(contain, top right, true); // object-fit: contain !important; object-position: top right !important;
+///  
+@mixin object-fit-position($fit, $position, $important: false) {
+  @include object-fit($fit, $important);
+  @include object-position($position, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit and object-position to inherit with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-inherit(); // object-fit: inherit; object-position: inherit;
+///  @include object-inherit(true); // object-fit: inherit !important; object-position: inherit !important;
+///
+@mixin object-inherit($important: false) {
+  @include object-fit(inherit, $important);
+  @include object-position(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit and object-position to initial with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-initial(); // object-fit: initial; object-position: initial;
+///  @include object-initial(true); // object-fit: initial !important; object-position: initial !important;
+///
+@mixin object-initial($important: false) {
+  @include object-fit(initial, $important);
+  @include object-position(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit and object-position to unset with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-unset(); // object-fit: unset; object-position: unset;
+///  @include object-unset(true); // object-fit: unset !important; object-position: unset !important;
+///
+@mixin object-unset($important: false) {
+  @include object-fit(unset, $important);
+  @include object-position(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set object-fit and object-position to revert with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include object-revert(); // object-fit: revert; object-position: revert;
+///  @include object-revert(true); // object-fit: revert !important; object-position: revert !important;
+///
+@mixin object-revert($important: false) {
+  @include object-fit(revert, $important);
+  @include object-position(revert, $important);
+  @if meta.content-exists() { @content; }
+}

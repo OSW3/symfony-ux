@@ -1,0 +1,226 @@
+// * ===========================================================================
+// *  Border Inline Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border-inline property of elements.
+// *
+// *  These mixins provide a convenient way to apply border-inline values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Border Inline API                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Set border-inline property with optional !important flag
+/// 
+/// @param {String} $value - The border inline value to apply (e.g., '1px solid black', 'none', 'var(--my-border-inline)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default
+/// 
+/// Usage:
+///  @include border-inline('1px solid black'); // outputs: border-inline: 1px solid black;
+///  @include border-inline('none', true); // outputs: border-inline: none !important;
+///  @include border-inline(var(--my-border-inline)); // outputs: border-inline: var(--my-border-inline);
+///  @include border-inline(var(--my-border-inline), true); // outputs: border-inline: var(--my-border-inline) !important;
+///
+@mixin border-inline($value, $important: false) {
+  @include h.emit('border-inline', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-start property with optional !important flag
+/// 
+/// @param {String} $value - The border inline start value to apply (e.g., '1px solid black', 'none', 'var(--my-border-inline-start)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-start('1px solid black'); // outputs: border-inline-start: 1px solid black;
+///  @include border-inline-start('none', true); // outputs: border-inline-start: none !important;
+///  @include border-inline-start(var(--my-border-inline-start)); // outputs: border-inline-start: var(--my-border-inline-start);
+///  @include border-inline-start(var(--my-border-inline-start), true); // outputs: border-inline-start: var(--my-border-inline-start) !important;
+///
+@mixin border-inline-start($value, $important: false) {
+  @include h.emit('border-inline-start', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-end property with optional !important flag
+/// 
+/// @param {String} $value - The border inline end value to apply (e.g., '1px solid black', 'none', 'var(--my-border-inline-end)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-end('1px solid black'); // outputs: border-inline-end: 1px solid black;
+///  @include border-inline-end('none', true); // outputs: border-inline-end: none !important;
+///  @include border-inline-end(var(--my-border-inline-end)); // outputs: border-inline-end: var(--my-border-inline-end);
+///  @include border-inline-end(var(--my-border-inline-end), true); // outputs: border-inline-end: var(--my-border-inline-end) !important;
+///
+@mixin border-inline-end($value, $important: false) {
+  @include h.emit('border-inline-end', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-left property with optional !important flag
+/// 
+/// @param {String} $value - The border inline left value to apply (e.g., '1px solid black', 'none', 'var(--my-border-inline-left)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-left('1px solid black'); // outputs: border-inline-left: 1px solid black;
+///  @include border-inline-left('none', true); // outputs: border-inline-left: none !important;
+///  @include border-inline-left(var(--my-border-inline-left)); // outputs: border-inline-left: var(--my-border-inline-left);
+///  @include border-inline-left(var(--my-border-inline-left), true); // outputs: border-inline-left: var(--my-border-inline-left) !important;
+///
+@mixin border-inline-left($value, $important: false) {
+  @include border-inline-start($value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-right property with optional !important flag
+/// 
+/// @param {String} $value - The border inline right value to apply (e.g., '1px solid black', 'none', 'var(--my-border-inline-right)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-right('1px solid black'); // outputs: border-inline-right: 1px solid black;
+///  @include border-inline-right('none', true); // outputs: border-inline-right: none !important;
+///  @include border-inline-right(var(--my-border-inline-right)); // outputs: border-inline-right: var(--my-border-inline-right);
+///  @include border-inline-right(var(--my-border-inline-right), true); // outputs: border-inline-right: var(--my-border-inline-right) !important;
+///
+@mixin border-inline-right($value, $important: false) {
+  @include border-inline-end($value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline to inherit with optional !important flag
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-inherit(); // outputs: border-inline: inherit;
+///  @include border-inline-inherit(true); // outputs: border-inline: inherit !important;
+///
+@mixin border-inline-inherit($important: false) {
+  @include border-inline(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline to initial with optional !important flag
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-initial(); // outputs: border-inline: initial;
+///  @include border-inline-initial(true); // outputs: border-inline: initial !important;
+///
+@mixin border-inline-initial($important: false) {
+  @include border-inline(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline to unset with optional !important flag
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-unset(); // outputs: border-inline: unset;
+///  @include border-inline-unset(true); // outputs: border-inline: unset !important;
+///
+@mixin border-inline-unset($important: false) {
+  @include border-inline(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline to revert with optional !important flag
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-revert(); // outputs: border-inline: revert;
+///  @include border-inline-revert(true); // outputs: border-inline: revert !important;
+/// 
+@mixin border-inline-revert($important: false) {
+  @include border-inline(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline to none with optional !important flag
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-none(); // outputs: border-inline: none;
+///  @include border-inline-none(true); // outputs: border-inline: none !important;
+///
+@mixin border-inline-none($important: false) {
+  @include border-inline(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline to default value with optional !important flag
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include border-inline-default(); // outputs: border-inline: initial;
+///  @include border-inline-default(true); // outputs: border-inline: initial !important;
+///
+@mixin border-inline-default($important: false) {
+  @include border-inline($h-default, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-width property with optional !important flag
+/// 
+/// @param {String} $value - The border inline width value to apply (e.g., '1px', '2px', 'var(--my-border-inline-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-width('1px'); // outputs: border-inline-width: 1px;
+///  @include border-inline-width('2px', true); // outputs: border-inline-width: 2px !important;
+///  @include border-inline-width(var(--my-border-inline-width)); // outputs: border-inline-width: var(--my-border-inline-width);
+///  @include border-inline-width(var(--my-border-inline-width), true); // outputs: border-inline-width: var(--my-border-inline-width) !important; 
+/// 
+@mixin border-inline-width($value, $important: false) {
+  @include h.emit('border-inline-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-style property with optional !important flag
+/// 
+/// @param {String} $value - The border inline style value to apply (e.g., 'solid', 'dashed', 'var(--my-border-inline-style)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-style('solid'); // outputs: border-inline-style: solid;
+///  @include border-inline-style('dashed', true); // outputs: border-inline-style: dashed !important;
+///  @include border-inline-style(var(--my-border-inline-style)); // outputs: border-inline-style: var(--my-border-inline-style);
+///  @include border-inline-style(var(--my-border-inline-style), true); // outputs: border-inline-style: var(--my-border-inline-style) !important;
+///
+@mixin border-inline-style($value, $important: false) {
+  @include h.emit('border-inline-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-inline-color property with optional !important flag
+/// 
+/// @param {String} $value - The border inline color value to apply (e.g., 'red', '#ff0000', 'var(--my-border-inline-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-inline-color('red'); // outputs: border-inline-color: red;
+///  @include border-inline-color('#ff0000', true); // outputs: border-inline-color: #ff0000 !important;
+///  @include border-inline-color(var(--my-border-inline-color)); // outputs: border-inline-color: var(--my-border-inline-color);
+///  @include border-inline-color(var(--my-border-inline-color), true); // outputs: border-inline-color: var(--my-border-inline-color) !important;
+///
+@mixin border-inline-color($value, $important: false) {
+  @include h.emit('border-inline-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}

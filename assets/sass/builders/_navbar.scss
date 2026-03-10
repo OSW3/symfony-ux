@@ -27,7 +27,7 @@
 @use './../components/navbar';
 @use './../mixins/transition' as *;
 @use './../storages/breakpoints';
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 @include banner.header('Component Navbar');
 $prefix: prefix.$prefix;

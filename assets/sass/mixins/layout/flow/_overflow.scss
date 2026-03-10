@@ -1,0 +1,468 @@
+// * ===========================================================================
+// *  Overflow Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the overflow properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different overflow values with 
+// *  optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:string";
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Avertir si une valeur inattendue est passée aux mixins overflow*/visibility.
+$overflow-warn-on-invalid: true !default;
+
+/// Méthode de masquage des scrollbars pour overflow-scrollbars-hide()
+/// - "all"      : WebKit + Firefox
+/// - "webkit"   : uniquement ::-webkit-scrollbar
+/// - "firefox"  : uniquement scrollbar-width
+/// - "minimal"  : même comportement que "firefox" (alias)
+$overflow-hide-scrollbars-strategy: "all" !default;
+
+/// Activer les propriétés logiques quand dispo (émises **en plus** du fallback x/y)
+$overflow-enable-modern: true !default;
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Overflow API                                                         - //
+// * ------------------------------------------------------------------------ //
+
+/// Set overflow properties with optional validation and !important flag.
+/// 
+/// @param {string} $value - The value for the overflow property (e.g., 'visible', 'hidden', 'clip', 'scroll', 'auto').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow(hidden);
+///  @include overflow(auto, true); // with !important
+///
+@mixin overflow($value, $important: false) {
+  @if $value != null and not h.is-valid-overflow($value) and $overflow-warn-on-invalid {
+    @warn "[overflow] Valeur inattendue pour overflow: #{meta.inspect($value)}. Attendu: visible | hidden | clip | scroll | auto.";
+  }
+  @include h.emit(overflow, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow: visible;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-visible;
+///  @include overflow-visible(true); // with !important
+///
+@mixin overflow-visible($important: false) {
+  @include overflow(visible, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow: hidden;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-hidden;
+///  @include overflow-hidden(true); // with !important
+///
+@mixin overflow-hidden($important: false) {
+  @include overflow(hidden, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow: clip;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-clip;
+///  @include overflow-clip(true); // with !important
+///
+@mixin overflow-clip($important: false) {
+  @include overflow(clip, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow: scroll;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-scroll;
+///  @include overflow-scroll(true); // with !important
+///
+@mixin overflow-scroll($important: false) {
+  @include overflow(scroll, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow: auto;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-auto;
+///  @include overflow-auto(true); // with !important
+///
+@mixin overflow-auto($important: false) {
+  @include overflow(auto, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Overflow X
+// * ---------------------------------------------
+
+/// Set overflow-x: visible | hidden | clip | scroll | auto
+/// 
+/// @param {string} $value - The value for the overflow-x property (e.g., 'visible', 'hidden', 'clip', 'scroll', 'auto').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-x(hidden);
+///  @include overflow-x(auto, true); // with !important
+///
+@mixin overflow-x($value, $important: false) {
+  @if $value != null and not h.is-valid-overflow($value) and $overflow-warn-on-invalid {
+    @warn "[overflow] Valeur inattendue pour overflow-x: #{meta.inspect($value)}. Attendu: visible | hidden | clip | scroll | auto.";
+  }
+  @include h.emit(overflow-x, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-x: visible;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-x-visible;
+///  @include overflow-x-visible(true); // with !important
+///
+@mixin overflow-x-visible($important: false) {
+  @include overflow-x(visible, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-x: hidden;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-x-hidden;
+///  @include overflow-x-hidden(true); // with !important
+///
+@mixin overflow-x-hidden($important: false) {
+  @include overflow-x(hidden, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-x: clip;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-x-clip;
+///  @include overflow-x-clip(true); // with !important
+///
+@mixin overflow-x-clip($important: false) {
+  @include overflow-x(clip, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-x: scroll;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-x-scroll;
+///  @include overflow-x-scroll(true); // with !important
+///
+@mixin overflow-x-scroll($important: false) {
+  @include overflow-x(scroll, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-x: auto;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-x-auto;
+///  @include overflow-x-auto(true); // with !important
+///
+@mixin overflow-x-auto($important: false) {
+  @include overflow-x(auto, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Overflow Y
+// * ---------------------------------------------
+
+/// Set overflow-y: visible | hidden | clip | scroll | auto
+/// 
+/// @param {string} $value - The value for the overflow-y property (e.g., 'visible', 'hidden', 'clip', 'scroll', 'auto').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-y(hidden);
+///  @include overflow-y(auto, true); // with !important
+///
+@mixin overflow-y($value, $important: false) {
+  @if $value != null and not h.is-valid-overflow($value) and $overflow-warn-on-invalid {
+    @warn "[overflow] Valeur inattendue pour overflow-y: #{meta.inspect($value)}. Attendu: visible | hidden | clip | scroll | auto.";
+  }
+  @include h.emit(overflow-y, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-y: visible;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-y-visible;
+///  @include overflow-y-visible(true); // with !important
+///
+@mixin overflow-y-visible($important: false) {
+  @include overflow-y(visible, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-y: hidden;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-y-hidden;
+///  @include overflow-y-hidden(true); // with !important
+///
+@mixin overflow-y-hidden($important: false) {
+  @include overflow-y(hidden, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-y: clip;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-y-clip;
+///  @include overflow-y-clip(true); // with !important
+///
+@mixin overflow-y-clip($important: false) {
+  @include overflow-y(clip, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-y: scroll;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-y-scroll;
+///  @include overflow-y-scroll(true); // with !important
+///
+@mixin overflow-y-scroll($important: false) {
+  @include overflow-y(scroll, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-y: auto;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-y-auto;
+///  @include overflow-y-auto(true); // with !important
+///
+@mixin overflow-y-auto($important: false) {
+  @include overflow-y(auto, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Overflow Inline
+// * ---------------------------------------------
+
+/// overflow-inline (logique) + fallback overflow-x
+/// 
+/// @param {string} $value - The value for the overflow property (e.g., 'visible', 'hidden', 'clip', 'scroll', 'auto').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// Usage:
+///  @include overflow-inline(hidden);
+///  @include overflow-inline(auto, true); // with !important
+///
+@mixin overflow-inline($value, $important: false) {
+  @include overflow-x($value, $important);
+  @if $overflow-enable-modern {
+    @include h.emit(overflow-inline, $value, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-inline: visible;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-inline-visible;
+///  @include overflow-inline-visible(true); // with !important
+///
+@mixin overflow-inline-visible($important: false) {
+  @include overflow-inline(visible, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-inline: hidden;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-inline-hidden;
+///  @include overflow-inline-hidden(true); // with !important
+///
+@mixin overflow-inline-hidden($important: false) {
+  @include overflow-inline(hidden, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-inline: clip;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-inline-clip;
+///  @include overflow-inline-clip(true); // with !important
+///
+@mixin overflow-inline-clip($important: false) {
+  @include overflow-inline(clip, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-inline: scroll;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-inline-scroll;
+///  @include overflow-inline-scroll(true); // with !important
+///
+@mixin overflow-inline-scroll($important: false) {
+  @include overflow-inline(scroll, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-inline: auto;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-inline-auto;
+///  @include overflow-inline-auto(true); // with !important
+///
+@mixin overflow-inline-auto($important: false) {
+  @include overflow-inline(auto, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Overflow Block
+// * ---------------------------------------------
+
+/// overflow-block (logique) + fallback overflow-y
+/// 
+/// @param {string} $value - The value for the overflow property (e.g., 'visible', 'hidden', 'clip', 'scroll', 'auto').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include overflow-block(hidden);
+///  @include overflow-block(auto, true); // with !important
+///
+@mixin overflow-block($value, $important: false) {
+  @include overflow-y($value, $important);
+  @if $overflow-enable-modern {
+    @include h.emit(overflow-block, $value, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-block: visible;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-block-visible;
+///  @include overflow-block-visible(true); // with !important
+///
+@mixin overflow-block-visible($important: false) {
+  @include overflow-block(visible, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-block: hidden;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-block-hidden;
+///  @include overflow-block-hidden(true); // with !important
+///
+@mixin overflow-block-hidden($important: false) {
+  @include overflow-block(hidden, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-block: clip;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-block-clip;
+///  @include overflow-block-clip(true); // with !important
+///
+@mixin overflow-block-clip($important: false) {
+  @include overflow-block(clip, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-block: scroll;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-block-scroll;
+///  @include overflow-block-scroll(true); // with !important
+///
+@mixin overflow-block-scroll($important: false) {
+  @include overflow-block(scroll, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set overflow-block: auto;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include overflow-block-auto;
+///  @include overflow-block-auto(true); // with !important
+///
+@mixin overflow-block-auto($important: false) {
+  @include overflow-block(auto, $important); 
+  @if meta.content-exists() { @content; }
+}

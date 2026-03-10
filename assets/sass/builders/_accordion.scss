@@ -10,10 +10,10 @@
 // * ===========================================================================
 
 @charset 'utf-8';
-
 @use "sass:map";
 @use "sass:meta";
 @use "sass:math";
+
 // @use './../mixins/flex' as *;
 @use './../mixins/box-model' as *;
 @use './../mixins/spacing' as *;
@@ -25,7 +25,7 @@
 // @use './../components/accordion';
 // @use './../mixins/component';
 // @use './../mixins/transition' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 $prefix: prefix.$prefix;
 

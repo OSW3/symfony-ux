@@ -23,7 +23,7 @@
 @use './../storages/breakpoints';
 @use './../storages/menu' as store;
 @use './../components/menu';
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 @include banner.header('Component Menu');
 $prefix: prefix.$prefix;

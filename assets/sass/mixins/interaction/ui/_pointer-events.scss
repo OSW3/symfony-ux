@@ -1,0 +1,100 @@
+// * ===========================================================================
+// *  Pointer Events Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the pointer-events property of 
+// *  elements. 
+// *
+// *  These mixins provide a convenient way to apply different pointer-events 
+// *  styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Pointer Events API                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// Set pointer-events property.
+/// 
+/// @param {string} $value - The value for pointer-events (e.g., auto, none, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include pointer-events(auto); // pointer-events: auto;
+///  @include pointer-events(none, true); // pointer-events: none !important;
+///
+@mixin pointer-events($value, $important: false) {
+  @include h.emit('pointer-events', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-inherit($important: false) {
+  @include pointer-events(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-initial($important: false) {
+  @include pointer-events(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-revert($important: false) {
+  @include pointer-events(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-unset($important: false) {
+  @include pointer-events(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-none($important: false) {
+  @include pointer-events(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-auto($important: false) {
+  @include pointer-events(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-visible($important: false) {
+  @include pointer-events(visible, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-visibleFill($important: false) {
+  @include pointer-events(visibleFill, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-visibleStroke($important: false) {
+  @include pointer-events(visibleStroke, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-visiblePainted($important: false) {
+  @include pointer-events(visiblePainted, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-painted($important: false) {
+  @include pointer-events(painted, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-fill($important: false) {
+  @include pointer-events(fill, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin pointer-events-stroke($important: false) {
+  @include pointer-events(stroke, $important);
+  @if meta.content-exists() { @content; }
+}

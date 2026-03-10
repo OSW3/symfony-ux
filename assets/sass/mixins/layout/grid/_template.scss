@@ -1,0 +1,75 @@
+// * ===========================================================================
+// *  Grid Template Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the grid template properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different grid template styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Grid Template API                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Set grid-template-columns (with flex-direction fallback)
+/// 
+/// @param {String} $value - The value for grid-template-columns (e.g., "100px 1fr 2fr")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-template-columns(100px 1fr 2fr); // grid-template-columns: 100px 1fr 2fr; + flex-direction: row;
+///  @include grid-template-columns(repeat(3, 1fr)); // grid-template-columns: repeat(3, 1fr); + flex-direction: row;
+/// 
+@mixin grid-template-columns($value, $important: false) {
+  @include h.emit('grid-template-columns', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set grid-template-rows
+/// 
+/// @param {String} $value - The value for grid-template-rows (e.g., "100px 1fr 2fr")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-template-rows(100px 1fr 2fr); // grid-template-rows: 100px 1fr 2fr;
+///  @include grid-template-rows(repeat(3, 1fr)); // grid-template-rows: repeat(3, 1fr);
+///
+@mixin grid-template-rows($value, $important: false) {
+  @include h.emit('grid-template-rows', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set grid-template-areas
+/// 
+/// @param {String} $value - The value for grid-template-areas (e.g., "\"header header header\" \"sidebar content content\" \"footer footer footer\"")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-template-areas("\"header header header\" \"sidebar content content\" \"footer footer footer\""); // grid-template-areas: "header header header" "sidebar content content" "footer footer footer";
+///
+@mixin grid-template-areas($value, $important: false) {
+  @include h.emit('grid-template-areas', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set grid-area
+/// 
+/// @param {String} $name - The name of the grid area (e.g., "header", "content", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include grid-area(header); // grid-area: header;
+///  @include grid-area(content); // grid-area: content;
+///
+@mixin grid-area($name, $important: false) {
+  @include h.emit('grid-area', $name, $important);
+  @if meta.content-exists() { @content; }
+}

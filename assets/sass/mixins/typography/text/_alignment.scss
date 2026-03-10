@@ -1,0 +1,172 @@
+// * ===========================================================================
+// *  Text Alignment Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the text alignment properties 
+// *  of elements. 
+// *
+// *  These mixins provide a convenient way to apply different text 
+// *  alignment styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Alignment API                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// text-align (left, right, center, justify, start, end)
+/// 
+/// @param {string} $value The value for text-align (e.g., left, right, center, justify, start, end)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include text-align(left); // text-align: left;
+///  @include text-align(center, true); // text-align: center !important;
+///  @include text-align(justify); // text-align: justify;
+///  @include text-align(start, true); // text-align: start !important;
+///  @include text-align(end); // text-align: end;
+///
+@mixin text-align($value, $important: false) { 
+  @include h.emit('text-align', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// text-align: left - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-left(); // text-align: left;
+///  @include text-align-left(true); // text-align: left !important;
+/// 
+@mixin text-align-left($important: false) {
+  @include text-align(left, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: right - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-right(); // text-align: right;
+///  @include text-align-right(true); // text-align: right !important;
+/// 
+@mixin text-align-right($important: false) {
+  @include text-align(right, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: center - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-center(); // text-align: center;
+///  @include text-align-center(true); // text-align: center !important;
+/// 
+@mixin text-align-center($important: false) {
+  @include text-align(center, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: start - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-start(); // text-align: start;
+///  @include text-align-start(true); // text-align: start !important;
+/// 
+@mixin text-align-start($important: false) {
+  @include text-align(start, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: end - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-end(); // text-align: end;
+///  @include text-align-end(true); // text-align: end !important;
+/// 
+@mixin text-align-end($important: false) {
+  @include text-align(end, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: first - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-first(); // text-align: first;
+///  @include text-align-first(true); // text-align: first !important;
+/// 
+@mixin text-align-first($important: false) {
+  @include text-align(first, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: last - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-last(); // text-align: last;
+///  @include text-align-last(true); // text-align: last !important;
+/// 
+@mixin text-align-last($important: false) {
+  @include text-align(last, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: justify - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-justify(); // text-align: justify;
+///  @include text-align-justify(true); // text-align: justify !important;
+/// 
+@mixin text-align-justify($important: false) {
+  @include text-align(justify, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: justify - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-justify(); // text-align: justify;
+///  @include text-align-justify(true); // text-align: justify !important;
+/// 
+@mixin text-justify($important: false) {
+  @include text-align(justify, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// text-align: match-parent - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage: 
+///  @include text-align-match-parent(); // text-align: match-parent;
+///  @include text-align-match-parent(true); // text-align: match-parent !important;
+/// 
+@mixin text-align-match-parent($important: false) {
+  @include text-align(match-parent, $important);
+  @if meta.content-exists() { @content; }
+}

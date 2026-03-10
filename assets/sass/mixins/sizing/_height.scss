@@ -1,0 +1,115 @@
+// * ===========================================================================
+// *  Height Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the height property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different height styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Height API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Defines the height of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-height)).
+/// 
+/// @param {number|string} $value - The height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include height(100); // height: 100px;
+///  @include height(100px); // height: 100px;
+///  @include height(100%, true); // height: 100% !important
+///
+@mixin height($value, $important: false) {
+  @include h.dim(height, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Defines the minimum height of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-min-height)).
+/// 
+/// @param {number|string} $value - The minimum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include min-height(100); // min-height: 100px;
+///  @include min-height(100px); // min-height: 100px;
+///  @include min-height(100%, true); // min-height: 100% !important
+///
+@mixin min-height($value, $important: false) {
+  @include h.dim(min-height, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Defines the maximum height of an element.
+/// Note: This mixin normalizes unitless numbers to a default unit (e.g., 10 → 10px) and accepts CSS strings (e.g., var(--my-max-height)).
+/// 
+/// @param {number|string} $value - The maximum height value (e.g., 100px, 50%, auto).
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include max-height(100); // max-height: 100px;
+///  @include max-height(100px); // max-height: 100px;
+///  @include max-height(100%, true); // max-height: 100% !important
+///
+@mixin max-height($value, $important: false) {
+  @include h.dim(max-height, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: auto.
+/// 
+/// Usage:
+///  @include height-auto; // height: auto;
+///  @include height-auto(true); // height: auto !important
+///
+@mixin height-auto($important: false) {
+  @include height(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: fit-content.
+/// 
+/// Usage:
+///  @include height-fit; // height: fit-content;
+///  @include height-fit(true); // height: fit-content !important
+///
+@mixin height-fit($important: false) {
+  @if h.fallbacks-enabled() { 
+    @include height(auto, $important);
+  }
+  @include height(fit-content, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: min-content.
+/// 
+/// Usage:
+///  @include min-height-content; // height: min-content;
+///  @include min-height-content(true); // height: min-content !important
+///
+@mixin min-height-content($important: false) {
+  @include height(min-content, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Alias for height: max-content.
+/// 
+/// Usage:
+///  @include max-height-content; // height: max-content;
+///  @include max-height-content(true); // height: max-content !important
+///
+@mixin max-height-content($important: false) {
+  @include height(max-content, $important);
+  @if meta.content-exists() { @content; }
+}

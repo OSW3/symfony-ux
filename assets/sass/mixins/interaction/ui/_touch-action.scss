@@ -1,0 +1,54 @@
+// * ===========================================================================
+// *  Touch Action Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the touch-action property of 
+// *  elements. 
+// *
+// *  These mixins provide a convenient way to apply different touch-action 
+// *  styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Touch Action API                                                     - //
+// * ------------------------------------------------------------------------ //
+
+/// Set touch-action property with fallback for IE/Edge Legacy.
+/// 
+/// @param {string} $value - The value for touch-action (e.g., auto, none, pan-x, pan-y, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include touch-action(auto); // touch-action: auto;
+///  @include touch-action(none, true); // touch-action: none !important;
+///
+@mixin touch-action($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-ms-touch-action', $value, $important);
+  }
+  @include h.emit('touch-action', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set -webkit-touch-callout property (iOS) with fallback.
+/// 
+/// @param {string} $value - The value for -webkit-touch-callout (e.g., none, default)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include touch-callout(none); // -webkit-touch-callout: none;
+///  @include touch-callout(default, true); // -webkit-touch-callout: default !important;
+///
+@mixin touch-callout($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-touch-callout', $value, $important);
+  }
+  @if meta.content-exists() { @content; }
+}

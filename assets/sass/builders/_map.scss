@@ -15,7 +15,7 @@
 @use './../storages/prefix';
 @use './../mixins/flex' as *;
 @use './../mixins/spacing' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 
 @use './../storages/map' as store;

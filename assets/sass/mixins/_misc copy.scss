@@ -215,3 +215,26 @@ $appearance-add-prefixes: true !default;
 
 
 
+
+
+
+
+
+/// Utiliser les unités viewport modernes (dvh/dvw) pour la hauteur/largeur plein écran.
+/// Si true: on émet dvh/dvw + fallback vh/vw (le dernier gagne).
+$use-modern-viewport-units: true !default;
+
+/// Activer un fallback explicite quand $use-modern-viewport-units est true.
+/// Si true: on émet d'abord vh/vw puis dvh/dvw.
+$emit-viewport-fallback: true !default;
+
+
+$emit-viewport-svh-lvh: false !default; // désactivé par défaut
+
+
+
+
+// Unité par défaut pour les valeurs *numériques sans unité* (ex: 8 -> 8 * 1rem => 8rem)
+$spacing-default-unit: 1rem !default;
+
+

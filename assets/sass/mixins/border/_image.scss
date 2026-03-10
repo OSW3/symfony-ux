@@ -1,0 +1,116 @@
+// * ===========================================================================
+// *  Border Image Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border-image property of elements.
+// *
+// *  These mixins provide a convenient way to apply border-image values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Border Image API                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Set border-image property with optional !important flag
+/// 
+/// @param {String} $value - The border image value to apply (e.g., 'url(image.png) 30 30 repeat', 'none', 'var(--my-border-image)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image('url(image.png) 30 30 repeat'); // outputs border-image: url(image.png) 30 30 repeat;
+///  @include border-image('none', true); // outputs: border-image: none !important;
+///  @include border-image(var(--my-border-image)); // outputs: border-image: var(--my-border-image);
+///  @include border-image(var(--my-border-image), true); // outputs: border-image: var(--my-border-image) !important;
+///
+@mixin border-image($value, $important: false) {
+  @include h.emit('border-image', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-image-source property with optional !important flag
+/// 
+/// @param {String} $value - The border image source value to apply (e.g., 'url(image.png)', 'none', 'var(--my-border-image-source)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-source('url(image.png)'); // outputs: border-image-source: url(image.png);
+///  @include border-image-source('none', true); // outputs: border-image-source: none !important;
+///  @include border-image-source(var(--my-border-image-source)); // outputs: border-image-source: var(--my-border-image-source);
+///  @include border-image-source(var(--my-border-image-source), true); // outputs: border-image-source: var(--my-border-image-source) !important;
+/// 
+@mixin border-image-source($value, $important: false) {
+  @include h.emit('border-image-source', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-image-slice property with optional !important flag
+/// 
+/// @param {String} $value - The border image slice value to apply (e.g., '1', '0', 'var(--my-border-image-slice)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-slice('1'); // outputs: border-image-slice: 1;
+///  @include border-image-slice('0', true); // outputs: border-image-slice: 0 !important;
+///  @include border-image-slice(var(--my-border-image-slice)); // outputs: border-image-slice: var(--my-border-image-slice);
+///  @include border-image-slice(var(--my-border-image-slice), true); // outputs: border-image-slice: var(--my-border-image-slice) !important;
+///
+@mixin border-image-slice($value, $important: false) {
+  @include h.emit('border-image-slice', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-image-width property with optional !important flag
+/// 
+/// @param {String} $value - The border image width value to apply (e.g., '1px', '0', 'var(--my-border-image-width)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-width('1px'); // outputs: border-image-width: 1px;
+///  @include border-image-width('0', true); // outputs: border-image-width: 0 !important;
+///  @include border-image-width(var(--my-border-image-width)); // outputs: border-image-width: var(--my-border-image-width);
+///  @include border-image-width(var(--my-border-image-width), true); // outputs: border-image-width: var(--my-border-image-width) !important;
+///
+@mixin border-image-width($value, $important: false) {
+  @include h.emit('border-image-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-image-outset property with optional !important flag
+/// 
+/// @param {String} $value - The border image outset value to apply (e.g., '1px', '0', 'var(--my-border-image-outset)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-outset('1px'); // outputs: border-image-outset: 1px;
+///  @include border-image-outset('0', true); // outputs: border-image-outset: 0 !important;
+///  @include border-image-outset(var(--my-border-image-outset)); // outputs: border-image-outset: var(--my-border-image-outset);
+///  @include border-image-outset(var(--my-border-image-outset), true); // outputs: border-image-outset: var(--my-border-image-outset) !important;
+///
+@mixin border-image-outset($value, $important: false) {
+  @include h.emit('border-image-outset', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set border-image-repeat property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The border image repeat value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-image-repeat('repeat'); // outputs: border-image-repeat: repeat;
+///  @include border-image-repeat(('repeat', 'space'), true); // outputs: border-image-repeat: repeat, space !important;
+///  @include border-image-repeat(var(--my-border-image-repeat)); // outputs: border-image-repeat: var(--my-border-image-repeat);
+///  @include border-image-repeat(var(--my-border-image-repeat), true); // outputs: border-image-repeat: var(--my-border-image-repeat) !important;
+/// 
+@mixin border-image-repeat($value, $important: false) {
+  @include h.emit('border-image-repeat', $value, $important);
+  @if meta.content-exists() { @content; }
+}

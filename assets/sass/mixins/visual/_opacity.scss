@@ -1,0 +1,34 @@
+// * ===========================================================================
+// *  Opacity Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the opacity property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different opacity values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Opacity API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set opacity with optional !important
+///
+/// @param $value Opacity value (0..1, %, var(), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include opacity(0.5);
+///  @include opacity(50%);
+///  @include opacity(var(--my-opacity));
+///  @include opacity(0.5, true); // with !important
+/// 
+@mixin opacity($value, $important: false) {
+  @include h.emit('opacity', $value, $important);
+  @if meta.content-exists() { @content; }
+}

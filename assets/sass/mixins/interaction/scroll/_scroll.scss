@@ -1,0 +1,104 @@
+// * ===========================================================================
+// *  Scroll Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the scroll property of elements.
+// *
+// *  These mixins provide a convenient way to apply different scroll values 
+// *  with optional !important flags. 
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Scroll API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set scroll property.
+/// 
+/// @param {string} $value - The value for scroll (e.g., auto, smooth, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include scroll(auto); // scroll: auto;
+///  @include scroll(smooth, true); // scroll: smooth !important;
+///
+@mixin scroll($value, $important: false) {
+  @include h.emit('scroll', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-inherit($important: false) {
+  @include scroll(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-initial($important: false) {
+  @include scroll(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-revert($important: false) {
+  @include scroll(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-unset($important: false) {
+  @include scroll(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-auto($important: false) {
+  @include scroll(auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-smooth($important: false) {
+  @include scroll(smooth, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-none($important: false) {
+  @include scroll(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-visible($important: false) {
+  @include scroll(visible, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-hidden($important: false) {
+  @include scroll(hidden, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-clip($important: false) {
+  @include scroll(clip, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scroll-behavior($important: false) {
+  @include scroll(behavior, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin overscroll-behavior($important: false) {
+  @include scroll(overscroll-behavior, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin overscroll-behavior-x($important: false) {
+  @include scroll(overscroll-behavior-x, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin overscroll-behavior-y($important: false) {
+  @include scroll(overscroll-behavior-y, $important);
+  @if meta.content-exists() { @content; }
+}

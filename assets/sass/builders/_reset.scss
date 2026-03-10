@@ -18,15 +18,10 @@
 @use './../storages/themes';
 
 // Helpers
-@use './../mixins/box-model' as *;
-@use './../mixins/display' as *;
-@use './../mixins/effects' as *;
-@use './../mixins/interaction' as *;
-@use './../mixins/overflow' as *;
-@use './../mixins/scroll' as *;
-@use './../mixins/spacing' as *;
-@use './../mixins/typography' as *;
-@use './../mixins/visual' as *;
+@use './../mixins/layout/flow/box-sizing' as *;
+@use './../mixins/spacing/margins' as *;
+@use './../mixins/spacing/paddings' as *;
+@use './../mixins/typography/font/font' as *;
 
 
 

@@ -18,7 +18,7 @@
 @use './../mixins/spacing' as *;
 @use './../mixins/transition' as *;
 // @use './../mixins/icon';
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 
 @use './../storages/link' as store;

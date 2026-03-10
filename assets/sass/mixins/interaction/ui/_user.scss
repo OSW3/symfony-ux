@@ -1,0 +1,69 @@
+// * ===========================================================================
+// *  User Select Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the user-select property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different user-select 
+// *  styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - User Select API                                                      - //
+// * ------------------------------------------------------------------------ //
+
+/// Set user-select property with fallbacks for WebKit and IE/Edge Legacy.
+/// 
+/// @param {string} $value - The value for user-select (e.g., none, auto, text, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include user-select(none); // user-select: none;
+///  @include user-select(text, true); // user-select: text !important;
+///
+@mixin user-select($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-user-select', $value, $important);
+    @include h.emit('-ms-user-select', $value, $important);
+  }
+  @include h.emit('user-select', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin user-select-inherit($important: false) {
+  @include user-select(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin user-select-initial($important: false) {
+  @include user-select(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin user-select-revert($important: false) {
+  @include user-select(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set user-drag property with fallback for WebKit.
+/// 
+/// @param {string} $value - The value for user-drag (e.g., none, auto, element)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include user-drag(none); // -webkit-user-drag: none;
+///  @include user-drag(element, true); // -webkit-user-drag: element !important;
+///
+@mixin user-drag($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-user-drag', $value, $important);
+  }
+  @if meta.content-exists() { @content; }
+}

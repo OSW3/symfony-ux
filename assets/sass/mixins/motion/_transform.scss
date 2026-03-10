@@ -1,0 +1,147 @@
+// * ===========================================================================
+// *  Transform Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the transform property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different transform styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Transform API                                                        - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set transform property with optional !important
+///
+/// @param $value Transform value (e.g. translate(10px, 20px), rotate(45deg), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform(translate(10px, 20px));
+///  @include transform(rotate(45deg), true); // with !important
+///
+@mixin transform($value, $important: false) { 
+  @include h.emit('transform', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set transform-origin with optional !important
+///
+/// @param $values One or more values for transform-origin (e.g. 'center', 'top left', '50% 50%', etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform-origin(center);
+///  @include transform-origin(top left, true); // with !important
+///  @include transform-origin(50% 50%, true); // with !important
+///
+@mixin transform-origin($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $len: list.length($vals);
+
+  @if $len == 0 {
+    @include h.emit('transform-origin', null, $important);
+  } @else {
+    // On construit une liste espace normalisée
+    $out: ();
+    @for $i from 1 through $len {
+      $tok: list.nth($vals, $i);
+      @if meta.type-of($tok) == 'number' and math.is-unitless($tok) {
+        // x/y -> longueurs / z -> longueur (spéc autorise aussi %/keywords)
+        $tok: _to-length($tok, $length-default-unit);
+      }
+      $out: list.append($out, $tok, space);
+    }
+    @include h.emit('transform-origin', $out, $important);
+  }
+
+  @if meta.content-exists() { @content; }
+}
+
+/// Set transform-style with optional !important
+///
+/// @param $value Transform style value (e.g. flat, preserve-3d)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include transform-style(flat);
+///  @include transform-style(preserve-3d, true); // with !important
+///
+@mixin transform-style($value, $important: false) { 
+  @include h.emit('transform-style', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set perspective with optional !important
+///
+/// @param $value Perspective value (e.g. 500px, none, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include perspective(500px);
+///  @include perspective(none, true); // with !important
+///
+@mixin perspective($value, $important: false) {
+  $v: to-length($value, $length-default-unit);
+  @include h.emit('perspective', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set perspective-origin with optional !important
+///
+/// @param $values One or more values for perspective-origin (e.g. 'center', 'top left', '50% 50%', etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include perspective-origin(center);
+///  @include perspective-origin(top left, true); // with !important
+///  @include perspective-origin(50% 50%, true); // with !important
+///
+@mixin perspective-origin($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+
+  @include transform-origin($vals, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set backface-visibility with optional !important
+///
+/// @param $value Backface visibility value (e.g. visible, hidden)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include backface-visibility(visible);
+///  @include backface-visibility(hidden, true); // with !important
+///
+@mixin backface-visibility($value, $important: false) { 
+  @include h.emit('backface-visibility', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}

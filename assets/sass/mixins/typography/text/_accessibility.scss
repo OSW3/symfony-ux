@@ -1,0 +1,39 @@
+// * ===========================================================================
+// *  Text Accessibility Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for improving text accessibility. 
+// *
+// *  These mixins provide a convenient way to apply different text accessibility
+// *  features with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Accessibility API                                               - //
+// * ------------------------------------------------------------------------ //
+
+/// Set text-size-adjust with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value The value for text-size-adjust (e.g., none, auto)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-size-adjust(none); // text-size-adjust: none; with fallbacks for -webkit- and -ms-
+///  @include text-size-adjust(auto, true); // text-size-adjust: auto !important; with fallbacks for -webkit- and -ms-
+///
+@mixin text-size-adjust($value, $important: false) {
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-text-size-adjust', $value, $important);
+    @include h.emit('-ms-text-size-adjust', $value, $important);
+    @include h.emit('-moz-text-size-adjust', $value, $important);
+  }
+  @include h.emit('text-size-adjust', $value, $important);
+  @if meta.content-exists() { @content; }
+}

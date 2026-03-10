@@ -22,7 +22,7 @@
 @use './../mixins/position' as *;
 @use './../mixins/transition' as *;
 @use './../mixins/box-model' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 @use './../storages/toast' as store;
 @use './../components/toast';

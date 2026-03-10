@@ -1,0 +1,107 @@
+// * ===========================================================================
+// *  Font Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the font property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different font styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Font API                                                             - //
+// * ------------------------------------------------------------------------ //
+
+@mixin font($value, $important: false) {
+  @include h.emit('font', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set font-family with necessary fallbacks for older browsers.
+/// 
+/// @param {string...} $families A comma-separated list of font families, or varargs (e.g., 'Open Sans', sans-serif)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include font-family('Open Sans', sans-serif); // font-family: 'Open Sans', sans-serif;
+///  @include font-family('Open Sans', sans-serif, true); // font-family: 'Open Sans', sans-serif !important;  
+/// 
+@mixin font-family($families...) {
+  $pair: h.pop-trailing-bool($families);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $ff: h.as-comma-list($vals);
+  @include h.emit('font-family', $ff, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-size with support for unitless numbers (treated as length with default unit).
+/// 
+/// @param {string|number} $value The value for font-size (e.g., 16px, 1.5)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-size(16px); // font-size: 16px;
+///  @include font-size(1.5, true); // font-size: 1.5 !important; (unitless number treated as length using $length-default-unit)
+///  @include font-size(1.5); // font-size: 1.5; (unitless number treated as length using $length-default-unit)
+/// 
+@mixin font-size($value, $important: false) {
+  $v: to-length($value, $length-default-unit);
+  @include h.emit('font-size', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-style (normal, italic, oblique)
+/// 
+/// @param {string} $value The value for font-style (e.g., normal, italic, oblique)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include font-style(italic); // font-style: italic;
+///  @include font-style(oblique, true); // font-style: oblique !important;
+///
+@mixin font-style($value, $important: false) {
+  @include h.emit('font-style', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-weight (normal, bold, 100..900)
+/// 
+/// @param {string|number} $value The value for font-weight (e.g., normal, bold, 400, 700)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include font-weight(normal); // font-weight: normal;
+///  @include font-weight(400, true); // font-weight: 400 !important;
+///  @include font-weight(bold); // font-weight: bold;
+///  @include font-weight(700, true); // font-weight: 700 !important;
+/// 
+@mixin font-weight($value, $important: false) {
+  @include h.emit('font-weight', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-stretch (normal, condensed, expanded, etc.)
+/// 
+/// @param {string} $value The value for font-stretch (e.g., normal, condensed, expanded)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-stretch(normal); // font-stretch: normal;
+///  @include font-stretch(condensed, true); // font-stretch: condensed !important;
+///
+@mixin font-stretch($value, $important: false) {
+  @include h.emit('font-stretch', $value, $important);
+  @if meta.content-exists() { @content; }
+}

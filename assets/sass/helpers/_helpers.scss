@@ -92,33 +92,6 @@ $valid-visibility      : (visible, hidden, collapse);
 // * ------------------------------------------------------------------------ //
 
 
-/// Is color
-/// @param $v Any value
-/// @return bool True if $v is a color, false otherwise
-/// 
-/// @usage is-color(red) // true
-/// @usage is-color(#ff0000) // true
-/// @usage is-color(rgb(255, 0, 0)) // true
-/// @usage is-color('red') // false
-/// 
-// @function is-color($v) {
-//   @return meta.type-of($v) == 'color';
-// }
-
-
-/// Is map
-/// @param $v Any value
-/// @return bool True if $v is a map, false otherwise
-/// 
-/// @usage is-map(1) // false
-/// @usage is-map('a: 1, b: 2') // false
-/// @usage is-map((a: 1, b: 2)) // true
-/// @usage is-map((a b c)) // false
-/// 
-// @function is-map($v) {
-//   @return meta.type-of($v) == 'map';
-// }
-
 
 /// Is keyword
 /// @param $v Any value
@@ -283,46 +256,6 @@ $valid-visibility      : (visible, hidden, collapse);
 // }
 
 
-// * ------------------------------------------------------------------------ //
-// * - NORMALIZATION & UTILITIES
-// * ------------------------------------------------------------------------ //
-
-// @function to-lower-case($v) {
-//   @if meta.type-of($v) == 'string' { @return string.to-lower-case($v); }
-//   @return $v;
-// }
-
-// @function to-bool($v, $default: false) {
-//   @if is-bool($v) { 
-//     @return $v;
-//   }
-//   @if is-nullish($v) { 
-//     @return $default; 
-//   }
-//   @if is-string($v) {
-//     $lv: string.to-lower-case($v);
-//     @return $lv == 'true' or $lv == '1' or $lv == 'yes';
-//   }
-//   @if is-number($v) { 
-//     @return $v != 0;
-//   }
-//   @return $default;
-// }
-
-// Convert numbers to lengths (px) when unitless, keep existing units/keywords.
-// @function to-length($v, $unit: px) {
-//   @if is-null($v) { 
-//     @return null;
-//   }
-//   @if is-number($v) {
-//     @if math.is-unitless($v) {
-//       @return $v * 1#{$unit}; 
-//     }
-//     @return $v;
-//   }
-//   // Pass-through for keywords like auto, min-content, etc.
-//   @return $v;
-// }
 
 // Ensure list (comma-separated by default)
 @function to-list($v, $separator: comma) {
@@ -677,30 +610,7 @@ $valid-visibility      : (visible, hidden, collapse);
 // * - EMITTERS & FLAGS ACCESSORS
 // * ------------------------------------------------------------------------ //
 
-// Private low-level emitter
-// @mixin _emit($prop, $value, $important: false) {
-//   @if is-not-null($value) { 
-//     #{$prop}: #{$value}#{important-flag($important)};
-//   }
-//   @if meta.content-exists() { @content; }
-// }
 
-// Public alias (so mixins can call h.emit)
-@mixin emit($prop, $value, $important: false) {
-  @if is-not-null($value) { 
-    #{$prop}: #{$value}#{important-flag($important)};
-  }
-  @if meta.content-exists() { @content; }
-}
-
-// Coerce optional !important
-@function important-flag($flag) {
-  @if to-bool($flag, false) {
-    @return ' !important';
-  } @else {
-    @return '';
-  }
-}
 
 @function props-skip-null() {
   @return $props-skip-null;

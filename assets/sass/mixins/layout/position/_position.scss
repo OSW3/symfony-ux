@@ -1,0 +1,238 @@
+// * ===========================================================================
+// *  Position Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the position property of elements.
+// *
+// *  These mixins provide a convenient way to apply position values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:list";
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Position API                                                         - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set position property (static, relative, absolute, fixed, sticky)
+/// 
+/// @param {String} $value - Position value (static, relative, absolute, fixed, sticky)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position(absolute) {
+///     @include top(10px);
+///     @include left(20px);
+///   } // position: absolute; top: 10px; left: 20px;
+///  @include position(relative); // position: relative;
+/// 
+@mixin position($value, $important: false) {
+  @if h.fallbacks-enabled() and $value == sticky {
+    @include h.emit('position', -webkit-sticky, $important);
+  }
+  @include h.emit('position', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set position: static
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-static; // position: static;
+///  @include position-static(true); // position: static !important;
+/// 
+@mixin position-static($important: false) {
+  @include position(static, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set position: relative
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-relative; // position: relative;
+///  @include position-relative(true); // position: relative !important;
+///
+@mixin position-relative($important: false) {
+  @include position(relative, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set position: absolute
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-absolute; // position: absolute;
+///  @include position-absolute(true); // position: absolute !important;
+///
+@mixin position-absolute($important: false) {
+  @include position(absolute, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set position: fixed
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-fixed; // position: fixed;
+///  @include position-fixed(true); // position: fixed !important;
+///
+@mixin position-fixed($important: false) {
+  @include position(fixed, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set position: sticky
+/// 
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include position-sticky; // position: sticky;
+///  @include position-sticky(true); // position: sticky !important;
+///
+@mixin position-sticky($important: false) {
+  @include position(sticky, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+@mixin position-inherit($important: false) {
+  @include position(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-initial($important: false) {
+  @include position(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-unset($important: false) {
+  @include position(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-revert($important: false) {
+  @include position(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+
+@mixin position-inset($top, $right, $bottom, $left, $important: false) {
+  @include position-inset-top($top, $important);
+  @include position-inset-right($right, $important);
+  @include position-inset-bottom($bottom, $important);
+  @include position-inset-left($left, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-left($value, $important: false) {
+  @include h.emit('left', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-top($value, $important: false) {
+  @include h.emit('top', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-right($value, $important: false) {
+  @include h.emit('right', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-bottom($value, $important: false) {
+  @include h.emit('bottom', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-unset($important: false) {
+  @include position-inset(unset, unset, unset, unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-inherit($important: false) {
+  @include position-inset(inherit, inherit, inherit, inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-initial($important: false) {
+  @include position-inset(initial, initial, initial, initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-revert($important: false) {
+  @include position-inset(revert, revert, revert, revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-auto($important: false) {
+  @include position-inset(auto, auto, auto, auto, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+@mixin position-inset-inline($value, $important: false) {
+  @include h.emit('inset-inline', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-inline-start($value, $important: false) {
+  @include h.emit('inset-inline-start', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-inline-end($value, $important: false) {
+  @include h.emit('inset-inline-end', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-block($value, $important: false) {
+  @include h.emit('inset-block', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-block-start($value, $important: false) {
+  @include h.emit('inset-block-start', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin position-inset-block-end($value, $important: false) {
+  @include h.emit('inset-block-end', $value, $important);
+  @if meta.content-exists() { @content; }
+}

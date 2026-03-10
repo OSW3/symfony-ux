@@ -1,0 +1,178 @@
+// * ===========================================================================
+// *  Float Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the float property of elements.
+// *
+// *  These mixins provide a convenient way to apply different float values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Float API                                                            - //
+// * ------------------------------------------------------------------------ //
+
+/// Set up a flex container with various properties in a single declaration, 
+/// with fallbacks for older browsers.
+/// 
+/// @param {String} $display - The display value (e.g., "flex", "inline-flex")
+/// @param {String} $direction - The flex-direction value (e.g., "row", "column")
+/// @param {String} $wrap - The flex-wrap value (e.g., "nowrap", "wrap")
+/// @param {String} $justify - The justify-content value (e.g., "center", "space-between")
+/// @param {String} $align-items - The align-items value (e.g., "center", "stretch")
+/// @param {String} $align-content - The align-content value (e.g., "center", "space-around")
+/// @param {String|number|list} $gap - The gap value (e.g., "10px", "10px 20px", or 10)
+/// @param {String|number|list} $row-gap - The row-gap value (e.g., "10px" or 10)
+/// @param {String|number|list} $column-gap - The column-gap value (e.g., "20px" or 20)
+/// @param {Boolean} $important - Whether to add !important to the declarations (default: false)
+/// @param {String} $gap-child-selector - Optional selector for child elements to apply padding for gap fallback (e.g., "> *")
+///     
+/// Usage:
+///  @include flex-container(
+///   $display: flex,
+///   $direction: row,
+///   $wrap: wrap,
+///   $justify: space-between,
+///   $align-items: center,
+///   $align-content: stretch,
+///   $gap: 10px 20px,
+///   $row-gap: 10px,
+///   $column-gap: 20px,
+///   $important: true,
+///   $gap-child-selector: '> *'
+/// );
+///
+@mixin flex-container(
+  $display: flex,
+  $direction: null,
+  $wrap: null,
+  $justify: null,
+  $align-items: null,
+  $align-content: null,
+  $gap: null,
+  $row-gap: null,
+  $column-gap: null,
+  $important: false,
+  // pour fallbacks gap à base de marges/paddings
+  $gap-child-selector: null,
+  $row-gap-child-selector: null,
+  $column-gap-child-selector: null
+) {
+  @include display-flex($display, $important);
+  @include flex-direction($direction, $important);
+  @include flex-wrap($wrap, $important);
+  @include flex-justify-content($justify, $important);
+  @include flex-align-items($align-items, $important);
+  @include flex-align-content($align-content, $important);
+  @include gap($gap, $important, $gap-child-selector);
+  @include row-gap($row-gap, $important, $row-gap-child-selector);
+  @include column-gap($column-gap, $important, $column-gap-child-selector);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Flex properties
+// * ---------------------------------------------
+
+/// Set flex grow, shrink, basis in a single declaration (shorthand)
+/// 
+/// @param {string|number|list} $value, e.g.: 1, "1 0 auto", (1 0 100px)
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage: 
+///  @include flex(1 0 auto); // flex: 1 0 auto;
+///  @include flex(1); // flex: 1; (grow=1, shrink=1, basis=0)  
+/// 
+@mixin flex($value, $important: false) {
+  @include h.emit('flex', $value, $important);
+
+  @if h.fallbacks-enabled() and $value != null {
+    $triple: h.flex-parse($value);
+    @if $triple != null {
+      $grow: list.nth($triple, 1);
+      $shrk: list.nth($triple, 2);
+      $basi: to-length(list.nth($triple, 3), $length-default-unit);
+
+      // IE10/11
+      @include h.emit('-ms-flex-positive', $grow, $important);
+      @include h.emit('-ms-flex-negative', $shrk, $important);
+      @include h.emit('-ms-flex-preferred-size', $basi, $important);
+
+      // WebKit
+      @include h.emit('-webkit-flex-grow', $grow, $important);
+      @include h.emit('-webkit-flex-shrink', $shrk, $important);
+      @include h.emit('-webkit-flex-basis', $basi, $important);
+
+      // Très vieux WebKit (display: -webkit-box) – seulement grow
+      @include h.emit('-webkit-box-flex', $grow, $important);
+    }
+  }
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set flex-grow with necessary fallbacks for older browsers.
+/// 
+/// @param {number} $value A non-negative number representing the flex grow factor
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-grow(1); // flex-grow: 1;
+///  @include flex-grow(0, true); // flex-grow: 0 !important;
+///
+@mixin flex-grow($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-grow', $value, $important);
+    @include h.emit('-ms-flex-positive', $value, $important);
+  }
+  @include h.emit('flex-grow', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set flex-shrink with necessary fallbacks for older browsers.
+/// 
+/// @param {number} $value A non-negative number representing the flex shrink factor
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-shrink(1); // flex-shrink: 1;
+///  @include flex-shrink(0, true); // flex-shrink: 0 !important;
+///
+@mixin flex-shrink($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-shrink', $value, $important);
+    @include h.emit('-ms-flex-negative', $value, $important);
+  }
+  @include h.emit('flex-shrink', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set flex-basis with necessary fallbacks for older browsers.
+/// 
+/// @param {string|number} $value A length value (e.g., 100px, auto) or a number (treated as length with default unit)
+/// @param {boolean} $important Whether to add !important to the declaration
+///
+/// Usage:
+///  @include flex-basis(100px); // flex-basis: 100px;
+///  @include flex-basis(100); // flex-basis: 100px; (assuming $length-default-unit is 1px)
+///  @include flex-basis(auto); // flex-basis: auto;
+///
+@mixin flex-basis($value, $important: false) {
+  $v: to-length($value, $length-default-unit);
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-flex-basis', $v, $important);
+    @include h.emit('-ms-flex-preferred-size', $v, $important);
+  }
+  @include h.emit('flex-basis', $v, $important);
+  @if meta.content-exists() { @content; }
+}

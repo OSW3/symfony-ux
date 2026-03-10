@@ -1,0 +1,47 @@
+// * ===========================================================================
+// *  Z-Index Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the z-index property of elements.
+// *
+// *  These mixins provide a convenient way to apply z-index values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:list";
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Z-Index API                                                          - //
+// * ------------------------------------------------------------------------ //
+
+/// Set z-index property
+/// 
+/// @param {String|Number} $value - z-index value (number, auto, etc.)
+/// @param {Boolean} $important - Whether to add !important (default: false)
+/// 
+/// Usage:
+///  @include z-index(10); // z-index: 10;
+///  @include z-index(auto); // z-index: auto;
+///  @include z-index(10, true); // z-index: 10 !important
+///
+@mixin z-index($value, $important: false) {
+  @if $value == auto {
+    @include h.emit('z-index', auto, $important);
+  } 
+  @else if meta.type-of($value) == 'number' {
+    @include h.emit('z-index', $value, $important);
+  } 
+  @else if h.is-global-keyword($value) {
+    @include h.emit('z-index', $value, $important);
+  } 
+  @else {
+    @warn "z-index(): unexpected value `#{$value}` (allowed: number | auto | global keyword).";
+  }
+  @if meta.content-exists() { @content; }
+}

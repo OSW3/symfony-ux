@@ -1,0 +1,105 @@
+// * ===========================================================================
+// *  Text Breakup Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the text breakup properties 
+// *  of elements. 
+// *
+// *  These mixins provide a convenient way to apply different text 
+// *  breakup styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Breakup API                                                   - //
+// * ------------------------------------------------------------------------ //
+
+/// hyphens (auto, manual, none)
+/// 
+/// @param {string} $value The value for hyphens (e.g., auto, manual, none)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include hyphens(auto); // hyphens: auto; with fallback for -webkit-hyphens
+///  @include hyphens(auto, true); // hyphens: auto !important; with fallback for -webkit-hyphens
+///
+@mixin hyphens($value, $important: false) {
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-hyphens', $value, $important);
+    @include h.emit('-ms-hyphens', $value, $important);
+  }
+  @include h.emit('hyphens', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// overflow-wrap (normal, break-word, anywhere) 
+/// 
+/// @param {string} $value The value for overflow-wrap (e.g., normal, break-word, anywhere)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include overflow-wrap(normal); // overflow-wrap: normal;
+///  @include overflow-wrap(break-word, true); // overflow-wrap: break-word !important;
+///  @include overflow-wrap(anywhere); // overflow-wrap: anywhere;
+///  @include overflow-wrap(anywhere, true); // overflow-wrap: anywhere !important;
+///
+@mixin overflow-wrap($value, $important: false) {
+  @if h.fallbacks-enabled() {
+    @include h.emit('word-wrap', $value, $important);
+  }
+  @include h.emit('overflow-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// word-wrap (normal, break-word)
+/// 
+/// @param {string} $value The value for word-wrap (e.g., normal, break-word)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include word-wrap(normal); // word-wrap: normal;
+///  @include word-wrap(break-word, true); // word-wrap: break-word !important;
+///
+@mixin word-wrap($value, $important: false) {
+  @include h.emit('word-wrap', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// word-break (normal, break-all, keep-all, break-word)
+/// 
+/// @param {string} $value The value for word-break (e.g., normal, break-all, keep-all, break-word)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include word-break(normal); // word-break: normal;
+///  @include word-break(break-all, true); // word-break: break-all !important;
+///  @include word-break(keep-all); // word-break: keep-all;
+///  @include word-break(break-word, true); // word-break: break-word !important; with fallback for word-wrap: break-word;
+///
+@mixin word-break($value, $important: false) {
+  @include h.emit('word-break', $value, $important);
+  @if h.fallbacks-enabled() and $value == break-word {
+    @include h.emit('overflow-wrap', anywhere, $important);
+    @include h.emit('word-wrap', break-word, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// line-break (auto, loose, normal, strict, anywhere)
+/// 
+/// @param {string} $value The value for line-break (e.g., auto, loose, normal, strict, anywhere)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include line-break(auto); // line-break: auto;
+/// @include line-break(loose, true); // line-break: loose !important;
+/// 
+@mixin line-break($value, $important: false) {
+  @include h.emit('line-break', $value, $important);
+  @if meta.content-exists() { @content; }
+}

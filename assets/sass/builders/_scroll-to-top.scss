@@ -22,7 +22,7 @@
 @use './../mixins/corner' as *;
 @use './../mixins/transition' as *;
 @use './../mixins/position' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 
 @use './../storages/scroll-to-top' as store;

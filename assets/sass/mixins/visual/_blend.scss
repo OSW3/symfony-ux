@@ -1,0 +1,117 @@
+// * ===========================================================================
+// *  Blend Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the blend mode property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different blend modes
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Blend Mode API                                                       - //
+// * ------------------------------------------------------------------------ //
+
+/// Set mix-blend-mode with optional !important
+///
+/// @param $value Blend mode value (e.g. normal, multiply, screen, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include mix-blend-mode(multiply);
+///  @include mix-blend-mode(screen, true); // with !important
+///
+@mixin mix-blend-mode($value, $important: false) { 
+  @include h.emit('mix-blend-mode', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set isolation with optional !important
+///
+/// @param $value Isolation value (e.g. auto, isolate)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include isolation(isolate);
+///  @include isolation(auto, true); // with !important
+///
+@mixin isolation($value, $important: false) { 
+  @include h.emit('isolation', $value, $important);      
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set background-blend-mode with optional !important
+/// 
+/// @param $blend-value Blend mode value (e.g. normal, multiply, screen, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include background-blend-mode(multiply);
+///  @include background-blend-mode(screen, true); // with !important
+///
+@mixin background-blend-mode($blend-value, $important: false) {
+  @include h.emit('background-blend-mode', $blend-value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set both mix-blend-mode and background-blend-mode with optional isolation and !important
+/// 
+/// @param $blend-value Blend mode value for both properties (e.g. normal, multiply, screen, etc.)
+/// @param $isolation-value Optional isolation value (e.g. auto, isolate). If null, isolation will not be set.
+/// @param $important If true, adds !important to the declarations (default: false)
+///
+/// Usage:
+///  @include blend(multiply); // sets mix-blend-mode and background-blend-mode to multiply
+///  @include blend(screen, isolate); // sets blend modes to screen and isolation to isolate
+///  @include blend(screen, isolate, true); // sets blend modes to screen, isolation to isolate, with !important
+///  @include blend(screen, null, true); // sets blend modes to screen, no isolation, with !important
+///
+@mixin blend-mode($blend-value, $isolation-value: null, $important: false) {
+  @include mix-blend-mode($blend-value, $important);
+  @if $isolation-value != null {
+    @include isolation($isolation-value, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set background-blend-mode with optional !important
+/// 
+/// @param $blend-value Blend mode value (e.g. normal, multiply, screen, etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include background-blend(multiply);
+///  @include background-blend(screen, true); // with !important
+///
+@mixin background-blend($blend-value, $important: false) {
+  @include background-blend-mode($blend-value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set both mix-blend-mode and background-blend-mode with optional isolation and !important
+/// 
+/// @param $blend-value Blend mode value for both properties (e.g. normal, multiply, screen, etc.)
+/// @param $isolation-value Optional isolation value (e.g. auto, isolate). If null, isolation will not be set.
+/// @param $important If true, adds !important to the declarations (default: false)
+///
+/// Usage:
+///  @include blend(multiply); // sets mix-blend-mode and background-blend-mode to multiply
+///  @include blend(screen, isolate); // sets blend modes to screen and isolation to isolate
+///  @include blend(screen, isolate, true); // sets blend modes to screen, isolation to isolate, with !important
+///  @include blend(screen, null, true); // sets blend modes to screen, no isolation, with !important
+///
+@mixin blend($blend-value, $isolation-value: null, $important: false) {
+  @include blend-mode($blend-value, $isolation-value, $important);
+  @include background-blend($blend-value, $important);
+  @if meta.content-exists() { @content; }
+}

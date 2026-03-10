@@ -1,0 +1,135 @@
+// * ===========================================================================
+// *  Text Spacing Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the text spacing properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different text spacing styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Spacing API                                                     - //
+// * ------------------------------------------------------------------------ //
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// line-height
+/// 
+/// @param {string|number} $value The value for line-height (e.g., 1
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include line-height(1.5); // line-height: 1.5; (unitless number)
+///  @include line-height(1.5, true); // line-height: 1.5 !important; (unitless number)
+///  @include line-height(20px); // line-height: 20px; (length)
+///  @include line-height(20, true); // line-height: 20px !important; (number normalized to length using $length-default-unit)
+///
+@mixin line-height($value, $important: false) {
+  $v: length-or-number($value, $length-default-unit);
+  @include h.emit('line-height', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// letter-spacing
+/// 
+/// @param {string|number} $value The value for letter-spacing (e.g., 2px, normal)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include letter-spacing(2px); // letter-spacing: 2px;
+///  @include letter-spacing(2, true); // letter-spacing: 2px !important; (assuming $length-default-unit is 1px)
+///  @include letter-spacing(normal); // letter-spacing: normal;
+///  @include letter-spacing(normal, true); // letter-spacing: normal !important;
+///
+@mixin letter-spacing($value, $important: false) {
+  $v: length-or-number($value, $length-default-unit);
+  @include h.emit('letter-spacing', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// word-spacing
+/// 
+/// @param {string|number} $value The value for word-spacing (e.g., 10px, normal)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+///  Usage:
+///  @include word-spacing(10px); // word-spacing: 10px;
+///  @include word-spacing(10, true); // word-spacing: 10px !important; (assuming $length-default-unit is 1px)
+///  @include word-spacing(normal); // word-spacing: normal;
+///  @include word-spacing(normal, true); // word-spacing: normal !important;
+///
+@mixin word-spacing($value, $important: false) {
+  $v: length-or-number($value, $length-default-unit);
+  @include h.emit('word-spacing', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// white-space (normal, nowrap, pre, pre-line, pre-wrap, break-spaces)
+///
+/// @param {string} $value The value for white-space (e.g., normal, nowrap, pre, pre-line, pre-wrap, break-spaces)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include white-space(normal); // white-space: normal;
+///  @include white-space(pre, true); // white-space: pre !important;
+///  @include white-space(pre-line); // white-space: pre-line;
+///  @include white-space(pre-wrap, true); // white-space: pre-wrap !important;
+///  @include white-space(break-spaces); // white-space: break-spaces;
+///  @include white-space(break-spaces, true); // white-space: break-spaces !important;
+///
+@mixin white-space($value, $important: false) { 
+  @include h.emit('white-space', $value, $important); 
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// Set tab-size with support for unitless numbers (treated as length with default unit).
+/// 
+/// @param {string|number} $value The value for tab-size (e.g., 4, 4ch)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include tab-size(4); // tab-size: 4ch; (assuming $length-default-unit is 1ch)
+///  @include tab-size(4, true); // tab-size: 4ch !important; (assuming $length-default-unit is 1ch)
+///  @include tab-size(4ch); // tab-size: 4ch;
+///  @include tab-size(4ch, true); // tab-size: 4ch !important;
+///
+@mixin tab-size($value, $important: false) {
+  $v: to-length($value, $tab-size-default-unit);
+  @include h.emit('tab-size', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------

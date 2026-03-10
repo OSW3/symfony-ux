@@ -1,0 +1,204 @@
+// * ===========================================================================
+// *  Grid Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the grid properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different grid styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Grid API                                                             - //
+// * ------------------------------------------------------------------------ //
+
+/// Set multiple grid properties at once with a single mixin, including display, 
+/// template, auto-flow, and gaps.
+/// 
+/// @param {String} $display - The display type (e.g., "grid" or "inline-grid")
+/// @param {String} $columns - The value for grid-template-columns (e.g., "100px 1fr")
+/// @param {String} $rows - The value for grid-template-rows (e.g., "100px 1fr")
+/// @param {String} $areas - The value for grid-template-areas (e.g., "\"header header\" \"content content\"")
+/// @param {String} $auto-flow - The value for grid-auto-flow (e.g., "row dense")
+/// @param {String} $auto-columns - The value for grid-auto-columns (e.g., "100px")
+/// @param {String} $auto-rows - The value for grid-auto-rows (e.g., "1fr")
+/// @param {String} $place-items - The value for place-items (e.g., "center")
+/// @param {String} $place-content - The value for place-content (e.g., "start end")
+/// @param {String|number|list} $gap - The value for gap (e.g., "10px", 10, or (10px 20px))
+/// @param {String|number|list} $row-gap - The value for row-gap (e.g., "10px", 10, or (10px 20px))
+/// @param {String|number|list} $column-gap - The value for column-gap (e.g., "10px", 10, or (10px 20px))
+/// @param {Boolean} $important - Whether to add !important to the declarations (default: false)
+/// @param {String} $gap-child-selector - Optional selector for gap fallbacks (e.g., "> *")
+/// 
+/// Usage:
+///  @include grid-container(
+///     $display: grid,
+///     $columns: 100px 1fr,
+///     $rows: 100px 1fr,
+///     $areas: "\"header header\" \"content content\"",
+///     $auto-flow: row dense,
+///     $auto-columns: 100px,
+///     $auto-rows: 1fr,
+///     $place-items: center,
+///     $place-content: start end,
+///     $gap: 10px,
+///     $row-gap: 10px,
+///     $column-gap: 20px,
+///     $important: true,
+///     $gap-child-selector: "> *"
+///   );
+///
+@mixin grid-container(
+  $display: grid,
+  $columns: null,
+  $rows: null,
+  $areas: null,
+  $auto-flow: null,
+  $auto-columns: null,
+  $auto-rows: null,
+  $place-items: null,
+  $place-content: null,
+  $gap: null,
+  $row-gap: null,
+  $column-gap: null,
+  $important: false,
+
+  $gap-child-selector: null,
+  $row-gap-child-selector: null,
+  $column-gap-child-selector: null
+) {
+  @include display-grid($display, $important);
+  @include grid-template-columns($columns, $important);
+  @include grid-template-rows($rows, $important);
+  @include grid-template-areas($areas, $important);
+  @include grid-auto-flow($auto-flow, $important);
+  @include grid-auto-columns($auto-columns, $important);
+  @include grid-auto-rows($auto-rows, $important);
+  @include grid-place-items($place-items, $important);
+  @include grid-place-content($place-content, $important);
+  @include gap($gap, $important, $gap-child-selector);
+  @include row-gap($row-gap, $important, $row-gap-child-selector);
+  @include column-gap($column-gap, $important, $column-gap-child-selector);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Grid properties
+// * ---------------------------------------------
+
+/// Set grid
+/// 
+/// @param {String} $value - The value for the grid property (e.g., "auto-flow dense / 100px 1fr")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid("auto-flow dense / 100px 1fr"); // grid: auto-flow dense / 100px 1fr; + grid-auto-flow: dense; grid-auto-columns: 100px; grid-auto-rows: 1fr;
+/// 
+@mixin grid($value, $important: false) {
+  @include h.emit('grid', $value, $important);
+  // @include h.emit('grid', $value, $important);
+
+  // Décomposition (fallbacks longhands) si activé et si on peut parser proprement
+  @if h.fallbacks-enabled() and $value != null and $value != '' and meta.type-of($value) == 'string' {
+    $raw: compact-spaces($value);
+
+    // 1) Cas avec slash — "X / Y"
+    @if str-contains($raw, '/') {
+      $pair: split-slash($raw);
+      $left: list.nth($pair, 1);
+      $right: list.nth($pair, 2);
+
+        // 1.a) Forme auto-flow … / …
+      @if str-contains($left, 'auto-flow') {
+        // auto-flow
+        @if str-contains($left, 'dense') {
+          @include h.emit('grid-auto-flow', dense, $important);
+        } @else {
+          @include h.emit('grid-auto-flow', row, $important);
+        }
+
+        // Tenter d’extraire auto-rows = left sans "auto-flow" ni "dense"
+        // On retire le mot "auto-flow" (et "dense") grossièrement :
+        $tmp: $left;
+        // retire "auto-flow"
+        $pos: string.index($tmp, 'auto-flow');
+        @if $pos != null {
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('auto-flow')));
+          $tmp: compact-spaces($before + ' ' + $after);
+        }
+        // retire "dense"
+        @if str-contains($tmp, 'dense') {
+          $pos: string.index($tmp, 'dense');
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('dense')));
+          $tmp: compact-spaces($before + ' ' + $after);
+        }
+
+        // Ce qui reste côté gauche est potentiellement grid-auto-rows
+        @if $tmp != null and $tmp != '' {
+          @include h.emit('grid-auto-rows', $tmp, $important);
+        }
+
+        // Côté droit (après slash) -> grid-auto-columns
+        @if $right != null and $right != '' {
+          @include h.emit('grid-auto-columns', $right, $important);
+        }
+      } 
+      @else {
+        // 1.b) Forme "rows / columns" (cas le plus courant)
+        @if $left != null and $left != '' {
+          @include h.emit('grid-template-rows', $left, $important);
+        }
+          @if $right != null and $right != '' {
+          @include h.emit('grid-template-columns', $right, $important);
+        }
+      }
+    }
+    @else {
+      // 2) Pas de slash
+      // 2.a) auto-flow [...?] (pas de colonnes explicites)
+      @if str-contains($raw, 'auto-flow') {
+        // auto-flow
+        @if str-contains($raw, 'dense') {
+          @include h.emit('grid-auto-flow', dense, $important);
+        } @else {
+          @include h.emit('grid-auto-flow', row, $important);
+        }
+
+        // Retire "auto-flow" et "dense" pour isoler potentiels auto-rows
+        $tmp: $raw;
+        $pos: string.index($tmp, 'auto-flow');
+        @if $pos != null {
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('auto-flow')));
+          $tmp: compact-spaces($before + ' ' + $after);
+        }
+        @if str-contains($tmp, 'dense') {
+          $pos: string.index($tmp, 'dense');
+          $before: trim(string.slice($tmp, 1, $pos - 1));
+          $after: trim(string.slice($tmp, $pos + string.length('dense')));
+          $tmp: compact-spaces($before + ' ' + $after);
+        }
+        @if $tmp != null and $tmp != '' {
+          @include h.emit('grid-auto-rows', $tmp, $important);
+        }
+      } 
+      @else {
+        // 2.b) Sans auto-flow ni slash -> on suppose "grid-template-rows"
+        // (cas rare mais tolérable)
+        @include h.emit('grid-template-rows', $raw, $important);
+      }
+    }
+  }
+  @if meta.content-exists() { @content; }
+}

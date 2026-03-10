@@ -21,7 +21,7 @@
 
 // Helpers
 @use './../mixins/box-model' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 @use './../mixins/flex' as *;
 @use './../mixins/states' as *;
 @use './../mixins/transition' as *;
@@ -58,76 +58,82 @@ $_component: 'announcement';
 // * - Component Styles                                                     - //
 // * ------------------------------------------------------------------------ //
 
+/// Component container
+/// 
 .#{prefix($_component)} {
-    
-    /* Layout */
-    @include display-flex();
-    @include flex-justify-content(center);
-    @include flex-align-items(center);
 
-    /* Box model */
-    @include min-height(store.$min-height);
-    @include min-width(100%);
+  // * Layout
+  // * --
+  @include display-flex();
+  @include flex-justify-content(center);
+  @include flex-align-items(center);
 
-    /* Visual */
-    @include border-width(store.$border-width);
-    @include border-style(solid);
-    @include border-radius(store.$border-radius);
+  // * Box model
+  // * --
+  @include min-height(store.$min-height);
+  @include min-width(100%);
 
+  // * Visual
+  // * --
+  @include border-width(store.$border-width);
+  @include border-style(solid);
+  @include border-radius(store.$border-radius);
 
-    @if store.$has-hover-state == false {
-        @include color(var(--#{$prefix}announcement--color));
-        @include background-color(var(--#{$prefix}announcement--bg-color));
-        @include border-color(var(--#{$prefix}announcement--border-color));
-    }
-    @else { 
-        @include color-states((
-            base: var(--#{$prefix}announcement--color),
-            hover: var(--#{$prefix}announcement--color--hover),
-            // focus: var(--#{$prefix}announcement--color--focus),
-            // active: var(--#{$prefix}announcement--color--active),
-            // disabled: var(--#{$prefix}announcement--color--disabled)
-        ));
-    
-        @include background-color-states((
-            base: var(--#{$prefix}announcement--bg-color),
-            hover: var(--#{$prefix}announcement--bg-color--hover),
-            // focus: var(--#{$prefix}announcement--bg-color--focus),
-            // active: var(--#{$prefix}announcement--bg-color--active),
-            // disabled: var(--#{$prefix}announcement--bg-color--disabled)
-        ));
-    
-        @include border-color-states((
-            base: var(--#{$prefix}announcement--border-color),
-            hover: var(--#{$prefix}announcement--border-color--hover),
-            // focus: var(--#{$prefix}announcement--border-color--focus),
-            // active: var(--#{$prefix}announcement--border-color--active),
-            // disabled: var(--#{$prefix}announcement--border-color--disabled)
-        ));
-    }
+  // * Theme
+  // * --
+  @if store.$has-hover-state == false {
+    @include color(var(--#{$prefix}announcement--color));
+    @include background-color(var(--#{$prefix}announcement--bg-color));
+    @include border-color(var(--#{$prefix}announcement--border-color));
+  }
+  @else { 
+    @include color-states((
+      base: var(--#{$prefix}announcement--color),
+      hover: var(--#{$prefix}announcement--color--hover),
+      // focus: var(--#{$prefix}announcement--color--focus),
+      // active: var(--#{$prefix}announcement--color--active),
+      // disabled: var(--#{$prefix}announcement--color--disabled)
+    ));
 
+    @include background-color-states((
+      base: var(--#{$prefix}announcement--bg-color),
+      hover: var(--#{$prefix}announcement--bg-color--hover),
+      // focus: var(--#{$prefix}announcement--bg-color--focus),
+      // active: var(--#{$prefix}announcement--bg-color--active),
+      // disabled: var(--#{$prefix}announcement--bg-color--disabled)
+    ));
 
-    /* Transition */
-    @if store.$has-transition {
-        @include transition-property(color, background-color, border-color);
-        @include transition-duration(store.$transition-delay);
-        @include transition-timing-function(store.$transition-type);
-    }
+    @include border-color-states((
+      base: var(--#{$prefix}announcement--border-color),
+      hover: var(--#{$prefix}announcement--border-color--hover),
+      // focus: var(--#{$prefix}announcement--border-color--focus),
+      // active: var(--#{$prefix}announcement--border-color--active),
+      // disabled: var(--#{$prefix}announcement--border-color--disabled)
+    ));
+  }
+
+  // * Transition
+  // * --
+  @if store.$has-transition {
+    @include transition-property(color, background-color, border-color);
+    @include transition-duration(store.$transition-delay);
+    @include transition-timing-function(store.$transition-type);
+  }
 
     // Announcement links styles
     // -- 
 
     @include color-states((
-        base: var(--#{$prefix}announcement--color),
-        hover: var(--#{$prefix}announcement--color--hover)
+      base: var(--#{$prefix}announcement--color),
+      hover: var(--#{$prefix}announcement--color--hover)
     ), (
-        selector: '&:STATE a'
+      selector: '&:STATE a'
     ));
 
     @include states('text-decoration', (
-        base: underline,
-        hover: underline
+      base: underline,
+      hover: underline
     ), (
-        selector: '&:STATE a'
+      selector: '&:STATE a'
     ));
 }

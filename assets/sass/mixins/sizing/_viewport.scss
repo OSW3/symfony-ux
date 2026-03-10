@@ -1,0 +1,95 @@
+// * ===========================================================================
+// *  Viewport Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the width and height properties of 
+// *  elements in viewport units (vw, vh, dvw, dvh). 
+// *
+// *  These mixins provide a convenient way to apply different viewport-based 
+// *  styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Viewport API                                                         - //
+// * ------------------------------------------------------------------------ //
+
+/// Sets width and/or height in viewport units (vw/vh or dvw/dvh).
+/// Note: This mixin uses modern viewport units (dvw/dvh) with optional fallback to traditional units (vw/vh) for better compatibility. The $width and $height parameters can be unitless numbers (normalized to a default unit) or CSS strings.
+/// 
+/// @param {number|string} $width - The width in viewport units (e.g., 100 for 100vw, or "var(--my-width)").
+/// @param {number|string} $height - The height in viewport units (e.g., 100 for 100vh, or "var(--my-height)").
+/// @param {boolean} $important - Whether to add !important to the declarations (default: false).
+/// 
+/// Usage:
+///  @include viewport(100, 100); // width: 100vw; height: 100vh;
+///  @include viewport(100px, 50%); // width: 100px; height: 50%;
+///  @include viewport(100, 100, true); // with !important
+///
+@mixin viewport($width: null, $height: null, $important: false) {
+  @include viewport-width($width, $important);
+  @include viewport-height($height, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets the height of an element in viewport units (vh or dvh).
+/// Note: This mixin uses modern viewport units (dvh) with optional fallback to traditional units (vh) for better compatibility. The $units parameter can be a unitless number (normalized to a default unit) or a CSS string.
+/// 
+/// @param {number|string} $units - The height in viewport units (e.g., 100 for 100vh, or "var(--my-height)").
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include viewport-height(100); // height: 100vh;
+///  @include viewport-height(100px); // height: 100px;
+///  @include viewport-height(100%, true); // height: 100% !important
+///
+@mixin viewport-height($units: 100, $important: false) {
+  @if $use-modern-viewport-units {
+    @if $emit-viewport-fallback { 
+      @include h.emit(height, #{$units}vh, $important); 
+    }
+    @if $emit-viewport-svh-lvh {
+      @include h.emit(height, #{$units}svh, $important);
+      @include h.emit(height, #{$units}lvh, $important);
+    }
+    @include h.emit(height, #{$units}dvh, $important);
+  } @else {
+    @include h.emit(height, #{$units}vh, $important);
+  }
+
+  @if meta.content-exists() { @content; }
+}
+
+/// Sets the width of an element in viewport units (vw or dvw).
+/// Note: This mixin uses modern viewport units (dvw) with optional fallback to traditional units (vw) for better compatibility. The $units parameter can be a unitless number (normalized to a default unit) or a CSS string.
+/// 
+/// @param {number|string} $units - The width in viewport units (e.g., 100 for 100vw, or "var(--my-width)").
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include viewport-width(100); // width: 100vw;
+///  @include viewport-width(100px); // width: 100px;
+///  @include viewport-width(100%, true); // width: 100% !important
+///
+@mixin viewport-width($units: 100, $important: false) {
+  @if $use-modern-viewport-units {
+    @if $emit-viewport-fallback { 
+      @include h.emit(width, #{$units}vw, $important); 
+    }
+    @if $emit-viewport-svh-lvh {
+      @include h.emit(width, #{$units}svw, $important);
+      @include h.emit(width, #{$units}lvw, $important);
+    }
+    @include h.emit(width, #{$units}dvw, $important);
+  } @else {
+    @include h.emit(width, #{$units}vw, $important);
+  }
+
+  @if meta.content-exists() { @content; }
+}

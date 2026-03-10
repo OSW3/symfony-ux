@@ -1,0 +1,64 @@
+// * ===========================================================================
+// *  Grid Row Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the grid row properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different grid row styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Grid Row API                                                         - //
+// * ------------------------------------------------------------------------ //
+
+/// Set grid-row
+/// 
+/// @param {String} $value - The value for grid-row (e.g., "header", "1 / 3", "span 2", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-row(header); // grid-row: header;
+///  @include grid-row(1 / 3); // grid-row: 1 / 3;
+///  @include grid-row(span 2); // grid-row: span 2;
+///
+@mixin grid-row($value, $important: false) { 
+  @include h.emit('grid-row', $value, $important);
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set grid-row-start
+/// 
+/// @param {String} $value - The value for grid-row-start (e.g., "header", "1", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-row-start(header); // grid-row-start: header;
+///  @include grid-row-start(1); // grid-row-start: 1;
+///
+@mixin grid-row-start($value, $important: false) { 
+  @include h.emit('grid-row-start', $value, $important);
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set grid-row-end
+/// 
+/// @param {String} $value - The value for grid-row-end (e.g., "header", "3", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-row-end(header); // grid-row-end: header;
+///  @include grid-row-end(3); // grid-row-end: 3;
+///
+@mixin grid-row-end($value, $important: false) { 
+  @include h.emit('grid-row-end', $value, $important);
+  @if meta.content-exists() { @content; } 
+}

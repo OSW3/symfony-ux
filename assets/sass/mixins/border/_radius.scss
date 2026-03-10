@@ -1,0 +1,64 @@
+// * ===========================================================================
+// *  Border Radius Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border-radius property of elements.
+// *
+// *  These mixins provide a convenient way to apply border-radius values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Border Radius API                                                    - //
+// * ------------------------------------------------------------------------ //
+
+/// Set border-radius property with optional !important flag. Normalizes unitless numbers to $radius-default-unit.
+/// 
+/// @param {String|Number|List} $value - The border radius value(s) to apply. Can be a single value or multiple values (e.g., '10px', '50%', '1em 0.5em', etc.). Unitless numbers will be converted to $radius-default-unit.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include border-radius(10px); // outputs: border-radius: 10px;
+///  @include border-radius(50%, true); // outputs: border-radius: 50% !important;
+///  @include border-radius(1em 0.5em); // outputs: border-radius: 1em 0.5em;
+///  @include border-radius(1em 0.5em, true); // outputs: border-radius: 1em 0.5em !important;
+/// 
+@mixin border-radius($value, $important: false) {
+  @if not ($value == null and $props-skip-null) {
+    $v: null;
+    @if meta.type-of($value) == 'number' {
+      $v: to-length($value, $radius-default-unit);
+    } @else {
+      $v: $value;
+    }
+    @include h.emit('border-radius', $v, $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+@mixin border-top-left-radius($radius: $corners-default-radius, $important: false) {
+  @include border-top-left-radius($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin border-top-right-radius($radius: $corners-default-radius, $important: false) {
+  @include border-top-right-radius($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin border-bottom-left-radius($radius: $corners-default-radius, $important: false) {
+  @include border-bottom-left-radius($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin border-bottom-right-radius($radius: $corners-default-radius, $important: false) {
+  @include border-bottom-right-radius($radius, $important);
+  @if meta.content-exists() { @content; }
+}

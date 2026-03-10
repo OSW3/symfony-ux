@@ -11,17 +11,19 @@
 
 @charset 'utf-8';
 
-@use './../builders/banner';
-@use './../storages/prefix';
-@use './../mixins/transition' as *;
-@use './../storages/copyright' as store;
+@use './../builders/banner' as banner;
+@use './../storages/prefix' as *;
+
+// Data storage
+@use './../storages/copyright' as config;
 // @use './../components/copyright';
 
-@use './../mixins/display' as *;
+// Helpers
+@use './../mixins/layout/flow/display' as *;
+@use './../mixins/interaction' as *;
 @use './../mixins/spacing' as *;
-
-
-$prefix: prefix.$prefix;
+@use './../mixins/transition' as *;
+@use './../mixins/typography' as *;
 
 
 
@@ -34,89 +36,37 @@ $prefix: prefix.$prefix;
 
 
 // * ------------------------------------------------------------------------ //
-// * - Component Mixins                                                     - //
+// * - Component settings                                                   - //
 // * ------------------------------------------------------------------------ //
 
-// -- ---------------------------------------------
-// -- Define the structure of the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-structure() {
-    @include display(store.$display, false);
-    @content;
-}
+/// Component name
+/// 
+/// Used for generate class names and for debugging purposes
+/// e.g.: $_component: 'button' => .ui-button, .ui-button-primary, ...
+/// 
+$_component: 'copyright';
 
-// -- ---------------------------------------------
-// -- Define the layout of the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-layout() {
-    @content;
-}
 
-// -- ---------------------------------------------
-// -- Define the typography of the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-typography() {
-    @if store.$font-family {
-        font-family: store.$font-family;
-    }
-    font-size: store.$font-size;
-    font-weight: store.$font-weight;
-    @content;
-}
 
-// -- ---------------------------------------------
-// -- Define the spacing of the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-spacing() {
-    @include padding(
-        store.$padding-x,
-        store.$padding-y,
-        store.$padding-x,
-        store.$padding-y,
-        true
-    );
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the interactions for the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-interactions() {
-    @if store.$cursor {
-        cursor: store.$cursor;
-    }
-    
-    @content;
-}
-
-// -- ---------------------------------------------
-// -- Define the state styles for the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-state() {
-    @content;
-}
+// * ------------------------------------------------------------------------ //
+// * - Component Mixins                                                     - //
+// * ------------------------------------------------------------------------ //
 
 // -- ---------------------------------------------
 // -- Define the transition effects for the copyright component.
 // -- ---------------------------------------------
 @mixin copyright-transition() {
-    @if store.$has-transition {
+    @if config.$has-transition {
         @include transition-set(
             (color, background-color),
-            store.$transition-delay,
-            store.$transition-type,
+            config.$transition-delay,
+            config.$transition-type,
         );
     }
     
     @content;
 }
 
-// -- ---------------------------------------------
-// -- Define the animation effects for the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-animation() {
-    @content;
-}
 
 // -- ---------------------------------------------
 // -- Define the theme for the copyright component.
@@ -125,7 +75,7 @@ $prefix: prefix.$prefix;
     color: var(--#{$prefix}copyright-color);
     background-color: var(--#{$prefix}copyright-bg-color);
 
-    @if store.$has-hover-state {
+    @if config.$has-hover-state {
         &:hover {
             color: var(--#{$prefix}copyright-color-hover, var(--#{$prefix}copyright-color));
             background-color: var(--#{$prefix}copyright-bg-color-hover, var(--#{$prefix}copyright-bg-color));
@@ -135,27 +85,42 @@ $prefix: prefix.$prefix;
     @content;
 }
 
-// -- ---------------------------------------------
-// -- Define the effects for the copyright component.
-// -- ---------------------------------------------
-@mixin copyright-effects() {
-    @content;
-}
+
 
 
 // * ------------------------------------------------------------------------ //
 // * - Component Styles                                                     - //
 // * ------------------------------------------------------------------------ //
 
-.#{$prefix}copyright {
-    @include copyright-structure();
-    @include copyright-layout();
-    @include copyright-typography();
-    @include copyright-spacing();
-    @include copyright-interactions();
-    @include copyright-state();
-    @include copyright-transition();
-    @include copyright-animation();
-    @include copyright-theme();
-    @include copyright-effects();
+.#{prefix($_component)} {
+
+  // * Layout
+  // * --
+  @include display(config.$display, false);
+
+  // * Typography
+  // * --
+  @include font-family(config.$font-family);
+  @include font-size(config.$font-size);
+  @include font-weight(config.$font-weight);
+
+  // * Spacing
+  // * --
+  @include padding-x(config.$padding-x, true);
+  @include padding-y(config.$padding-y, true);
+
+  // * Interactions
+  // * --
+  @include cursor(config.$cursor);
+
+    // @include copyright-structure();
+    // @include copyright-layout();
+    // @include copyright-typography();
+    // @include copyright-spacing();
+    // @include copyright-interactions();
+    // @include copyright-state();
+    // @include copyright-transition();
+    // @include copyright-animation();
+    // @include copyright-theme();
+    // @include copyright-effects();
 }

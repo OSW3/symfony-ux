@@ -1,0 +1,92 @@
+// * ===========================================================================
+// *  Flex direction Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting 
+// *
+// *  These mixins provide a convenient way to apply different float values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Float API                                                            - //
+// * ------------------------------------------------------------------------ //
+
+/// Set flex-direction with necessary fallbacks for older browsers.
+/// 
+/// @param {string} $value One of: row | row-reverse | column | column-reverse
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-direction(row); // flex-direction: row;
+///  @include flex-direction(column, true); // flex-direction: column !important;
+/// 
+@mixin flex-direction($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    $orient: h.webkit-box-orient($value);
+    $dir: h.webkit-box-direction($value);
+    @if $orient != null { @include h.emit('-webkit-box-orient', $orient, $important); }
+    @if $dir != null    { @include h.emit('-webkit-box-direction', $dir, $important); }
+    @include h.emit('-webkit-flex-direction', $value, $important);
+    @include h.emit('-ms-flex-direction', $value, $important);
+  }
+  @include h.emit('flex-direction', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// flex-direction: row;
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-row; // flex-direction: row;
+///  @include flex-column-reverse(true); // flex-direction: column-reverse !important;
+///
+@mixin flex-row($important: false) {
+  @include flex-direction(row, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// flex-direction: row-reverse;
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-row-reverse; // flex-direction: row-reverse;
+///  @include flex-row-reverse(true); // flex-direction: row-reverse !important;
+///
+@mixin flex-row-reverse($important: false) {
+  @include flex-direction(row-reverse, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// flex-direction: column;
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-column; // flex-direction: column;
+///  @include flex-column(true); // flex-direction: column !important;
+///
+@mixin flex-column($important: false) {
+  @include flex-direction(column, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// flex-direction: column-reverse;
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration
+/// 
+/// Usage:
+///  @include flex-column-reverse; // flex-direction: column-reverse;
+///  @include flex-column-reverse(true); // flex-direction: column-reverse !important;
+///
+@mixin flex-column-reverse($important: false) {
+  @include flex-direction(column-reverse, $important);
+  @if meta.content-exists() { @content; }
+}

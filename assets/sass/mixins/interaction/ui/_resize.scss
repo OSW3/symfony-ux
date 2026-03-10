@@ -1,0 +1,59 @@
+// * ===========================================================================
+// *  Resize Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the resize property of elements.
+// *
+// *  These mixins provide a convenient way to apply different resize values 
+// *  with optional !important flags. 
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Resize API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set resize property.
+/// 
+/// @param {string} $value - The value for resize (e.g., none, both, horizontal, vertical)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include resize(both); // resize: both;
+///  @include resize(none, true); // resize: none !important;
+///
+@mixin resize($value, $important: false) {
+  @include h.emit('resize', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin resize-inherit($important: false) {
+  @include resize(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin resize-initial($important: false) {
+  @include resize(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin resize-revert($important: false) {
+  @include resize(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin resize-unset($important: false) {
+  @include resize(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin resize-none($important: false) {
+  @include resize(none, $important);
+  @if meta.content-exists() { @content; }
+}

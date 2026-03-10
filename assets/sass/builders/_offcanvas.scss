@@ -25,7 +25,7 @@
 @use './../components/offcanvas';
 // @use './../mixins/component';
 @use './../mixins/transition' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 
 @include banner.header('Component Offcanvas');

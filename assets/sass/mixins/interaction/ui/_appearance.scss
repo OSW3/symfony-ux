@@ -1,0 +1,200 @@
+// * ===========================================================================
+// *  Appearance Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the appearance property of elements. 
+// *  The appearance property is used to control the native styling of elements, 
+// *  such as form controls. By using these mixins, you can easily apply 
+// *  consistent appearance styles across different browsers with optional 
+// *  vendor prefixes and !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Appearance API                                                       - //
+// * ------------------------------------------------------------------------ //
+
+/// Set appearance property with optional vendor prefixes and !important flag
+/// 
+/// @param {String} $value - The appearance value to apply (e.g., 'none', 'button', 'textfield')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include appearance('none'); // outputs: -webkit-appearance: none; -moz-appearance: none; appearance: none;
+///  @include appearance('button', true); // outputs: -webkit-appearance: button !important; -moz-appearance: button !important; appearance: button !important;
+///  @include appearance(var(--my-appearance)); // outputs: -webkit-appearance: var(--my-appearance); -moz-appearance: var(--my-appearance); appearance: var(--my-appearance); 
+///  @include appearance(var(--my-appearance), true); // outputs: -webkit-appearance: var(--my-appearance) !important; -moz-appearance: var(--my-appearance) !important; appearance: var(--my-appearance) !important;
+/// 
+@mixin appearance($value, $important: false) {
+  @if $appearance-add-prefixes {
+    @include h.emit('-webkit-appearance', $value, $important);
+    @include h.emit('-moz-appearance', $value, $important);
+  }
+  @include h.emit('appearance', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-inherit($important: false) {
+  @include appearance(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-initial($important: false) {
+  @include appearance(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-revert($important: false) {
+  @include appearance(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-unset($important: false) {
+  @include appearance(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-none($important: false) {
+  @include appearance(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-button($important: false) {
+  @include appearance(button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-textfield($important: false) {
+  @include appearance(textfield, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-searchfield($important: false) {
+  @include appearance(searchfield, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-menulist($important: false) {
+  @include appearance(menulist, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-meter($important: false) {
+  @include appearance(meter, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-progressbar($important: false) {
+  @include appearance(progressbar, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-slider-horizontal($important: false) {
+  @include appearance(slider-horizontal, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-slider-vertical($important: false) {
+  @include appearance(slider-vertical, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-slider($important: false) {
+  @include appearance(slider, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-radiobutton($important: false) {
+  @include appearance(radiobutton, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-checkbox($important: false) {
+  @include appearance(checkbox, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-listbox($important: false) {
+  @include appearance(listbox, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-field($important: false) {
+  @include appearance(field, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-push-button($important: false) {
+  @include appearance(push-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-button-bevel($important: false) {
+  @include appearance(button-bevel, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-embedded($important: false) {
+  @include appearance(embedded, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-unified($important: false) {
+  @include appearance(mac-unified, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-toolbar($important: false) {
+  @include appearance(mac-toolbar, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-menubar($important: false) {
+  @include appearance(mac-menubar, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar($important: false) {
+  @include appearance(mac-window-titlebar, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-button($important: false) {
+  @include appearance(mac-window-titlebar-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-close-button($important: false) {
+  @include appearance(mac-window-titlebar-close-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-maximize-button($important: false) {
+  @include appearance(mac-window-titlebar-maximize-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-minimize-button($important: false) {
+  @include appearance(mac-window-titlebar-minimize-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-help-button($important: false) {
+  @include appearance(mac-window-titlebar-help-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-document-button($important: false) {
+  @include appearance(mac-window-titlebar-document-button, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin appearance-mac-window-titlebar-default-button($important: false) {
+  @include appearance(mac-window-titlebar-default-button, $important);
+  @if meta.content-exists() { @content; }
+}

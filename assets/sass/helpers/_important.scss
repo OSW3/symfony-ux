@@ -1,0 +1,35 @@
+// * ===========================================================================
+// *  Important Flags
+// * ===========================================================================
+// *
+// *  This file defines mixins for handling !important flags in CSS properties.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "./../helpers/null" as *;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Important Flags API                                                  - //
+// * ------------------------------------------------------------------------ //
+
+/// Coerce optional !important
+///
+/// @param {bool} $flag - Whether to add !important to the declaration.
+/// @return {string} ' !important' if $flag is true, otherwise an empty string.
+///
+/// Usage:
+///  important-flag(true) // returns ' !important'
+///  important-flag(false) // returns ''
+///  important-flag(null) // returns ''
+///
+@function important-flag($flag) {
+  @if to-bool($flag, false) {
+    @return ' !important';
+  } @else {
+    @return '';
+  }
+}

@@ -1,0 +1,67 @@
+// * ===========================================================================
+// *  Shadow Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the shadow property of elements.
+// *
+// *  These mixins provide a convenient way to apply shadow values with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Shadow API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Box shadow
+// * ---------------------------------------------
+
+/// Set box-shadow property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $value - The box shadow value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include box-shadow('2px 2px 5px red'); // outputs: box-shadow: 2px 2px 5px red;
+///  @include box-shadow(('2px 2px 5px red', '1px 1px 3px blue'), true); // outputs: box-shadow: 2px 2px 5px red, 1px 1px 3px blue !important;
+///  @include box-shadow(var(--my-box-shadow)); // outputs: box-shadow: var(--my-box-shadow);
+///  @include box-shadow(var(--my-box-shadow), true); // outputs: box-shadow: var(--my-box-shadow) !important;
+///
+@mixin box-shadow($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('box-shadow', $v, $important);
+}
+
+
+
+// * ---------------------------------------------
+// * Text shadow
+// * ---------------------------------------------
+
+/// Set text-shadow property with support for multiple layers and optional !important flag
+/// 
+/// @param {List} $values - The text shadow value(s) to apply. Can be a single value or multiple layers separated by commas.
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include text-shadow('2px 2px 5px red'); // outputs: text-shadow: 2px 2px 5px red;
+///  @include text-shadow(('2px 2px 5px red', '1px 1px 3px blue'), true); // outputs: text-shadow: 2px 2px 5px red, 1px 1px 3px blue !important;
+///  @include text-shadow(var(--my-text-shadow)); // outputs: text-shadow: var(--my-text-shadow);
+///  @include text-shadow(var(--my-text-shadow), true); // outputs: text-shadow: var(--my-text-shadow) !important;
+///
+@mixin text-shadow($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('text-shadow', $v, $important);
+}

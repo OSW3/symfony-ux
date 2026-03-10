@@ -28,7 +28,7 @@
 @use './../helpers/list' as *;
 @use './../helpers/map' as *;
 @use './../mixins/box-model' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 @use './../mixins/position' as *;
 @use './../mixins/spacing' as *;
 

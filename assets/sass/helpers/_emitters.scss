@@ -1,0 +1,38 @@
+// * ===========================================================================
+// *  Emitters
+// * ===========================================================================
+// *
+// *  This file defines mixins for emitting CSS properties with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "./important" as *;
+@use "./null" as *;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Emitters API                                                         - //
+// * ------------------------------------------------------------------------ //
+
+/// Emit a CSS property with optional !important flag.
+/// 
+/// @param {string} $prop - The CSS property to emit (e.g., 'color').
+/// @param {string} $value - The value to assign to the property (e.g., 'red').
+/// @param {boolean} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include emit('color', 'red'); // outputs: color: red;
+///  @include emit('color', 'red', true); // outputs: color: red !important;
+///  @include emit('color', null); // outputs nothing (skips null values);
+///  @include emit('color', null, true); // outputs nothing (skips null values);
+///
+@mixin emit($prop, $value, $important: false) {
+  @if is-not-null($value) { 
+    #{$prop}: #{$value}#{important-flag($important)};
+  }
+  @if meta.content-exists() { @content; }
+}

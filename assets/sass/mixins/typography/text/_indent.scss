@@ -1,0 +1,45 @@
+// * ===========================================================================
+// *  Text Indent Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the text indent properties 
+// *  of elements. 
+// *
+// *  These mixins provide a convenient way to apply different text 
+// *  indent styles with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "./../helpers/length" as *;
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Text Indent API                                                      - //
+// * ------------------------------------------------------------------------ //
+
+/// text-indent
+///
+/// @param {string|number} $value The value for text-indent (e.g., 20px, 2)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include text-indent(20px); // text-indent: 20px;
+///  @include text-indent(2, true); // text-indent: 2px !important; (assuming $length-default-unit is 1px)
+///
+@mixin text-indent($value, $important: false) {
+  @if $value == null and h.props-skip-null() {
+    // silence
+  } 
+  @else if meta.type-of($value) == 'list' {
+    $out: h.normalize-length-list($value, $length-default-unit);
+    @include h.emit('text-indent--', $out, $important);
+  } 
+  @else {
+    $v: to-length($value, $length-default-unit);
+    @include h.emit('text-indent', $v, $important);
+  }
+  @if meta.content-exists() { @content; }
+}

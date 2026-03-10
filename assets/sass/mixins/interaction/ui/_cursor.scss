@@ -1,0 +1,269 @@
+// * ===========================================================================
+// *  Cursor Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the cursor property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different cursor styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Cursor API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+/// Set cursor.
+/// 
+/// @param {string|list} $values - Cursor value(s). Can be a single value or multiple fallbacks as varargs.
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include cursor(pointer); // cursor: pointer;
+///  @include cursor(auto, pointer, true); // cursor: auto, pointer !important;
+///  @include cursor(url('cursor.png'), pointer); // cursor: url('cursor.png'), pointer;
+///  @include cursor(url('cursor.png'), pointer, true); // cursor: url('cursor.png'), pointer !important;
+///  @include cursor(pointer, url('cursor.png')); // cursor: pointer, url('cursor.png');
+///  @include cursor(pointer, url('cursor.png'), true); // cursor: pointer, url('cursor.png') !important;
+/// 
+@mixin cursor($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('cursor', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to inherit with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-inherit(); // cursor: inherit;
+///  @include cursor-inherit(true); // cursor: inherit !important;
+///
+@mixin cursor-inherit($important: false) {
+  @include cursor(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to initial with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-initial(); // cursor: initial;
+///  @include cursor-initial(true); // cursor: initial !important;
+///
+@mixin cursor-initial($important: false) {
+  @include cursor(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to unset with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-unset(); // cursor: unset;
+///  @include cursor-unset(true); // cursor: unset !important;
+///
+@mixin cursor-unset($important: false) {
+  @include cursor(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to revert with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-revert(); // cursor: revert;
+///  @include cursor-revert(true); // cursor: revert !important;
+///
+@mixin cursor-revert($important: false) {
+  @include cursor(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to default with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-default(); // cursor: default;
+///  @include cursor-default(true); // cursor: default !important;
+///
+@mixin cursor-default($important: false) {
+  @include cursor(default, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to pointer with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-pointer(); // cursor: pointer;
+///  @include cursor-pointer(true); // cursor: pointer !important;
+///
+@mixin cursor-pointer($important: false) {
+  @include cursor(pointer, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to not-allowed with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-not-allowed(); // cursor: not-allowed;
+///  @include cursor-not-allowed(true); // cursor: not-allowed !important;
+///
+@mixin cursor-not-allowed($important: false) {
+  @include cursor(not-allowed, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to wait with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-wait(); // cursor: wait;
+///  @include cursor-wait(true); // cursor: wait !important;
+///
+@mixin cursor-wait($important: false) {
+  @include cursor(wait, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to move with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-move(); // cursor: move;
+///  @include cursor-move(true); // cursor: move !important;
+///
+@mixin cursor-move($important: false) {
+  @include cursor(move, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to text with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-text(); // cursor: text;
+///  @include cursor-text(true); // cursor: text !important;
+///
+@mixin cursor-text($important: false) {
+  @include cursor(text, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to help with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-help(); // cursor: help;
+///  @include cursor-help(true); // cursor: help !important;
+///
+@mixin cursor-help($important: false) {
+  @include cursor(help, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to crosshair with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-crosshair(); // cursor: crosshair;
+///  @include cursor-crosshair(true); // cursor: crosshair !important;
+///
+@mixin cursor-crosshair($important: false) {
+  @include cursor(crosshair, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to grab with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-grab(); // cursor: grab;
+///  @include cursor-grab(true); // cursor: grab !important;
+///
+@mixin cursor-grab($important: false) {
+  @include cursor(grab, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to grabbing with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-grabbing(); // cursor: grabbing;
+///  @include cursor-grabbing(true); // cursor: grabbing !important;
+///
+@mixin cursor-grabbing($important: false) {
+  @include cursor(grabbing, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to zoom-in with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-zoom-in(); // cursor: zoom-in;
+///  @include cursor-zoom-in(true); // cursor: zoom-in !important;
+///
+@mixin cursor-zoom-in($important: false) {
+  @include cursor(zoom-in, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to zoom-out with optional important flag.
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include cursor-zoom-out(); // cursor: zoom-out;
+///  @include cursor-zoom-out(true); // cursor: zoom-out !important;
+///
+@mixin cursor-zoom-out($important: false) {
+  @include cursor(zoom-out, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set cursor to url with optional fallback and important flag.
+/// 
+/// @param {string} $url - The URL of the cursor image.
+/// @param {string} $fallback - Optional fallback cursor value (e.g., pointer).
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include cursor-url('cursor.png'); // cursor: url('cursor.png');
+///  @include cursor-url('cursor.png', pointer); // cursor: url('cursor.png'), pointer;
+///  @include cursor-url('cursor.png', pointer, true); // cursor: url('cursor.png'), pointer !important;
+///  @include cursor-url('cursor.png', null, true); // cursor: url('cursor.png') !important;
+///
+@mixin cursor-url($url, $fallback: null, $important: false) {
+  $values: if($fallback != null, ($url, $fallback), ($url));
+  @include cursor($values..., $important);
+  @if meta.content-exists() { @content; }
+}

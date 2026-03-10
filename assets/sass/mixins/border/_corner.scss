@@ -1,0 +1,314 @@
+// * ===========================================================================
+// *  Structural Mixins for the Corner Property
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the border-radius properties of 
+// *  elements.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use 'sass:list';
+@use 'sass:meta';
+@use 'sass:math';
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Settings                                                             - //
+// * ------------------------------------------------------------------------ //
+
+// Unité par défaut pour convertir les nombres unitless (ex: 8 -> 8px)
+$corners-default-unit: 1px !default;
+
+// Valeur par défaut utilisée quand aucun rayon n'est fourni aux mixins (peut rester null)
+$corners-default-radius: null !default;
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - API                                                                  - //
+// * ------------------------------------------------------------------------ //
+
+/// Border Radius (shorthand)
+/// 
+/// @param {Number|List} $radius
+///   - scalaire : appliqué à tous les coins (ex: 8 -> 8px)
+///   - liste "espaces" (1..4) : appliquée selon les règles CSS (ex: 8 12 -> 8px 12px 8px 12px)
+/// @param {Boolean} $important - optionnel, ajoute !important si true
+/// 
+/// Usage:
+///  @include corner-rounded(12);  // -> 12px
+///  @include corner-rounded(8 12);// -> 8px 12px
+///  @include corner-rounded(var(--r), true);  // -> var(--r) !important
+/// 
+@mixin corner-rounded($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-radius($radius);
+  @include h.emit('border-radius', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Logical corners
+// * ---------------------------------------------
+
+/// Left corners (Start corners)
+/// 
+///   * - -
+///   -   - 
+///   * - -
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include corner-start(12);  // -> 12px
+///  @include corner-start(8 12);// -> 8px 12px
+///  @include corner-start(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-start($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-pair($radius);
+  @include h.emit(h.prop-top-start(), $v, $important);
+  @include h.emit(h.prop-bottom-start(),$v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Right corners (End corners)
+/// 
+///   - - *
+///   -   - 
+///   - - *
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false).
+/// 
+/// Usage:
+///  @include corner-end(12);  // -> 12px
+///  @include corner-end(8 12);// -> 8px 12px
+///  @include corner-end(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-end($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-pair($radius);
+  @include h.emit(h.prop-top-end(),$v, $important);
+  @include h.emit(h.prop-bottom-end(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Top corners (Top corners)
+/// 
+///   * - *
+///   -   - 
+///   - - -
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-top(12);  // -> 12px
+///  @include corner-top(8 12);// -> 8px 12px
+///  @include corner-top(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-top($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-pair($radius);
+  @include h.emit(h.prop-top-start(), $v, $important);
+  @include h.emit(h.prop-top-end(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Bottom corners (Bottom corners)
+/// 
+///   - - -
+///   -   - 
+///   * - *
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-bottom(12);  // -> 12px
+///  @include corner-bottom(8 12);// -> 8px 12px
+///  @include corner-bottom(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-bottom($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-pair($radius);
+  @include h.emit(h.prop-bottom-start(), $v, $important);
+  @include h.emit(h.prop-bottom-end(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Single corner
+// * ---------------------------------------------
+
+/// Corner Top-Start
+/// 
+///   * - -
+///   -   - 
+///   - - -
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-top-start(12);  // -> 12px
+///  @include corner-top-start(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-top-start($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-single($radius);
+  @include h.emit(h.prop-top-start(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+@mixin corner-top-left($radius: $corners-default-radius, $important: false) {
+  @include corner-top-start($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Corner Top-End
+/// 
+///   - - *
+///   -   - 
+///   - - -
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-top-end(12);  // -> 12px
+///  @include corner-top-end(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-top-end($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-single($radius);
+  @include h.emit(h.prop-top-end(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+@mixin corner-top-right($radius: $corners-default-radius, $important: false) {
+  @include corner-top-end($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Corner Bottom-Start
+/// 
+///   - - -
+///   -   - 
+///   * - -
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-bottom-start(12);  // -> 12px
+///  @include corner-bottom-start(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-bottom-start($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-single($radius);
+  @include h.emit(h.prop-bottom-start(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+@mixin corner-bottom-left($radius: $corners-default-radius, $important: false) {
+  @include corner-bottom-start($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Corner Bottom-End
+/// 
+///   - - -
+///   -   - 
+///   - - *
+/// 
+/// @param {Number|List} $radius - Size of the corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-bottom-end(12);  // -> 12px
+///  @include corner-bottom-end(var(--r), true);  // -> var(--r) !important
+///
+@mixin corner-bottom-end($radius: $corners-default-radius, $important: false) {
+  $v: h.valid-corner-single($radius);
+  @include h.emit(h.prop-bottom-end(), $v, $important);
+  @if meta.content-exists() { @content; }
+}
+@mixin corner-bottom-right($radius: $corners-default-radius, $important: false) {
+  @include corner-bottom-end($radius, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Logical properties
+// * ---------------------------------------------
+
+/// Set corners fo inline axis (Start/End)
+/// 
+/// @param {Number|List} $start - Size of the start corner radius (e.g., 8 or 8px)
+/// @param {Number|List} $end - Size of the end corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-inline(12, 8);  // -> start: 12px, end: 8px
+///  @include corner-inline(var(--r1), var(--r2), true);  // -> start: var(--r1) !important, end: var(--r2) !important
+///
+@mixin corner-inline($start: $corners-default-radius, $end: $corners-default-radius, $important: false) {
+  $vs: h.valid-corner-pair($start);
+  $ve: h.valid-corner-pair($end);
+  // haut
+  @include h.emit(h.prop-top-start(), $vs, $important);
+  @include h.emit(h.prop-top-end(), $ve, $important);
+  // bas
+  @include h.emit(h.prop-bottom-start(), $vs, $important);
+  @include h.emit(h.prop-bottom-end(), $ve, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set corners fo block axis (Top/Bottom)
+/// 
+/// @param {Number|List} $start - Size of the top corner radius (e.g., 8 or 8px)
+/// @param {Number|List} $end - Size of the bottom corner radius (e.g., 8 or 8px)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include corner-block(12, 8);  // -> top: 12px, bottom: 8px
+///  @include corner-block(var(--r1), var(--r2), true);  // -> top: var(--r1) !important, bottom: var(--r2) !important
+///
+@mixin corner-block($start: $corners-default-radius, $end: $corners-default-radius, $important: false) {
+  $vs: h.valid-corner-pair($start);
+  $ve: h.valid-corner-pair($end);
+  // start (haut phys.)
+  @include h.emit(h.prop-top-start(), $vs, $important);
+  @include h.emit(h.prop-top-end(), $vs, $important);
+  // end (bas phys.)
+  @include h.emit(h.prop-bottom-start(), $ve, $important);
+  @include h.emit(h.prop-bottom-end(), $ve, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Shapes
+// * ---------------------------------------------
+
+/// Rounded full (très grand rayon -> pill / full)
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include corner-rounded-full();  // -> border-radius: 9999px
+///  @include corner-rounded-full(true);  // -> border-radius: 9999px !important
+///
+@mixin corner-rounded-full($important: false) {
+  @include h.emit('border-radius', 9999px, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Rounded circle (50% -> cercle si l’élément est carré (width == height))
+/// 
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include corner-rounded-circle();  // -> border-radius: 50%
+///  @include corner-rounded-circle(true);  // -> border-radius: 50% !important
+///
+@mixin corner-rounded-circle($important: false) {
+  @include h.emit('border-radius', 50%, $important);
+  @if meta.content-exists() { @content; }
+}

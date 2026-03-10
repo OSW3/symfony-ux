@@ -24,7 +24,7 @@
 @use './../storages/spaces';
 @use './../mixins/component';
 @use './../mixins/transition' as *;
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 @use './../storages/media' as store;
 @use './../components/media';

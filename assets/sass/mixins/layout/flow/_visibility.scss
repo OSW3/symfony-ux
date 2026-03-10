@@ -1,0 +1,77 @@
+// * ===========================================================================
+// *  Visibility Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the visibility properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different visibility values
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Visibility API                                                       - //
+// * ------------------------------------------------------------------------ //
+
+
+/// Set visibility properties with optional validation and !important flag.
+/// 
+/// @param {string} $value - The value for the visibility property (e.g., 'visible', 'hidden', 'collapse').
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include visibility(hidden);
+///  @include visibility(collapse, true); // with !important
+///
+@mixin visibility($value, $important: false) {
+  @if $value != null and not h.is-valid-visibility($value) and $overflow-warn-on-invalid {
+    @warn "[visibility] Valeur inattendue: #{meta.inspect($value)}. Attendu: visible | hidden | collapse.";
+  }
+  @include h.emit(visibility, $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set visibility: visible;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include visibility-visible;
+///  @include visibility-visible(true); // with !important
+///
+@mixin visibility-visible($important: false) {
+  @include visibility(visible,  $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set visibility: hidden;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include visibility-hidden;
+///  @include visibility-hidden(true); // with !important
+///
+@mixin visibility-hidden($important: false) {
+  @include visibility(hidden,   $important); 
+  @if meta.content-exists() { @content; }
+}
+
+/// Set visibility: collapse;
+/// 
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include visibility-collapse;
+///  @include visibility-collapse(true); // with !important
+///
+@mixin visibility-collapse($important: false) {
+  @include visibility(collapse, $important); 
+  @if meta.content-exists() { @content; }
+}

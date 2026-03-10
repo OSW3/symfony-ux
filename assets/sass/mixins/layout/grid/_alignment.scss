@@ -1,0 +1,201 @@
+// * ===========================================================================
+// *  Grid Alignment Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the alignment properties of grid elements. 
+// *
+// *  These mixins provide a convenient way to apply different alignment styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Grid Alignment API                                                   - //
+// * ------------------------------------------------------------------------ //
+
+
+// * ---------------------------------------------
+// *  Justify properties
+// * ---------------------------------------------
+
+/// Set justify-self
+/// 
+/// @param {String} $value - The value for justify-self (e.g., "start", "center", "end", "stretch")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-justify-self(start); // justify-self: start;
+///  @include grid-justify-self(center); // justify-self: center;
+///  @include grid-justify-self(end); // justify-self: end;
+///  @include grid-justify-self(stretch); // justify-self: stretch;
+///
+@mixin grid-justify-self($value, $important: false) { 
+  @include h.emit('justify-self', $value, $important);
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set justify-items
+/// 
+/// @param {String} $value - The value for justify-items (e.g., "start", "center", "end", "stretch")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-justify-items(start); // justify-items: start;
+///  @include grid-justify-items(center); // justify-items: center;
+///  @include grid-justify-items(end); // justify-items: end;
+///  @include grid-justify-items(stretch); // justify-items: stretch;
+///
+@mixin grid-justify-items($value, $important: false) { 
+  @include h.emit('justify-items', $value, $important);
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set justify-content
+/// 
+/// @param {String} $value - The value for justify-content (e.g., "start", "center", "end", "space-between", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// Usage:
+///  @include grid-justify-content(start); // justify-content: start;
+///  @include grid-justify-content(center); // justify-content: center;
+///  @include grid-justify-content(end); // justify-content: end;
+///  @include grid-justify-content(space-between); // justify-content: space-between;
+///  @include grid-justify-content(space-around); // justify-content: space-around;
+///  @include grid-justify-content(space-evenly); // justify-content: space-evenly;
+///
+@mixin grid-justify-content($value, $important: false) { 
+  @include h.emit('justify-content', $value, $important);
+  @if meta.content-exists() { @content; } 
+}
+
+
+// * ---------------------------------------------
+// *  Align properties
+// * ---------------------------------------------
+
+/// Set align-self
+/// 
+/// @param {String} $value - The value for align-self (e.g., "start", "center", "end", "stretch")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-align-self(start); // align-self: start;
+///  @include grid-align-self(center); // align-self: center;
+///  @include grid-align-self(end); // align-self: end;
+///  @include grid-align-self(stretch); // align-self: stretch;
+///
+@mixin grid-align-self($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-self', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { @include h.emit('-ms-flex-item-align', $ms, $important); }
+  }
+  @include h.emit('align-self', $value, $important);
+}
+
+/// Set align-items
+/// 
+/// @param {String} $value - The value for align-items (e.g., "start", "center", "end", "stretch")
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-align-items(start); // align-items: start;
+///  @include grid-align-items(center); // align-items: center;
+///  @include grid-align-items(end); // align-items: end;
+///  @include grid-align-items(stretch); // align-items: stretch;
+///
+@mixin grid-align-items($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-items', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { @include h.emit('-ms-flex-align', $ms, $important); }
+  }
+  @include h.emit('align-items', $value, $important);
+}
+
+/// Set align-content
+/// 
+/// @param {String} $value - The value for align-content (e.g., "start", "center", "end", "space-between", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-align-content(start); // align-content: start;
+///  @include grid-align-content(center); // align-content: center;
+///  @include grid-align-content(end); // align-content: end;
+///  @include grid-align-content(space-between); // align-content: space-between;
+///  @include grid-align-content(space-around); // align-content: space-around;
+///  @include grid-align-content(space-evenly); // align-content: space-evenly;
+///
+@mixin grid-align-content($value, $important: false) {
+  @if $value != null and h.fallbacks-enabled() {
+    @include h.emit('-webkit-align-content', $value, $important);
+    $ms: h.ms-align($value);
+    @if $ms != null { @include h.emit('-ms-flex-line-pack', $ms, $important); }
+  }
+  @include h.emit('align-content', $value, $important);
+}
+
+
+// * ---------------------------------------------
+// *  Placement properties
+// * ---------------------------------------------
+
+/// Set place-self
+/// 
+/// @param {String} $value - The value for place-self (e.g., "center", "start end", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include place-self(center); // place-self: center;
+///  @include place-self(start end); // place-self: start end;
+///
+@mixin grid-place-self($value, $important: false) { 
+  @include h.emit('place-self', $value, $important);
+  @if h.fallbacks-enabled() and meta.type-of($value) == 'list' and list.length($value) == 2 {
+    @include h.emit('align-self',   list.nth($value, 1), $important);
+    @include h.emit('justify-self', list.nth($value, 2), $important);
+  }
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set place-items
+/// 
+/// @param {String} $value - The value for place-items (e.g., "center", "start end", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+///  Usage:
+///  @include grid-place-items(center); // place-items: center;
+///  @include grid-place-items(start end); // place-items: start end;
+///
+@mixin grid-place-items($value, $important: false) {
+  @include h.emit('place-items', $value, $important);
+  @if h.fallbacks-enabled() and meta.type-of($value) == 'list' and list.length($value) == 2 {
+    @include h.emit('align-items', list.nth($value, 1), $important);
+    @include h.emit('justify-items', list.nth($value, 2), $important);
+  }
+  @if meta.content-exists() { @content; }
+}
+
+/// Set place-content
+/// 
+/// @param {String} $value - The value for place-content (e.g., "center", "start end", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+///  Usage:
+///  @include grid-place-content(center); // place-content: center;
+///  @include grid-place-content(start end); // place-content: start end;
+///
+@mixin grid-place-content($value, $important: false) {
+  @include h.emit('place-content', $value, $important);
+  @if h.fallbacks-enabled() and meta.type-of($value) == 'list' and list.length($value) == 2 {
+    @include h.emit('align-content', list.nth($value, 1), $important);
+    @include h.emit('justify-content', list.nth($value, 2), $important);
+  }
+  @if meta.content-exists() { @content; }
+}

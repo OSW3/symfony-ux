@@ -1,0 +1,38 @@
+// * ===========================================================================
+// *  Ratio Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the aspect-ratio property of elements.
+// *
+// *  These mixins provide a convenient way to apply aspect ratios with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:list";
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Ratio API                                                            - //
+// * ------------------------------------------------------------------------ //
+
+/// Set aspect ratio.
+/// 
+/// @param {string|number} $ratio - Aspect ratio value. Can be a number (e.g., 16/9) or a string (e.g., "3 / 2").
+/// @param {bool} $important - Whether to add !important to the declaration (default: false).
+///
+/// Usage:
+///  @include aspect-ratio(16/9); // aspect-ratio: 16/9;
+///  @include aspect-ratio("3 / 2", true); // aspect-ratio: 3 / 2 !important;
+///  @include aspect-ratio(1); // aspect-ratio: 1;
+///  @include aspect-ratio("4 / 3"); // aspect-ratio: 4 / 3;
+///  @include aspect-ratio("4 / 3", true); // aspect-ratio: 4 / 3 !important;
+/// 
+@mixin aspect-ratio($ratio, $important: false) {
+  @include h.emit(aspect-ratio, $ratio, $important);
+  @if meta.content-exists() { @content; }
+}

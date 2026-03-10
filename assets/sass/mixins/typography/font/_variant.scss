@@ -1,0 +1,204 @@
+// * ===========================================================================
+// *  Font variant Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the font variant property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different font variant styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Font variant API                                                     - //
+// * ------------------------------------------------------------------------ //
+
+/// font-variant (normal, small-caps, etc.)
+/// 
+/// @param {string} $value The value for font-variant (normal | small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include font-variant(normal); // font-variant: normal;
+///  @include font-variant(small-caps, true); // font-variant: small-caps !important;
+///
+@mixin font-variant($value, $important: false) {
+  @include h.emit('font-variant', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// font-variant: normal - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-normal(); // font-variant: normal;
+///  @include font-variant-normal(true); // font-variant: normal !important;
+/// 
+@mixin font-variant-normal($important: false) {
+  @include font-variant(normal, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: small-caps - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-small-caps(); // font-variant: small-caps;
+///  @include font-variant-small-caps(true); // font-variant: small-caps !important;
+/// 
+@mixin font-variant-small-caps($important: false) {
+  @include font-variant(small-caps, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: all-small-caps - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-all-small-caps(); // font-variant: all-small-caps;
+///  @include font-variant-all-small-caps(true); // font-variant: all-small-caps !important;
+/// 
+@mixin font-variant-all-small-caps($important: false) {
+  @include font-variant(all-small-caps, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: petite-caps - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-petite-caps(); // font-variant: petite-caps;
+///  @include font-variant-petite-caps(true); // font-variant: petite-caps !important;
+/// 
+@mixin font-variant-petite-caps($important: false) {
+  @include font-variant(petite-caps, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: all-petite-caps - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-all-petite-caps(); // font-variant: all-petite-caps;
+///  @include font-variant-all-petite-caps(true); // font-variant: all-petite-caps !important;
+/// 
+@mixin font-variant-all-petite-caps($important: false) {
+  @include font-variant(all-petite-caps, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: unicase - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-unicase(); // font-variant: unicase;
+///  @include font-variant-unicase(true); // font-variant: unicase !important;
+/// 
+@mixin font-variant-unicase($important: false) {
+  @include font-variant(unicase, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: titling-caps - Shorthands
+/// 
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-titling-caps(); // font-variant: titling-caps;
+///  @include font-variant-titling-caps(true); // font-variant: titling-caps !important;
+/// 
+@mixin font-variant-titling-caps($important: false) {
+  @include font-variant(titling-caps, $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * 
+// * ---------------------------------------------
+
+/// font-variant: ligatures - Shorthands
+/// 
+/// @param {string} $value The value for font-variant-ligatures (normal | common-ligatures | no-common-ligatures | discretionary-ligatures | no-discretionary-ligatures | historical-ligatures | no-historical-ligatures)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-ligatures(); // font-variant: ligatures;
+///  @include font-variant-ligatures(true); // font-variant: ligatures !important;
+/// 
+@mixin font-variant-ligatures($value, $important: false) {
+  @include h.emit('font-variant-ligatures', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: caps - Shorthands
+/// 
+/// @param {string} $value The value for font-variant-caps (normal | small-caps | all-small-caps | petite-caps | all-petite-caps | unicase | titling-caps)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-caps(); // font-variant: caps;
+///  @include font-variant-caps(true); // font-variant: caps !important;
+/// 
+@mixin font-variant-caps($value, $important: false) {
+  @include h.emit('font-variant-caps', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: numeric - Shorthands
+/// 
+/// @param {string} $value The value for font-variant-numeric (normal | ordinal | slashed-zero | lining-nums | oldstyle-nums | proportional-nums | tabular-nums)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-numeric(); // font-variant: numeric;
+///  @include font-variant-numeric(true); // font-variant: numeric !important;
+/// 
+@mixin font-variant-numeric($value, $important: false) {
+  @include h.emit('font-variant-numeric', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: east-asian - Shorthands
+/// 
+/// @param {string} $value The value for font-variant-east-asian (normal | ruby | jis78 | jis83 | jis90 | jis04)
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-east-asian(); // font-variant: east-asian;
+///  @include font-variant-east-asian(true); // font-variant: east-asian !important;
+/// 
+@mixin font-variant-east-asian($value, $important: false) {
+  @include h.emit('font-variant-east-asian', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// font-variant: alternates - Shorthands
+/// 
+/// @param {string} $value The value for font-variant-alternates (normal | historical-forms | stylistic(set-name) | styleset(set-number) | character-variant(set-name) | character-variant(set-number))
+/// @param {boolean} $important Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include font-variant-alternates(); // font-variant: alternates;
+///  @include font-variant-alternates(true); // font-variant: alternates !important;
+/// 
+@mixin font-variant-alternates($value, $important: false) {
+  @include h.emit('font-variant-alternates', $value, $important);
+  @if meta.content-exists() { @content; }
+}

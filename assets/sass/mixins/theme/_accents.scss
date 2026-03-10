@@ -1,0 +1,58 @@
+// * ===========================================================================
+// *  Accents Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the accent colors of elements. 
+// *  These mixins are used to apply the accent colors defined in the palette 
+// *  to various properties of elements, such as background color, text color, 
+// *  border color, etc.
+// *
+// *  These mixins provide a convenient way to apply accent colors with optional 
+// *  !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Accents API                                                          - //
+// * ------------------------------------------------------------------------ //
+
+/// Set accent-color property with optional !important flag
+/// 
+/// @param {String} $value - The accent color value to apply (e.g., 'red', '#ff0000', 'var(--my-accent-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include accent-color('red'); // outputs: accent-color: red;
+///  @include accent-color('#ff0000', true); // outputs: accent-color: #ff0000 !important;
+///  @include accent-color(var(--my-accent-color)); // outputs: accent-color: var(--my-accent-color);
+///  @include accent-color(var(--my-accent-color), true); // outputs: accent-color: var(--my-accent-color) !important;
+///
+@mixin accent-color($value, $important: false) {
+  @include h.emit('accent-color', $value, $important);
+}
+
+
+
+// * ---------------------------------------------
+// * Caret color
+// * ---------------------------------------------
+
+/// Set caret-color property with optional !important flag
+/// 
+/// @param {String} $value - The caret color value to apply (e.g., 'red', '#ff0000', 'var(--my-caret-color)')
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include caret-color('red'); // outputs: caret-color: red;
+///  @include caret-color('#ff0000', true); // outputs: caret-color: #ff0000 !important;
+///  @include caret-color(var(--my-caret-color)); // outputs: caret-color: var(--my-caret-color);
+///  @include caret-color(var(--my-caret-color), true); // outputs: caret-color: var(--my-caret-color) !important;
+///
+@mixin caret-color($value, $important: false) {
+  @include h.emit('caret-color', $value, $important);
+}

@@ -20,7 +20,7 @@
 @use './../mixins/support';
 @use './../mixins/transition' as *;
 
-@use './../mixins/display' as *;
+@use './../mixins/layout/flow/display' as *;
 
 @use './../storages/button' as store;
 @use './../components/button';

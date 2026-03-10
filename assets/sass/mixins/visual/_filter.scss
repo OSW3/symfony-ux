@@ -1,0 +1,570 @@
+// * ===========================================================================
+// *  Filter Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the filter property of elements. 
+// *
+// *  These mixins provide a convenient way to apply different filter effects
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Filter API                                                           - //
+// * ------------------------------------------------------------------------ //
+
+// * ---------------------------------------------
+// * Filter
+// * ---------------------------------------------
+
+/// Set filter with optional !important
+///
+/// @param $values One or more filter functions (e.g. blur(5px), brightness(0.8), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include filter(blur(5px));
+///  @include filter(blur(5px), brightness(0.8));
+///  @include filter(blur(5px), true); // with !important
+///  @include filter(blur(5px), brightness(0.8), true); // multiple values with !important
+/// 
+@mixin filter($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @include h.emit('filter', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to none with optional !important
+/// 
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-none();
+///  @include filter-none(true); // with !important
+///  @include filter-none(false); // explicitly without !important
+///
+@mixin filter-none($important: false) {
+  @include filter(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to initial with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include filter-initial();
+///  @include filter-initial(true); // with !important
+///  @include filter-initial(false); // explicitly without !important
+///
+@mixin filter-initial($important: false) {
+  @include filter(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to inherit with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-inherit();
+///  @include filter-inherit(true); // with !important
+///  @include filter-inherit(false); // explicitly without !important
+///
+@mixin filter-inherit($important: false) {
+  @include filter(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to unset with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-unset();
+///  @include filter-unset(true); // with !important
+///  @include filter-unset(false); // explicitly without !important
+///
+@mixin filter-unset($important: false) {
+  @include filter(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to revert with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-revert();
+///  @include filter-revert(true); // with !important
+///  @include filter-revert(false); // explicitly without !important
+///
+@mixin filter-revert($important: false) {
+  @include filter(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to all with optional !important
+/// 
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-all();
+///  @include filter-all(true); // with !important
+///  @include filter-all(false); // explicitly without !important
+///
+@mixin filter-all($important: false) {
+  @include filter(all, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter to revert-layer with optional !important
+/// 
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-revert-layer();
+///  @include filter-revert-layer(true); // with !important
+///  @include filter-revert-layer(false); // explicitly without !important
+///
+@mixin filter-revert-layer($important: false) {
+  @include filter(revert-layer, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter blur with optional !important
+/// 
+/// @param $value The value for the blur function (e.g. 5px)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-blur(5px);
+///  @include filter-blur(5px, true); // with !important
+///  @include filter-blur(5px, false); // explicitly without !important
+///
+@mixin filter-blur($value, $important: false) {
+  @include filter(blur($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter brightness with optional !important
+/// 
+/// @param $value The value for the brightness function (e.g. 0.8)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-brightness(0.8);
+///  @include filter-brightness(0.8, true); // with !important
+///  @include filter-brightness(0.8, false); // explicitly without !important
+///
+@mixin filter-brightness($value, $important: false) {
+  @include filter(brightness($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter contrast with optional !important
+/// 
+/// @param $value The value for the contrast function (e.g. 150%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-contrast(150%);
+///  @include filter-contrast(150%, true); // with !important
+///  @include filter-contrast(150%, false); // explicitly without !important
+///
+@mixin filter-contrast($value, $important: false) {
+  @include filter(contrast($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter grayscale with optional !important
+/// 
+/// @param $value The value for the grayscale function (e.g. 50%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-grayscale(50%);
+///  @include filter-grayscale(50%, true); // with !important
+///  @include filter-grayscale(50%, false); // explicitly without !important
+///
+@mixin filter-grayscale($value, $important: false) {
+  @include filter(grayscale($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter hue-rotate with optional !important
+/// 
+/// @param $value The value for the hue-rotate function (e.g. 90deg)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-hue-rotate(90deg);
+///  @include filter-hue-rotate(90deg, true); // with !important
+///  @include filter-hue-rotate(90deg, false); // explicitly without !important
+///
+@mixin filter-hue-rotate($value, $important: false) {
+  @include filter(hue-rotate($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter invert with optional !important
+/// 
+/// @param $value The value for the invert function (e.g. 100%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-invert(100%);
+///  @include filter-invert(100%, true); // with !important
+///  @include filter-invert(100%, false); // explicitly without !important
+///
+@mixin filter-invert($value, $important: false) {
+  @include filter(invert($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter opacity with optional !important
+/// 
+/// @param $value The value for the opacity function (e.g. 0.5)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-opacity(0.5);
+///  @include filter-opacity(0.5, true); // with !important
+///  @include filter-opacity(0.5, false); // explicitly without !important
+///
+@mixin filter-opacity($value, $important: false) {
+  @include filter(opacity($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter saturate with optional !important
+/// 
+/// @param $value The value for the saturate function (e.g. 200%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-saturate(200%);
+///  @include filter-saturate(200%, true); // with !important
+///  @include filter-saturate(200%, false); // explicitly without !important
+///
+@mixin filter-saturate($value, $important: false) {
+  @include filter(saturate($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter drop-shadow with optional !important
+/// 
+/// @param $value The value for the drop-shadow function (e.g. 5px 5px 10px rgba(0,0,0,0.5))
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-drop-shadow(5px 5px 10px rgba(0,0,0,0.5));
+///  @include filter-drop-shadow(5px 5px 10px rgba(0,0,0,0.5), true); // with !important
+///  @include filter-drop-shadow(5px 5px 10px rgba(0,0,0,0.5), false); // explicitly without !important
+///
+@mixin filter-drop-shadow($value, $important: false) {
+  @include filter(drop-shadow($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set filter url with optional !important
+/// 
+/// @param $value The value for the url function (e.g. 'filter.svg#blur')
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include filter-url('filter.svg#blur');
+///  @include filter-url('filter.svg#blur', true); // with !important
+///  @include filter-url('filter.svg#blur', false); // explicitly without !important
+///
+@mixin filter-url($value, $important: false) {
+  @include filter(url($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+
+// * ---------------------------------------------
+// * Backdrop Filter
+// * ---------------------------------------------
+
+/// Set backdrop-filter with optional !important and fallbacks
+///
+/// @param $values One or more filter functions (e.g. blur(5px), brightness(0.8), etc.)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter(blur(5px));
+///  @include backdrop-filter(blur(5px), brightness(0.8));
+///  @include backdrop-filter(blur(5px), true); // with !important
+///  @include backdrop-filter(blur(5px), brightness(0.8), true); // multiple values with !important
+///  @include backdrop-filter(blur(5px), false); // explicitly without !important
+///  @include backdrop-filter(blur(5px), brightness(0.8), false); // multiple values explicitly without !important
+/// 
+@mixin backdrop-filter($values...) {
+  $pair: h.pop-trailing-bool($values...);
+  $vals: list.nth($pair, 1);
+  $important: list.nth($pair, 2);
+  $v: h.as-comma-list($vals);
+  @if h.fallbacks-enabled() {
+    @include h.emit('-webkit-backdrop-filter', $v, $important); 
+  }
+  @include h.emit('backdrop-filter', $v, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to none with optional !important
+/// 
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-none();
+///  @include backdrop-filter-none(true); // with !important
+///  @include backdrop-filter-none(false); // explicitly without !important
+///
+@mixin backdrop-filter-none($important: false) {
+  @include backdrop-filter(none, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to initial with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-initial();
+///  @include backdrop-filter-initial(true); // with !important
+///  @include backdrop-filter-initial(false); // explicitly without !important
+///
+@mixin backdrop-filter-initial($important: false) {
+  @include backdrop-filter(initial, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to inherit with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-inherit();
+///  @include backdrop-filter-inherit(true); // with !important
+///  @include backdrop-filter-inherit(false); // explicitly without !important
+///
+@mixin backdrop-filter-inherit($important: false) {
+  @include backdrop-filter(inherit, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to unset with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-unset();
+///  @include backdrop-filter-unset(true); // with !important
+///  @include backdrop-filter-unset(false); // explicitly without !important
+///
+@mixin backdrop-filter-unset($important: false) {
+  @include backdrop-filter(unset, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to revert with optional !important
+///
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-revert();
+///  @include backdrop-filter-revert(true); // with !important
+///  @include backdrop-filter-revert(false); // explicitly without !important
+///
+@mixin backdrop-filter-revert($important: false) {
+  @include backdrop-filter(revert, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to all with optional !important
+/// 
+/// @param $important If true, adds !important to the declaration (default: false)
+///
+/// Usage:
+///  @include backdrop-filter-all();
+///  @include backdrop-filter-all(true); // with !important
+///  @include backdrop-filter-all(false); // explicitly without !important
+///
+@mixin backdrop-filter-all($important: false) {
+  @include backdrop-filter(all, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter to revert-layer with optional !important
+/// 
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-revert-layer();
+///  @include backdrop-filter-revert-layer(true); // with !important
+///  @include backdrop-filter-revert-layer(false); // explicitly without !important
+///
+@mixin backdrop-filter-revert-layer($important: false) {
+  @include backdrop-filter(revert-layer, $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter blur with optional !important
+/// 
+/// @param $value The value for the blur function (e.g. 5px)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-blur(5px);
+///  @include backdrop-filter-blur(5px, true); // with !important
+///  @include backdrop-filter-blur(5px, false); // explicitly without !important
+///
+@mixin backdrop-filter-blur($value, $important: false) {
+  @include backdrop-filter(blur($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter brightness with optional !important
+///
+/// @param $value The value for the brightness function (e.g. 0.8)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-brightness(0.8);
+///  @include backdrop-filter-brightness(0.8, true); // with !important
+///  @include backdrop-filter-brightness(0.8, false); // explicitly without !important
+///
+@mixin backdrop-filter-brightness($value, $important: false) {
+  @include backdrop-filter(brightness($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter contrast with optional !important
+/// 
+/// @param $value The value for the contrast function (e.g. 150%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-contrast(150%);
+///  @include backdrop-filter-contrast(150%, true); // with !important
+///  @include backdrop-filter-contrast(150%, false); // explicitly without !important
+///
+@mixin backdrop-filter-contrast($value, $important: false) {
+  @include backdrop-filter(contrast($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter grayscale with optional !important
+/// 
+/// @param $value The value for the grayscale function (e.g. 50%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-grayscale(50%);
+///  @include backdrop-filter-grayscale(50%, true); // with !important
+///  @include backdrop-filter-grayscale(50%, false); // explicitly without !important
+///
+@mixin backdrop-filter-grayscale($value, $important: false) {
+  @include backdrop-filter(grayscale($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter hue-rotate with optional !important
+/// 
+/// @param $value The value for the hue-rotate function (e.g. 90deg)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-hue-rotate(90deg);
+///  @include backdrop-filter-hue-rotate(90deg, true); // with !important
+///  @include backdrop-filter-hue-rotate(90deg, false); // explicitly without !important
+///
+@mixin backdrop-filter-hue-rotate($value, $important: false) {
+  @include backdrop-filter(hue-rotate($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter invert with optional !important
+/// 
+/// @param $value The value for the invert function (e.g. 100%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-invert(100%);
+///  @include backdrop-filter-invert(100%, true); // with !important
+///  @include backdrop-filter-invert(100%, false); // explicitly without !important
+///
+@mixin backdrop-filter-invert($value, $important: false) {
+  @include backdrop-filter(invert($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter opacity with optional !important
+/// 
+/// @param $value The value for the opacity function (e.g. 0.5)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-opacity(0.5);
+///  @include backdrop-filter-opacity(0.5, true); // with !important
+///  @include backdrop-filter-opacity(0.5, false); // explicitly without !important
+///
+@mixin backdrop-filter-opacity($value, $important: false) {
+  @include backdrop-filter(opacity($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter saturate with optional !important
+/// 
+/// @param $value The value for the saturate function (e.g. 200%)
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-saturate(200%);
+///  @include backdrop-filter-saturate(200%, true); // with !important
+///  @include backdrop-filter-saturate(200%, false); // explicitly without !important
+///
+@mixin backdrop-filter-saturate($value, $important: false) {
+  @include backdrop-filter(saturate($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter drop-shadow with optional !important
+/// 
+/// @param $value The value for the drop-shadow function (e.g. 5px 5px 10px rgba(0,0,0,0.5))
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-drop-shadow(5px 5px 10px rgba(0,0,0,0.5));
+///  @include backdrop-filter-drop-shadow(5px 5px 10px rgba(0,0,0,0.5), true); // with !important
+///  @include backdrop-filter-drop-shadow(5px 5px 10px rgba(0,0,0,0.5), false); // explicitly without !important
+///
+@mixin backdrop-filter-drop-shadow($value, $important: false) {
+  @include backdrop-filter(drop-shadow($value), $important);
+  @if meta.content-exists() { @content; }
+}
+
+/// Set backdrop-filter url with optional !important
+/// 
+/// @param $value The value for the url function (e.g. 'filter.svg#blur')
+/// @param $important If true, adds !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include backdrop-filter-url('filter.svg#blur');
+///  @include backdrop-filter-url('filter.svg#blur', true); // with !important
+///  @include backdrop-filter-url('filter.svg#blur', false); // explicitly without !important
+///
+@mixin backdrop-filter-url($value, $important: false) {
+  @include backdrop-filter(url($value), $important);
+  @if meta.content-exists() { @content; }
+}

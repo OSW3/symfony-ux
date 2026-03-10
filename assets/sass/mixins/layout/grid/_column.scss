@@ -1,0 +1,64 @@
+// * ===========================================================================
+// *  Grid Column Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the grid column properties of elements. 
+// *
+// *  These mixins provide a convenient way to apply different grid column styles
+// *  with optional !important flags.
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+@use "sass:list";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Grid Column API                                                      - //
+// * ------------------------------------------------------------------------ //
+
+/// Set grid-column
+/// 
+/// @param {String} $value - The value for grid-column (e.g., "header", "1 / 3", "span 2", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-column(header); // grid-column: header;
+///  @include grid-column(1 / 3); // grid-column: 1 / 3;
+///  @include grid-column(span 2); // grid-column: span 2;
+///
+@mixin grid-column($value, $important: false) {
+  @include h.emit('grid-column', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set grid-column-start
+/// 
+/// @param {String} $value - The value for grid-column-start (e.g., "header", "1", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+/// 
+/// Usage:
+///  @include grid-column-start(header); // grid-column-start: header;
+///  @include grid-column-start(1); // grid-column-start: 1;
+///
+@mixin grid-column-start($value, $important: false) { 
+  @include h.emit('grid-column-start', $value, $important); 
+  @if meta.content-exists() { @content; } 
+}
+
+/// Set grid-column-end
+/// 
+/// @param {String} $value - The value for grid-column-end (e.g., "header", "3", etc.)
+/// @param {Boolean} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include grid-column-end(header); // grid-column-end: header;
+///  @include grid-column-end(3); // grid-column-end: 3;
+///
+@mixin grid-column-end($value, $important: false) { 
+  @include h.emit('grid-column-end', $value, $important);
+  @if meta.content-exists() { @content; } 
+}

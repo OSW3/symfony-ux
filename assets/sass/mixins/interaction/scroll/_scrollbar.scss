@@ -1,0 +1,49 @@
+// * ===========================================================================
+// *  Scrollbar Mixins
+// * ===========================================================================
+// *
+// *  This file defines mixins for setting the scrollbar properties of elements.
+// *
+// *  These mixins provide a convenient way to apply different scrollbar values 
+// *  with optional !important flags. 
+// *
+// * ===========================================================================
+
+@charset 'utf-8';
+@use "sass:meta";
+
+
+
+
+// * ------------------------------------------------------------------------ //
+// * - Scrollbar API                                                        - //
+// * ------------------------------------------------------------------------ //
+
+/// Set scrollbar property.
+/// 
+/// @param {string} $value - The value for scrollbar (e.g., auto, none, etc.)
+/// @param {bool} $important - Whether to add !important to the declaration (default: false)
+///
+/// Usage:
+///  @include scrollbar(auto); // scrollbar: auto;
+///  @include scrollbar(none, true); // scrollbar: none !important;
+///
+@mixin scrollbar($value, $important: false) {
+  @include h.emit('scrollbar', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scrollbar-gutter($value, $important: false) {
+  @include h.emit('scrollbar-gutter', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scrollbar-width($value, $important: false) {
+  @include h.emit('scrollbar-width', $value, $important);
+  @if meta.content-exists() { @content; }
+}
+
+@mixin scrollbar-color($value, $important: false) {
+  @include h.emit('scrollbar-color', $value, $important);
+  @if meta.content-exists() { @content; }
+}
